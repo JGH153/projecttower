@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 	screenX = 800;
 	screenY = 600;
 
-	sf::RenderWindow mainWindow(sf::VideoMode(screenX, screenY), "Jello world");
+	sf::RenderWindow mainWindow(sf::VideoMode(screenX, screenY), "Greger world");
 
 	sf::Texture image;
 	if (!image.loadFromFile("tile_1.png"))
