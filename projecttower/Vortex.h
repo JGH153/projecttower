@@ -27,6 +27,9 @@ public:
 	void drawClear();
 	void drawDisplay();
 
+	void frameStart();
+	void frameEnd();
+
 	sf::Sprite loadImageToSprite(std::string path);
 	sf::Texture loadImageToTexture(std::string path);
 	sf::Font loadFont(std::string path);

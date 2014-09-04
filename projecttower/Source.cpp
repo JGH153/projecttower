@@ -172,7 +172,9 @@ int main(int argc, char* argv[]){
 
 	while (gameEngine->running){
 
-		gameEngine->regEvents();
+		gameEngine->frameStart();
+
+		
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 
 			if (currentEvent.type == sf::Event::Closed){
@@ -182,8 +184,6 @@ int main(int argc, char* argv[]){
 
 		}
 
-
-		gameEngine->drawClear();
 
 		//static int step = 0;
 
@@ -234,7 +234,7 @@ int main(int argc, char* argv[]){
 		}
 		*/
 
-		gameEngine->drawDisplay();
+		gameEngine->frameEnd();
 
 	}
 

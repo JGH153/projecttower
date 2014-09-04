@@ -47,17 +47,28 @@ void Vortex::drawClear(){
 
 }
 
-
-
-
-
-
-
 void Vortex::drawDisplay(){
 
 	mainWindow->display();
 
 }
+
+
+
+void Vortex::frameStart(){
+
+	frameTime.restart();
+	drawClear();
+	regEvents();
+
+}
+
+void Vortex::frameEnd(){
+
+	drawDisplay();
+
+}
+
 
 
 sf::Sprite Vortex::loadImageToSprite(std::string path){
