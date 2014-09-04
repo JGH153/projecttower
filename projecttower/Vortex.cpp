@@ -47,11 +47,7 @@ sf::Sprite Vortex::loadImageToSprite(std::string path){
 
 	sf::Texture image;
 	if (!image.loadFromFile(path)){
-
-		std::cout << "Unable to load file " << path << std::endl;
-		std::cin.get();
-		exit(1);
-		// What do when there is no image?!
+		image = checkForBackupImage(path);
 	}
 
 	return sf::Sprite(image);
@@ -62,15 +58,30 @@ sf::Texture  Vortex::loadImageToTexture(std::string path){
 
 	sf::Texture image;
 	if (!image.loadFromFile(path)){
-
-		std::cout << "Unable to load file " << path << std::endl;
-		std::cin.get();
-		exit(1);
-		// What do when there is no image?!
+		image = checkForBackupImage(path);
 	}
 
 	return image;
 
+}
+
+/**
+* If the original texture/sprite/image could not be loaded, the program
+* will try to load a default image which is clearly visible.
+*
+* @param  path	the directory of the original image, used for error msg
+*/
+sf::Texture Vortex::checkForBackupImage(std::string path) {
+	//std::cout << "Unable to load file: " << path << std::endl;
+	sf::Texture image;
+	std::string backup = "Graphics/errorImage.jpg";
+	if (!image.loadFromFile(backup)) {
+		std::cout << "UNHANDLED EXEPTION: Unable to load backup file: " << backup << std::endl;
+		std::cout << "Press enter to close application" << std::endl;
+		std::cin.get();
+		exit(1);
+	}
+	return image;
 }
 
 void Vortex::regEvents(){
@@ -106,3 +117,4 @@ void Vortex::closeApplication(){
 	mainWindow->close();
 
 }
+

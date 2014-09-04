@@ -29,6 +29,7 @@ public:
 	std::vector<sf::Event> getWindowEvents();
 
 	void closeApplication();
+	sf::Texture checkForBackupImage(std::string path);
 
 	bool running;
 

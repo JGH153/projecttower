@@ -15,8 +15,8 @@ int main(int argc, char* argv[]){
 
 	Vortex * gameEngine = new Vortex();
 	gameEngine->initVortex(800, 600, "Main Window");
-	gameEngine->loadImageToSprite("tile_1.png");
-	sf::Texture texImage = gameEngine->loadImageToTexture("tile_1.png");
+	gameEngine->loadImageToSprite("Graphics/tile_1.png");
+	sf::Texture texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
 
 
 
