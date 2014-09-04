@@ -6,7 +6,9 @@
 #include <iostream>
 
 #include "Vortex.h"
+#include "VortexLoader.h"
 #include "VortexParticleSystem.h"
+#include "VortexAnimation.h"
 
 int screenX = 800;
 int screenY = 600;
@@ -107,8 +109,17 @@ int main(int argc, char* argv[]){
 
 
 
+	gameEngine->drawClear();
+	VortexAnimation * testAnimation = new VortexAnimation(300, 300, 112, 170, 2, gameEngine);
+	//testAnimation->addFrame("Graphics/tile_1.png", gameEngine->getWindow());
+	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_1.png");
+	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_2.png");
+	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_3.png");
+	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_4.png");
+	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_5.png");
+	gameEngine->drawDisplay();
 
-
+	///std::cin.get();
 
 
 	int x, y;
@@ -154,14 +165,14 @@ int main(int argc, char* argv[]){
 
 		for (int j = 0; j < step; j++){
 
-			gameEngine->drawToScreen(sprites[j]);
+			gameEngine->getWindow()->draw(*sprites[j]);
 
 		}
 
 		sf::CircleShape shape(50);
 		shape.setPosition(0, 100);
 		shape.setFillColor(sf::Color(100, 250, 50));
-		gameEngine->drawToScreen(shape);
+		gameEngine->getWindow()->draw(shape);
 
 
 
@@ -178,11 +189,11 @@ int main(int argc, char* argv[]){
 		sf::Time elapsed = clock.restart();
 		particles.update(elapsed);
 
-		
+		testAnimation->update(0);
 
-		gameEngine->drawToScreen(text);
+		gameEngine->getWindow()->draw(text);
 
-		gameEngine->drawToScreen(particles);
+		gameEngine->getWindow()->draw(particles);
 
 		/*
 		for (int i = 0; i < x*y; i++)

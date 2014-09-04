@@ -12,6 +12,12 @@ Vortex::~Vortex(){
 }
 
 
+sf::RenderWindow * Vortex::getWindow(){
+
+	return mainWindow;
+
+}
+
 void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath){
 
 	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
@@ -39,21 +45,11 @@ void Vortex::drawClear(){
 
 }
 
-void Vortex::drawToScreen(sf::Sprite sprite){
-	mainWindow->draw(sprite);
-}
-void Vortex::drawToScreen(sf::Sprite * sprite){
-	mainWindow->draw(*sprite);
-}
-void Vortex::drawToScreen(sf::CircleShape circle){
-	mainWindow->draw(circle);
-}
-void Vortex::drawToScreen(VortexParticleSystem particles){
-	mainWindow->draw(particles);
-}
-void Vortex::drawToScreen(sf::Text text){
-	mainWindow->draw(text);
-}
+
+
+
+
+
 
 void Vortex::drawDisplay(){
 
@@ -62,35 +58,50 @@ void Vortex::drawDisplay(){
 }
 
 
-
-sf::Vector2i Vortex::getMousePosition(){
-	return sf::Mouse::getPosition(*mainWindow);
-}
-sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
-	return mainWindow->mapPixelToCoords(point);
-}
-
 sf::Sprite Vortex::loadImageToSprite(std::string path){
 
-	sf::Texture image;
-	if (!image.loadFromFile(path)){
-		std::cout << "Unable to load image: " << path << std::endl;
-		image = checkForBackupImage(path);
+
+	sf::Texture * image;
+
+	image = checkForCopyOfTex(path);
+
+	if (image == nullptr){
+
+		std::cout << "hehe";
+
+		image = new sf::Texture;
+		if (!image->loadFromFile(path)){
+			std::cout << "Unable to load image: " << path << std::endl;
+			image = &checkForBackupImage(path);
+		}
+
+		textures.push_back(new texElement(path, image));
+
 	}
 
-	return sf::Sprite(image);
+	return sf::Sprite(*image);
 
 }
 
 sf::Texture Vortex::loadImageToTexture(std::string path){
 
-	sf::Texture image;
-	if (!image.loadFromFile(path)){
-		std::cout << "Unable to load image: " << path << std::endl;
-		image = checkForBackupImage(path);
+	sf::Texture * image;
+
+	image = checkForCopyOfTex(path);
+
+	if (image == nullptr){
+
+		image = new sf::Texture;
+		if (!image->loadFromFile(path)){
+			std::cout << "Unable to load image: " << path << std::endl;
+			image = &checkForBackupImage(path);
+		}
+
+		textures.push_back(new texElement(path, image));
+
 	}
 
-	return image;
+	return *image;
 
 }
 
@@ -106,11 +117,21 @@ sf::Font Vortex::loadFont(std::string path){
 
 }
 
-sf::Font Vortex::getDefaultFont(){
-	return defaultFont;
+
+sf::Texture * Vortex::checkForCopyOfTex(std::string path){
+
+	for each (texElement * currentElement in textures){
+
+		if (currentElement->path == path)
+			return currentElement->texture;
+
+		std::cout << currentElement->path;
+	}
+
+	return nullptr;
+
 }
 
-//Vortex::loadFont(std::string path){
 
 /**
 * If the original texture/sprite/image could not be loaded, the program
@@ -131,6 +152,24 @@ sf::Texture Vortex::checkForBackupImage(std::string path) {
 	return image;
 }
 
+
+sf::Vector2i Vortex::getMousePosition(){
+	return sf::Mouse::getPosition(*mainWindow);
+}
+sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
+	return mainWindow->mapPixelToCoords(point);
+}
+
+
+
+sf::Font Vortex::getDefaultFont(){
+	return defaultFont;
+}
+
+//Vortex::loadFont(std::string path){
+
+
+
 void Vortex::regEvents(){
 
 	eventList.clear();
@@ -150,9 +189,9 @@ std::vector<sf::Event> Vortex::getWindowEvents(){
 }
 
 
-void Vortex::setSpriteSize(sf::Sprite * sprite, double x, double y){
+void Vortex::setSpriteSize(sf::Sprite * sprite, double w, double h){
 
-	sprite->setScale(x / sprite->getLocalBounds().width, y / sprite->getLocalBounds().height);
+	sprite->setScale(w / sprite->getLocalBounds().width, h / sprite->getLocalBounds().height);
 
 }
 

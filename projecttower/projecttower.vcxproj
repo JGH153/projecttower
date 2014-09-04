@@ -78,7 +78,9 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TowerObject.cpp" />
     <ClCompile Include="Vortex.cpp" />
+    <ClCompile Include="VortexAnimation.cpp" />
     <ClCompile Include="VortexButton.cpp" />
+    <ClCompile Include="VortexLoader.cpp" />
     <ClCompile Include="VortexParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +91,9 @@
     <ClInclude Include="Pos.h" />
     <ClInclude Include="TowerObject.h" />
     <ClInclude Include="Vortex.h" />
+    <ClInclude Include="VortexAnimation.h" />
     <ClInclude Include="VortexButton.h" />
+    <ClInclude Include="VortexLoader.h" />
     <ClInclude Include="VortexParticleSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
