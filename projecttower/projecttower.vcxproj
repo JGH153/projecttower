@@ -71,6 +71,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Vortex.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Vortex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
