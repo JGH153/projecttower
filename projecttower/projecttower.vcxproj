@@ -78,6 +78,8 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TowerObject.cpp" />
     <ClCompile Include="Vortex.cpp" />
+    <ClCompile Include="VortexButton.cpp" />
+    <ClCompile Include="VortexParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ButtonObject.h" />
@@ -87,6 +89,8 @@
     <ClInclude Include="Pos.h" />
     <ClInclude Include="TowerObject.h" />
     <ClInclude Include="Vortex.h" />
+    <ClInclude Include="VortexButton.h" />
+    <ClInclude Include="VortexParticleSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

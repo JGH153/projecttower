@@ -12,10 +12,23 @@ Vortex::~Vortex(){
 }
 
 
-void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowName){
+void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath){
 
 	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
+
+	sf::Image image;
+	if (!image.loadFromFile(iconPath)){
+		std::cout << "FATAL iconPath";
+		std::cin.get();
+		closeApplication();
+	}
+
+	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
+	mainWindow->setFramerateLimit(60);
+
 	this->windowName = windowName;
+
+	defaultFont = loadFont(defaultFontPath);
 
 }
 
@@ -35,6 +48,12 @@ void Vortex::drawToScreen(sf::Sprite * sprite){
 void Vortex::drawToScreen(sf::CircleShape circle){
 	mainWindow->draw(circle);
 }
+void Vortex::drawToScreen(VortexParticleSystem particles){
+	mainWindow->draw(particles);
+}
+void Vortex::drawToScreen(sf::Text text){
+	mainWindow->draw(text);
+}
 
 void Vortex::drawDisplay(){
 
@@ -43,10 +62,19 @@ void Vortex::drawDisplay(){
 }
 
 
+
+sf::Vector2i Vortex::getMousePosition(){
+	return sf::Mouse::getPosition(*mainWindow);
+}
+sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
+	return mainWindow->mapPixelToCoords(point);
+}
+
 sf::Sprite Vortex::loadImageToSprite(std::string path){
 
 	sf::Texture image;
 	if (!image.loadFromFile(path)){
+		std::cout << "Unable to load image: " << path << std::endl;
 		image = checkForBackupImage(path);
 	}
 
@@ -54,16 +82,35 @@ sf::Sprite Vortex::loadImageToSprite(std::string path){
 
 }
 
-sf::Texture  Vortex::loadImageToTexture(std::string path){
+sf::Texture Vortex::loadImageToTexture(std::string path){
 
 	sf::Texture image;
 	if (!image.loadFromFile(path)){
+		std::cout << "Unable to load image: " << path << std::endl;
 		image = checkForBackupImage(path);
 	}
 
 	return image;
 
 }
+
+sf::Font Vortex::loadFont(std::string path){
+	sf::Font font;
+	if (!font.loadFromFile(path)){
+		// error... return default
+		std::cout << "Unable to load font: " << path << std::endl;
+		return defaultFont;
+	}
+
+	return font;
+
+}
+
+sf::Font Vortex::getDefaultFont(){
+	return defaultFont;
+}
+
+//Vortex::loadFont(std::string path){
 
 /**
 * If the original texture/sprite/image could not be loaded, the program

@@ -13,12 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\VortexGameEngine">
+      <UniqueIdentifier>{410d55d1-dad9-491b-94ea-deec1013a993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\VortexGameEngine">
+      <UniqueIdentifier>{ae9f3dc8-2824-4b27-ac5c-3129c6ed925c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vortex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Pos.cpp">
@@ -39,11 +42,17 @@
     <ClCompile Include="ButtonObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Vortex.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexButton.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexParticleSystem.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Vortex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Pos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -61,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="ButtonObject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexButton.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexParticleSystem.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

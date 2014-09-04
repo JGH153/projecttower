@@ -6,17 +6,106 @@
 #include <iostream>
 
 #include "Vortex.h"
+#include "VortexParticleSystem.h"
 
 int screenX = 800;
 int screenY = 600;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int main(int argc, char* argv[]){
 
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	Vortex * gameEngine = new Vortex();
-	gameEngine->initVortex(800, 600, "Main Window");
+	gameEngine->initVortex(800, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
 	gameEngine->loadImageToSprite("Graphics/tile_1.png");
 	sf::Texture texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
+
+	// create the particle system
+	VortexParticleSystem particles(10000);
+
+	// create a clock to track the elapsed time
+	sf::Clock clock;
+
+
+
+
+
+	sf::Font font = gameEngine->loadFont("Fonts/arial.ttf");
+
+	sf::Text text;
+
+	// select the font
+	text.setFont(font); // font is a sf::Font
+
+	text.setPosition(150, 150);
+
+	// set the string to display
+	text.setString("Hello world");
+
+	// set the character size
+	text.setCharacterSize(28); // in pixels, not points!
+
+	// set the color
+	text.setColor(sf::Color::Red);
+
+	// set the text style
+	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+
 
 
 
@@ -74,6 +163,27 @@ int main(int argc, char* argv[]){
 		shape.setFillColor(sf::Color(100, 250, 50));
 		gameEngine->drawToScreen(shape);
 
+
+
+
+
+
+		// make the particle system emitter follow the mouse
+		sf::Vector2i mouse = gameEngine->getMousePosition();
+		//std::cout << mouse.x << " " << mouse.y << std::endl;
+		//particles.setEmitter(window.mapPixelToCoords(mouse));
+		particles.setEmitter(gameEngine->getMapPixelToCoords(mouse));
+
+		// update it
+		sf::Time elapsed = clock.restart();
+		particles.update(elapsed);
+
+		
+
+		gameEngine->drawToScreen(text);
+
+		gameEngine->drawToScreen(particles);
+
 		/*
 		for (int i = 0; i < x*y; i++)
 		{
@@ -82,80 +192,6 @@ int main(int argc, char* argv[]){
 		*/
 
 		gameEngine->drawDisplay();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//sf::Event mainEvent;
-		//while (mainWindow.pollEvent(mainEvent)){
-
-		//	if (mainEvent.type == sf::Event::Closed){
-
-		//		mainWindow.close();
-		//	}
-
-		//	if (mainEvent.type == sf::Event::KeyPressed){
-
-		//		if (mainEvent.key.code == sf::Keyboard::Escape){
-
-		//			mainWindow.close();
-
-		//			//sf::Mouse::setPosition(sf::Vector2i(10, 50));
-		//			//sf::Mouse::setPosition(sf::Vector2i(10, 50), mainWindow);
-
-		//			std::cout << "the escape key was pressed" << std::endl;
-		//			std::cout << "control:" << mainEvent.key.control << std::endl;
-		//			std::cout << "alt:" << mainEvent.key.alt << std::endl;
-		//			std::cout << "shift:" << mainEvent.key.shift << std::endl;
-		//			std::cout << "system:" << mainEvent.key.system << std::endl;
-
-		//		}
-
-		//	}
-
-		//}
-		//mainWindow.clear();
-
-		//static int step = 0;
-
-		//step++;
-		//step = step % (x*y);
-
-		////printf("%d\n", step);
-
-		//for (int j = 0; j < step; j++)
-		//{
-		//	drawToScreen(sprites[j]);
-		//}
-
-		//sf::CircleShape shape(50);
-		//shape.setPosition(0, 100);
-		//shape.setFillColor(sf::Color(100, 250, 50));
-		//mainWindow.draw(shape);
-
-		///*
-		//for (int i = 0; i < x*y; i++)
-		//{
-		//mainWindow.draw(sprites[i]);
-		//}
-		//*/
-
-		//mainWindow.display();
 
 	}
 
