@@ -1,7 +1,8 @@
 #pragma once
 
+#include "SpriteObject.h"
+#include "TexturedObject.h"
 #include <SFML\Window.hpp>
-#include <SFML\Graphics.hpp>
 #include <vector>
 #include <iostream>
 

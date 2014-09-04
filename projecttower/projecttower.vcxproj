@@ -70,10 +70,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonObject.cpp" />
+    <ClCompile Include="SpriteObject.cpp" />
+    <ClCompile Include="TexturedObject.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Pos.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="TowerObject.cpp" />
     <ClCompile Include="Vortex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ButtonObject.h" />
+    <ClInclude Include="SpriteObject.h" />
+    <ClInclude Include="TexturedObject.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Pos.h" />
+    <ClInclude Include="TowerObject.h" />
     <ClInclude Include="Vortex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

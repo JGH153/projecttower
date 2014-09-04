@@ -1,15 +1,20 @@
-﻿Build started 04.09.2014 08:03:43.
+﻿Build started 04.09.2014 12:41:23.
      1>Project "C:\Skole\Spillprogrammering\projecttower\projecttower\projecttower.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Skole\Spillprogrammering\projecttower\\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Vortex.cpp
-         Vortex.cpp
-     1>c:\skole\spillprogrammering\projecttower\projecttower\vortex.cpp(108): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Skole\Spillprogrammering\projecttower\\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ButtonObject.cpp
+         ButtonObject.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Skole\Spillprogrammering\projecttower\\lib "sfml-audio-d.lib" "sfml-graphics-d.lib" "sfml-main-d.lib" "sfml-network-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.lib" /MACHINE:X86 Debug\Source.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Skole\Spillprogrammering\projecttower\\lib "sfml-audio-d.lib" "sfml-graphics-d.lib" "sfml-main-d.lib" "sfml-network-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.lib" /MACHINE:X86 Debug\ButtonObject.obj
+         Debug\SpriteObject.obj
+         Debug\TexturedObject.obj
+         Debug\GameObject.obj
+         Debug\Pos.obj
+         Debug\Source.obj
+         Debug\TowerObject.obj
          Debug\Vortex.obj
          projecttower.vcxproj -> C:\Skole\Spillprogrammering\projecttower\Debug\projecttower.exe
      1>Done Building Project "C:\Skole\Spillprogrammering\projecttower\projecttower\projecttower.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.91
+Time Elapsed 00:00:01.04
