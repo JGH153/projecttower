@@ -40,6 +40,8 @@ public:
 
 	sf::Font getDefaultFont();
 
+	sf::Time getTimeFromProgramStart();
+	sf::Time getTimeFromFrameStart();
 	
 
 	void regEvents();
@@ -64,6 +66,10 @@ private:
 	sf::RenderWindow * mainWindow;
 
 	sf::Font defaultFont;
+
+
+	sf::Clock totalTime;
+	sf::Clock frameTime;
 
 	
 

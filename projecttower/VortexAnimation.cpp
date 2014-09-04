@@ -33,14 +33,48 @@ void VortexAnimation::addFrame(std::string path){
 
 void VortexAnimation::update(float delta){
 
-
+	sf::Time currentTime = gameEngine->getTimeFromProgramStart();
 
 	//std::cout << "SIZE: " << frames.size();
+	
+
+	if (lastRunFrameTime.asMilliseconds() + (1000 / fps) < currentTime.asMilliseconds()){
+
+		lastRunFrameTime = currentTime;
+
+		currentFrame++;
+
+		if (currentFrame >= frames.size()){
+			currentFrame = 0;
+			playedOneTime = true;
+		}
+
+	}
+
+
 	gameEngine->getWindow()->draw(frames[currentFrame]);
-	currentFrame++;
+
+	
+
+}
+
+void VortexAnimation::assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum){
+	
+	std::string path = "";
+
+	for (int i = startNum; i <= endNum; i++){
+
+		path.clear();
+
+		std::stringstream ss;
+		ss << i;
+
+		path = startPath + ss.str() + filetype;
+
+		addFrame(path);
 
 
-	if (currentFrame >= frames.size())
-		currentFrame = 0;
+	}
+	
 
 }

@@ -46,7 +46,7 @@ void VortexParticleSystem::draw(sf::RenderTarget& target, sf::RenderStates state
 
 void VortexParticleSystem::resetParticle(std::size_t index){
 	// give a random velocity and lifetime to the particle
-	float angle = (std::rand() % 360) * 3.14f / 180.f;
+	float angle = (std::rand() % 360) * 3.1415926f / 180.f;
 	float speed = (std::rand() % 50) + 50.f;
 	m_particles[index].velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
 	m_particles[index].lifetime = sf::milliseconds((std::rand() % 2000) + 1000);

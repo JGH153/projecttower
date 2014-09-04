@@ -110,19 +110,48 @@ int main(int argc, char* argv[]){
 
 
 	gameEngine->drawClear();
-	VortexAnimation * testAnimation = new VortexAnimation(300, 300, 112, 170, 2, gameEngine);
+	VortexAnimation * testAnimation = new VortexAnimation(300, 300, 112, 170, 24, gameEngine);
 	//testAnimation->addFrame("Graphics/tile_1.png", gameEngine->getWindow());
-	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_1.png");
-	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_2.png");
-	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_3.png");
-	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_4.png");
-	testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_5.png");
+	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_1.png");
+	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_2.png");
+	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_3.png");
+	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_4.png");
+	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_5.png");
+	testAnimation->assembleAnimation("Graphics/testAnimation/Boss8_black_hole2_", ".png", 1, 53);
 	gameEngine->drawDisplay();
 
 	///std::cin.get();
 
 
+	std::vector<VortexAnimation *> animations;
+	
 	int x, y;
+
+	x = 0;
+	y = 0;
+
+	int width = 112;
+	int height = 170;
+	int border = 10;
+	
+	for (int i = 0; i < 30; i++){
+
+		VortexAnimation * temp = new VortexAnimation(x, y, width, height, 25, gameEngine);
+		temp->assembleAnimation("Graphics/testAnimation/Boss8_black_hole2_", ".png", 1, 53);
+		animations.push_back(temp);
+
+		x += width + border;
+		if (x > gameEngine->getWindow()->getSize().x + width){
+			x = 0;
+			y += height + border;
+		}
+
+
+
+	}
+
+
+	
 
 	x = 20;
 	y = 20;
@@ -156,25 +185,28 @@ int main(int argc, char* argv[]){
 
 		gameEngine->drawClear();
 
-		static int step = 0;
+		//static int step = 0;
 
-		step++;
-		step = step % (x*y);
+		//step++;
+		//step = step % (x*y);
 
-		//printf("%d\n", step);
+		////printf("%d\n", step);
 
-		for (int j = 0; j < step; j++){
+		//for (int j = 0; j < step; j++){
 
-			gameEngine->getWindow()->draw(*sprites[j]);
+		//	gameEngine->getWindow()->draw(*sprites[j]);
 
+		//}
+
+		//sf::CircleShape shape(50);
+		//shape.setPosition(0, 100);
+		//shape.setFillColor(sf::Color(100, 250, 50));
+		//gameEngine->getWindow()->draw(shape);
+
+
+		for (int i = 0; i < animations.size(); i++){
+			animations[i]->update(0);
 		}
-
-		sf::CircleShape shape(50);
-		shape.setPosition(0, 100);
-		shape.setFillColor(sf::Color(100, 250, 50));
-		gameEngine->getWindow()->draw(shape);
-
-
 
 
 
@@ -189,7 +221,7 @@ int main(int argc, char* argv[]){
 		sf::Time elapsed = clock.restart();
 		particles.update(elapsed);
 
-		testAnimation->update(0);
+		//testAnimation->update(0);
 
 		gameEngine->getWindow()->draw(text);
 

@@ -4,6 +4,8 @@
 #include <SFML\Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <string>
+#include <sstream>
 
 #include "VortexLoader.h"
 #include "Vortex.h"
@@ -38,6 +40,8 @@ private:
 	int currentFrame;
 
 	Vortex * gameEngine;
+	
+	sf::Time lastRunFrameTime;
 
 	std::vector <sf::Sprite> frames;
 };

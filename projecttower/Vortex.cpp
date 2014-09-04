@@ -36,6 +36,8 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 
 	defaultFont = loadFont(defaultFontPath);
 
+	totalTime.restart();
+
 }
 
 
@@ -122,10 +124,13 @@ sf::Texture * Vortex::checkForCopyOfTex(std::string path){
 
 	for each (texElement * currentElement in textures){
 
-		if (currentElement->path == path)
+		if (currentElement->path == path){
+			//std::cout << "Found duplicate: " << path << std::endl;
 			return currentElement->texture;
 
-		std::cout << currentElement->path;
+		}
+
+		//std::cout << currentElement->path;
 	}
 
 	return nullptr;
@@ -165,6 +170,21 @@ sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
 sf::Font Vortex::getDefaultFont(){
 	return defaultFont;
 }
+
+
+
+sf::Time Vortex::getTimeFromProgramStart(){
+
+	return totalTime.getElapsedTime();
+
+}
+sf::Time Vortex::getTimeFromFrameStart(){
+
+	return frameTime.getElapsedTime();
+
+}
+
+
 
 //Vortex::loadFont(std::string path){
 
