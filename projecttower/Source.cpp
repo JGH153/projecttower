@@ -80,7 +80,7 @@ int main(int argc, char* argv[]){
 	int height = 170;
 	int border = 10;
 	
-	for (int i = 0; i < 30; i++){
+	for (uint i = 0; i < 30; i++){
 
 		VortexAnimation * temp = new VortexAnimation(x, y, width, height, 25, gameEngine);
 		temp->assembleAnimation("Graphics/testAnimation/Boss8_black_hole2_", ".png", 1, 53);

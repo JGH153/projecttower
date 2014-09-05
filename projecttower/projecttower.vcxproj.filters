@@ -45,11 +45,11 @@
     <ClCompile Include="VortexParticleSystem.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="VortexAnimation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VortexLoader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexAnimation.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
     <ClCompile Include="ButtonObject.cpp">
       <Filter>Source Files\GameObjects</Filter>
@@ -80,11 +80,11 @@
     <ClInclude Include="VortexParticleSystem.h">
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
-    <ClInclude Include="VortexAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VortexLoader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexAnimation.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
     <ClInclude Include="ButtonObject.h">
       <Filter>Header Files\GameObjects</Filter>
