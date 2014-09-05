@@ -9,6 +9,6 @@ TexturedObject::TexturedObject(sf::Texture *tex) {
 }
 
 TexturedObject::TexturedObject(Pos position, sf::Texture *tex) {
-	pos = position;
+	topLeft = position;
 	texture = tex;
 }

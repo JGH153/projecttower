@@ -6,6 +6,8 @@ class GameObject {
 public:
 	GameObject();
 	GameObject(Pos position);
-	Pos pos;
-
+	GameObject(Pos position, double w, double h);
+	Pos topLeft;
+	double width;
+	double height;
 };

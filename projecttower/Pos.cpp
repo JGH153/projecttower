@@ -5,7 +5,7 @@ Pos::Pos() {
 	y = 0;
 }
 
-Pos::Pos(float xPos, float yPos) {
+Pos::Pos(double xPos, double yPos) {
 	x = xPos;
 	y = yPos;
 }

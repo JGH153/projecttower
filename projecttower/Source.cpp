@@ -14,67 +14,13 @@ int screenX = 800;
 int screenY = 600;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(int argc, char* argv[]){
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	Vortex * gameEngine = new Vortex();
 	gameEngine->initVortex(800, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
 	gameEngine->loadImageToSprite("Graphics/tile_1.png");
 	sf::Texture texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
+
 
 	// create the particle system
 	VortexParticleSystem particles(10000);

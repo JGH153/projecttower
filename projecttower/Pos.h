@@ -1,8 +1,8 @@
 class Pos {
 public:
-	float x;
-	float y;
+	double x;
+	double y;
 
 	Pos();
-	Pos(float xPos, float yPos);
+	Pos(double xPos, double yPos);
 };

@@ -9,6 +9,6 @@ SpriteObject::SpriteObject(sf::Sprite *spr) {
 }
 
 SpriteObject::SpriteObject(Pos position, sf::Sprite *spr) {
-	pos = position;
+	topLeft = position;
 	sprite = spr;
 }

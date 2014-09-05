@@ -5,7 +5,7 @@ ButtonObject::ButtonObject() {
 }
 
 ButtonObject::ButtonObject(Pos position, sf::Texture *tex, sf::Texture *mouseOver, sf::Texture *clicked) {
-	pos = position;
+	topLeft = position;
 	texture = tex;
 	mouseOverTexture = mouseOver;
 	clickedTexture = clicked;
