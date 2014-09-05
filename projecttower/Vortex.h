@@ -5,6 +5,9 @@
 #include <vector>
 #include <iostream>
 
+//#define uint unsigned int
+typedef unsigned int uint;
+
 
 struct texElement{
 
