@@ -71,7 +71,7 @@ void Vortex::frameEnd(){
 
 
 
-sf::Sprite Vortex::loadImageToSprite(std::string path){
+VortexSprite Vortex::loadImageToSprite(std::string path){
 
 
 	sf::Texture * image;
@@ -92,7 +92,8 @@ sf::Sprite Vortex::loadImageToSprite(std::string path){
 
 	}
 
-	return sf::Sprite(*image);
+
+	return VortexSprite(*image);
 
 }
 

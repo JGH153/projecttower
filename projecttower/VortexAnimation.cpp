@@ -23,10 +23,10 @@ VortexAnimation::~VortexAnimation(){
 
 void VortexAnimation::addFrame(std::string path){
 
-	sf::Sprite image = gameEngine->loadImageToSprite(path);
+	VortexSprite image = gameEngine->loadImageToSprite(path);
 
 	image.setPosition(posX, posY);
-	Vortex::setSpriteSize(&image, width, height);
+	image.setSize(width, height);
 	frames.push_back(image);
 
 }

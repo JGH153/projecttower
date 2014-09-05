@@ -9,6 +9,7 @@
 
 #include "VortexLoader.h"
 #include "Vortex.h"
+#include "VortexSprite.h"
 
 class VortexAnimation
 {
@@ -43,6 +44,6 @@ private:
 	
 	sf::Time lastRunFrameTime;
 
-	std::vector <sf::Sprite> frames;
+	std::vector <VortexSprite> frames;
 };
 

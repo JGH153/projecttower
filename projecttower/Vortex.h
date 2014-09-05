@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#include "VortexSprite.h"
+
 //#define uint unsigned int
 typedef unsigned int uint;
 
@@ -33,7 +35,7 @@ public:
 	void frameStart();
 	void frameEnd();
 
-	sf::Sprite loadImageToSprite(std::string path);
+	VortexSprite loadImageToSprite(std::string path);
 	sf::Texture loadImageToTexture(std::string path);
 	sf::Font loadFont(std::string path);
 

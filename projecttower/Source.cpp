@@ -9,6 +9,8 @@
 #include "VortexLoader.h"
 #include "VortexParticleSystem.h"
 #include "VortexAnimation.h"
+#include "VortexSprite.h"
+#include "VortexButton.h"
 
 int screenX = 800;
 int screenY = 600;
@@ -104,17 +106,24 @@ int main(int argc, char* argv[]){
 
 	x = y = 2;
 
-	std::vector<sf::Sprite *> sprites;
+	std::vector<VortexSprite *> sprites;
 
 	for (int i = 0; i < x*y; i++){
 
-		sprites.push_back(new sf::Sprite(texImage));
+		sprites.push_back(new VortexSprite(texImage));
 		sprites[i]->setScale(1.5f, 1.5f);
 		//sprites[i]->setScale(100 / sprites[i].getLocalBounds().width, 100 / sprites[i].getLocalBounds().height);
 		gameEngine->setSpriteSize(sprites[i], 100, 100);
 		sprites[i]->setPosition(i % x * screenX / x, floor(i / y) * screenY / y);
 
 	}
+
+
+	VortexSprite sprit(texImage);
+
+
+	VortexButton testButton(400, 400, 150, 55, "Graphics/button.png", "En knapp", gameEngine);
+	
 
 	while (gameEngine->running){
 
@@ -163,6 +172,9 @@ int main(int argc, char* argv[]){
 		//particles.setEmitter(window.mapPixelToCoords(mouse));
 		particles.setEmitter(gameEngine->getMapPixelToCoords(mouse));
 
+		if (testButton.hitPoint(gameEngine->getMapPixelToCoords(mouse)))
+			std::cout << "JAJA" << std::endl;
+
 		// update it
 		sf::Time elapsed = clock.restart();
 		particles.update(elapsed);
@@ -171,7 +183,12 @@ int main(int argc, char* argv[]){
 
 		gameEngine->getWindow()->draw(text);
 
+		testButton.update(0);
+
 		gameEngine->getWindow()->draw(particles);
+
+		gameEngine->getWindow()->draw(sprit);
+		
 
 		/*
 		for (int i = 0; i < x*y; i++)
