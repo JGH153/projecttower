@@ -75,6 +75,8 @@
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Pos.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="Unit.cpp" />
     <ClCompile Include="Vortex.cpp" />
     <ClCompile Include="VortexAnimation.cpp" />
     <ClCompile Include="VortexButton.cpp" />
@@ -87,6 +89,8 @@
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Pos.h" />
+    <ClInclude Include="Tower.h" />
+    <ClInclude Include="Unit.h" />
     <ClInclude Include="Vortex.h" />
     <ClInclude Include="VortexAnimation.h" />
     <ClInclude Include="VortexButton.h" />

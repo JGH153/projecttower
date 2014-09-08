@@ -72,6 +72,12 @@
     <ClCompile Include="ProgramController.cpp">
       <Filter>Source Files\Controllers</Filter>
     </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -92,9 +98,6 @@
     <ClInclude Include="Pos.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="VortexSprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
@@ -103,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="ProgramController.h">
       <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexSprite.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

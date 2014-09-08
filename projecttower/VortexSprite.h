@@ -12,6 +12,6 @@ public:
 	~VortexSprite();
 
 	void setSize(double w, double h);
-
+	
 };
 

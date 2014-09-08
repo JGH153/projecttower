@@ -208,7 +208,7 @@ int main(int argc, char* argv[]){
 		//gameEngine->getWindow()->draw(shape);
 
 
-		for (int i = 0; i < animations.size(); i++){
+		for (uint i = 0; i < animations.size(); i++){
 			animations[i]->update(0);
 		}
 
