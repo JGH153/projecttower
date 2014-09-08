@@ -19,6 +19,26 @@ int screenY = 600;
 
 int main(int argc, char* argv[]){
 
+	/*
+
+	Add list:
+	VortexSound/music
+	VortextEventAnnouncer
+	VortexEventObserver
+	VortexButton - Hover
+
+
+
+
+
+
+
+
+
+
+
+	*/
+
 	Vortex * gameEngine = new Vortex();
 	gameEngine->initVortex(800, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
 	gameEngine->loadImageToSprite("Graphics/tile_1.png");

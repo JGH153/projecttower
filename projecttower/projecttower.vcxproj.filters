@@ -66,11 +66,11 @@
     <ClCompile Include="Pos.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="VortexSprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexSprite.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
