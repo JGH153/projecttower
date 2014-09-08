@@ -5,7 +5,16 @@ VortexParticleSystem::VortexParticleSystem(unsigned int count) :
 	m_particles(count),
 	m_vertices(sf::Points, count),
 	m_lifetime(sf::seconds(3)),
-	m_emitter(0, 0){}
+	m_emitter(0, 0){
+
+	for (std::size_t i = 0; i < m_particles.size(); ++i){
+		resetParticle(i);
+		m_vertices[i].position = sf::Vector2f(-1000.f, -1000.f);
+		float percent = (float)i / (float)m_particles.size();
+		//std::cout << percent << std::endl;
+		m_particles[i].lifetime = sf::milliseconds(((std::rand() % 2000) + 1000) * percent);
+	}
+}
 
 void VortexParticleSystem::setEmitter(sf::Vector2f position){
 	m_emitter = position;
@@ -53,6 +62,7 @@ void VortexParticleSystem::resetParticle(std::size_t index){
 
 	// reset the position of the corresponding vertex
 	m_vertices[index].position = m_emitter;
+	//m_vertices[index].position = sf::Vector2f(std::rand() % 800, std::rand() % 600);
 
 	/*m_vertices[index].color.r = 255;
 	m_vertices[index].color.g = 0;

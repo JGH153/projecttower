@@ -80,8 +80,6 @@ VortexSprite Vortex::loadImageToSprite(std::string path){
 
 	if (image == nullptr){
 
-		std::cout << "hehe";
-
 		image = new sf::Texture;
 		if (!image->loadFromFile(path)){
 			std::cout << "Unable to load image: " << path << std::endl;
