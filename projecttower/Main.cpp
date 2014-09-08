@@ -24,8 +24,7 @@ int main(int argc, char* argv[]){
 	/*
 
 	Add list:
-	Vortex events for ketboard
-	VortexSound/music
+	Vortex events for keyboard
 	VortexButton - Hover
 
 
@@ -48,7 +47,7 @@ int main(int argc, char* argv[]){
 	//hehe
 
 
-	sf::Font font = gameEngine->loadFont("Fonts/arial.ttf");
+	sf::Font font = *gameEngine->loadFont("Fonts/arial.ttf");
 
 	sf::Text text;
 
@@ -73,12 +72,6 @@ int main(int argc, char* argv[]){
 
 	gameEngine->drawClear();
 	VortexAnimation * testAnimation = new VortexAnimation(300, 300, 112, 170, 24, gameEngine);
-	//testAnimation->addFrame("Graphics/tile_1.png", gameEngine->getWindow());
-	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_1.png");
-	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_2.png");
-	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_3.png");
-	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_4.png");
-	//testAnimation->addFrame("Graphics/testAnimation/Boss8_black_hole2_5.png");
 	testAnimation->assembleAnimation("Graphics/testAnimation/Boss8_black_hole2_", ".png", 1, 53);
 	gameEngine->drawDisplay();
 
@@ -142,10 +135,7 @@ int main(int argc, char* argv[]){
 
 
 
-	sf::SoundBuffer buffer;
-	if (!buffer.loadFromFile("Sound/sound1.wav"))
-		return -1;
-
+	sf::SoundBuffer buffer = *gameEngine->loadSound("Sound/sound1.wav");
 	sf::Sound sound;
 	//sound.setPosition(sf::Vector3f(0.f, 0.f, 0.f));
 	sound.setBuffer(buffer);
@@ -168,12 +158,11 @@ int main(int argc, char* argv[]){
 
 		sf::Vector2i mouse = gameEngine->getMousePosition();
 
-		if (gameEngine->eventMouseReleasedLeft){
-			if (testButton.mouseOver()){
-				std::cout << "KNAPP TREYKKET" << std::endl;
-				testButton.setPosition(rand() % gameEngine->getWindowSize().x, rand() % gameEngine->getWindowSize().y);
-			}
+		if (testButton.buttonCliced()){
+			std::cout << "KNAPP TREYKKET" << std::endl;
+			testButton.setPosition(rand() % gameEngine->getWindowSize().x, rand() % gameEngine->getWindowSize().y);
 		}
+		
 		
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 			
@@ -189,45 +178,15 @@ int main(int argc, char* argv[]){
 		}
 
 
-		//static int step = 0;
-
-		//step++;
-		//step = step % (x*y);
-
-		////printf("%d\n", step);
-
-		//for (int j = 0; j < step; j++){
-
-		//	gameEngine->getWindow()->draw(*sprites[j]);
-
-		//}
-
-		//sf::CircleShape shape(50);
-		//shape.setPosition(0, 100);
-		//shape.setFillColor(sf::Color(100, 250, 50));
-		//gameEngine->getWindow()->draw(shape);
-
-
 		for (uint i = 0; i < animations.size(); i++){
 			animations[i]->update(0);
 		}
 
-
-
-
-		// make the particle system emitter follow the mouse
-		
-		//std::cout << mouse.x << " " << mouse.y << std::endl;
-		//particles.setEmitter(window.mapPixelToCoords(mouse));
 		particles.setEmitter(gameEngine->getMapPixelToCoords(mouse));
-
-		
 
 		// update it
 		sf::Time elapsed = clock.restart();
 		particles.update(elapsed);
-
-		//testAnimation->update(0);
 
 		gameEngine->getWindow()->draw(text);
 
@@ -236,14 +195,7 @@ int main(int argc, char* argv[]){
 		gameEngine->getWindow()->draw(particles);
 
 		gameEngine->getWindow()->draw(sprit);
-		
 
-		/*
-		for (int i = 0; i < x*y; i++)
-		{
-		mainWindow.draw(sprites[i]);
-		}
-		*/
 
 		gameEngine->frameEnd();
 

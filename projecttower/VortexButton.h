@@ -24,7 +24,9 @@ public:
 	bool hitPoint(sf::Vector2f point);
 	bool hitPoint(int x, int y);
 
-	bool VortexButton::mouseOver();
+	bool mouseOver();
+
+	bool buttonCliced(); //return if mouse button was realeased this frame and over the button
 
 private:
 

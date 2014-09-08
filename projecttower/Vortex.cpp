@@ -117,12 +117,61 @@ sf::Texture * Vortex::loadImageToTexture(std::string path){
 
 }
 
-sf::Font Vortex::loadFont(std::string path){
-	sf::Font font;
-	if (!font.loadFromFile(path)){
+sf::SoundBuffer * Vortex::loadSound(std::string path){
+
+	sf::SoundBuffer * sound;
+
+	sound = checkForCopyOfSound(path);
+
+	if (sound == nullptr){
+
+		sound = new sf::SoundBuffer;
+		if (!sound->loadFromFile(path)){
+			// error... return default
+			std::cout << "Unable to load SoundBuffer: " << path << std::endl;
+			std::cin.get();
+			exit(0);
+		}
+
+	}
+
+	return sound;
+
+}
+
+//NOT WORKING!!!!
+sf::Music * openMusic(std::string path){
+
+	//no factory pattern, streaming form disk/SSD
+
+	sf::Music * music = new sf::Music();
+	if (!music->openFromFile(path)){
 		// error... return default
-		std::cout << "Unable to load font: " << path << std::endl;
-		return defaultFont;
+		std::cout << "Unable to load Music: " << path << std::endl;
+		std::cin.get();
+		exit(0);
+	}
+
+	return music;
+
+}
+
+
+sf::Font * Vortex::loadFont(std::string path){
+
+	sf::Font * font;
+
+	font = checkForCopyOfFont(path);
+
+	if (font == nullptr){
+
+		font = new sf::Font();
+		if (!font->loadFromFile(path)){
+			// error... return default
+			std::cout << "Unable to load font: " << path << std::endl;
+			return defaultFont;
+		}
+
 	}
 
 	return font;
@@ -137,6 +186,40 @@ sf::Texture * Vortex::checkForCopyOfTex(std::string path){
 		if (currentElement->path == path){
 			//std::cout << "Found duplicate: " << path << std::endl;
 			return currentElement->texture;
+
+		}
+
+		//std::cout << currentElement->path;
+	}
+
+	return nullptr;
+
+}
+
+sf::SoundBuffer * Vortex::checkForCopyOfSound(std::string path){
+
+	for each (soundElement * currentElement in sounds){
+
+		if (currentElement->path == path){
+			//std::cout << "Found duplicate: " << path << std::endl;
+			return currentElement->sound;
+
+		}
+
+		//std::cout << currentElement->path;
+	}
+
+	return nullptr;
+
+}
+
+sf::Font * Vortex::checkForCopyOfFont(std::string path){
+
+	for each (FontElement * currentElement in fonts){
+
+		if (currentElement->path == path){
+			//std::cout << "Found duplicate: " << path << std::endl;
+			return currentElement->font;
 
 		}
 
@@ -177,7 +260,7 @@ sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
 
 
 
-sf::Font Vortex::getDefaultFont(){
+sf::Font * Vortex::getDefaultFont(){
 	return defaultFont;
 }
 
@@ -215,6 +298,9 @@ void Vortex::regEvents(){
 		eventList.push_back(mainEvent);
 	}
 
+	eventKeyPressed = false;
+	eventKeyReleased = false;
+
 	eventMouseMove = false;
 
 	eventMouseClicked = false;
@@ -227,6 +313,13 @@ void Vortex::regEvents(){
 	eventMouseReleasedRight = false;
 
 	for each (sf::Event currentEvent in getWindowEvents()){
+
+		if (currentEvent.type == sf::Event::KeyPressed){
+			eventKeyPressed = true;
+		}
+		if (currentEvent.type == sf::Event::KeyReleased){
+			eventKeyReleased = true;
+		}
 
 		if (currentEvent.type == sf::Event::LostFocus){
 			//myGame.pause();

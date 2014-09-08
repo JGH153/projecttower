@@ -2,6 +2,7 @@
 
 #include <SFML\Window.hpp>
 #include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include <vector>
 #include <iostream>
 
@@ -17,6 +18,23 @@ struct texElement{
 
 	std::string path;
 	sf::Texture * texture;
+};
+
+struct soundElement{
+
+	soundElement(std::string path, sf::SoundBuffer * sound) : path(path), sound(sound){}
+
+	std::string path;
+	sf::SoundBuffer * sound;
+
+};
+
+struct FontElement{
+
+	FontElement(std::string path, sf::Font * font) : path(path), font(font){}
+
+	std::string path;
+	sf::Font * font;
 };
 
 //The game engine, uning SFML
@@ -37,7 +55,9 @@ public:
 
 	VortexSprite loadImageToSprite(std::string path);
 	sf::Texture * loadImageToTexture(std::string path);
-	sf::Font loadFont(std::string path);
+	sf::SoundBuffer * loadSound(std::string path);
+	sf::Music * openMusic(std::string path);
+	sf::Font * loadFont(std::string path);
 
 	sf::Texture checkForBackupImage(std::string path);
 
@@ -46,7 +66,7 @@ public:
 
 	
 
-	sf::Font getDefaultFont();
+	sf::Font * getDefaultFont();
 
 	sf::Time getTimeFromProgramStart();
 	sf::Time getTimeFromFrameStart();
@@ -59,6 +79,9 @@ public:
 	
 
 	bool running;
+
+	bool eventKeyPressed= false;
+	bool eventKeyReleased = false;
 
 	bool eventMouseMove = false;
 
@@ -83,15 +106,19 @@ public:
 private:
 
 	sf::Texture * checkForCopyOfTex(std::string path);
+	sf::SoundBuffer * checkForCopyOfSound(std::string path);
+	sf::Font * checkForCopyOfFont(std::string path);
 
 	std::vector<sf::Event> eventList;
 
 	std::vector<texElement *> textures;
+	std::vector<soundElement *> sounds;
+	std::vector<FontElement *> fonts;
 
 	std::string windowName;
 	sf::RenderWindow * mainWindow;
 
-	sf::Font defaultFont;
+	sf::Font * defaultFont;
 
 
 	

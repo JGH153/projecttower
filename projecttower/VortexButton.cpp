@@ -15,7 +15,7 @@ VortexButton::VortexButton(int x, int y, int w, int h, std::string imagePath, st
 	
 
 
-	font = gameEngine->loadFont("Fonts/arial.ttf");
+	font = *gameEngine->loadFont("Fonts/arial.ttf");
 
 
 	// select the font
@@ -103,6 +103,15 @@ void VortexButton::update(float delta){
 
 	gameEngine->getWindow()->draw(image);
 	gameEngine->getWindow()->draw(text);
+
+}
+
+bool VortexButton::buttonCliced(){
+
+	if(gameEngine->eventMouseReleasedLeft)
+		return mouseOver();
+
+	return false;
 
 }
 
