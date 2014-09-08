@@ -36,7 +36,7 @@ public:
 	void frameEnd();
 
 	VortexSprite loadImageToSprite(std::string path);
-	sf::Texture loadImageToTexture(std::string path);
+	sf::Texture * loadImageToTexture(std::string path);
 	sf::Font loadFont(std::string path);
 
 	sf::Texture checkForBackupImage(std::string path);
@@ -60,7 +60,25 @@ public:
 
 	bool running;
 
+	bool eventMouseMove = false;
+
+	bool eventMouseClicked = false;
+	bool eventMouseReleased = false;
+
+	bool eventMouseClickedLeft = false;
+	bool eventMouseClickedRight = false;
+
+	bool eventMouseReleasedLeft = false;
+	bool eventMouseReleasedRight = false;
+
+	bool windowInFocus = true;
+
 	static void setSpriteSize(sf::Sprite * sprite, double w, double h);
+
+	sf::Vector2i getWindowSize();
+
+	sf::Clock totalTime;
+	sf::Clock frameTime;
 
 private:
 
@@ -76,8 +94,7 @@ private:
 	sf::Font defaultFont;
 
 
-	sf::Clock totalTime;
-	sf::Clock frameTime;
+	
 
 	
 

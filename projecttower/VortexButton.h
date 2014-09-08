@@ -7,7 +7,6 @@
 #include <string>
 #include <sstream>
 
-#include "VortexLoader.h"
 #include "Vortex.h"
 #include "VortexSprite.h"
 
@@ -16,6 +15,9 @@ class VortexButton
 public:
 	VortexButton(int x, int y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine);
 	~VortexButton();
+
+	void setPosition(double x, double y);
+	sf::Vector2f getPosition();
 
 	void update(float delta);
 

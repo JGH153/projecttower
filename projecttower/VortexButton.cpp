@@ -3,18 +3,16 @@
 
 VortexButton::VortexButton(int x, int y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine){
 
-	posX = x;
-	posY = y;
+	
 	width = w;
 	height = h;
 
 	this->gameEngine = gameEngine;
-
+	
 	image = VortexSprite(gameEngine->loadImageToSprite(imagePath));
 	this->title = title;
 
-	image.setPosition(posX, posY);
-	image.setSize(width, height);
+	
 
 
 	font = gameEngine->loadFont("Fonts/arial.ttf");
@@ -23,7 +21,7 @@ VortexButton::VortexButton(int x, int y, int w, int h, std::string imagePath, st
 	// select the font
 	text.setFont(font); // font is a sf::Font
 
-	text.setPosition(posX, posY);
+	
 
 	// set the string to display
 	text.setString(title);
@@ -37,49 +35,64 @@ VortexButton::VortexButton(int x, int y, int w, int h, std::string imagePath, st
 	// set the text style
 	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
+	
+	setPosition(x, y);
+	image.setSize(width, height);
 
 }
 
 
 VortexButton::~VortexButton(){
 
+	
 
+}
+
+void VortexButton::setPosition(double x, double y){
+
+	posX = x;
+	posY = y;
+
+	text.setPosition(posX, posY);
+	image.setPosition(posX, posY);
+	
+	update(0);
+
+}
+
+sf::Vector2f VortexButton::getPosition(){
+
+	return sf::Vector2f(posX, posY);
 
 }
 
 
 void VortexButton::update(float delta){
 
+	if (gameEngine->eventMouseMove){
+		if (mouseOver()){
 
-	for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
+			if (!mouseOverButton){
 
-		if (currentEvent.type == sf::Event::MouseMoved){
+				mouseOverButton = true;
+				image.setSize(width - 2, height - 2);
+				image.setPosition(posX + 1, posY + 1);
 
-			sf::Vector2i mouse = gameEngine->getMousePosition();
-			if (hitPoint(gameEngine->getMapPixelToCoords(mouse))){
+				text.setPosition(posX + 1, posY + 1);
+				text.setCharacterSize(text.getCharacterSize() - 1);
 
-				if (!mouseOverButton){
-					mouseOverButton = true;
-					image.setSize(width - 2, height - 2);
-					image.setPosition(posX + 1, posY + 1);
+			}
 
-					text.setPosition(posX + 1, posY + 1);
-					text.setCharacterSize(text.getCharacterSize() - 1);
-				}
+		}else{
 
-			}else{
+			if (mouseOverButton){
 
-				if (mouseOverButton){
-					mouseOverButton = false;
-					image.setSize(width + 2, height + 2);
-					image.setPosition(posX - 1, posY - 1);
+				mouseOverButton = false;
+				image.setSize(width + 2, height + 2);
+				image.setPosition(posX - 1, posY - 1);
 
-					text.setPosition(posX - 1, posY - 1);
-					text.setCharacterSize(text.getCharacterSize() + 1);
-
-				}
-
-
+				text.setPosition(posX - 1, posY - 1);
+				text.setCharacterSize(text.getCharacterSize() + 1);
 
 			}
 
@@ -98,9 +111,6 @@ bool VortexButton::hitPoint(sf::Vector2f point){
 }
 
 bool VortexButton::hitPoint(int x, int y){
-
-	
-
 
 	if (x >= this->posX && x <= this->posX + this->width
 		&& y >= this->posY && y <= this->posY + this->height){

@@ -13,6 +13,8 @@
 #include "VortexSprite.h"
 #include "VortexButton.h"
 
+#include "ProgramController.h"
+
 int screenX = 800;
 int screenY = 600;
 
@@ -22,19 +24,9 @@ int main(int argc, char* argv[]){
 	/*
 
 	Add list:
+	Vortex events for ketboard
 	VortexSound/music
-	VortextEventAnnouncer
-	VortexEventObserver
 	VortexButton - Hover
-
-
-
-
-
-
-
-
-
 
 
 	*/
@@ -42,8 +34,9 @@ int main(int argc, char* argv[]){
 	Vortex * gameEngine = new Vortex();
 	gameEngine->initVortex(800, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
 	gameEngine->loadImageToSprite("Graphics/tile_1.png");
-	sf::Texture texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
+	sf::Texture * texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
 
+	ProgramController * programController = new ProgramController(gameEngine);
 
 	// create the particle system
 	VortexParticleSystem particles(10000);
@@ -131,7 +124,7 @@ int main(int argc, char* argv[]){
 
 	for (int i = 0; i < x*y; i++){
 
-		sprites.push_back(new VortexSprite(texImage));
+		sprites.push_back(new VortexSprite(*texImage));
 		sprites[i]->setScale(1.5f, 1.5f);
 		//sprites[i]->setScale(100 / sprites[i].getLocalBounds().width, 100 / sprites[i].getLocalBounds().height);
 		gameEngine->setSpriteSize(sprites[i], 100, 100);
@@ -140,7 +133,7 @@ int main(int argc, char* argv[]){
 	}
 
 
-	VortexSprite sprit(texImage);
+	VortexSprite sprit(*texImage);
 
 
 	VortexButton testButton(400, 400, 150, 55, "Graphics/button.png", "En knapp", gameEngine);
@@ -165,70 +158,34 @@ int main(int argc, char* argv[]){
 	music.play();
 
 	music.setPitch(1.5);
-	music.setVolume(50);
-
-	bool windowInFocus = true;
+	music.setVolume(100);
 
 	while (gameEngine->running){
 
 		gameEngine->frameStart();
 
+		programController->update();
+
 		sf::Vector2i mouse = gameEngine->getMousePosition();
+
+		if (gameEngine->eventMouseReleasedLeft){
+			if (testButton.mouseOver()){
+				std::cout << "KNAPP TREYKKET" << std::endl;
+				testButton.setPosition(rand() % gameEngine->getWindowSize().x, rand() % gameEngine->getWindowSize().y);
+			}
+		}
 		
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 			
-			if (windowInFocus){
+			
 
-				if (currentEvent.type == sf::Event::Closed){
+			if (currentEvent.type == sf::Event::Closed){
 
-					gameEngine->closeApplication();
-				}
-
-				if (currentEvent.type == sf::Event::MouseButtonReleased){
-
-					if (currentEvent.mouseButton.button == sf::Mouse::Left){
-						std::cout << "Up" << std::endl;
-
-						if (testButton.hitPoint(gameEngine->getMapPixelToCoords(mouse)))
-							std::cout << "KNAPP TREYKKET" << std::endl;
-
-					}
-
-				}
-
-				if (currentEvent.type == sf::Event::MouseMoved){
-
-					//sound.setPosition(sf::Vector3f(mouse.x, 0.f, 0.f));
-
-				}
-
-				if (currentEvent.type == sf::Event::MouseButtonPressed){
-
-					if (currentEvent.mouseButton.button == sf::Mouse::Left){
-
-						std::cout << "Down" << std::endl;
-						std::cout << "mouse x: " << currentEvent.mouseButton.x << std::endl;
-						std::cout << "mouse y: " << currentEvent.mouseButton.y << std::endl;
-
-					}
-				}
-
-			}else{
-
-				std::cout << "No Focus" << std::endl;
+				gameEngine->closeApplication();
 
 			}
 
-			if (currentEvent.type == sf::Event::LostFocus){
-				//myGame.pause();
-				windowInFocus = false;
-			}
-
-			if (currentEvent.type == sf::Event::GainedFocus){
-				//myGame.resume();
-				windowInFocus = true;
-			}
-
+			
 		}
 
 

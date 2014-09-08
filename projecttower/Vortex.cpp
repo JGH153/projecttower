@@ -74,28 +74,28 @@ void Vortex::frameEnd(){
 VortexSprite Vortex::loadImageToSprite(std::string path){
 
 
-	sf::Texture * image;
+	//sf::Texture * image;
 
-	image = checkForCopyOfTex(path);
+	//image = checkForCopyOfTex(path);
 
-	if (image == nullptr){
+	//if (image == nullptr){
 
-		image = new sf::Texture;
-		if (!image->loadFromFile(path)){
-			std::cout << "Unable to load image: " << path << std::endl;
-			image = &checkForBackupImage(path);
-		}
+	//	image = new sf::Texture;
+	//	if (!image->loadFromFile(path)){
+	//		std::cout << "Unable to load image: " << path << std::endl;
+	//		image = &checkForBackupImage(path);
+	//	}
 
-		textures.push_back(new texElement(path, image));
+	//	textures.push_back(new texElement(path, image));
 
-	}
+	//}
 
 
-	return VortexSprite(*image);
+	return VortexSprite(*loadImageToTexture(path));
 
 }
 
-sf::Texture Vortex::loadImageToTexture(std::string path){
+sf::Texture * Vortex::loadImageToTexture(std::string path){
 
 	sf::Texture * image;
 
@@ -113,7 +113,7 @@ sf::Texture Vortex::loadImageToTexture(std::string path){
 
 	}
 
-	return *image;
+	return image;
 
 }
 
@@ -194,6 +194,12 @@ sf::Time Vortex::getTimeFromFrameStart(){
 
 }
 
+sf::Vector2i Vortex::getWindowSize(){
+
+	return sf::Vector2i(mainWindow->getSize().x, mainWindow->getSize().y);
+
+}
+
 
 
 //Vortex::loadFont(std::string path){
@@ -207,6 +213,65 @@ void Vortex::regEvents(){
 	sf::Event mainEvent;
 	while (mainWindow->pollEvent(mainEvent)){
 		eventList.push_back(mainEvent);
+	}
+
+	eventMouseMove = false;
+
+	eventMouseClicked = false;
+	eventMouseReleased = false;
+	
+	eventMouseClickedLeft = false;
+	eventMouseClickedRight = false;
+
+	eventMouseReleasedLeft = false;
+	eventMouseReleasedRight = false;
+
+	for each (sf::Event currentEvent in getWindowEvents()){
+
+		if (currentEvent.type == sf::Event::LostFocus){
+			//myGame.pause();
+			windowInFocus = false;
+		}
+
+		if (currentEvent.type == sf::Event::GainedFocus){
+			//myGame.resume();
+			windowInFocus = true;
+		}
+
+		if (currentEvent.type == sf::Event::MouseMoved){
+
+			eventMouseMove = true;
+
+		}
+		
+		if (currentEvent.type == sf::Event::MouseButtonPressed){
+
+			eventMouseClicked = true;
+
+			if (currentEvent.mouseButton.button == sf::Mouse::Left){
+				eventMouseClickedLeft = true;
+			}
+			if (currentEvent.mouseButton.button == sf::Mouse::Right){
+				eventMouseClickedRight = true;
+			}
+
+		}
+
+		if (currentEvent.type == sf::Event::MouseButtonReleased){
+
+			eventMouseReleased = true;
+
+			if (currentEvent.mouseButton.button == sf::Mouse::Left){
+				eventMouseReleasedLeft = true;
+			}
+			if (currentEvent.mouseButton.button == sf::Mouse::Right){
+				eventMouseReleasedRight = true;
+			}
+
+		}
+
+		
+
 	}
 
 

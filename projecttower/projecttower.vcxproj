@@ -70,13 +70,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ButtonObject.cpp" />
-    <ClCompile Include="SpriteObject.cpp" />
-    <ClCompile Include="TexturedObject.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameController.cpp" />
+    <ClCompile Include="MenuController.cpp" />
+    <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Pos.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="TowerObject.cpp" />
     <ClCompile Include="Vortex.cpp" />
     <ClCompile Include="VortexAnimation.cpp" />
     <ClCompile Include="VortexButton.cpp" />
@@ -85,12 +83,10 @@
     <ClCompile Include="VortexSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ButtonObject.h" />
-    <ClInclude Include="SpriteObject.h" />
-    <ClInclude Include="TexturedObject.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameController.h" />
+    <ClInclude Include="MenuController.h" />
+    <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Pos.h" />
-    <ClInclude Include="TowerObject.h" />
     <ClInclude Include="Vortex.h" />
     <ClInclude Include="VortexAnimation.h" />
     <ClInclude Include="VortexButton.h" />
