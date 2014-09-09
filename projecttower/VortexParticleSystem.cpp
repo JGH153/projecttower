@@ -64,7 +64,7 @@ void VortexParticleSystem::resetParticle(std::size_t index){
 	m_vertices[index].position = m_emitter;
 	//m_vertices[index].position = sf::Vector2f(std::rand() % 800, std::rand() % 600);
 
-	/*m_vertices[index].color.r = 255;
-	m_vertices[index].color.g = 0;
-	m_vertices[index].color.b = 0;*/
+	m_vertices[index].color.r = rand()%256;
+	m_vertices[index].color.g = rand() % 256;
+	m_vertices[index].color.b = rand() % 256;
 }

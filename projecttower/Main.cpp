@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 	ProgramController * programController = new ProgramController(gameEngine);
 
 	// create the particle system
-	VortexParticleSystem particles(10000);
+	VortexParticleSystem particles(50000);
 
 	// create a clock to track the elapsed time
 	sf::Clock clock;
@@ -169,6 +169,12 @@ int main(int argc, char* argv[]){
 			
 
 			if (currentEvent.type == sf::Event::Closed){
+
+				gameEngine->closeApplication();
+
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
 
 				gameEngine->closeApplication();
 
