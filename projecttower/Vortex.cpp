@@ -363,6 +363,23 @@ void Vortex::regEvents(){
 
 		}
 
+
+
+
+		if (currentEvent.type == sf::Event::Closed){
+
+			closeApplication();
+
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+
+			closeApplication();
+
+		}
+
+
+
 		
 
 	}
