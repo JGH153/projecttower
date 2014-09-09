@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
 	/*
 	Add list:
 	VortexButton - Hover
+	VortexButton - No image/hover or no text
 	*/
 
 	Vortex * gameEngine = new Vortex();
