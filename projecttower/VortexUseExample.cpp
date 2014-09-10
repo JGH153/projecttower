@@ -37,14 +37,14 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 	testAnimation = new VortexAnimation(300, 300, 112, 170, 24, gameEngine);
 	testAnimation->assembleAnimation("Graphics/testAnimation/Boss8_black_hole2_", ".png", 1, 53);
 
-	int x, y;
+	uint x, y;
 
 	x = 0;
 	y = 0;
 
-	int width = 112;
-	int height = 170;
-	int border = 10;
+	uint width = 112;
+	uint height = 170;
+	uint border = 10;
 
 	for (uint i = 0; i < 30; i++){
 
@@ -101,7 +101,7 @@ void VortexUseExample::update(){
 	sf::Vector2i mouse = gameEngine->getMousePosition();
 
 
-	if (testButton->buttonCliced()){
+	if (testButton->buttonClicked()){
 		std::cout << "KNAPP TREYKKET" << std::endl;
 		testButton->setPosition(rand() % gameEngine->getWindowSize().x, rand() % gameEngine->getWindowSize().y);
 	}

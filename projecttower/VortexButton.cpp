@@ -1,7 +1,7 @@
 #include "VortexButton.h"
 
 
-VortexButton::VortexButton(int x, int y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine){
+VortexButton::VortexButton(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine){
 
 	
 	width = w;
@@ -106,7 +106,7 @@ void VortexButton::update(float delta){
 
 }
 
-bool VortexButton::buttonCliced(){
+bool VortexButton::buttonClicked(){
 
 	if(gameEngine->eventMouseReleasedLeft)
 		return mouseOver();
@@ -119,7 +119,7 @@ bool VortexButton::hitPoint(sf::Vector2f point){
 	return hitPoint(point.x, point.y);
 }
 
-bool VortexButton::hitPoint(int x, int y){
+bool VortexButton::hitPoint(double x, double y){
 
 	if (x >= this->posX && x <= this->posX + this->width
 		&& y >= this->posY && y <= this->posY + this->height){

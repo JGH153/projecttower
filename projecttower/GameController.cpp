@@ -56,7 +56,8 @@ void GameController::update() {
 				//No point square rooting me thinks
 				//katet^2 + katet^2 = hypotenus^2 eller noe sånt
 				double totdist = xdist * xdist + ydist * ydist;
-				if (totdist <= towers[i]->range && totdist < bestRange) {
+				double totrange = towers[i]->range * towers[i]->range;
+				if (totdist <= totrange && totdist < bestRange) {
 					towers[i]->target = units[j];
 				}
 			}

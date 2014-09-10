@@ -45,6 +45,7 @@ bool Tower::attack() {
 }
 
 void Tower::update() {
+	gameEngine->getWindow()->draw(sprite);
 	if (!target) {
 		return;
 	}
@@ -52,7 +53,7 @@ void Tower::update() {
 	double ydist = abs(position.y - target->position.y);
 
 	//Target has moved out of range
-	if (xdist * xdist + ydist * ydist > range) {
+	if (xdist * xdist + ydist * ydist > range * range) {
 		target = NULL;
 	}
 }
