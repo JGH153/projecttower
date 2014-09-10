@@ -23,6 +23,13 @@ int main(int argc, char* argv[]){
 	Add list:
 	VortexButton - Hover
 	VortexButton - No image/hover or no text
+
+	Tower and unit as base classes 
+
+	NB! 
+	All new classes that will do ANRY rendering needs to take the game engine as constructor parameter and hava a update function
+
+
 	*/
 
 	Vortex * gameEngine = new Vortex();
@@ -38,7 +45,7 @@ int main(int argc, char* argv[]){
 
 		gameEngine->frameStart();
 
-		vortexUseExample.update();
+		//vortexUseExample.update();
 
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 

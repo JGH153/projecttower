@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameController.cpp" />
+    <ClCompile Include="GameGuiController.cpp" />
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Pos.cpp" />
@@ -87,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameController.h" />
+    <ClInclude Include="GameGuiController.h" />
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Pos.h" />

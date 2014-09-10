@@ -10,6 +10,8 @@
 #include "Vortex.h"
 #include "Tower.h"
 
+#include "GameGuiController.h"
+
 class GameController
 {
 public:
@@ -18,9 +20,18 @@ public:
 	std::vector<Tower*> towers;
 	std::vector<Unit*> units;
 
+	GameGuiController * gameGuiController;
+
+	
+
 	void update();
 	
 private:
+
+	void renderBG();
+
 	Vortex * gameEngine;
+
+	VortexSprite bgSprite;
 };
 

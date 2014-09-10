@@ -5,15 +5,40 @@ GameController::GameController(Vortex * gameEngine){
 
 	this->gameEngine = gameEngine;
 
+	gameGuiController = new GameGuiController(gameEngine);
+
+	sf::Texture * texImage = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
+	texImage->setRepeated(true);
+	texImage->getSize();
+	VortexSprite temp(*texImage);
+	//VortexSprite temp(gameEngine->loadImageToSprite("Graphics/tile_1.png"));
+	bgSprite = temp;
+	bgSprite.setPosition(0, 0);
+	//bgSprite.setSize((sf::Vector2f)gameEngine->getWindowSize());
+
 }
 
 
-GameController::~GameController()
-{
+GameController::~GameController(){
 }
 
+
+void GameController::renderBG(){
+	for (int x = 0; x < (gameEngine->getWindowSize().x % (int)bgSprite.getSize().x); x++){
+
+		for (int y = 0; y < (gameEngine->getWindowSize().x % (int)bgSprite.getSize().x); y++){
+
+			bgSprite.setPosition(x * (int)bgSprite.getSize().x, y * (int)bgSprite.getSize().y);
+			gameEngine->getWindow()->draw(bgSprite);
+		}
+	}
+
+}
 
 void GameController::update() {
+
+	renderBG();
+
 	//Check if units are in proxmity to towers.
 	//TODO use spatial index grid instead of matching the pos of every fucking entity?
 	for (uint i = 0; i < towers.size(); i++) {
@@ -50,4 +75,14 @@ void GameController::update() {
 			}
 		}
 	}
+
+
+
+
+
+
+
+	gameGuiController->update();
+
+
 }

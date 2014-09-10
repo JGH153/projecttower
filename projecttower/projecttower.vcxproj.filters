@@ -81,6 +81,9 @@
     <ClCompile Include="VortexUseExample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameGuiController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
     <ClInclude Include="VortexUseExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameGuiController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

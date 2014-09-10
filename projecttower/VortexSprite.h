@@ -12,6 +12,9 @@ public:
 	~VortexSprite();
 
 	void setSize(double w, double h);
+	void setSize(sf::Vector2f newSize);
+
+	sf::Vector2f getSize();
 	
 };
 

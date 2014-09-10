@@ -8,7 +8,7 @@ ProgramController::ProgramController(Vortex * gameEngine){
 	menuController = new MenuController(gameEngine);
 	gameController = new GameController(gameEngine);
 
-	activeSubControllerID = 1;
+	activeSubControllerID = 2;
 
 }
 

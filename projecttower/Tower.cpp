@@ -1,8 +1,10 @@
 #include "Tower.h"
 
 
-Tower::Tower(sf::Vector2i pos, int dmg, double spd, double rng, VortexSprite spr)
-{
+Tower::Tower(Vortex * gameEngine, sf::Vector2i pos, int dmg, double spd, double rng, VortexSprite spr){
+	
+	this->gameEngine = gameEngine;
+	
 	position = pos;
 	damage = dmg;
 	speed = spd;

@@ -1,8 +1,10 @@
 #include "Unit.h"
 
 
-Unit::Unit(sf::Vector2i pos, int hitpoints, double spd, VortexSprite spr)
-{
+Unit::Unit(Vortex * gameEngine, sf::Vector2i pos, int hitpoints, double spd, VortexSprite spr){
+
+	this->gameEngine = gameEngine;
+
 	position = pos;
 	hp = hitpoints;
 	speed = spd;
