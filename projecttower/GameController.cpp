@@ -16,6 +16,34 @@ GameController::GameController(Vortex * gameEngine){
 	bgSprite.setPosition(0, 0);
 	//bgSprite.setSize((sf::Vector2f)gameEngine->getWindowSize());
 
+	int guiOffsetY = 25;
+	int tileSize = 25;
+
+	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++){
+
+		for (int y = 0; y < ((gameEngine->getWindowSize().y / tileSize) - ((guiOffsetY * 2) / tileSize)); y++){
+
+			sf::Texture * texImageTile;
+
+			int num = rand() % 101;
+			if (num < 25)
+				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
+			else if (num < 50)
+				texImageTile = gameEngine->loadImageToTexture("Graphics/grass.png");
+			else if (num < 75)
+				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+			else
+				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
+
+			VortexSprite tempSprite(*texImageTile);
+			tempSprite.setPosition(x * tileSize, guiOffsetY + (y * tileSize));
+			mapTiles.push_back(tempSprite);
+
+		}
+
+	}
+
+
 }
 
 
@@ -24,9 +52,9 @@ GameController::~GameController(){
 
 
 void GameController::renderBG(){
-	for (int x = 0; x < (gameEngine->getWindowSize().x % (int)bgSprite.getSize().x); x++){
+	for (int x = 0; x < (gameEngine->getWindowSize().x / (int)bgSprite.getSize().x) + (int)bgSprite.getSize().x; x++){
 
-		for (int y = 0; y < (gameEngine->getWindowSize().x % (int)bgSprite.getSize().x); y++){
+		for (int y = 0; y < (gameEngine->getWindowSize().y / (int)bgSprite.getSize().y) + (int)bgSprite.getSize().y; y++){
 
 			bgSprite.setPosition(x * (int)bgSprite.getSize().x, y * (int)bgSprite.getSize().y);
 			gameEngine->getWindow()->draw(bgSprite);
@@ -35,9 +63,21 @@ void GameController::renderBG(){
 
 }
 
+void GameController::renderTiles(){
+
+	for (uint i = 0; i < mapTiles.size(); i++){
+
+		gameEngine->getWindow()->draw(mapTiles[i]);
+
+	}
+
+}
+
 void GameController::update() {
 
 	renderBG();
+
+	renderTiles();
 
 	//Check if units are in proxmity to towers.
 	//TODO use spatial index grid instead of matching the pos of every fucking entity?

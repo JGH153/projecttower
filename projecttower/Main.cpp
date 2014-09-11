@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	*/
 
 	Vortex * gameEngine = new Vortex();
-	gameEngine->initVortex(800, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
+	gameEngine->initVortex(1000, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
 
 	ProgramController * programController = new ProgramController(gameEngine);
 

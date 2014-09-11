@@ -29,9 +29,13 @@ public:
 private:
 
 	void renderBG();
+	void renderTiles();
 
 	Vortex * gameEngine;
 
 	VortexSprite bgSprite;
+
+	std::vector<VortexSprite> mapTiles;
+
 };
 
