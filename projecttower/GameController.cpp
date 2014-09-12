@@ -16,10 +16,11 @@ GameController::GameController(Vortex * gameEngine){
 	bgSprite.setPosition(0, 0);
 	//bgSprite.setSize((sf::Vector2f)gameEngine->getWindowSize());
 
-	int guiOffsetY = 25;
+	int guiOffsetY = 50;
 	int tileSize = 25;
 
 	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++){
+
 
 		for (int y = 0; y < ((gameEngine->getWindowSize().y / tileSize) - ((guiOffsetY * 2) / tileSize)); y++){
 
@@ -37,6 +38,7 @@ GameController::GameController(Vortex * gameEngine){
 
 			VortexSprite tempSprite(*texImageTile);
 			tempSprite.setPosition(x * tileSize, guiOffsetY + (y * tileSize));
+			tempSprite.setSize(tileSize, tileSize);
 			mapTiles.push_back(tempSprite);
 
 		}
