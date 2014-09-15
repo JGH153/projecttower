@@ -54,9 +54,6 @@
     <ClCompile Include="VortexAnimation.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Pos.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,11 +75,11 @@
     <ClCompile Include="Unit.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="VortexUseExample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameGuiController.cpp">
       <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexUseExample.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +97,6 @@
     </ClInclude>
     <ClInclude Include="VortexAnimation.h">
       <Filter>Header Files\VortexGameEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Pos.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="GameController.h">
       <Filter>Header Files\Controllers</Filter>
@@ -122,14 +116,14 @@
     <ClInclude Include="VortexSprite.h">
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
-    <ClInclude Include="VortexUseExample.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameGuiController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
+    <ClInclude Include="VortexUseExample.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
     <ClInclude Include="sVar.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

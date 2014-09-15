@@ -42,7 +42,7 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 
 	//display avalible videomodes for fullscreen and current
 
-	/*auto deskMode = sf::VideoMode::getDesktopMode();
+	auto deskMode = sf::VideoMode::getDesktopMode();
 
 	std::cout << "Mode (Desktop) " << deskMode.width << "-" << deskMode.height << "-" << deskMode.bitsPerPixel << " is valid" << std::endl;
 
@@ -53,7 +53,7 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 
 		std::cout << "Mode (fullscreen) " << Mode.width << "-" << Mode.height << "-" << Mode.bitsPerPixel << " is valid" << std::endl;
 
-	}*/
+	}
 
 
 

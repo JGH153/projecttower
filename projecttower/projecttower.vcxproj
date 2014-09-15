@@ -77,7 +77,6 @@
     <ClCompile Include="GameGuiController.cpp" />
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="ProgramController.cpp" />
-    <ClCompile Include="Pos.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
@@ -94,7 +93,6 @@
     <ClInclude Include="GameGuiController.h" />
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
-    <ClInclude Include="Pos.h" />
     <ClInclude Include="sVar.h" />
     <ClInclude Include="Tower.h" />
     <ClInclude Include="Unit.h" />
