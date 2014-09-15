@@ -13,6 +13,8 @@
 #include "VortexSprite.h"
 #include "VortexButton.h"
 
+#include "sVar.h"
+
 class VortexUseExample
 {
 public:
@@ -41,6 +43,9 @@ public:
 	Vortex * gameEngine;
 
 	sf::Clock clock;
+
+
+	std::vector<sVar> testList;
 
 };
 

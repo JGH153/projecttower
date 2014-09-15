@@ -27,13 +27,13 @@ int main(int argc, char* argv[]){
 	Tower and unit as base classes 
 
 	NB! 
-	All new classes that will do ANRY rendering needs to take the game engine as constructor parameter and hava a update function
+	All new classes that will do ANY rendering needs to take the game engine as constructor parameter and hava a update function
 
 
 	*/
 
 	Vortex * gameEngine = new Vortex();
-	gameEngine->initVortex(1000, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf");
+	gameEngine->initVortex(1000, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf", false);
 
 	ProgramController * programController = new ProgramController(gameEngine);
 

@@ -92,6 +92,7 @@
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Pos.h" />
+    <ClInclude Include="sVar.h" />
     <ClInclude Include="Tower.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="Vortex.h" />

@@ -43,7 +43,7 @@ public:
 	Vortex();
 	~Vortex();
 
-	void initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath);
+	void initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen);
 
 	sf::RenderWindow * getWindow();
 

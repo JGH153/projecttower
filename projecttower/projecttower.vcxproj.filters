@@ -128,5 +128,8 @@
     <ClInclude Include="GameGuiController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
+    <ClInclude Include="sVar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

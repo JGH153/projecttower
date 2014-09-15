@@ -18,9 +18,47 @@ sf::RenderWindow * Vortex::getWindow(){
 
 }
 
-void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath){
+void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen){
 
-	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
+	sf::ContextSettings openGLSettings;
+	openGLSettings.antialiasingLevel = 8;
+
+	int windowSettings = sf::Style::Resize;
+
+	//windowSettings = sf::Style::None;
+	windowSettings = sf::Style::None;
+
+	if (fullscreen){
+
+		auto bestRes = sf::VideoMode::getFullscreenModes();
+
+		screenWidth = bestRes[0].width;
+		screenHeight = bestRes[0].height;
+
+		windowSettings = windowSettings | sf::Style::Fullscreen;
+
+	}
+
+
+	//display avalible videomodes for fullscreen and current
+
+	/*auto deskMode = sf::VideoMode::getDesktopMode();
+
+	std::cout << "Mode (Desktop) " << deskMode.width << "-" << deskMode.height << "-" << deskMode.bitsPerPixel << " is valid" << std::endl;
+
+
+	std::cout << std::endl;
+
+	for each (auto Mode in sf::VideoMode::getFullscreenModes()){
+
+		std::cout << "Mode (fullscreen) " << Mode.width << "-" << Mode.height << "-" << Mode.bitsPerPixel << " is valid" << std::endl;
+
+	}*/
+
+
+
+	
+	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName, windowSettings, openGLSettings);
 
 	sf::Image image;
 	if (!image.loadFromFile(iconPath)){
@@ -37,6 +75,7 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 	defaultFont = loadFont(defaultFontPath);
 
 	totalTime.restart();
+
 
 }
 

@@ -84,6 +84,21 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 	//music.play();
 
 
+
+
+
+
+	testList.push_back(sVar("Greger"));
+	testList.push_back(sVar(1.f));
+	testList.push_back(sVar('U'));
+	testList.push_back(sVar(1));
+	testList.push_back(sVar('G'));
+
+	testList[1] = "Sweet";
+	testList[2] = 5.98f;
+
+	std::cout << (std::string)testList[1] << " " << (std::string)testList[2];
+
 }
 
 
