@@ -1,7 +1,9 @@
 #include "GameController.h"
 
 
-GameController::GameController(Vortex * gameEngine) : gameEngine(gameEngine) {
+GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
+
+	
 
 	gameGuiController = new GameGuiController(gameEngine);
 

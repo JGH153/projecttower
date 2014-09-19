@@ -1,8 +1,10 @@
 #include "SubController.h"
 
 
-SubController::SubController()
-{
+SubController::SubController(Vortex * gameEngine){
+
+	this->gameEngine = gameEngine;
+
 }
 
 

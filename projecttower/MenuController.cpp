@@ -1,10 +1,8 @@
 #include "MenuController.h"
 
 
-MenuController::MenuController(Vortex * gameEngine){
+MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
 	nextControllerID = GAME_CONTROLLER_ID;
-
-	this->gameEngine = gameEngine;
 
 	sf::Texture * texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
 	VortexSprite temp(*texImage);

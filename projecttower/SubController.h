@@ -10,7 +10,7 @@ protected:
 	Vortex * gameEngine;
 	int nextControllerID;
 public:
-	SubController();
+	SubController(Vortex * gameEngine);
 	~SubController();
 	virtual void update();
 	int getNextControllerID();
