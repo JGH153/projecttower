@@ -69,6 +69,10 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 
 	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 	mainWindow->setFramerateLimit(60);
+	//mainWindow->setTitle("GREGER ER KUL");
+	//mainWindow->setMouseCursorVisible(false);
+
+
 
 	this->windowName = windowName;
 
