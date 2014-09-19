@@ -5,7 +5,7 @@ ProgramController::ProgramController(Vortex * gameEngine){
 
 	this->gameEngine = gameEngine;
 	// Strict order! Or the IDs will be pointless
-	// Speaking of, should define some IDs
+	// Refer to the IDs defined in SubController.h
 	subControllers.push_back(new MenuController(gameEngine));
 	subControllers.push_back(new GameController(gameEngine));
 	activeSubController = 0;

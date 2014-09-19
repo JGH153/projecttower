@@ -2,7 +2,7 @@
 
 
 MenuController::MenuController(Vortex * gameEngine){
-	nextControllerID = 1;
+	nextControllerID = GAME_CONTROLLER_ID;
 
 	this->gameEngine = gameEngine;
 
