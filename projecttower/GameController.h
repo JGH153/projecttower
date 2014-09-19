@@ -8,7 +8,9 @@
 #include <sstream>
 
 #include "Vortex.h"
+
 #include "Tower.h"
+#include "BasicUnit.h"
 
 #include "GameGuiController.h"
 
@@ -36,6 +38,8 @@ private:
 	VortexSprite bgSprite;
 
 	std::vector<VortexSprite> mapTiles;
+
+	std::vector <Entity *> entityList;
 
 };
 

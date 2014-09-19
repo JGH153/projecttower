@@ -88,7 +88,7 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 
 
 
-	testList.push_back(sVar("Greger"));
+	/*testList.push_back(sVar("Greger"));
 	testList.push_back(sVar(1.f));
 	testList.push_back(sVar('U'));
 	testList.push_back(sVar(1));
@@ -97,7 +97,7 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 	testList[1] = "Sweet";
 	testList[2] = 5.98f;
 
-	std::cout << (std::string)testList[1] << " " << (std::string)testList[2];
+	std::cout << (std::string)testList[1] << " " << (std::string)testList[2];*/
 
 }
 
@@ -110,7 +110,7 @@ VortexUseExample::~VortexUseExample()
 void VortexUseExample::update(){
 
 	for (uint i = 0; i < animations.size(); i++){
-		animations[i]->update(0);
+		animations[i]->update();
 	}
 
 	sf::Vector2i mouse = gameEngine->getMousePosition();

@@ -42,7 +42,7 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 
 	//display avalible videomodes for fullscreen and current
 
-	auto deskMode = sf::VideoMode::getDesktopMode();
+	/*auto deskMode = sf::VideoMode::getDesktopMode();
 
 	std::cout << "Mode (Desktop) " << deskMode.width << "-" << deskMode.height << "-" << deskMode.bitsPerPixel << " is valid" << std::endl;
 
@@ -53,7 +53,7 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 
 		std::cout << "Mode (fullscreen) " << Mode.width << "-" << Mode.height << "-" << Mode.bitsPerPixel << " is valid" << std::endl;
 
-	}
+	}*/
 
 
 
@@ -138,7 +138,7 @@ sf::Texture * Vortex::loadImageToTexture(std::string path){
 
 	sf::Texture * image;
 
-	image = checkForCopyOfTex(path);
+	image = checkForCopyOfTex(path, sf::IntRect(0,0,0,0));
 
 	if (image == nullptr){
 
@@ -148,13 +148,37 @@ sf::Texture * Vortex::loadImageToTexture(std::string path){
 			image = &checkForBackupImage(path);
 		}
 
-		textures.push_back(new texElement(path, image));
+		textures.push_back(new texElement(path, image, sf::IntRect(0, 0, 0, 0)));
 
 	}
 
 	return image;
 
 }
+
+
+sf::Texture * Vortex::loadImageSubsetToTexture(std::string path, sf::IntRect rec){
+
+	sf::Texture * image;
+
+	image = checkForCopyOfTex(path, rec);
+
+	if (image == nullptr){
+
+		image = new sf::Texture;
+		if (!image->loadFromFile(path, rec)){
+			std::cout << "Unable to load image: " << path << std::endl;
+			image = &checkForBackupImage(path);
+		}
+
+		textures.push_back(new texElement(path, image, rec));
+
+	}
+
+	return image;
+
+}
+
 
 sf::SoundBuffer * Vortex::loadSound(std::string path){
 
@@ -218,11 +242,11 @@ sf::Font * Vortex::loadFont(std::string path){
 }
 
 
-sf::Texture * Vortex::checkForCopyOfTex(std::string path){
+sf::Texture * Vortex::checkForCopyOfTex(std::string path, sf::IntRect rec){
 
 	for each (texElement * currentElement in textures){
 
-		if (currentElement->path == path){
+		if (currentElement->path == path && currentElement->rec == rec){
 			//std::cout << "Found duplicate: " << path << std::endl;
 			return currentElement->texture;
 

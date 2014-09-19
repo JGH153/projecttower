@@ -1,19 +1,25 @@
 #pragma once
-#include <iostream>
-#include "VortexSprite.h"
-#include "Vortex.h"
 
-class Unit {
+#include "Entity.h"
+
+
+class Unit : public Entity{
 public:
-	Unit(Vortex * gameEngine, sf::Vector2i pos, int hitpoints, double spd, VortexSprite spr);
+	Unit(Vortex * gameEngine);
 	~Unit();
-	sf::Vector2i position;
-	int hp;
-	double speed;
-	VortexSprite sprite;
+	//sf::Vector2i position;
+	//int hp;
+	//double speed;
+	//VortexSprite sprite;
 
-	Vortex * gameEngine;
 
-	bool takeDamageAndCheckIfDead(int damage);
+	//bool takeDamageAndCheckIfDead(int damage);
+	//void update();
+
+protected:
+
+	int posX;
+	int posY;
+
 };
 

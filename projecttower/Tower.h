@@ -1,26 +1,24 @@
 #pragma once
-#include "VortexSprite.h"
+
 #include "Unit.h"
-#include "Vortex.h"
 
-class Tower
-{
+#include "Entity.h"
+
+class Tower : public Entity{
 public:
-	Tower(Vortex * gameEngine, sf::Vector2i pos, int dmg, double spd, double rng, VortexSprite spr);
+	Tower(Vortex * gameEngine);
 	~Tower();
-	sf::Vector2i position;
-	int damage;
-	double speed;
-	double range;
-	Unit *target;
-	VortexSprite sprite;
-	sf::Time timeSinceLastAttack;
-	sf::Clock stopwatch;
+	//sf::Vector2i position;
+	//int damage;
+	//double speed;
+	//double range;
+	//Unit *target;
+	//VortexSprite sprite;
+	//sf::Time timeSinceLastAttack;
+	//sf::Clock stopwatch;
 
-	Vortex * gameEngine;
-
-	bool canAttack();
-	bool attack();
-	void update();
+	//bool canAttack();
+	//bool attack();
+	virtual void update();
 };
 

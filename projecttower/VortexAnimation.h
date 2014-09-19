@@ -17,10 +17,12 @@ public:
 	VortexAnimation(int x, int y, int width, int height, float fps, Vortex * gameEngine);
 	~VortexAnimation();
 
+	void VortexAnimation::addFrame(sf::Texture * tex);
 	void addFrame(std::string path);
 	void assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum);
+	void asembleSpritesheetAnimation(std::string path, int numFrmes);
 
-	void update(float delta);
+	void update();
 
 	void reset();
 

@@ -21,6 +21,17 @@ VortexAnimation::~VortexAnimation(){
 }
 
 
+void VortexAnimation::addFrame(sf::Texture * tex){
+
+	VortexSprite image = VortexSprite(*tex);
+
+	image.setPosition(posX, posY);
+	image.setSize(width, height);
+	frames.push_back(image);
+
+
+}
+
 void VortexAnimation::addFrame(std::string path){
 
 	VortexSprite image = gameEngine->loadImageToSprite(path);
@@ -31,7 +42,7 @@ void VortexAnimation::addFrame(std::string path){
 
 }
 
-void VortexAnimation::update(float delta){
+void VortexAnimation::update(){
 
 	sf::Time currentTime = gameEngine->getTimeFromProgramStart();
 
@@ -76,5 +87,18 @@ void VortexAnimation::assembleAnimation(std::string startPath, std::string filet
 
 	}
 	
+
+}
+
+void VortexAnimation::asembleSpritesheetAnimation(std::string path, int numFrmes){
+
+	for (int x = 0; x < numFrmes; x++){
+
+		sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(width*x, 0, width, height));
+		addFrame(image);
+
+	}
+	//sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(0, 0, 32, 48));
+	//addFrame(image);
 
 }

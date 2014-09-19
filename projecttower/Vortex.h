@@ -14,10 +14,13 @@ typedef unsigned int uint;
 
 struct texElement{
 
-	texElement(std::string path, sf::Texture * texture) : path(path), texture(texture){}
+	//if rec = 0,0,0,0 then you use orginale size
+
+	texElement(std::string path, sf::Texture * texture, sf::IntRect rec) : path(path), texture(texture), rec(rec){}
 
 	std::string path;
 	sf::Texture * texture;
+	sf::IntRect rec;
 };
 
 struct soundElement{
@@ -55,6 +58,9 @@ public:
 
 	VortexSprite loadImageToSprite(std::string path);
 	sf::Texture * loadImageToTexture(std::string path);
+
+	sf::Texture * loadImageSubsetToTexture(std::string path, sf::IntRect rec);
+
 	sf::SoundBuffer * loadSound(std::string path);
 	sf::Music * openMusic(std::string path);
 	sf::Font * loadFont(std::string path);
@@ -105,7 +111,7 @@ public:
 
 private:
 
-	sf::Texture * checkForCopyOfTex(std::string path);
+	sf::Texture * checkForCopyOfTex(std::string path, sf::IntRect rec);
 	sf::SoundBuffer * checkForCopyOfSound(std::string path);
 	sf::Font * checkForCopyOfFont(std::string path);
 
