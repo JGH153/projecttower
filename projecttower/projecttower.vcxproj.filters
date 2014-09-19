@@ -81,6 +81,9 @@
     <ClCompile Include="VortexUseExample.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
+    <ClCompile Include="SubController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="sVar.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SubController.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\Graphics.hpp>
 #include <vector>
+#include <queue>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -10,6 +11,7 @@
 #include "Vortex.h"
 #include "MenuController.h"
 #include "GameController.h"
+#include "SubController.h"
 
 class ProgramController
 {
@@ -21,11 +23,7 @@ public:
 
 private:
 	Vortex * gameEngine;
-
-	MenuController * menuController; // activeSubControllerID = 1
-	GameController * gameController; // = 2
-
-	int activeSubControllerID = 0;
-
+	std::vector<SubController*> subControllers;
+	int activeSubController;
 };
 

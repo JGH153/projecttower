@@ -8,8 +8,9 @@
 #include <sstream>
 
 #include "Vortex.h"
+#include "SubController.h"
 
-class MenuController{
+class MenuController : public SubController {
 
 public:
 	MenuController(Vortex * gameEngine);
@@ -17,11 +18,7 @@ public:
 
 	void update();
 
-	int programControllerNewActionID = 0; // 2 = game
-
 private:
-	Vortex * gameEngine;
-
 	VortexSprite testSprite;
 
 };

@@ -2,7 +2,6 @@
 
 
 GameController::GameController(Vortex * gameEngine){
-
 	this->gameEngine = gameEngine;
 
 	gameGuiController = new GameGuiController(gameEngine);

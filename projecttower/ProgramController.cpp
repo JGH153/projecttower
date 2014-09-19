@@ -4,12 +4,11 @@
 ProgramController::ProgramController(Vortex * gameEngine){
 
 	this->gameEngine = gameEngine;
-
-	menuController = new MenuController(gameEngine);
-	gameController = new GameController(gameEngine);
-
-	activeSubControllerID = 2;
-
+	// Strict order! Or the IDs will be pointless
+	// Speaking of, should define some IDs
+	subControllers.push_back(new MenuController(gameEngine));
+	subControllers.push_back(new GameController(gameEngine));
+	activeSubController = 0;
 }
 
 
@@ -19,17 +18,9 @@ ProgramController::~ProgramController(){
 
 }
 
+// Run the current subController and if it has decided that nother subcontroller should be running, run that one instead and set the active controller id both here and in the running controller
 void ProgramController::update(){
-
-	if (menuController->programControllerNewActionID == 2){
-		activeSubControllerID = 2;
-	}
-
-
-	if (activeSubControllerID == 1){
-		menuController->update();
-	}else if(activeSubControllerID == 2){
-		gameController->update();
-	}
-
+	subControllers[activeSubController]->update();
+	activeSubController = subControllers[activeSubController]->getNextControllerID();
+	subControllers[activeSubController]->setNextControllerID(activeSubController);
 }

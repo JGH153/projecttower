@@ -78,6 +78,7 @@
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SubController.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="Vortex.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="GameGuiController.h" />
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
+    <ClInclude Include="SubController.h" />
     <ClInclude Include="sVar.h" />
     <ClInclude Include="Tower.h" />
     <ClInclude Include="Unit.h" />
