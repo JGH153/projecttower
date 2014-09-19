@@ -11,10 +11,11 @@
 
 #include "Tower.h"
 #include "BasicUnit.h"
+#include "SubController.h"
 
 #include "GameGuiController.h"
 
-class GameController
+class GameController : public SubController
 {
 public:
 	GameController(Vortex * gameEngine);
@@ -32,8 +33,6 @@ private:
 
 	void renderBG();
 	void renderTiles();
-
-	Vortex * gameEngine;
 
 	VortexSprite bgSprite;
 
