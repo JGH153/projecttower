@@ -38,7 +38,7 @@ private:
 
 	std::vector<VortexSprite> mapTiles;
 
-	std::vector <Entity *> entityList;
+	std::vector <Unit *> unitList;
 
 };
 

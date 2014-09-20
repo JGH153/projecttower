@@ -77,6 +77,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameGuiController.cpp" />
+    <ClCompile Include="GlobalDefines.cpp" />
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameGuiController.h" />
+    <ClInclude Include="GlobalDefines.h" />
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="SubController.h" />

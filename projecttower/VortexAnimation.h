@@ -11,16 +11,18 @@
 #include "Vortex.h"
 #include "VortexSprite.h"
 
+#include "GlobalDefines.h"
+
 class VortexAnimation
 {
 public:
-	VortexAnimation(int x, int y, int width, int height, float fps, Vortex * gameEngine);
+	VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine);
 	~VortexAnimation();
 
 	void VortexAnimation::addFrame(sf::Texture * tex);
 	void addFrame(std::string path);
 	void assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum);
-	void asembleSpritesheetAnimation(std::string path, int numFrmes);
+	void asembleSpritesheetAnimation(std::string path, sf::Vector2i moveDirection, int numFrmes);
 
 	void update();
 
@@ -34,8 +36,8 @@ public:
 
 private:
 
-	int posX;
-	int posY;
+	float posX;
+	float posY;
 	int width;
 	int height;
 

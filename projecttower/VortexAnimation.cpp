@@ -1,7 +1,7 @@
 #include "VortexAnimation.h"
 
 
-VortexAnimation::VortexAnimation(int x, int y, int width, int height, float fps, Vortex * gameEngine){
+VortexAnimation::VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine){
 
 	posX = x;
 	posY = y;
@@ -62,7 +62,6 @@ void VortexAnimation::update(){
 
 	}
 
-
 	gameEngine->getWindow()->draw(frames[currentFrame]);
 
 	
@@ -90,15 +89,35 @@ void VortexAnimation::assembleAnimation(std::string startPath, std::string filet
 
 }
 
-void VortexAnimation::asembleSpritesheetAnimation(std::string path, int numFrmes){
+//assuming spritesheet have the same moveDirections (S, W, E, N)
+void VortexAnimation::asembleSpritesheetAnimation(std::string path, sf::Vector2i moveDirection, int numFrmes){
+
+	int yPosSheet = getDirectionIndex(moveDirection);
 
 	for (int x = 0; x < numFrmes; x++){
 
-		sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(width*x, 0, width, height));
+		sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(width*x, yPosSheet*height, width, height));
 		addFrame(image);
 
 	}
 	//sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(0, 0, 32, 48));
 	//addFrame(image);
+
+}
+
+
+void VortexAnimation::setPos(float x, float y){
+
+	posX = x;
+	posY = y;
+
+	//std::cout << posX;
+
+	for (VortexSprite &currentFrame : frames){
+
+		currentFrame.setPosition(posX, posY);
+
+	}
+
 
 }

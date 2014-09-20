@@ -45,13 +45,14 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
 	}
 
-	Tower * testTower = new Tower(gameEngine);
-	entityList.push_back(testTower);
+	//Tower * testTower = new Tower(gameEngine);
+	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 1000; i++){
 
-		BasicUnit * testUnit = new BasicUnit(gameEngine, (rand() % gameEngine->getWindowSize().x) , (rand() % gameEngine->getWindowSize().y));
-		entityList.push_back(testUnit);
+		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
+		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
+		unitList.push_back(testUnit);
 
 	}
 
@@ -85,13 +86,26 @@ void GameController::renderTiles(){
 
 }
 
+struct afsdgfghb{
+
+	bool operator() (Unit * a, Unit * b) {
+
+		return (a->posY + a->height < b->posY + b->height);
+
+	}
+
+} watever;
+
 void GameController::update() {
 
 	renderBG();
 
 	renderTiles();
 
-	for (Entity * current : entityList){
+	//sorting units so the unit with the lowest base y is renderd first
+	std::sort(unitList.begin(), unitList.end(), watever);
+
+	for (Unit * current : unitList) {
 
 		current->update();
 
