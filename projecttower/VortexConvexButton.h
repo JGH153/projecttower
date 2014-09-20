@@ -23,7 +23,7 @@ public:
 
 	bool mouseOver();
 
-	bool buttonClicked(); //return if mouse button was realeased this frame and over the button
+	void executeButton();
 
 private:
 
@@ -38,5 +38,6 @@ private:
 	Vortex * gameEngine;
 
 	bool mouseOverButton;
+	bool buttonPressed;
 };
 
