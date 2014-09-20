@@ -50,7 +50,7 @@ void Tower::update() {
 	//double ydist = abs(position.y - target->position.y);
 
 	////Target has moved out of range
-	//if ((xdist + ydist) * (xdist + ydist) > (range * range)) {
+	//if ((xdist + xdist) * (ydist + ydist) > (range * range)) {
 	//	target = NULL;
 	//}
 }

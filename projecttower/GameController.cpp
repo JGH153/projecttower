@@ -55,6 +55,16 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
 	}
 
+	//Testing convex buttonz
+	std::vector<sf::Vector2f> vertices;
+	vertices.push_back(sf::Vector2f(50, 50));
+	vertices.push_back(sf::Vector2f(200, 50));
+	vertices.push_back(sf::Vector2f(300, 100));
+	vertices.push_back(sf::Vector2f(150, 275));
+	vertices.push_back(sf::Vector2f(10, 210));
+	vertices.push_back(sf::Vector2f(0, 85));
+	VortexConvexButton testButton(vertices, "Graphics/button.png", "", "Poop", gameEngine);
+	buttonList.push_back(testButton);
 
 }
 
@@ -91,11 +101,16 @@ void GameController::update() {
 
 	renderTiles();
 
+	
+
 	for (Entity * current : entityList){
 
 		current->update();
 
 	}
+
+	
+	
 
 
 	//Check if units are in proxmity to towers.
@@ -114,7 +129,7 @@ void GameController::update() {
 
 	//			//No point square rooting me thinks
 	//			//katet^2 + katet^2 = hypotenus^2 eller noe sånt
-	//			double totdist = (xdist + ydist) * (xdist + ydist);
+	//			double totdist = (xdist + xdist) * (ydist + ydist);
 	//			double totrange = (towers[i]->range * towers[i]->range);
 	//			if (totdist <= totrange && totdist < bestRange) {
 	//				towers[i]->target = units[j];
@@ -143,6 +158,10 @@ void GameController::update() {
 
 
 	gameGuiController->update();
-
+	
+	//BUG: Using an iterator fucks shit up for some reason..
+	for (int i = 0; i < buttonList.size(); i++) {
+		buttonList[i].update(0);
+	}
 
 }

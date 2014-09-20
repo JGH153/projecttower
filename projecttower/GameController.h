@@ -12,6 +12,7 @@
 #include "Tower.h"
 #include "BasicUnit.h"
 #include "SubController.h"
+#include "VortexConvexButton.h"
 
 #include "GameGuiController.h"
 
@@ -39,6 +40,7 @@ private:
 	std::vector<VortexSprite> mapTiles;
 
 	std::vector <Entity *> entityList;
+	std::vector <VortexConvexButton> buttonList;
 
 };
 
