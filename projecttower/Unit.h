@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GlobalDefines.h"
 #include "Entity.h"
 
 
@@ -16,10 +17,20 @@ public:
 	//bool takeDamageAndCheckIfDead(int damage);
 	//void update();
 
+
+	float posX;
+	float posY;
+
+	int width;
+	int height;
+
+
 protected:
 
-	int posX;
-	int posY;
+	
+
+	sf::Vector2i moveDirection;
+	float speed;
 
 };
 

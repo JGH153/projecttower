@@ -10,7 +10,8 @@ public:
 
 private:
 
-	VortexAnimation * moveAnimation;
+	std::vector<VortexAnimation *> moveAnimations;
+	int currentMoveAnimationIndex;
 
 
 };

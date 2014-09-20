@@ -338,7 +338,7 @@ sf::Time Vortex::getTimeFromProgramStart(){
 	return totalTime.getElapsedTime();
 
 }
-sf::Time Vortex::getTimeFromFrameStart(){
+sf::Time Vortex::getTimeFromFrameStart(){ 
 
 	return frameTime.getElapsedTime();
 
