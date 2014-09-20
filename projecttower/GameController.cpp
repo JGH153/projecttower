@@ -112,16 +112,13 @@ void GameController::update() {
 
 	renderTiles();
 
-<<<<<<< HEAD
 	
 
-	for (Entity * current : entityList){
-=======
+	//for (Entity * current : entityList){
 	//sorting units so the unit with the lowest base y is renderd first
-	std::sort(unitList.begin(), unitList.end(), watever);
+	//std::sort(unitList.begin(), unitList.end(), watever);
 
 	for (Unit * current : unitList) {
->>>>>>> c1cab4e80390af29b9c54ea5972f8a7f117ac331
 
 		current->update();
 
@@ -177,9 +174,7 @@ void GameController::update() {
 
 	gameGuiController->update();
 	
-	//BUG: Using an iterator fucks shit up for some reason..
-	for (int i = 0; i < buttonList.size(); i++) {
-		buttonList[i].update(0);
+	for (auto iter = buttonList.begin(); iter != buttonList.end(); iter++) {
+		iter->update(0);
 	}
-
 }

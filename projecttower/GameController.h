@@ -39,12 +39,12 @@ private:
 
 	std::vector<VortexSprite> mapTiles;
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	std::vector <Entity *> entityList;
 	std::vector <VortexConvexButton> buttonList;
-=======
+//=======
 	std::vector <Unit *> unitList;
->>>>>>> c1cab4e80390af29b9c54ea5972f8a7f117ac331
+//>>>>>>> c1cab4e80390af29b9c54ea5972f8a7f117ac331
 
 };
 
