@@ -81,22 +81,20 @@
     <ClCompile Include="VortexUseExample.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="GlobalDefines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicUnit.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="SubController.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Controllers</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="VortexConvexButton.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
-=======
-    <ClCompile Include="GlobalDefines.cpp">
-      <Filter>Source Files</Filter>
->>>>>>> c1cab4e80390af29b9c54ea5972f8a7f117ac331
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,25 +137,23 @@
     <ClInclude Include="sVar.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="BasicUnit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SubController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="VortexConvexButton.h">
-      <Filter>Header Files\VortexGameEngine</Filter>
-=======
     <ClInclude Include="GlobalDefines.h">
       <Filter>Header Files</Filter>
->>>>>>> c1cab4e80390af29b9c54ea5972f8a7f117ac331
+    </ClInclude>
+    <ClInclude Include="VortexConvexButton.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicUnit.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SubController.h">
+      <Filter>Header Files\Controllers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
