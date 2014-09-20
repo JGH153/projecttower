@@ -5,6 +5,7 @@ VortexConvexButton::VortexConvexButton(std::vector<sf::Vector2f> vertices, std::
 	
 	this->gameEngine = gameEngine;
 	mouseOverButton = false;
+	buttonPressed = false;
 
 	this->idleImage = gameEngine->loadImageToTexture(idleImage);
 	this->hoverImage = (hoverImage != "") ? gameEngine->loadImageToTexture(hoverImage) : nullptr;
@@ -12,6 +13,36 @@ VortexConvexButton::VortexConvexButton(std::vector<sf::Vector2f> vertices, std::
 	shape.setTexture(gameEngine->loadImageToTexture(idleImage));
 	this->title = title;
 	font = *gameEngine->loadFont("Fonts/arial.ttf");
+
+	float lowestX = 999999999.0f;
+	float highestX = 0.0f;
+
+	float lowestY = 999999999.0f;
+	float highestY = 0.0f;
+
+	shape.setPointCount(vertices.size());
+	for (uint i = 0; i < vertices.size(); i++) {
+		shape.setPoint(i, vertices[i]);
+
+		//Determine the best possible center
+		if (vertices[i].x < lowestX) {
+			lowestX = vertices[i].x;
+		}
+		else if (vertices[i].x > highestX) {
+			highestX = vertices[i].x;
+		}
+
+		if (vertices[i].y < lowestY) {
+			lowestY = vertices[i].x;
+		}
+		else if (vertices[i].y > highestY) {
+			highestY = vertices[i].x;
+		}
+	}
+
+	float midX = ((highestX - lowestX) / 2) - (title.size() / 2);
+	float midY = (highestY - lowestY) / 2;
+	text.setPosition(midX, midY);
 	
 	// select the font
 	text.setFont(font); // font is a sf::Font
@@ -20,26 +51,17 @@ VortexConvexButton::VortexConvexButton(std::vector<sf::Vector2f> vertices, std::
 	text.setString(title);
 
 	// set the character size
-	text.setCharacterSize(28); // in pixels, not points!
+	text.setCharacterSize(20); // in pixels, not points!
 
 	// set the color
-	text.setColor(sf::Color::Red);
+	text.setColor(sf::Color::Blue);
 
 	// set the text style
 	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
-	float avgX = 0.0f;
-	float avgY = 0.0f;
-	shape.setPointCount(vertices.size());
-	for (uint i = 0; i < vertices.size(); i++) {
-		shape.setPoint(i, vertices[i]);
-		avgX += vertices[i].x;
-		avgY += vertices[i].y;
-	}
-	avgX /= vertices.size();
-	avgY /= vertices.size();
-	text.setPosition(avgX, avgY);
-	//shape.setFillColor(sf::Color(50, 50, 50, 255));
+	
+	
+	shape.setFillColor(sf::Color(255, 255, 255, 255));
 
 }
 
@@ -55,8 +77,9 @@ void VortexConvexButton::update(float delta) {
 			//std::cout << "Mouse over button" << std::endl;
 			if (!mouseOverButton){
 				mouseOverButton = true;
-				shape.setOutlineThickness(5.0f);
-				shape.setFillColor(sf::Color(200, 200, 200, 255));
+				shape.setOutlineThickness(3.0f);
+				shape.setFillColor(sf::Color(225, 225, 225, 255));
+				shape.setOutlineColor(sf::Color(215, 215, 215, 255));
 				if (hoverImage != nullptr) {
 					shape.setTexture(hoverImage);
 				}
@@ -75,6 +98,22 @@ void VortexConvexButton::update(float delta) {
 			}
 			
 		}
+	} 
+	if (gameEngine->eventMouseClickedLeft && mouseOver() && !buttonPressed) {
+		buttonPressed = true;
+		shape.setOutlineThickness(4.0f);
+		shape.setFillColor(sf::Color(150, 150, 150, 255));
+		shape.setOutlineColor(sf::Color(255, 255, 255, 255));
+	} 
+	if (gameEngine->eventMouseReleasedLeft && buttonPressed) {
+		shape.setOutlineThickness(3.0f);
+		shape.setFillColor(sf::Color(255, 255, 255, 255));
+		shape.setOutlineColor(sf::Color(215, 215, 215, 255));
+		if (mouseOver()) {
+			shape.setFillColor(sf::Color(225, 225, 225, 255));
+			buttonPressed = false;
+			executeButton();
+		}
 	}
 
 
@@ -83,12 +122,8 @@ void VortexConvexButton::update(float delta) {
 
 }
 
-bool VortexConvexButton::buttonClicked(){
-
-	if (gameEngine->eventMouseReleasedLeft)
-		return mouseOver();
-
-	return false;
+void VortexConvexButton::executeButton() {
+	//HEY MR BUTTON, DO STUFF!
 
 }
 
@@ -115,7 +150,7 @@ bool VortexConvexButton::hitPoint(float x, float y) {
 						++wn;
 					}
 				}
-				//It is the last vertex point in the shape.
+				//If it is the last vertex point in the shape.
 			} else {
 				//Use the line between the last point and the first point.
 				if (shape.getPoint(0).y > mouse.y) {

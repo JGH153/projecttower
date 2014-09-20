@@ -64,8 +64,12 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	vertices.push_back(sf::Vector2f(150, 275));
 	vertices.push_back(sf::Vector2f(10, 210));
 	vertices.push_back(sf::Vector2f(0, 85));
-	VortexConvexButton testButton(vertices, "Graphics/button.png", "", "Poop", gameEngine);
+	VortexConvexButton testButton(vertices, "Graphics/button.png", "", "Poopbutton", gameEngine);
 	buttonList.push_back(testButton);
+
+	VortexButton testBro(200, 200, 200, 200, "Graphics/button.png", "Wasap!", gameEngine);
+	rectButtonTest.push_back(testBro);
+	//End test
 
 }
 
@@ -116,7 +120,7 @@ void GameController::update() {
 
 	//for (Entity * current : entityList){
 	//sorting units so the unit with the lowest base y is renderd first
-	//std::sort(unitList.begin(), unitList.end(), watever);
+	std::sort(unitList.begin(), unitList.end(), watever);
 
 	for (Unit * current : unitList) {
 
@@ -177,4 +181,5 @@ void GameController::update() {
 	for (auto iter = buttonList.begin(); iter != buttonList.end(); iter++) {
 		iter->update(0);
 	}
+	//rectButtonTest[0].update(0); //DEBUG: Delete if forgotten.
 }
