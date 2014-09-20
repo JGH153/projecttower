@@ -22,7 +22,7 @@ public:
 	void VortexAnimation::addFrame(sf::Texture * tex);
 	void addFrame(std::string path);
 	void assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum);
-	void asembleSpritesheetAnimation(std::string path, sf::Vector2i moveDirection, int numFrmes);
+	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes);
 
 	void update();
 

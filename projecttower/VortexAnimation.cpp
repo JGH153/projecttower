@@ -90,13 +90,16 @@ void VortexAnimation::assembleAnimation(std::string startPath, std::string filet
 }
 
 //assuming spritesheet have the same moveDirections (S, W, E, N)
-void VortexAnimation::asembleSpritesheetAnimation(std::string path, sf::Vector2i moveDirection, int numFrmes){
+void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes) {
+
+	//std::cout << orgWidth << " " << orgHeight << std::endl;
+	//std::cin.get();
 
 	int yPosSheet = getDirectionIndex(moveDirection);
 
 	for (int x = 0; x < numFrmes; x++){
 
-		sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(width*x, yPosSheet*height, width, height));
+		sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(orgWidth*x, orgHeight*yPosSheet, orgWidth, orgHeight));
 		addFrame(image);
 
 	}

@@ -15,8 +15,8 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 		height = 48;
 	}else{
 		speed = 0.08f;
-		width = 96;
-		height = 96;
+		width = 96/2;
+		height = 96/2;
 	}
 
 
@@ -28,10 +28,10 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
 		if (randNum < 8) {
-			tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", DIRECTIONS[i], 4);
+			tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", width, height, DIRECTIONS[i], 4);
 		}
 		else{
-			tempAni->asembleSpritesheetAnimation("Graphics/bahamut.png", DIRECTIONS[i], 4);
+			tempAni->asembleSpritesheetAnimation("Graphics/bahamut.png", 96, 96, DIRECTIONS[i], 4);
 		}
 		moveAnimations.push_back(tempAni);
 

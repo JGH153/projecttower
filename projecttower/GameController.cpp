@@ -96,7 +96,7 @@ void GameController::renderTiles(){
 
 }
 
-struct afsdgfghb{
+struct sortinStructDistance{
 
 	bool operator() (Unit * a, Unit * b) {
 
@@ -104,7 +104,7 @@ struct afsdgfghb{
 
 	}
 
-} watever;
+} sortingInstanceDistance;
 
 void GameController::update() {
 
@@ -116,7 +116,7 @@ void GameController::update() {
 
 	//for (Entity * current : entityList){
 	//sorting units so the unit with the lowest base y is renderd first
-	//std::sort(unitList.begin(), unitList.end(), watever);
+	std::sort(unitList.begin(), unitList.end(), sortingInstanceDistance);
 
 	for (Unit * current : unitList) {
 
@@ -175,6 +175,6 @@ void GameController::update() {
 	gameGuiController->update();
 	
 	for (auto iter = buttonList.begin(); iter != buttonList.end(); iter++) {
-		iter->update(0);
+		//iter->update(0);
 	}
 }

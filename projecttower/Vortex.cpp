@@ -100,7 +100,8 @@ void Vortex::drawDisplay(){
 
 void Vortex::frameStart(){
 
-	frameTime.restart();
+	auto timePri = frameTime.restart();
+	//std::cout << timePri.asMilliseconds() << std::endl;
 	drawClear();
 	regEvents();
 
