@@ -46,7 +46,7 @@ public:
 	Vortex();
 	~Vortex();
 
-	void initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen);
+	void initVortex(int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen);
 
 	sf::RenderWindow * getWindow();
 
@@ -108,6 +108,7 @@ public:
 
 	sf::Clock totalTime;
 	sf::Clock frameTime;
+	sf::Time lastRenderTime;
 
 private:
 
@@ -125,6 +126,8 @@ private:
 	sf::RenderWindow * mainWindow;
 
 	sf::Font * defaultFont;
+
+	float fps;
 
 
 	

@@ -18,7 +18,9 @@ sf::RenderWindow * Vortex::getWindow(){
 
 }
 
-void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen){
+void Vortex::initVortex(int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen) {
+
+	this->fps = fps;
 
 	sf::ContextSettings openGLSettings;
 	openGLSettings.antialiasingLevel = 8;
@@ -68,7 +70,7 @@ void Vortex::initVortex(int screenWidth, int screenHeight, std::string windowNam
 	}
 
 	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
-	mainWindow->setFramerateLimit(60);
+	//mainWindow->setFramerateLimit(60);
 	//mainWindow->setTitle("GREGER ER KUL");
 	//mainWindow->setMouseCursorVisible(false);
 
@@ -110,6 +112,8 @@ void Vortex::frameStart(){
 void Vortex::frameEnd(){
 
 	drawDisplay();
+
+
 
 }
 

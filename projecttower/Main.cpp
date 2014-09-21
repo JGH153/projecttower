@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	*/
 
 	Vortex * gameEngine = new Vortex();
-	gameEngine->initVortex(1000, 600, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf", false);
+	gameEngine->initVortex(1000, 600, 60.f, "Main Window", "Graphics/sfml.png", "Fonts/arial.ttf", false);
 
 	ProgramController * programController = new ProgramController(gameEngine);
 
@@ -45,13 +45,13 @@ int main(int argc, char* argv[]){
 
 		gameEngine->frameStart();
 
-		//vortexUseExample.update();
+		vortexUseExample.update();
 
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 
 		}
 
-		programController->update();
+		//programController->update();
 
 		gameEngine->frameEnd();
 

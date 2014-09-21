@@ -35,7 +35,14 @@ public:
 
 	VortexButton * testButton;
 
-	sf::SoundBuffer buffer;
+	sf::SoundBuffer bufferLoadSound;
+
+
+	sf::SoundBuffer bufferRecord;
+	sf::SoundBufferRecorder recorder;
+	sf::Sound soundRec;
+
+
 	sf::Sound sound;
 
 	sf::Music music;

@@ -69,19 +69,77 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 
 
 
-	buffer = *gameEngine->loadSound("Sound/sound1.wav");
-	sound.setBuffer(buffer);
-	//sound.play();
 
-	if (!music.openFromFile("Sound/gameMusic.wav")){
-		std::cout << "Music error";
+
+
+
+
+
+
+
+
+
+	// first check if an input audio device is available on the system
+	if (!sf::SoundBufferRecorder::isAvailable()) {
+		// error: audio capture is not available on this system
+		std::cout << "NO MICE ON SYSTEM!";
 		std::cin.get();
 	}
 
-	music.setPitch(1.5);
-	music.setVolume(100);
 
-	//music.play();
+	// start the capture
+	recorder.start();
+
+	// wait...
+	sf::Time t1 = sf::seconds(2.0f);
+
+	sleep(t1);
+
+	// stop the capture
+	recorder.stop();
+
+	// retrieve the buffer that contains the captured audio data
+	bufferRecord = recorder.getBuffer();
+
+	
+
+	soundRec.setBuffer(bufferRecord);
+	soundRec.setPitch(1.f);
+	soundRec.setVolume(100.f);
+	soundRec.play();
+
+	bufferRecord.saveToFile("my_record.ogg");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//bufferLoadSound = *gameEngine->loadSound("Sound/sound1.wav");
+	//sound.setBuffer(bufferLoadSound);
+	//sound.play();
+
+	//if (!music.openFromFile("Sound/gameMusic.wav")){
+	//	std::cout << "Music error";
+	//	std::cin.get();
+	//}
+
+	//music.setPitch(1.5);
+	//music.setVolume(100);
+
+	////music.play();
 
 
 
@@ -98,6 +156,18 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 	testList[2] = 5.98f;
 
 	std::cout << (std::string)testList[1] << " " << (std::string)testList[2];*/
+
+
+
+
+
+
+
+
+	
+
+
+
 
 }
 
