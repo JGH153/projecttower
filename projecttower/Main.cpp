@@ -45,13 +45,13 @@ int main(int argc, char* argv[]){
 
 		gameEngine->frameStart();
 
-		vortexUseExample.update();
+		//vortexUseExample.update();
 
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 
 		}
 
-		//programController->update();
+		programController->update();
 
 		gameEngine->frameEnd();
 

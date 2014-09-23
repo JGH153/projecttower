@@ -4,8 +4,7 @@
 #define GAME_CONTROLLER_ID 1
 
 #include "Vortex.h"
-class SubController
-{
+class SubController{
 protected:
 	Vortex * gameEngine;
 	int nextControllerID;
