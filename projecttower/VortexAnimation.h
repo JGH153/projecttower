@@ -10,10 +10,11 @@
 #include "VortexLoader.h"
 #include "Vortex.h"
 #include "VortexSprite.h"
+#include "VortexDrawObject.h"
 
 #include "GlobalDefines.h"
 
-class VortexAnimation
+class VortexAnimation : public VortexDrawObject
 {
 public:
 	VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine);
@@ -33,6 +34,8 @@ public:
 	void setPos(float x, float y);
 	void setSize(int width, int height);
 	sf::Vector2f getPos();
+
+	VortexSprite *  getDrawData();
 
 private:
 

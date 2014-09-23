@@ -74,6 +74,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicUnit.cpp" />
+    <ClCompile Include="DrawController.cpp" />
+    <ClCompile Include="DrawDataHandler.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameGuiController.cpp" />
@@ -88,6 +90,7 @@
     <ClCompile Include="VortexAnimation.cpp" />
     <ClCompile Include="VortexButton.cpp" />
     <ClCompile Include="VortexConvexButton.cpp" />
+    <ClCompile Include="VortexDrawObject.cpp" />
     <ClCompile Include="VortexLoader.cpp" />
     <ClCompile Include="VortexParticleSystem.cpp" />
     <ClCompile Include="VortexSprite.cpp" />
@@ -95,6 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicUnit.h" />
+    <ClInclude Include="DrawController.h" />
+    <ClInclude Include="DrawDataHandler.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameGuiController.h" />
@@ -109,6 +114,7 @@
     <ClInclude Include="VortexAnimation.h" />
     <ClInclude Include="VortexButton.h" />
     <ClInclude Include="VortexConvexButton.h" />
+    <ClInclude Include="VortexDrawObject.h" />
     <ClInclude Include="VortexLoader.h" />
     <ClInclude Include="VortexParticleSystem.h" />
     <ClInclude Include="VortexSprite.h" />

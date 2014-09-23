@@ -68,6 +68,13 @@ void VortexAnimation::update(){
 
 }
 
+//VortexDrawObject * VortexAnimation::getDrawData() {
+//
+//	//return &frames[currentFrame];
+//
+//}
+
+
 void VortexAnimation::assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum){
 	
 	std::string path = "";
