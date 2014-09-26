@@ -46,12 +46,8 @@ public:
 	Vortex();
 	~Vortex();
 
-	void initVortex(int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen);
+	void initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPath);
 
-	sf::RenderWindow * getWindow();
-
-	void drawClear();
-	void drawDisplay();
 
 	void frameStart();
 	void frameEnd();
@@ -105,6 +101,7 @@ public:
 	static void setSpriteSize(sf::Sprite * sprite, double w, double h);
 
 	sf::Vector2i getWindowSize();
+	sf::RenderWindow * getWindow();
 
 	sf::Clock totalTime;
 	sf::Clock frameTime;
@@ -122,17 +119,8 @@ private:
 	std::vector<soundElement *> sounds;
 	std::vector<FontElement *> fonts;
 
-	std::string windowName;
-	sf::RenderWindow * mainWindow;
-
 	sf::Font * defaultFont;
-
-	float fps;
-
-
-	
-
-	
+	sf::RenderWindow * mainWindow;
 
 };
 

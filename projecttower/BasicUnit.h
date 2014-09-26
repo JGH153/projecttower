@@ -6,6 +6,7 @@ public:
 	~BasicUnit();
 
 	void update();
+	void render();
 
 
 private:

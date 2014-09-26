@@ -50,6 +50,10 @@ BasicUnit::~BasicUnit(){
 
 }
 
+void BasicUnit::render() {
+	moveAnimations[currentMoveAnimationIndex]->render();
+}
+
 
 void BasicUnit::update() {
 

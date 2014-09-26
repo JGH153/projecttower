@@ -19,6 +19,6 @@ MenuController::~MenuController()
 
 void MenuController::update(){
 
-	gameEngine->getWindow()->draw(testSprite);
+	//gameEngine->getWindow()->draw(testSprite); //Use the renderer to draw
 
 }

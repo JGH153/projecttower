@@ -16,7 +16,7 @@
 class ProgramController
 {
 public:
-	ProgramController(Vortex * gameEngine);
+	ProgramController(Vortex * gameEngine, Renderer * renderer);
 	~ProgramController();
 
 	void update();

@@ -42,6 +42,10 @@ void VortexAnimation::addFrame(std::string path){
 
 }
 
+void VortexAnimation::render() {
+	gameEngine->getWindow()->draw(frames[currentFrame]);
+}
+
 void VortexAnimation::update(){
 
 	sf::Time currentTime = gameEngine->getTimeFromProgramStart();
@@ -59,13 +63,8 @@ void VortexAnimation::update(){
 			currentFrame = 0;
 			playedOneTime = true;
 		}
-
 	}
-
-	gameEngine->getWindow()->draw(frames[currentFrame]);
-
 	
-
 }
 
 //VortexDrawObject * VortexAnimation::getDrawData() {

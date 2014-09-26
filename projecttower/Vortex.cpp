@@ -12,36 +12,10 @@ Vortex::~Vortex(){
 }
 
 
-sf::RenderWindow * Vortex::getWindow(){
-
-	return mainWindow;
-
-}
-
-void Vortex::initVortex(int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, std::string defaultFontPath, bool fullscreen) {
-
-	this->fps = fps;
-
-	sf::ContextSettings openGLSettings;
-	openGLSettings.antialiasingLevel = 8;
-
-	int windowSettings = sf::Style::Resize;
-
-	//windowSettings = sf::Style::None;
-	windowSettings = sf::Style::None;
-
-	if (fullscreen){
-
-		auto bestRes = sf::VideoMode::getFullscreenModes();
-
-		screenWidth = bestRes[0].width;
-		screenHeight = bestRes[0].height;
-
-		windowSettings = windowSettings | sf::Style::Fullscreen;
-
-	}
 
 
+void Vortex::initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPath) {
+	this->mainWindow = mainWindow;
 	//display avalible videomodes for fullscreen and current
 
 	/*auto deskMode = sf::VideoMode::getDesktopMode();
@@ -56,62 +30,24 @@ void Vortex::initVortex(int screenWidth, int screenHeight, float fps, std::strin
 		std::cout << "Mode (fullscreen) " << Mode.width << "-" << Mode.height << "-" << Mode.bitsPerPixel << " is valid" << std::endl;
 
 	}*/
-
-
-
-	
-	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName, windowSettings, openGLSettings);
-
-	sf::Image image;
-	if (!image.loadFromFile(iconPath)){
-		std::cout << "FATAL iconPath";
-		std::cin.get();
-		closeApplication();
-	}
-
-	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
-	//mainWindow->setFramerateLimit(60);
-	//mainWindow->setTitle("GREGER ER KUL");
-	//mainWindow->setMouseCursorVisible(false);
-
-
-
-	this->windowName = windowName;
-
 	defaultFont = loadFont(defaultFontPath);
 
 	totalTime.restart();
-
-
 }
 
 
-void Vortex::drawClear(){
 
-	mainWindow->clear();
-
-}
-
-void Vortex::drawDisplay(){
-
-	mainWindow->display();
-
-}
 
 
 
 void Vortex::frameStart(){
 
 	auto timePri = frameTime.restart();
-	//std::cout << timePri.asMilliseconds() << std::endl;
-	drawClear();
 	regEvents();
 
 }
 
 void Vortex::frameEnd(){
-
-	drawDisplay();
 
 
 
@@ -436,8 +372,6 @@ void Vortex::regEvents(){
 		}
 
 
-
-
 		if (currentEvent.type == sf::Event::Closed){
 
 			closeApplication();
@@ -449,14 +383,7 @@ void Vortex::regEvents(){
 			closeApplication();
 
 		}
-
-
-
-		
-
 	}
-
-
 }
 
 std::vector<sf::Event> Vortex::getWindowEvents(){
@@ -477,7 +404,9 @@ void Vortex::setSpriteSize(sf::Sprite * sprite, double w, double h){
 void Vortex::closeApplication(){
 
 	running = false;
-	mainWindow->close();
 
 }
 
+sf::RenderWindow * Vortex::getWindow() {
+	return mainWindow;
+}

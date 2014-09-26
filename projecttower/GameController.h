@@ -13,27 +13,28 @@
 #include "BasicUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
+#include "Renderer.h"
 
 #include "GameGuiController.h"
 
 class GameController : public SubController
 {
 public:
-	GameController(Vortex * gameEngine);
+	GameController(Vortex * gameEngine, Renderer * renderer);
 	~GameController();
 	std::vector<Tower*> towers;
 	std::vector<Unit*> units;
 
 	GameGuiController * gameGuiController;
-
+	Renderer * renderer;
 	
 
 	void update();
 	
 private:
 
-	void renderBG();
-	void renderTiles();
+	//void renderBG();
+	//void renderTiles();
 
 	VortexSprite bgSprite;
 

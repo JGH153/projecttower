@@ -15,3 +15,4 @@ int getDirectionIndex(sf::Vector2i direction){
 	return -1;
 
 }
+

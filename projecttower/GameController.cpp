@@ -1,10 +1,9 @@
 #include "GameController.h"
 
 
-GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
+GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubController(gameEngine){
 
-	
-
+	this->renderer = renderer;
 	gameGuiController = new GameGuiController(gameEngine);
 
 	sf::Texture * texImage = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
@@ -20,8 +19,6 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	int tileSize = 25;
 
 	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++){
-
-
 		for (int y = 0; y < ((gameEngine->getWindowSize().y / tileSize) - ((guiOffsetY * 2) / tileSize)); y++){
 
 			sf::Texture * texImageTile;
@@ -67,13 +64,17 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	VortexConvexButton testButton(vertices, "Graphics/button.png", "", "Poop", gameEngine);
 	buttonList.push_back(testButton);
 
+	renderer->mapTiles = mapTiles;
+	renderer->unitList = unitList;
+	renderer->bgSprite = bgSprite;
+	
 }
 
 
 GameController::~GameController(){
 }
 
-
+/*
 void GameController::renderBG(){
 	for (int x = 0; x < (gameEngine->getWindowSize().x / (int)bgSprite.getSize().x) + (int)bgSprite.getSize().x; x++){
 
@@ -95,36 +96,23 @@ void GameController::renderTiles(){
 	}
 
 }
+*/
 
-struct sortinStructDistance{
-
-	bool operator() (Unit * a, Unit * b) {
-
-		return (a->posY + a->height < b->posY + b->height);
-
-	}
-
-} sortingInstanceDistance;
 
 void GameController::update() {
 
-	renderBG();
+	//renderBG();
 
-	renderTiles();
+	//renderTiles();
 
 	
 
 	//for (Entity * current : entityList){
-	//sorting units so the unit with the lowest base y is renderd first
-	std::sort(unitList.begin(), unitList.end(), sortingInstanceDistance);
-
-	for (Unit * current : unitList) {
-
-		current->update();
-
-	}
-
 	
+	for (Unit * current : unitList) {
+		//std::cout << "Move me!" << std::endl;
+		current->update();
+	}
 	
 
 
