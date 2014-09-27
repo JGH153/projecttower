@@ -57,8 +57,10 @@ void BasicUnit::render() {
 
 void BasicUnit::update() {
 
-	posX += moveDirection.x * speed * gameEngine->getTimeFromFrameStart().asMilliseconds();
-	posY += moveDirection.y * speed * gameEngine->getTimeFromFrameStart().asMilliseconds();
+	posX += moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds();
+	posY += moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds();
+
+//	std::cout << gameEngine->deltaTime.asMilliseconds() << std::endl;
 
 	if (posX < 0 && moveDirection == DIR_WEST){
 		moveDirection.x *= -1;

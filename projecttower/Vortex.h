@@ -106,6 +106,7 @@ public:
 	sf::Clock totalTime;
 	sf::Clock frameTime;
 	sf::Time lastRenderTime;
+	sf::Time deltaTime;
 
 private:
 

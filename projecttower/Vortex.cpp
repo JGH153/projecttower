@@ -41,7 +41,8 @@ void Vortex::initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPa
 
 
 void Vortex::frameStart(){
-
+	deltaTime = getTimeFromProgramStart() - lastRenderTime;
+	lastRenderTime = getTimeFromProgramStart();
 	auto timePri = frameTime.restart();
 	regEvents();
 

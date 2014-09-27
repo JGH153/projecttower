@@ -45,7 +45,7 @@ GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubCo
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 1; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -112,6 +112,7 @@ void GameController::update() {
 	for (Unit * current : unitList) {
 		//std::cout << "Move me!" << std::endl;
 		current->update();
+//		std::cout << current->posX << "  " << current->posY << std::endl;
 	}
 	
 

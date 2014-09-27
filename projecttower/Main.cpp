@@ -33,7 +33,7 @@ void render() {
 
 	std::cout << "Entering render loop" << std::endl;
 	while (runmuthafucka) {
-		std::cout << "THREAD" << std::endl;
+//		std::cout << "THREAD" << std::endl;
 		renderer->drawClear();
 
 		//renderer->renderBG();
@@ -79,9 +79,12 @@ int main(int argc, char* argv[]){
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
 
+	int minimumLogicFrameTimeInMilliseconds = 1;
+
+
 	std::cout << "Starting main loop" << std::endl;
 	while (gameEngine->running){
-		std::cout << "MAIN" << std::endl;
+//		std::cout << "MAIN" << std::endl;
 
 		gameEngine->frameStart();
 
@@ -96,6 +99,10 @@ int main(int argc, char* argv[]){
 
 		gameEngine->frameEnd();
 
+		// If the last frame was shorter than 1 millisecond, sleep for 1 millisecond
+		if (gameEngine->getTimeFromFrameStart().asMilliseconds() < minimumLogicFrameTimeInMilliseconds){
+			sf::sleep(sf::milliseconds(minimumLogicFrameTimeInMilliseconds));
+		}
 	}
 
 	
