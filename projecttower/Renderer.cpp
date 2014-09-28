@@ -47,13 +47,18 @@ Renderer::~Renderer()
 
 void Renderer::renderObjects() {
 
+
+	if (currentRenderSubController != nullptr)
+		currentRenderSubController->render();
+
+
 	//SubController * myCurrentSubCotroller = (SubController*)currentSubCotroller;
 
 	//if (myCurrentSubCotroller == nullptr)
 	//	return;
 
 	//auto renderLIst = myCurrentSubCotroller->getRenderObjectList();
-
+	return;
 	for each (auto currentRenderObj in renderObjectsVector) {
 
 		currentRenderObj->render();
@@ -73,6 +78,9 @@ void Renderer::renderBG(){
 }
 
 void Renderer::renderTiles(){
+
+	return;
+
 	if (mapTiles.empty()) {
 		return;
 	}

@@ -30,6 +30,7 @@ public:
 	
 
 	void update();
+	void render();
 
 	std::vector<RenderObject *> getRenderObjectList();
 	

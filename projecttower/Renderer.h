@@ -8,6 +8,7 @@
 #include "SubController.h"
 #include "GlobalDefines.h"
 
+class SubController;
 
 class Renderer
 {
@@ -34,6 +35,9 @@ public:
 	
 	sf::RenderWindow * getWindow();
 	bool loaded;
+
+
+	SubController * currentRenderSubController = nullptr;
 
 private:
 	sf::RenderWindow * mainWindow;

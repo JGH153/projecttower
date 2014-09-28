@@ -71,7 +71,27 @@ GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubCo
 
 	renderer->renderObjectsVector = renderObjectsVector;
 
+	renderer->currentRenderSubController = this;
+
 	
+}
+
+void GameController::render() {
+
+	for (uint i = 0; i < mapTiles.size(); i++) {
+
+		gameEngine->getWindow()->draw(mapTiles[i]);
+
+	}
+
+	for each (auto currentRenderObj in renderObjectsVector) {
+
+		currentRenderObj->render();
+
+	}
+
+
+
 }
 
 //std::vector<RenderObject *> GameController::getRenderObjectList(){

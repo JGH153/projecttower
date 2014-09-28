@@ -17,6 +17,7 @@ public:
 	~MenuController();
 
 	void update();
+	void render() {};
 
 	std::vector<RenderObject *> getRenderObjectList();
 
