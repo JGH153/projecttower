@@ -7,7 +7,7 @@
 #include <string>
 #include <sstream>
 
-
+#include "RenderObject.h"
 
 #include "Vortex.h"
 #include "VortexSprite.h"
@@ -15,13 +15,12 @@
 
 #include "GameGuiController.h"
 
-class Entity{
+class Entity : public RenderObject {
 public:
 	Entity(Vortex * gameEngine);
 	~Entity();
 
-	virtual void update() = 0;
-	virtual void render() = 0;
+	
 	//virtual void update();
 
 protected:

@@ -296,16 +296,31 @@ sf::Vector2i Vortex::getWindowSize(){
 
 //Vortex::loadFont(std::string path){
 
+void Vortex::pushEvent(sf::Event mainEvent) {
 
+	pendingEventsMutex.lock();
+
+	pendingEventList.push_back(mainEvent);
+
+	pendingEventsMutex.unlock();
+
+}
 
 void Vortex::regEvents(){
 
 	eventList.clear();
 
-	sf::Event mainEvent;
-	while (mainWindow->pollEvent(mainEvent)){
-		eventList.push_back(mainEvent);
+	pendingEventsMutex.lock();
+
+	for (sf::Event currentEvent : pendingEventList) {
+
+		eventList.push_back(currentEvent);
+
 	}
+
+	pendingEventList.clear();
+
+	pendingEventsMutex.unlock();
 
 	eventKeyPressed = false;
 	eventKeyReleased = false;

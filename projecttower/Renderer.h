@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Unit.h"
+#include "SubController.h"
 #include "GlobalDefines.h"
 
 
@@ -17,12 +18,16 @@ public:
 	void drawClear();
 	void drawDisplay();
 	
+//	SubController * currentSubCotroller = nullptr;
+	void renderObjects();
 
 	void renderBG();
 	void renderTiles();
 	void renderEntities();
 
 	//TODO: Have an entity list containing all towers and units, and a list with GUI elements
+	std::vector<RenderObject *> renderObjectsVector;
+
 	std::vector<VortexSprite> mapTiles;
 	std::vector <Unit *> unitList;
 	VortexSprite bgSprite;

@@ -6,6 +6,9 @@
 #include <vector>
 #include <iostream>
 
+#include <thread>         // std::thread
+#include <mutex> // std::mutex
+
 #include "VortexSprite.h"
 
 //#define uint unsigned int
@@ -74,6 +77,9 @@ public:
 	sf::Time getTimeFromFrameStart();
 	
 
+
+	void pushEvent(sf::Event mainEvent);
+
 	void regEvents();
 	std::vector<sf::Event> getWindowEvents();
 
@@ -114,6 +120,8 @@ private:
 	sf::SoundBuffer * checkForCopyOfSound(std::string path);
 	sf::Font * checkForCopyOfFont(std::string path);
 
+
+	std::vector<sf::Event>  pendingEventList;
 	std::vector<sf::Event> eventList;
 
 	std::vector<texElement *> textures;
@@ -122,6 +130,9 @@ private:
 
 	sf::Font * defaultFont;
 	sf::RenderWindow * mainWindow;
+
+
+	std::mutex pendingEventsMutex;
 
 };
 

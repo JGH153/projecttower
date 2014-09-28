@@ -9,7 +9,7 @@ Renderer::Renderer(int screenWidth, int screenHeight, float fps, std::string win
 	openGLSettings.antialiasingLevel = 8;
 
 	int windowSettings = sf::Style::Resize;
-	windowSettings = sf::Style::None;
+	windowSettings = sf::Style::Default;
 
 	if (fullscreen){
 
@@ -42,6 +42,25 @@ Renderer::Renderer(int screenWidth, int screenHeight, float fps, std::string win
 
 Renderer::~Renderer()
 {
+}
+
+
+void Renderer::renderObjects() {
+
+	//SubController * myCurrentSubCotroller = (SubController*)currentSubCotroller;
+
+	//if (myCurrentSubCotroller == nullptr)
+	//	return;
+
+	//auto renderLIst = myCurrentSubCotroller->getRenderObjectList();
+
+	for each (auto currentRenderObj in renderObjectsVector) {
+
+		currentRenderObj->render();
+
+	}
+
+
 }
 
 void Renderer::renderBG(){
@@ -78,6 +97,7 @@ struct sortinStructDistance{
 void Renderer::renderEntities() {
 	//sorting units so the unit with the lowest base y is renderd first
 	//std::sort(unitList.begin(), unitList.end(), sortingInstanceDistance);
+	return;
 	for (Unit * current : unitList) {
 		current->render();
 	}

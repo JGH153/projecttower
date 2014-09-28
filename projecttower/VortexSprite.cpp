@@ -32,3 +32,14 @@ sf::Vector2f VortexSprite::getSize(){
 	return sf::Vector2f(getGlobalBounds().width, getGlobalBounds().height);
 
 }
+
+void VortexSprite::render() {
+
+
+
+}
+
+void VortexSprite::update() {
+
+
+}

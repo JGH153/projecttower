@@ -30,6 +30,8 @@ public:
 	
 
 	void update();
+
+	std::vector<RenderObject *> getRenderObjectList();
 	
 private:
 
@@ -45,6 +47,8 @@ private:
 	std::vector <VortexButton> rectButtonTest; //DEBUG: Delete if i forget
 
 	std::vector <Unit *> unitList;
+
+	std::vector<RenderObject *> renderObjectsVector;
 
 
 };

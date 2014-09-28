@@ -10,11 +10,10 @@
 #include "VortexLoader.h"
 #include "Vortex.h"
 #include "VortexSprite.h"
-#include "VortexDrawObject.h"
 
 #include "GlobalDefines.h"
 
-class VortexAnimation : public VortexDrawObject
+class VortexAnimation
 {
 public:
 	VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine);

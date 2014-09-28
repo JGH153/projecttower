@@ -20,10 +20,16 @@
 
 #include "VortexUseExample.h"
 
+#include "RenderObject.h"
+
 Renderer * renderer;
-bool runmuthafucka = true;
+bool renderThredOnline = false;
+Vortex * gameEngine;
+
+
 
 void render() {
+
 	renderer = new Renderer(WINDOWSIZEX, WINDOWSIZEY, 60.f, "Main Window", "Graphics/sfml.png", false);
 	std::cout << "Render thread started" << std::endl;
 	if (!renderer->loaded) {
@@ -32,17 +38,36 @@ void render() {
 	}
 
 	std::cout << "Entering render loop" << std::endl;
-	while (runmuthafucka) {
+
+	renderThredOnline = true;
+
+	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
+
+
+		sf::Event mainEvent;
+		while (renderer->getWindow()->pollEvent(mainEvent)) {
+			gameEngine->pushEvent(mainEvent);
+
+		}
+		
+
 		renderer->drawClear();
 
 		//renderer->renderBG();
+
+		
+
 		renderer->renderTiles();
 		renderer->renderEntities();
+		renderer->renderObjects();
 		//renderer->drawGUI();
 
 		renderer->drawDisplay();
 	}
+
+	renderThredOnline = false;
+
 }
 
 int main(int argc, char* argv[]){
@@ -60,15 +85,26 @@ int main(int argc, char* argv[]){
 
 	*/
 
+	std::cout << "Creating new vortex" << std::endl;
+	gameEngine = new Vortex();
+
 	std::cout << "Starting render thread" << std::endl;
 	std::thread renderThread(render);
 
-	std::cout << "Creating new vortex" << std::endl;
-	Vortex * gameEngine = new Vortex();
+	
 	
 
 	//Let the thread init the renderer before initing vortex
-	sf::sleep(sf::milliseconds(1000));
+	//sf::sleep(sf::milliseconds(1000));
+
+
+	//wait for render thred to start
+	while (!renderThredOnline) {
+
+		sf::sleep(sf::milliseconds(10));
+
+	}
+
 	std::cout << "Initing vortex" << std::endl;
 
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");
@@ -83,14 +119,26 @@ int main(int argc, char* argv[]){
 
 
 	std::cout << "Starting main loop" << std::endl;
-	while (gameEngine->running){
+	while (gameEngine->running) {
 //		std::cout << "MAIN" << std::endl;
 
 		gameEngine->frameStart();
 
 		//vortexUseExample.update();
 
+		//std::cout << gameEngine->getWindowEvents().size() << std::endl;
+
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
+			
+		}
+
+		if (gameEngine->eventMouseClicked) {
+
+			sf::Vector2i mouse = gameEngine->getMousePosition();
+			auto mousePos = gameEngine->getMapPixelToCoords(mouse);
+
+			std::cout << mousePos.x << " " << mousePos.y << std::endl;
+
 
 		}
 		
@@ -104,6 +152,16 @@ int main(int argc, char* argv[]){
 			sf::sleep(sf::milliseconds(minimumLogicFrameTimeInMilliseconds));
 		}
 	}
+
+	//wait for render thred to finish
+	while (renderThredOnline) {
+
+		sf::sleep(sf::milliseconds(10));
+
+	}
+
+
+	return 0;
 
 	
 }

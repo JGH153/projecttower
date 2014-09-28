@@ -18,6 +18,8 @@ public:
 
 	void update();
 
+	std::vector<RenderObject *> getRenderObjectList();
+
 private:
 	VortexSprite testSprite;
 

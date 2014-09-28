@@ -5,6 +5,7 @@
 #include <iostream>
 
 
+
 int getDirectionIndex(sf::Vector2i direction);
 
 const sf::Vector2i DIR_SOUTH	=	{ 0, 1 };
@@ -17,5 +18,3 @@ const int WINDOWSIZEY = 600;
 
 
 const std::array<sf::Vector2i, 4> DIRECTIONS = { DIR_SOUTH, DIR_WEST, DIR_EAST, DIR_NORTH };
-
-

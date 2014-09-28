@@ -45,11 +45,12 @@ GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubCo
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 1; i++){
+	for (int i = 0; i < 100; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
 		unitList.push_back(testUnit);
+		renderObjectsVector.push_back(testUnit);
 
 	}
 
@@ -67,8 +68,17 @@ GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubCo
 	renderer->mapTiles = mapTiles;
 	renderer->unitList = unitList;
 	renderer->bgSprite = bgSprite;
+
+	renderer->renderObjectsVector = renderObjectsVector;
+
 	
 }
+
+//std::vector<RenderObject *> GameController::getRenderObjectList(){
+//
+//	return renderObjects;
+//
+//}
 
 
 GameController::~GameController(){

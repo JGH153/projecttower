@@ -5,7 +5,9 @@
 #include <vector>
 #include <iostream>
 
-class VortexSprite : public sf::Sprite {
+#include "RenderObject.h"
+
+class VortexSprite : public sf::Sprite, public RenderObject{
 public:
 	VortexSprite();
 	VortexSprite(const sf::Texture &texture);
@@ -13,6 +15,9 @@ public:
 
 	void setSize(double w, double h);
 	void setSize(sf::Vector2f newSize);
+
+	void update();
+	void render();
 
 	sf::Vector2f getSize();
 	
