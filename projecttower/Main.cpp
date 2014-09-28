@@ -23,7 +23,7 @@
 #include "RenderObject.h"
 
 Renderer * renderer;
-bool renderThredOnline = false;
+bool renderThreadOnline = false;
 Vortex * gameEngine;
 
 
@@ -39,7 +39,7 @@ void render() {
 
 	std::cout << "Entering render loop" << std::endl;
 
-	renderThredOnline = true;
+	renderThreadOnline = true;
 
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
@@ -66,24 +66,11 @@ void render() {
 		renderer->drawDisplay();
 	}
 
-	renderThredOnline = false;
+	renderThreadOnline = false;
 
 }
 
 int main(int argc, char* argv[]){
-
-	/*
-	Add list:
-	VortexButton - Hover
-	VortexButton - No image/hover or no text
-
-	Tower and unit as base classes 
-
-	NB! 
-	All new classes that will do ANY rendering needs to take the game engine as constructor parameter and hava a update function
-
-
-	*/
 
 	std::cout << "Creating new vortex" << std::endl;
 	gameEngine = new Vortex();
@@ -92,14 +79,9 @@ int main(int argc, char* argv[]){
 	std::thread renderThread(render);
 
 	
-	
-
-	//Let the thread init the renderer before initing vortex
-	//sf::sleep(sf::milliseconds(1000));
-
 
 	//wait for render thred to start
-	while (!renderThredOnline) {
+	while (!renderThreadOnline) {
 
 		sf::sleep(sf::milliseconds(10));
 
@@ -154,13 +136,13 @@ int main(int argc, char* argv[]){
 	}
 
 	//wait for render thred to finish
-	while (renderThredOnline) {
+	while (renderThreadOnline) {
 
 		sf::sleep(sf::milliseconds(10));
 
 	}
-
-
+	
+	renderThread.join();
 	return 0;
 
 	
