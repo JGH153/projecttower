@@ -33,6 +33,9 @@ Renderer::Renderer(int screenWidth, int screenHeight, float fps, std::string win
 
 	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 
+	/*sf::View view(sf::FloatRect(200, 200, 300, 200));
+	view.setRotation(20);
+	mainWindow->setView(view);*/
 
 
 	this->windowName = windowName;

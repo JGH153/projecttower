@@ -41,6 +41,8 @@ void render() {
 
 	renderThreadOnline = true;
 
+	float rotation = 360.f;
+
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
 
@@ -50,9 +52,17 @@ void render() {
 			gameEngine->pushEvent(mainEvent);
 
 		}
+
 		
 
 		renderer->drawClear();
+
+		sf::View view(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
+		view.setRotation(rotation);
+		renderer->getWindow()->setView(view);
+		rotation-= 0.01f;
+		if (rotation < 0.f)
+			rotation = 360.f;
 
 		//renderer->renderBG();
 
