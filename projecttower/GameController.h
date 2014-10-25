@@ -20,13 +20,13 @@
 class GameController : public SubController
 {
 public:
-	GameController(Vortex * gameEngine, Renderer * renderer);
+	GameController(Vortex * gameEngine);
 	~GameController();
 	std::vector<Tower*> towers;
 	std::vector<Unit*> units;
 
 	GameGuiController * gameGuiController;
-	Renderer * renderer;
+	//Renderer * renderer;
 	
 
 	void update();
@@ -41,6 +41,7 @@ private:
 
 	VortexSprite bgSprite;
 
+	std::vector<VortexSprite> backgroundTextures;
 	std::vector<VortexSprite> mapTiles;
 
 

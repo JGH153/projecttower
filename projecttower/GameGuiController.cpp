@@ -4,6 +4,7 @@
 GameGuiController::GameGuiController(Vortex * gameEngine){
 
 	this->gameEngine = gameEngine;
+	//currentRenderController = this;
 
 }
 

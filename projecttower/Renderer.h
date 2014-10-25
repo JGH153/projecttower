@@ -26,6 +26,8 @@ public:
 	void renderTiles();
 	void renderEntities();
 
+	void doRenderLoop();
+
 	//TODO: Have an entity list containing all towers and units, and a list with GUI elements
 	std::vector<RenderObject *> renderObjectsVector;
 
@@ -38,6 +40,7 @@ public:
 
 
 	SubController * currentRenderSubController = nullptr;
+	SubController * topLevelRenderController = nullptr;
 
 private:
 	sf::RenderWindow * mainWindow;

@@ -10,6 +10,8 @@ MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
 	testSprite = temp;
 	testSprite.setPosition(200, 200);
 
+	
+
 }
 
 

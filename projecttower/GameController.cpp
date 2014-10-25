@@ -1,10 +1,28 @@
 #include "GameController.h"
 
 
-GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubController(gameEngine){
+GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
-	this->renderer = renderer;
 	gameGuiController = new GameGuiController(gameEngine);
+
+	int tileSize = 25;
+
+	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++) {
+		for (int y = 0; y < (gameEngine->getWindowSize().y / tileSize); y++) {
+
+			sf::Texture * texImageTile;
+			texImageTile = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
+			VortexSprite tempSprite(*texImageTile);
+			tempSprite.setPosition(x * tileSize, y * tileSize);
+			tempSprite.setSize(tileSize, tileSize);
+			backgroundTextures.push_back(tempSprite);
+
+
+		}
+	}
+
+
+
 
 	sf::Texture * texImage = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
 	texImage->setRepeated(true);
@@ -16,7 +34,7 @@ GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubCo
 	//bgSprite.setSize((sf::Vector2f)gameEngine->getWindowSize());
 
 	int guiOffsetY = 50;
-	int tileSize = 25;
+	tileSize = 25;
 
 	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++){
 		for (int y = 0; y < ((gameEngine->getWindowSize().y / tileSize) - ((guiOffsetY * 2) / tileSize)); y++){
@@ -65,18 +83,27 @@ GameController::GameController(Vortex * gameEngine, Renderer * renderer) : SubCo
 	VortexConvexButton testButton(vertices, "Graphics/button.png", "", "Poop", gameEngine);
 	buttonList.push_back(testButton);
 
-	renderer->mapTiles = mapTiles;
+	/*renderer->mapTiles = mapTiles;
 	renderer->unitList = unitList;
 	renderer->bgSprite = bgSprite;
 
-	renderer->renderObjectsVector = renderObjectsVector;
+	renderer->renderObjectsVector = renderObjectsVector;*/
 
-	renderer->currentRenderSubController = this;
+	//renderer->currentRenderSubController = this;
+
+
 
 	
 }
 
 void GameController::render() {
+
+	for (VortexSprite currentRenderObj : backgroundTextures) {
+
+		gameEngine->getWindow()->draw(currentRenderObj);
+
+	}
+
 
 	for (uint i = 0; i < mapTiles.size(); i++) {
 
@@ -94,39 +121,9 @@ void GameController::render() {
 
 }
 
-//std::vector<RenderObject *> GameController::getRenderObjectList(){
-//
-//	return renderObjects;
-//
-//}
-
-
 GameController::~GameController(){
 }
 
-/*
-void GameController::renderBG(){
-	for (int x = 0; x < (gameEngine->getWindowSize().x / (int)bgSprite.getSize().x) + (int)bgSprite.getSize().x; x++){
-
-		for (int y = 0; y < (gameEngine->getWindowSize().y / (int)bgSprite.getSize().y) + (int)bgSprite.getSize().y; y++){
-
-			bgSprite.setPosition(x * (int)bgSprite.getSize().x, y * (int)bgSprite.getSize().y);
-			gameEngine->getWindow()->draw(bgSprite);
-		}
-	}
-
-}
-
-void GameController::renderTiles(){
-
-	for (uint i = 0; i < mapTiles.size(); i++){
-
-		gameEngine->getWindow()->draw(mapTiles[i]);
-
-	}
-
-}
-*/
 
 
 void GameController::update() {

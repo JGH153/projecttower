@@ -15,6 +15,8 @@ protected:
 
 	//std::vector<RenderObject *> renderObjects;
 
+	SubController * currentRenderController = nullptr;
+
 public:
 	SubController(Vortex * gameEngine);
 	~SubController();
@@ -23,5 +25,7 @@ public:
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
 	void setNextControllerID(int ID);
+
+	SubController * getCurrentRenderController();
 };
 

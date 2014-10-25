@@ -4,6 +4,7 @@
 SubController::SubController(Vortex * gameEngine){
 
 	this->gameEngine = gameEngine;
+	currentRenderController = this;
 
 }
 
@@ -23,6 +24,12 @@ int SubController::getNextControllerID(){
 
 void SubController::setNextControllerID(int ID){
 	nextControllerID = ID;
+}
+
+SubController * SubController::getCurrentRenderController() {
+
+	return currentRenderController;
+
 }
 
 /*

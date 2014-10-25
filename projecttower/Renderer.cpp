@@ -48,11 +48,34 @@ Renderer::~Renderer()
 }
 
 
+void Renderer::doRenderLoop() {
+
+	drawClear();
+
+	SubController * tempControllerPointer = topLevelRenderController;
+
+
+	//ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
+	while (tempControllerPointer != tempControllerPointer->getCurrentRenderController()) {
+
+		tempControllerPointer = tempControllerPointer->getCurrentRenderController();
+
+	}
+
+
+	//make the sub controller render itself
+	if (tempControllerPointer != nullptr)
+		tempControllerPointer->render();
+
+
+	drawDisplay();
+
+}
+
 void Renderer::renderObjects() {
 
 
-	if (currentRenderSubController != nullptr)
-		currentRenderSubController->render();
+	
 
 
 	//SubController * myCurrentSubCotroller = (SubController*)currentSubCotroller;

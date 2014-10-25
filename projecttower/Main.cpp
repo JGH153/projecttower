@@ -26,6 +26,7 @@ Renderer * renderer;
 bool renderThreadOnline = false;
 Vortex * gameEngine;
 
+ProgramController * programController = nullptr;
 
 
 void render() {
@@ -43,6 +44,13 @@ void render() {
 
 	float rotation = 360.f;
 
+	while (programController == nullptr) {
+
+		sf::sleep(sf::milliseconds(10));
+
+	}
+	renderer->topLevelRenderController = programController;
+
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
 
@@ -55,25 +63,19 @@ void render() {
 
 		
 
-		renderer->drawClear();
+		
 
-		sf::View view(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
+		/*sf::View view(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
 		view.setRotation(rotation);
 		renderer->getWindow()->setView(view);
 		rotation-= 0.01f;
 		if (rotation < 0.f)
-			rotation = 360.f;
+			rotation = 360.f;*/
 
-		//renderer->renderBG();
 
-		
 
-		renderer->renderTiles();
-		renderer->renderEntities();
-		renderer->renderObjects();
-		//renderer->drawGUI();
+		renderer->doRenderLoop();
 
-		renderer->drawDisplay();
 	}
 
 	renderThreadOnline = false;
@@ -102,7 +104,7 @@ int main(int argc, char* argv[]){
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");
 	
 
-	ProgramController * programController = new ProgramController(gameEngine, renderer);
+	programController = new ProgramController(gameEngine, renderer);
 	
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);

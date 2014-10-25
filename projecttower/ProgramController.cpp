@@ -1,20 +1,28 @@
 #include "ProgramController.h"
 
 
-ProgramController::ProgramController(Vortex * gameEngine, Renderer * renderer){
+ProgramController::ProgramController(Vortex * gameEngine, Renderer * renderer) : SubController(gameEngine) {
 
 	this->gameEngine = gameEngine;
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
-	subControllers.push_back(new MenuController(gameEngine));
-	subControllers.push_back(new GameController(gameEngine, renderer));
+	//subControllers.push_back(new MenuController(gameEngine));
+	subControllers.push_back(new GameController(gameEngine));
 	activeSubController = 0;
+	currentRenderController = subControllers[activeSubController];
+
+
+
 }
 
 
 ProgramController::~ProgramController(){
 
 
+
+}
+
+void ProgramController::render() {
 
 }
 

@@ -13,17 +13,22 @@
 #include "GameController.h"
 #include "SubController.h"
 
-class ProgramController
+class ProgramController : public SubController
 {
 public:
 	ProgramController(Vortex * gameEngine, Renderer * renderer);
 	~ProgramController();
 
 	void update();
+	void render();
+
+
 
 private:
 	Vortex * gameEngine;
 	std::vector<SubController*> subControllers;
 	int activeSubController;
+
+
 };
 
