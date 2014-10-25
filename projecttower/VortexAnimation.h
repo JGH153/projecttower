@@ -13,7 +13,7 @@
 
 #include "GlobalDefines.h"
 
-class VortexAnimation
+class VortexAnimation : public RenderObject
 {
 public:
 	VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine);
@@ -26,6 +26,7 @@ public:
 
 	void update();
 	void render();
+	VortexSprite * getRenderSprite();
 
 	void reset();
 

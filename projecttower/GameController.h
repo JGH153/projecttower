@@ -14,7 +14,6 @@
 #include "BasicUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
-#include "Renderer.h"
 
 #include "GameGuiController.h"
 
@@ -32,8 +31,9 @@ public:
 
 	void update();
 	void render();
+	std::vector<VortexSprite *> getRenderSprites();
 
-	std::vector<RenderObject *> getRenderObjectList();
+	//std::vector<RenderObject *> getRenderObjectList();
 	
 private:
 
@@ -42,8 +42,8 @@ private:
 
 	VortexSprite bgSprite;
 
-	std::vector<VortexSprite> backgroundTextures;
-	std::vector<VortexSprite> mapTiles;
+	std::vector<VortexSprite *> backgroundTextures;
+	std::vector<VortexSprite *> mapTiles;
 
 
 	std::vector <VortexConvexButton> buttonList;

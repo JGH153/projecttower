@@ -64,9 +64,22 @@ void Renderer::doRenderLoop() {
 
 
 	//make the sub controller render itself
-	if (tempControllerPointer != nullptr)
-		tempControllerPointer->render();
+	if (tempControllerPointer != nullptr) {
+		//tempControllerPointer->render();
 
+		std::vector<VortexSprite *> renderList = tempControllerPointer->getRenderSprites();
+
+		for (VortexSprite * currentRenderObj : renderList) {
+
+			//currentRenderObj->update();
+			//currentRenderObj->render();
+			mainWindow->draw(*currentRenderObj);
+
+		}
+
+
+
+	}
 
 	drawDisplay();
 

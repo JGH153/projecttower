@@ -25,6 +25,14 @@ void ProgramController::render() {
 
 }
 
+std::vector<VortexSprite *> ProgramController::getRenderSprites() {
+
+	std::vector<VortexSprite *> spriteList;
+	return spriteList;
+	//yay
+
+}
+
 // Run the current subController and if it has decided that nother subcontroller should be running, run that one instead and set the active controller id both here and in the running controller
 void ProgramController::update(){
 	//std::cout << "Starting active sub controller update - " << activeSubController << std::endl;

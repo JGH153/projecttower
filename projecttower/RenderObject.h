@@ -1,4 +1,7 @@
 #pragma once
+
+class VortexSprite;
+
 class RenderObject {
 public:
 	RenderObject();
@@ -6,5 +9,7 @@ public:
 
 	virtual void update() = 0;
 	virtual void render() = 0;
+	virtual VortexSprite * getRenderSprite() = 0;
+
 };
 

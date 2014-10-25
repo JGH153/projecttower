@@ -5,7 +5,10 @@
 #include <vector>
 #include <iostream>
 
+//#include "Vortex.h"
 #include "RenderObject.h"
+
+class Vortex;
 
 class VortexSprite : public sf::Sprite, public RenderObject{
 public:
@@ -18,6 +21,9 @@ public:
 
 	void update();
 	void render();
+
+	VortexSprite * getRenderSprite();
+
 
 	sf::Vector2f getSize();
 	

@@ -43,3 +43,9 @@ void VortexSprite::update() {
 
 
 }
+
+VortexSprite * VortexSprite::getRenderSprite() {
+
+	return this;
+
+}

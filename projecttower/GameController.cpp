@@ -12,9 +12,9 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
 			sf::Texture * texImageTile;
 			texImageTile = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
-			VortexSprite tempSprite(*texImageTile);
-			tempSprite.setPosition(x * tileSize, y * tileSize);
-			tempSprite.setSize(tileSize, tileSize);
+			VortexSprite * tempSprite = new VortexSprite(*texImageTile);
+			tempSprite->setPosition(x * tileSize, y * tileSize);
+			tempSprite->setSize(tileSize, tileSize);
 			backgroundTextures.push_back(tempSprite);
 
 
@@ -51,9 +51,9 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 			else
 				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
 
-			VortexSprite tempSprite(*texImageTile);
-			tempSprite.setPosition(x * tileSize, guiOffsetY + (y * tileSize));
-			tempSprite.setSize(tileSize, tileSize);
+			VortexSprite * tempSprite = new VortexSprite(*texImageTile);
+			tempSprite->setPosition(x * tileSize, guiOffsetY + (y * tileSize));
+			tempSprite->setSize(tileSize, tileSize);
 			mapTiles.push_back(tempSprite);
 
 		}
@@ -63,7 +63,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 1000; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -119,16 +119,16 @@ struct sortinStructDistance {
 
 void GameController::render() {
 
-	for (VortexSprite currentRenderObj : backgroundTextures) {
+	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
-		gameEngine->getWindow()->draw(currentRenderObj);
+		gameEngine->getWindow()->draw(*currentRenderObj);
 
 	}
 
 
 	for (uint i = 0; i < mapTiles.size(); i++) {
 
-		gameEngine->getWindow()->draw(mapTiles[i]);
+		gameEngine->getWindow()->draw(*mapTiles[i]);
 
 	}
 
@@ -155,6 +155,51 @@ void GameController::render() {
 	}
 
 
+
+}
+
+
+std::vector<VortexSprite *> GameController::getRenderSprites() {
+	
+	std::vector<VortexSprite *> spriteList;
+
+	vectorMutex.lock();
+
+	for (VortexSprite * currentRenderObj : backgroundTextures) {
+
+		spriteList.push_back(currentRenderObj);
+		//gameEngine->getWindow()->draw(*currentRenderObj.getRenderSprite());
+
+	}
+
+
+	for (uint i = 0; i < mapTiles.size(); i++) {
+
+		spriteList.push_back(mapTiles[i]);
+		//gameEngine->getWindow()->draw(*mapTiles[i].getRenderSprite());
+
+	}
+
+	for (auto currentRenderObj : renderObjectsVector) {
+
+		spriteList.push_back(currentRenderObj->getRenderSprite());
+		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
+
+	}
+
+	for (auto currentRenderObj : unitList) {
+
+		spriteList.push_back(currentRenderObj->getRenderSprite());
+		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
+
+	}
+
+
+	vectorMutex.unlock();
+
+
+	
+	return spriteList;
 
 }
 

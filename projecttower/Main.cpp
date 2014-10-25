@@ -49,6 +49,7 @@ void render() {
 		sf::sleep(sf::milliseconds(10));
 
 	}
+
 	renderer->topLevelRenderController = programController;
 
 	int minimumRenderFrameTimeInMilliseconds = 1000.f / 60.f; //60 fps
@@ -125,12 +126,13 @@ int main(int argc, char* argv[]){
 	//VortexUseExample vortexUseExample(gameEngine);
 
 	int minimumLogicFrameTimeInMilliseconds = 1000.f/60.f; //60 fps
-
-
+	
 
 	std::cout << "Starting main loop" << std::endl;
 	while (gameEngine->running) {
 //		std::cout << "MAIN" << std::endl;
+
+
 
 		gameEngine->frameStart();
 

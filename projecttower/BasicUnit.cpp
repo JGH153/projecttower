@@ -50,6 +50,11 @@ BasicUnit::~BasicUnit(){
 
 }
 
+VortexSprite * BasicUnit::getRenderSprite() {
+	return moveAnimations[currentMoveAnimationIndex]->getRenderSprite();
+}
+
+
 void BasicUnit::render() {
 	moveAnimations[currentMoveAnimationIndex]->render();
 }

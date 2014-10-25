@@ -7,6 +7,7 @@ public:
 
 	void update();
 	void render();
+	VortexSprite * getRenderSprite();
 
 
 private:

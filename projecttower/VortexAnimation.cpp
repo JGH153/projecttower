@@ -46,6 +46,13 @@ void VortexAnimation::render() {
 	gameEngine->getWindow()->draw(frames[currentFrame]);
 }
 
+
+VortexSprite * VortexAnimation::getRenderSprite() {
+
+	return frames[currentFrame].getRenderSprite();
+
+}
+
 void VortexAnimation::update(){
 
 	sf::Time currentTime = gameEngine->getTimeFromProgramStart();
