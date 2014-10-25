@@ -118,15 +118,15 @@ void Renderer::renderTiles(){
 
 }
 
-struct sortinStructDistance{
-
-	bool operator() (Unit * a, Unit * b) {
-
-		return (a->posY + a->height < b->posY + b->height);
-
-	}
-
-} sortingInstanceDistance;
+//struct sortinStructDistance{
+//
+//	bool operator() (Unit * a, Unit * b) {
+//
+//		return (a->posY + a->height < b->posY + b->height);
+//
+//	}
+//
+//} sortingInstanceDistance;
 
 void Renderer::renderEntities() {
 	//sorting units so the unit with the lowest base y is renderd first

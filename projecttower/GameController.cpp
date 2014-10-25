@@ -68,7 +68,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
 		unitList.push_back(testUnit);
-		renderObjectsVector.push_back(testUnit);
+		//renderObjectsVector.push_back(testUnit);
 
 	}
 
@@ -96,6 +96,27 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	
 }
 
+struct sortinStructDistance {
+
+	bool operator() (Unit * a, Unit * b) {
+
+		if (a->posY + a->height < b->posY + b->height) {
+
+			//if (a->posX + a->width < b->posX + b->height) {
+				return true;
+			//} else {
+			//	return false;
+			//}
+
+
+		} else {
+			return false;
+		}
+
+	}
+
+} sortingInstanceDistance;
+
 void GameController::render() {
 
 	for (VortexSprite currentRenderObj : backgroundTextures) {
@@ -119,7 +140,19 @@ void GameController::render() {
 
 	}
 
+	for each (auto currentRenderObj in unitList) {
+
+		currentRenderObj->render();
+
+	}
+
+	
+
 	vectorMutex.unlock();
+
+	for (auto currentButton = buttonList.begin(); currentButton != buttonList.end(); currentButton++) {
+		//currentButton->update(0);
+	}
 
 
 
@@ -150,7 +183,7 @@ void GameController::update() {
 		vectorMutex.lock();
 
 		unitList.push_back(testUnit);
-		renderObjectsVector.push_back(testUnit);
+		//renderObjectsVector.push_back(testUnit);
 
 		vectorMutex.unlock();
 
@@ -164,6 +197,9 @@ void GameController::update() {
 		current->update();
 //		std::cout << current->posX << "  " << current->posY << std::endl;
 	}
+
+	//sorting units so the unit with the lowest base y is renderd first
+	std::sort(unitList.begin(), unitList.end(), sortingInstanceDistance);
 	
 
 
@@ -213,7 +249,5 @@ void GameController::update() {
 
 	gameGuiController->update();
 	
-	for (auto iter = buttonList.begin(); iter != buttonList.end(); iter++) {
-		//iter->update(0);
-	}
+	
 }

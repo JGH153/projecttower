@@ -51,6 +51,10 @@ void render() {
 	}
 	renderer->topLevelRenderController = programController;
 
+	int minimumRenderFrameTimeInMilliseconds = 1000.f / 60.f; //60 fps
+	int lastRenderFrameTime = 0;
+	sf::Clock renderFrameTime;
+
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
 
@@ -72,9 +76,20 @@ void render() {
 		if (rotation < 0.f)
 			rotation = 360.f;*/
 
-
+		
 
 		renderer->doRenderLoop();
+
+		int frameTime = renderFrameTime.restart().asMilliseconds();
+
+		if (frameTime < minimumRenderFrameTimeInMilliseconds) {
+			sf::sleep(sf::milliseconds(minimumRenderFrameTimeInMilliseconds - frameTime));
+			renderFrameTime.restart();
+		}
+
+		
+
+
 
 	}
 
@@ -109,7 +124,8 @@ int main(int argc, char* argv[]){
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
 
-	int minimumLogicFrameTimeInMilliseconds = 1;
+	int minimumLogicFrameTimeInMilliseconds = 1000.f/60.f; //60 fps
+
 
 
 	std::cout << "Starting main loop" << std::endl;
