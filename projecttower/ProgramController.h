@@ -16,7 +16,7 @@
 class ProgramController : public SubController
 {
 public:
-	ProgramController(Vortex * gameEngine, Renderer * renderer);
+	ProgramController(Vortex * gameEngine);
 	~ProgramController();
 
 	void update();

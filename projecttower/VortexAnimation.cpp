@@ -57,12 +57,15 @@ void VortexAnimation::update(){
 
 		lastRunFrameTime = currentTime;
 
-		currentFrame++;
-
-		if (currentFrame >= frames.size()){
+		//have to check first before currentFrame++ beacause if we use the normal approach it is possilbe for the renderer to render before 'out of frames' check is ran
+		if (currentFrame+1 >= frames.size()) {
 			currentFrame = 0;
 			playedOneTime = true;
+		} else {
+			currentFrame++;
 		}
+
+		
 	}
 	
 }

@@ -1,9 +1,8 @@
 #include "ProgramController.h"
 
 
-ProgramController::ProgramController(Vortex * gameEngine, Renderer * renderer) : SubController(gameEngine) {
+ProgramController::ProgramController(Vortex * gameEngine) : SubController(gameEngine) {
 
-	this->gameEngine = gameEngine;
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
 	//subControllers.push_back(new MenuController(gameEngine));

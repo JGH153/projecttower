@@ -267,6 +267,11 @@ sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
 	return mainWindow->mapPixelToCoords(point);
 }
 
+sf::Vector2f Vortex::getMousePositionLocal() {
+	sf::Vector2i mouse = getMousePosition();
+	return getMapPixelToCoords(mouse);
+}
+
 
 
 sf::Font * Vortex::getDefaultFont(){
@@ -322,6 +327,7 @@ void Vortex::regEvents(){
 
 	pendingEventsMutex.unlock();
 
+	//reset evry event bool exept the eventMousePressed events
 	eventKeyPressed = false;
 	eventKeyReleased = false;
 
@@ -364,12 +370,15 @@ void Vortex::regEvents(){
 		if (currentEvent.type == sf::Event::MouseButtonPressed){
 
 			eventMouseClicked = true;
+			eventMousePressed = true;
 
 			if (currentEvent.mouseButton.button == sf::Mouse::Left){
 				eventMouseClickedLeft = true;
+				eventMousePressedLeft = true;
 			}
 			if (currentEvent.mouseButton.button == sf::Mouse::Right){
 				eventMouseClickedRight = true;
+				eventMousePressedRight = true;
 			}
 
 		}
@@ -377,12 +386,15 @@ void Vortex::regEvents(){
 		if (currentEvent.type == sf::Event::MouseButtonReleased){
 
 			eventMouseReleased = true;
+			eventMousePressed = false;
 
 			if (currentEvent.mouseButton.button == sf::Mouse::Left){
 				eventMouseReleasedLeft = true;
+				eventMousePressedLeft = false;
 			}
 			if (currentEvent.mouseButton.button == sf::Mouse::Right){
 				eventMouseReleasedRight = true;
+				eventMousePressedRight = false;
 			}
 
 		}

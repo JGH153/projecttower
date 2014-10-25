@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");
 	
 
-	programController = new ProgramController(gameEngine, renderer);
+	programController = new ProgramController(gameEngine);
 	
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
 			
 		}
 
-		if (gameEngine->eventMouseClicked) {
+	/*	if (gameEngine->eventMouseClicked) {
 
 			sf::Vector2i mouse = gameEngine->getMousePosition();
 			auto mousePos = gameEngine->getMapPixelToCoords(mouse);
@@ -134,7 +134,7 @@ int main(int argc, char* argv[]){
 			std::cout << mousePos.x << " " << mousePos.y << std::endl;
 
 
-		}
+		}*/
 		
 		//std::cout << "Updating program controller" << std::endl;
 		programController->update();

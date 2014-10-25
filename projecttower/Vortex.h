@@ -68,6 +68,7 @@ public:
 
 	sf::Vector2i getMousePosition();
 	sf::Vector2f getMapPixelToCoords(sf::Vector2i point);
+	sf::Vector2f getMousePositionLocal();
 
 	
 
@@ -94,10 +95,14 @@ public:
 	bool eventMouseMove = false;
 
 	bool eventMouseClicked = false;
+	bool eventMousePressed = false; //mouse button is down (pressed)
 	bool eventMouseReleased = false;
 
 	bool eventMouseClickedLeft = false;
 	bool eventMouseClickedRight = false;
+
+	bool eventMousePressedLeft = false;
+	bool eventMousePressedRight = false;
 
 	bool eventMouseReleasedLeft = false;
 	bool eventMouseReleasedRight = false;

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <mutex> // std::mutex
 
 #include "Vortex.h"
 
@@ -51,6 +52,9 @@ private:
 	std::vector <Unit *> unitList;
 
 	std::vector<RenderObject *> renderObjectsVector;
+
+	std::mutex vectorMutex;
+
 
 
 };

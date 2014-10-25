@@ -6,7 +6,7 @@ Renderer::Renderer(int screenWidth, int screenHeight, float fps, std::string win
 	this->fps = fps;
 
 	sf::ContextSettings openGLSettings;
-	openGLSettings.antialiasingLevel = 8;
+	openGLSettings.antialiasingLevel = 1;
 
 	int windowSettings = sf::Style::Resize;
 	windowSettings = sf::Style::Default;

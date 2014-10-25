@@ -5,7 +5,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
 	gameGuiController = new GameGuiController(gameEngine);
 
-	int tileSize = 25;
+	int tileSize = 50;
 
 	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++) {
 		for (int y = 0; y < (gameEngine->getWindowSize().y / tileSize); y++) {
@@ -111,11 +111,15 @@ void GameController::render() {
 
 	}
 
+	vectorMutex.lock();
+
 	for each (auto currentRenderObj in renderObjectsVector) {
 
 		currentRenderObj->render();
 
 	}
+
+	vectorMutex.unlock();
 
 
 
@@ -132,6 +136,25 @@ void GameController::update() {
 
 	//renderTiles();
 
+
+	if (gameEngine->eventMousePressedLeft) {
+		
+		auto mousePos = gameEngine->getMousePositionLocal();
+
+		BasicUnit * testUnit = new BasicUnit(gameEngine, mousePos.x, mousePos.y);
+		testUnit->posX = testUnit->posX - (testUnit->width / 2);
+		testUnit->posY = testUnit->posY - (testUnit->height / 2);
+		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
+
+		//an vector is NOT thread safe (R/W)
+		vectorMutex.lock();
+
+		unitList.push_back(testUnit);
+		renderObjectsVector.push_back(testUnit);
+
+		vectorMutex.unlock();
+
+	}
 	
 
 	//for (Entity * current : entityList){
