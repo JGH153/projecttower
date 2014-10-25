@@ -21,9 +21,6 @@ ProgramController::~ProgramController(){
 
 }
 
-void ProgramController::render() {
-
-}
 
 std::vector<VortexSprite *> ProgramController::getRenderSprites() {
 

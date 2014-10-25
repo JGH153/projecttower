@@ -33,11 +33,6 @@ sf::Vector2f VortexSprite::getSize(){
 
 }
 
-void VortexSprite::render() {
-
-
-
-}
 
 void VortexSprite::update() {
 

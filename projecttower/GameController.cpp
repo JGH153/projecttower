@@ -117,47 +117,6 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-void GameController::render() {
-
-	for (VortexSprite * currentRenderObj : backgroundTextures) {
-
-		gameEngine->getWindow()->draw(*currentRenderObj);
-
-	}
-
-
-	for (uint i = 0; i < mapTiles.size(); i++) {
-
-		gameEngine->getWindow()->draw(*mapTiles[i]);
-
-	}
-
-	vectorMutex.lock();
-
-	for each (auto currentRenderObj in renderObjectsVector) {
-
-		currentRenderObj->render();
-
-	}
-
-	for each (auto currentRenderObj in unitList) {
-
-		currentRenderObj->render();
-
-	}
-
-	
-
-	vectorMutex.unlock();
-
-	for (auto currentButton = buttonList.begin(); currentButton != buttonList.end(); currentButton++) {
-		//currentButton->update(0);
-	}
-
-
-
-}
-
 
 std::vector<VortexSprite *> GameController::getRenderSprites() {
 	

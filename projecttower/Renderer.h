@@ -20,11 +20,7 @@ public:
 	void drawDisplay();
 	
 //	SubController * currentSubCotroller = nullptr;
-	void renderObjects();
 
-	void renderBG();
-	void renderTiles();
-	void renderEntities();
 
 	void doRenderLoop();
 
@@ -39,7 +35,7 @@ public:
 	bool loaded;
 
 
-	SubController * currentRenderSubController = nullptr;
+	//SubController * currentRenderSubController = nullptr;
 	SubController * topLevelRenderController = nullptr;
 
 private:

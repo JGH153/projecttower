@@ -20,7 +20,6 @@ public:
 	~ProgramController();
 
 	void update();
-	void render();
 	std::vector<VortexSprite *> getRenderSprites();
 
 

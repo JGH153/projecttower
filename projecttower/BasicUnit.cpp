@@ -55,10 +55,6 @@ VortexSprite * BasicUnit::getRenderSprite() {
 }
 
 
-void BasicUnit::render() {
-	moveAnimations[currentMoveAnimationIndex]->render();
-}
-
 
 void BasicUnit::update() {
 

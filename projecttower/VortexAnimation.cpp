@@ -42,9 +42,6 @@ void VortexAnimation::addFrame(std::string path){
 
 }
 
-void VortexAnimation::render() {
-	gameEngine->getWindow()->draw(frames[currentFrame]);
-}
 
 
 VortexSprite * VortexAnimation::getRenderSprite() {

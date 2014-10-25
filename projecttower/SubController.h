@@ -24,7 +24,6 @@ public:
 	SubController(Vortex * gameEngine);
 	~SubController();
 	virtual void update();
-	virtual void render() = 0;
 	virtual std::vector<VortexSprite *> getRenderSprites() = 0;
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
