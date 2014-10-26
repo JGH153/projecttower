@@ -106,14 +106,16 @@ void VortexButton::update(){
 
 }
 
-std::vector<VortexSprite *> VortexButton::getRenderSprites() {
+std::vector<RenderData>  VortexButton::getRenderData() {
 
 	//std::vector<VortexSprite *> returnVector;
 	//returnVector.push_back(&image);
 	////returnVector.push_back(&text);
 	//return returnVector;
 
-	return image.getRenderSprites();
+	auto dataVec = image.getRenderData();
+	dataVec.push_back(RenderData(&text));
+	return dataVec;
 
 }
 

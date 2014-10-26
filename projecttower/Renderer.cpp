@@ -50,6 +50,9 @@ Renderer::~Renderer()
 
 void Renderer::doRenderLoop() {
 
+	sf::Clock tidTaker;
+	sf::Time t1, t2, t3;
+
 	drawClear();
 
 	SubController * tempControllerPointer = topLevelRenderController;
@@ -62,26 +65,42 @@ void Renderer::doRenderLoop() {
 
 	}
 
+	t1 = tidTaker.getElapsedTime();
+
 
 	//make the sub controller render itself
 	if (tempControllerPointer != nullptr) {
 		//tempControllerPointer->render();
 
-		std::vector<VortexSprite *> renderList = tempControllerPointer->getRenderSprites();
+		auto renderList = tempControllerPointer->getRenderData();
 
-		for (VortexSprite * currentRenderObj : renderList) {
+		t2 = tidTaker.getElapsedTime();
+
+		std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
+
+		for (RenderData currentRenderObj : renderList) {
 
 			//currentRenderObj->update();
 			//currentRenderObj->render();
-			mainWindow->draw(*currentRenderObj);
+			if (currentRenderObj.dataType == renderData_Sprite) {
+				mainWindow->draw(*currentRenderObj.sprite);
+			}
+			if (currentRenderObj.dataType == renderData_Text) {
+				mainWindow->draw(*currentRenderObj.text);
+			}
+			
 
 		}
+
+		t3 = tidTaker.getElapsedTime();
 
 
 
 	}
 
 	drawDisplay();
+
+	std::cout << "T1: " << t1.asMilliseconds() << " T2: " << t2.asMilliseconds() << " T3: " << t3.asMilliseconds() << std::endl;
 
 }
 

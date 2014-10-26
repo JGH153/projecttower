@@ -16,6 +16,7 @@
 #include "VortexConvexButton.h"
 
 #include "GameGuiController.h"
+#include "GlobalDefines.h"
 
 class GameController : public SubController
 {
@@ -30,7 +31,7 @@ public:
 	
 
 	void update();
-	std::vector<VortexSprite *> getRenderSprites();
+	std::vector<RenderData> getRenderData();
 
 	//std::vector<RenderObject *> getRenderObjectList();
 	

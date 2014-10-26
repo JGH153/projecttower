@@ -12,6 +12,7 @@
 #include "MenuController.h"
 #include "GameController.h"
 #include "SubController.h"
+#include "GlobalDefines.h"
 
 class ProgramController : public SubController
 {
@@ -20,7 +21,7 @@ public:
 	~ProgramController();
 
 	void update();
-	std::vector<VortexSprite *> getRenderSprites();
+	std::vector<RenderData> getRenderData();
 
 
 

@@ -10,6 +10,7 @@
 #include <mutex> // std::mutex
 
 #include "VortexSprite.h"
+#include "GlobalDefines.h"
 
 //#define uint unsigned int
 typedef unsigned int uint;

@@ -8,6 +8,7 @@
 
 #include "Vortex.h"
 #include "RenderObject.h"
+#include "GlobalDefines.h"
 
 
 
@@ -24,7 +25,7 @@ public:
 	SubController(Vortex * gameEngine);
 	~SubController();
 	virtual void update();
-	virtual std::vector<VortexSprite *> getRenderSprites() = 0;
+	virtual std::vector<RenderData> getRenderData() = 0;
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
 	void setNextControllerID(int ID);

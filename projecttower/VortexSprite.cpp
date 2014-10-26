@@ -39,10 +39,10 @@ void VortexSprite::update() {
 
 }
 
-std::vector<VortexSprite *> VortexSprite::getRenderSprites() {
+std::vector<RenderData> VortexSprite::getRenderData() {
 
-	std::vector<VortexSprite *> returnVector;
-	returnVector.push_back(this);
+	std::vector<RenderData> returnVector;
+	returnVector.push_back(RenderData(this));
 	return returnVector;
 
 }

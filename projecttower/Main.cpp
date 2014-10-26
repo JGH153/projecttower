@@ -52,7 +52,7 @@ void render() {
 
 	renderer->topLevelRenderController = programController;
 
-	int minimumRenderFrameTimeInMilliseconds = 1000.f / 60.f; //60 fps
+	int minimumRenderFrameTimeInMilliseconds = 1000.f / 5.f; //60 fps
 	int lastRenderFrameTime = 0;
 	sf::Clock renderFrameTime;
 

@@ -7,6 +7,7 @@
 
 //#include "Vortex.h"
 #include "RenderObject.h"
+#include "GlobalDefines.h"
 
 class Vortex;
 
@@ -22,7 +23,7 @@ public:
 	void update();
 	void render();
 
-	std::vector<VortexSprite *> getRenderSprites();
+	std::vector<RenderData> getRenderData();
 
 
 	sf::Vector2f getSize();

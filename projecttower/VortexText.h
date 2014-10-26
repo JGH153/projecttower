@@ -7,6 +7,7 @@
 
 //#include "Vortex.h"
 #include "RenderObject.h"
+#include "GlobalDefines.h"
 
 class VortexText : public sf::Text, public RenderObject {
 public:
@@ -14,7 +15,7 @@ public:
 	~VortexText();
 
 	void update();
-	std::vector<VortexSprite *> getRenderSprites();
+	std::vector<RenderData> getRenderData();
 
 };
 

@@ -22,10 +22,10 @@ ProgramController::~ProgramController(){
 }
 
 
-std::vector<VortexSprite *> ProgramController::getRenderSprites() {
+std::vector<RenderData> ProgramController::getRenderData() {
 
-	std::vector<VortexSprite *> spriteList;
-	return spriteList;
+	std::vector<RenderData> renderList;
+	return renderList;
 	//yay
 
 }

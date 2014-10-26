@@ -15,11 +15,10 @@ void VortexText::update() {
 }
 
 
-std::vector<VortexSprite *> VortexText::getRenderSprites() {
+std::vector<RenderData>  VortexText::getRenderData() {
 
-
-	std::vector<VortexSprite *> returnVector;
+	std::vector<RenderData> returnVector;
+	returnVector.push_back(RenderData(this));
 	return returnVector;
-
 
 }

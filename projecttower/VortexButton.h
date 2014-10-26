@@ -9,6 +9,7 @@
 
 #include "Vortex.h"
 #include "VortexSprite.h"
+#include "GlobalDefines.h"
 
 class VortexButton : public RenderObject
 {
@@ -20,7 +21,7 @@ public:
 	sf::Vector2f getPosition();
 
 	void update();
-	std::vector<VortexSprite *> getRenderSprites();
+	std::vector<RenderData> getRenderData();
 
 	bool hitPoint(sf::Vector2f point);
 	bool hitPoint(double x, double y);

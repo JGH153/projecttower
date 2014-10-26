@@ -63,7 +63,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 1000; i++){
+	for (int i = 0; i < 100; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -121,31 +121,38 @@ struct sortinStructDistance {
 } sortingInstanceDistance;
 
 
-std::vector<VortexSprite *> GameController::getRenderSprites() {
+std::vector<RenderData> GameController::getRenderData() {
 	
-	std::vector<VortexSprite *> spriteList;
+	std::vector<RenderData> renderList;
 
 	vectorMutex.lock();
 
 	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
-		spriteList.push_back(currentRenderObj);
+		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
+			renderList.push_back(currentRenderObj);
+		}
+
+		//renderList.push_back(currentRenderObj);
 		//gameEngine->getWindow()->draw(*currentRenderObj.getRenderSprite());
 
 	}
 
+	for (auto currentRenderObj : mapTiles) {
 
-	for (uint i = 0; i < mapTiles.size(); i++) {
+		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
+			renderList.push_back(currentRenderObj);
+		}
 
-		spriteList.push_back(mapTiles[i]);
+		//renderList.push_back(mapTiles[i]);
 		//gameEngine->getWindow()->draw(*mapTiles[i].getRenderSprite());
 
 	}
 
 	for (auto currentRenderVector : renderObjectsVector) {
 
-		for (auto currentRenderObj : currentRenderVector->getRenderSprites()) {
-			spriteList.push_back(currentRenderObj);
+		for (auto currentRenderObj : currentRenderVector->getRenderData()) {
+			renderList.push_back(currentRenderObj);
 		}
 
 		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
@@ -156,8 +163,8 @@ std::vector<VortexSprite *> GameController::getRenderSprites() {
 
 	for (auto currentRenderVector : unitList) {
 
-		for (auto currentRenderObj : currentRenderVector->getRenderSprites()) {
-			spriteList.push_back(currentRenderObj);
+		for (auto currentRenderObj : currentRenderVector->getRenderData()) {
+			renderList.push_back(currentRenderObj);
 		}
 
 		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
@@ -171,7 +178,7 @@ std::vector<VortexSprite *> GameController::getRenderSprites() {
 
 
 	
-	return spriteList;
+	return renderList;
 
 }
 

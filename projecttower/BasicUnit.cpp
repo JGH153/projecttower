@@ -50,8 +50,8 @@ BasicUnit::~BasicUnit(){
 
 }
 
-std::vector<VortexSprite *> BasicUnit::getRenderSprites() {
-	return moveAnimations[currentMoveAnimationIndex]->getRenderSprites();
+std::vector<RenderData> BasicUnit::getRenderData() {
+	return moveAnimations[currentMoveAnimationIndex]->getRenderData();
 }
 
 

@@ -18,3 +18,53 @@ const int WINDOWSIZEY = 600;
 
 
 const std::array<sf::Vector2i, 4> DIRECTIONS = { DIR_SOUTH, DIR_WEST, DIR_EAST, DIR_NORTH };
+
+enum {
+	renderData_None = 0, 
+	renderData_Sprite = 1,
+	renderData_Text = 2
+};
+
+class VortexSprite;
+
+struct RenderData {
+
+	int dataType; //0 = none, 1 = sprite, 2 = text
+	VortexSprite * sprite;
+	sf::Text * text;
+
+	RenderData(VortexSprite * sprite) {
+		this->sprite = sprite;
+		dataType = renderData_Sprite;
+	}
+	//RenderData(VortexSprite sprite) {
+	//	this->sprite = &sprite;
+	//	dataType = renderData_Sprite;
+	//}
+	RenderData(sf::Text  * text) {
+		this->text = text;
+		dataType = renderData_Text;
+	}
+	//RenderData(sf::Text text) {
+	//	this->text = &text;
+	//	dataType = renderData_Text;
+	//}
+
+	void  operator = (VortexSprite * sprite) {
+		this->sprite = sprite;
+		dataType = renderData_Sprite;
+	}
+	void  operator = (sf::Text  * text) {
+		this->text = text;
+		dataType = renderData_Text;
+	}
+
+	operator VortexSprite * () {
+		return sprite;
+	}
+	operator sf::Text  * () {
+		return text;
+	}
+
+
+};
