@@ -120,9 +120,7 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-
-std::vector<RenderData> GameController::getRenderData() {
-	
+std::vector<RenderData> GameController::getBackgroundRenderData() {
 	std::vector<RenderData> renderList;
 
 	vectorMutex.lock();
@@ -132,32 +130,40 @@ std::vector<RenderData> GameController::getRenderData() {
 		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
 			renderList.push_back(currentRenderObj);
 		}
-
-		//renderList.push_back(currentRenderObj);
-		//gameEngine->getWindow()->draw(*currentRenderObj.getRenderSprite());
-
 	}
+
+	vectorMutex.unlock();
+	return renderList;
+}
+
+std::vector<RenderData> GameController::getMapTilesRenderData() {
+	std::vector<RenderData> renderList;
+
+	vectorMutex.lock();
 
 	for (auto currentRenderObj : mapTiles) {
 
 		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
 			renderList.push_back(currentRenderObj);
 		}
-
-		//renderList.push_back(mapTiles[i]);
-		//gameEngine->getWindow()->draw(*mapTiles[i].getRenderSprite());
-
 	}
+
+	vectorMutex.unlock();
+	return renderList;
+}
+
+std::vector<RenderData> GameController::getRenderData() {
+	
+	std::vector<RenderData> renderList;
+
+	vectorMutex.lock();
+
 
 	for (auto currentRenderVector : renderObjectsVector) {
 
 		for (auto currentRenderObj : currentRenderVector->getRenderData()) {
 			renderList.push_back(currentRenderObj);
 		}
-
-		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
-		//spriteList.push_back(currentRenderObj->getRenderSprites());
-		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
 
 	}
 
@@ -166,10 +172,6 @@ std::vector<RenderData> GameController::getRenderData() {
 		for (auto currentRenderObj : currentRenderVector->getRenderData()) {
 			renderList.push_back(currentRenderObj);
 		}
-
-		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
-		//spriteList.push_back(currentRenderObj->getRenderSprites());
-		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
 
 	}
 
