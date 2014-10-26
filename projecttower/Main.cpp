@@ -52,7 +52,7 @@ void render() {
 
 	renderer->topLevelRenderController = programController;
 
-	int minimumRenderFrameTimeInMilliseconds = 1000.f / 5.f; //60 fps
+	int minimumRenderFrameTimeInMilliseconds = 1000.f / 60.f; //60 fps
 	int lastRenderFrameTime = 0;
 	sf::Clock renderFrameTime;
 
@@ -60,6 +60,8 @@ void render() {
 	sf::Clock oneSecTimeClock;
 	int oneSecTime = 0;
 	int numFramesSek = 0;
+
+	//sf::sleep(sf::milliseconds(2000));
 
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
@@ -93,10 +95,11 @@ void render() {
 		//one sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			//std::cout << "Num render pr sek: " << numFramesSek << std::endl;
+			std::cout << "Num render pr sek: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 
+		//Sleep reminder of frametime of executed faster than fps 
 		if (frameTime < minimumRenderFrameTimeInMilliseconds) {
 			sf::sleep(sf::milliseconds(minimumRenderFrameTimeInMilliseconds - frameTime));
 			renderFrameTime.restart();
@@ -184,11 +187,11 @@ int main(int argc, char* argv[]){
 		//one sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			//std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
+			std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 
-		// SLEEEP 
+		//Sleep reminder of frametime of executed faster than fps 
 		if (gameEngine->getTimeFromFrameStart().asMilliseconds() < minimumLogicFrameTimeInMilliseconds){
 			sf::sleep(sf::milliseconds(minimumLogicFrameTimeInMilliseconds - gameEngine->getTimeFromFrameStart().asMilliseconds()));
 		}

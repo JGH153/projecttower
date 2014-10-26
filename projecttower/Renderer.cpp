@@ -72,11 +72,12 @@ void Renderer::doRenderLoop() {
 	if (tempControllerPointer != nullptr) {
 		//tempControllerPointer->render();
 
-		auto renderList = tempControllerPointer->getRenderData();
+		renderList.clear();
+		renderList = tempControllerPointer->getRenderData();
 
 		t2 = tidTaker.getElapsedTime();
 
-		std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
+		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
 
 		for (RenderData currentRenderObj : renderList) {
 
@@ -100,7 +101,7 @@ void Renderer::doRenderLoop() {
 
 	drawDisplay();
 
-	std::cout << "T1: " << t1.asMilliseconds() << " T2: " << t2.asMilliseconds() << " T3: " << t3.asMilliseconds() << std::endl;
+	//std::cout << "T1: " << t1.asMilliseconds() << " T2: " << t2.asMilliseconds() << " T3: " << t3.asMilliseconds() << std::endl;
 
 }
 
