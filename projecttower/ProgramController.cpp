@@ -21,13 +21,22 @@ ProgramController::~ProgramController(){
 
 }
 
+std::vector<RenderData> ProgramController::getMapTilesRenderData() {
+	std::vector<RenderData> renderList;
+	return renderList;
+}
+
+std::vector<RenderData> ProgramController::getBackgroundRenderData() {
+
+	std::vector<RenderData> renderList;
+	return renderList;
+}
+
 
 std::vector<RenderData> ProgramController::getRenderData() {
 
 	std::vector<RenderData> renderList;
 	return renderList;
-	//yay
-
 }
 
 // Run the current subController and if it has decided that nother subcontroller should be running, run that one instead and set the active controller id both here and in the running controller

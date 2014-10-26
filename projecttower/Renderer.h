@@ -31,6 +31,7 @@ public:
 	std::vector <Unit *> unitList;
 	VortexSprite bgSprite;
 	
+	void initStaticBackground();
 	sf::RenderWindow * getWindow();
 	bool loaded;
 
@@ -42,7 +43,7 @@ private:
 	sf::RenderWindow * mainWindow;
 	std::string windowName;
 	float fps;
-
-	std::vector<RenderData> renderList;
+	std::vector<RenderData> backgroundList;
+	std::vector<RenderData> mapTilesList;
 };
 

@@ -22,6 +22,9 @@ public:
 
 	void update();
 	std::vector<RenderData> getRenderData();
+	std::vector<RenderData> getBackgroundRenderData();
+	std::vector<RenderData> getMapTilesRenderData();
+
 
 
 

@@ -63,7 +63,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 1000; i++){
+	for (int i = 0; i < 100; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -120,43 +120,44 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-
-std::vector<RenderData> GameController::getRenderData() {
-	
-	sf::Clock tidTaker;
-	sf::Time t1, t2, t3, t4;
-
+std::vector<RenderData> GameController::getBackgroundRenderData() {
 	std::vector<RenderData> renderList;
 
 	vectorMutex.lock();
-
-	//copy and merge vectors for more speed?
 
 	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
 		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
 			renderList.push_back(currentRenderObj);
 		}
-
-		//renderList.push_back(currentRenderObj);
-		//gameEngine->getWindow()->draw(*currentRenderObj.getRenderSprite());
-
 	}
 
-	t1 = tidTaker.getElapsedTime();
+	vectorMutex.unlock();
+	return renderList;
+}
+
+std::vector<RenderData> GameController::getMapTilesRenderData() {
+	std::vector<RenderData> renderList;
+
+	vectorMutex.lock();
 
 	for (auto currentRenderObj : mapTiles) {
 
 		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
 			renderList.push_back(currentRenderObj);
 		}
-
-		//renderList.push_back(mapTiles[i]);
-		//gameEngine->getWindow()->draw(*mapTiles[i].getRenderSprite());
-
 	}
 
-	t2 = tidTaker.getElapsedTime();
+	vectorMutex.unlock();
+	return renderList;
+}
+
+std::vector<RenderData> GameController::getRenderData() {
+	
+	std::vector<RenderData> renderList;
+
+	vectorMutex.lock();
+
 
 	for (auto currentRenderVector : renderObjectsVector) {
 
@@ -164,13 +165,7 @@ std::vector<RenderData> GameController::getRenderData() {
 			renderList.push_back(currentRenderObj);
 		}
 
-		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
-		//spriteList.push_back(currentRenderObj->getRenderSprites());
-		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
-
 	}
-
-	t3 = tidTaker.getElapsedTime();
 
 	for (auto currentRenderVector : unitList) {
 
@@ -178,18 +173,12 @@ std::vector<RenderData> GameController::getRenderData() {
 			renderList.push_back(currentRenderObj);
 		}
 
-		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
-		//spriteList.push_back(currentRenderObj->getRenderSprites());
-		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
-
 	}
-
-	t4 = tidTaker.getElapsedTime();
 
 
 	vectorMutex.unlock();
 
-	//std::cout << "T1: " << t1.asMilliseconds() << " T2: " << t2.asMilliseconds() << " T3: " << t3.asMilliseconds() << " T4: " << t4.asMilliseconds() << std::endl;
+
 	
 	return renderList;
 

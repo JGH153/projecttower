@@ -52,8 +52,8 @@ void render() {
 
 	renderer->topLevelRenderController = programController;
 
-	int minimumRenderFrameTimeInMilliseconds = 1000.f / 60.f; //60 fps
-	int lastRenderFrameTime = 0;
+	float msToWait = 1000.f / MAXFPS;
+	float lastRenderFrameTime = 0;
 	sf::Clock renderFrameTime;
 
 
@@ -61,8 +61,7 @@ void render() {
 	int oneSecTime = 0;
 	int numFramesSek = 0;
 
-	//sf::sleep(sf::milliseconds(2000));
-
+	renderer->initStaticBackground();
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
 
@@ -73,19 +72,6 @@ void render() {
 
 		}
 
-		
-
-		
-
-		/*sf::View view(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
-		view.setRotation(rotation);
-		renderer->getWindow()->setView(view);
-		rotation-= 0.01f;
-		if (rotation < 0.f)
-			rotation = 360.f;*/
-
-		
-
 		renderer->doRenderLoop();
 
 		int frameTime = renderFrameTime.restart().asMilliseconds();
@@ -93,18 +79,17 @@ void render() {
 		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
 		numFramesSek++;
 		//one sec
+
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			std::cout << "Num render pr sek: " << numFramesSek << std::endl;
+			std::cout << "FPS: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 
-		//Sleep reminder of frametime of executed faster than fps 
-		if (frameTime < minimumRenderFrameTimeInMilliseconds) {
-			sf::sleep(sf::milliseconds(minimumRenderFrameTimeInMilliseconds - frameTime));
+		if (frameTime < msToWait) {
+			sf::sleep(sf::milliseconds(msToWait - frameTime));
 			renderFrameTime.restart();
 		}
-
 		
 
 
@@ -142,7 +127,7 @@ int main(int argc, char* argv[]){
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
 
-	int minimumLogicFrameTimeInMilliseconds = 1000.f/30.f; //30 fps
+	float minimumLogicFrameTimeInMilliseconds = 1000.f / MAXFPS; //30 fps
 	
 
 	sf::Clock oneSecTimeClock;
@@ -187,11 +172,11 @@ int main(int argc, char* argv[]){
 		//one sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
+			//std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 
-		//Sleep reminder of frametime of executed faster than fps 
+		// SLEEEP 
 		if (gameEngine->getTimeFromFrameStart().asMilliseconds() < minimumLogicFrameTimeInMilliseconds){
 			sf::sleep(sf::milliseconds(minimumLogicFrameTimeInMilliseconds - gameEngine->getTimeFromFrameStart().asMilliseconds()));
 		}
@@ -200,7 +185,7 @@ int main(int argc, char* argv[]){
 
 	}
 
-	//wait for render thred to finish
+	//wait for render thread to finish
 	while (renderThreadOnline) {
 
 		sf::sleep(sf::milliseconds(10));

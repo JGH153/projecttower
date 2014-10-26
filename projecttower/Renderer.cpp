@@ -47,11 +47,23 @@ Renderer::~Renderer()
 {
 }
 
+void Renderer::initStaticBackground() {
+	SubController * tempControllerPointer = topLevelRenderController;
+	//ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
+	while (tempControllerPointer != tempControllerPointer->getCurrentRenderController()) {
+		tempControllerPointer = tempControllerPointer->getCurrentRenderController();
+	}
+	if (tempControllerPointer != nullptr) {
+		backgroundList = tempControllerPointer->getBackgroundRenderData();
+		mapTilesList = tempControllerPointer->getMapTilesRenderData();
+	}
+}
+
 
 void Renderer::doRenderLoop() {
 
-	sf::Clock tidTaker;
-	sf::Time t1, t2, t3;
+	//sf::Clock tidTaker;
+	//sf::Time t1, t2, t3;
 
 	drawClear();
 
@@ -65,35 +77,50 @@ void Renderer::doRenderLoop() {
 
 	}
 
-	t1 = tidTaker.getElapsedTime();
+	//t1 = tidTaker.getElapsedTime();
 
 
 	//make the sub controller render itself
 	if (tempControllerPointer != nullptr) {
 		//tempControllerPointer->render();
 
-		renderList.clear();
-		renderList = tempControllerPointer->getRenderData();
+		auto renderList = tempControllerPointer->getRenderData();
 
-		t2 = tidTaker.getElapsedTime();
+		//t2 = tidTaker.getElapsedTime();
 
 		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
 
-		for (RenderData currentRenderObj : renderList) {
-
-			//currentRenderObj->update();
-			//currentRenderObj->render();
+		for (RenderData currentRenderObj : backgroundList) {
 			if (currentRenderObj.dataType == renderData_Sprite) {
 				mainWindow->draw(*currentRenderObj.sprite);
 			}
-			if (currentRenderObj.dataType == renderData_Text) {
+			else if (currentRenderObj.dataType == renderData_Text) {
+				mainWindow->draw(*currentRenderObj.text);
+			}
+		}
+
+		for (RenderData currentRenderObj : mapTilesList) {
+			if (currentRenderObj.dataType == renderData_Sprite) {
+				mainWindow->draw(*currentRenderObj.sprite);
+			}
+			else if (currentRenderObj.dataType == renderData_Text) {
+				mainWindow->draw(*currentRenderObj.text);
+			}
+		}
+
+		for (RenderData currentRenderObj : renderList) {
+
+			if (currentRenderObj.dataType == renderData_Sprite) {
+				mainWindow->draw(*currentRenderObj.sprite);
+			}
+			else if (currentRenderObj.dataType == renderData_Text) {
 				mainWindow->draw(*currentRenderObj.text);
 			}
 			
 
 		}
 
-		t3 = tidTaker.getElapsedTime();
+		//t3 = tidTaker.getElapsedTime();
 
 
 
