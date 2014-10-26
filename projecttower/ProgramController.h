@@ -21,9 +21,8 @@ public:
 	~ProgramController();
 
 	void update();
-	std::vector<RenderData> getRenderData();
-	std::vector<RenderData> getBackgroundRenderData();
-	std::vector<RenderData> getMapTilesRenderData();
+	std::vector<RenderData> getDynamicRenderData();
+	std::vector<RenderData> getStaticRenderData();
 
 
 

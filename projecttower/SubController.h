@@ -25,12 +25,13 @@ public:
 	SubController(Vortex * gameEngine);
 	~SubController();
 	virtual void update();
-	virtual std::vector<RenderData> getRenderData() = 0;
-	virtual std::vector<RenderData> getBackgroundRenderData() = 0;
-	virtual std::vector<RenderData> getMapTilesRenderData() = 0;
+	virtual std::vector<RenderData> getDynamicRenderData() = 0;
+	virtual std::vector<RenderData> getStaticRenderData() = 0;
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
 	void setNextControllerID(int ID);
+
+	bool updateStaticRenderData;
 
 	SubController * getCurrentRenderController();
 };

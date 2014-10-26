@@ -21,19 +21,14 @@ ProgramController::~ProgramController(){
 
 }
 
-std::vector<RenderData> ProgramController::getMapTilesRenderData() {
-	std::vector<RenderData> renderList;
-	return renderList;
-}
-
-std::vector<RenderData> ProgramController::getBackgroundRenderData() {
+std::vector<RenderData> ProgramController::getStaticRenderData() {
 
 	std::vector<RenderData> renderList;
 	return renderList;
 }
 
 
-std::vector<RenderData> ProgramController::getRenderData() {
+std::vector<RenderData> ProgramController::getDynamicRenderData() {
 
 	std::vector<RenderData> renderList;
 	return renderList;

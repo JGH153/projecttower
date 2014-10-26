@@ -63,7 +63,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 10000; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -120,7 +120,7 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-std::vector<RenderData> GameController::getBackgroundRenderData() {
+std::vector<RenderData> GameController::getStaticRenderData() {
 	std::vector<RenderData> renderList;
 
 	vectorMutex.lock();
@@ -131,15 +131,6 @@ std::vector<RenderData> GameController::getBackgroundRenderData() {
 			renderList.push_back(currentRenderObj);
 		}
 	}
-
-	vectorMutex.unlock();
-	return renderList;
-}
-
-std::vector<RenderData> GameController::getMapTilesRenderData() {
-	std::vector<RenderData> renderList;
-
-	vectorMutex.lock();
 
 	for (auto currentRenderObj : mapTiles) {
 
@@ -152,7 +143,7 @@ std::vector<RenderData> GameController::getMapTilesRenderData() {
 	return renderList;
 }
 
-std::vector<RenderData> GameController::getRenderData() {
+std::vector<RenderData> GameController::getDynamicRenderData() {
 	
 	std::vector<RenderData> renderList;
 

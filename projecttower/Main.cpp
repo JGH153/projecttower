@@ -52,7 +52,7 @@ void render() {
 
 	renderer->topLevelRenderController = programController;
 
-	float msToWait = 1000.f / MAXFPS;
+	float msToWait = 1000.f / (MAXFPS/2);
 	float lastRenderFrameTime = 0;
 	sf::Clock renderFrameTime;
 
@@ -61,7 +61,7 @@ void render() {
 	int oneSecTime = 0;
 	int numFramesSek = 0;
 
-	renderer->initStaticBackground();
+
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
 
@@ -82,7 +82,7 @@ void render() {
 
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			std::cout << "FPS: " << numFramesSek << std::endl;
+			std::cout << "Num render fps: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 
@@ -172,7 +172,7 @@ int main(int argc, char* argv[]){
 		//one sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			//std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
+			std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 

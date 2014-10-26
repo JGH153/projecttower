@@ -47,15 +47,20 @@ Renderer::~Renderer()
 {
 }
 
-void Renderer::initStaticBackground() {
+void Renderer::handleStaticBackground() {
 	SubController * tempControllerPointer = topLevelRenderController;
 	//ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
 	while (tempControllerPointer != tempControllerPointer->getCurrentRenderController()) {
 		tempControllerPointer = tempControllerPointer->getCurrentRenderController();
 	}
 	if (tempControllerPointer != nullptr) {
-		backgroundList = tempControllerPointer->getBackgroundRenderData();
-		mapTilesList = tempControllerPointer->getMapTilesRenderData();
+		//only update of controller has updated the static assets (like changing lvl)
+		if (tempControllerPointer->updateStaticRenderData) {
+
+			staticRenderListList = tempControllerPointer->getStaticRenderData();
+			tempControllerPointer->updateStaticRenderData = false;
+
+		}
 	}
 }
 
@@ -64,6 +69,8 @@ void Renderer::doRenderLoop() {
 
 	//sf::Clock tidTaker;
 	//sf::Time t1, t2, t3;
+
+	handleStaticBackground();
 
 	drawClear();
 
@@ -84,22 +91,14 @@ void Renderer::doRenderLoop() {
 	if (tempControllerPointer != nullptr) {
 		//tempControllerPointer->render();
 
-		auto renderList = tempControllerPointer->getRenderData();
+		auto renderList = tempControllerPointer->getDynamicRenderData();
 
 		//t2 = tidTaker.getElapsedTime();
 
 		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
 
-		for (RenderData currentRenderObj : backgroundList) {
-			if (currentRenderObj.dataType == renderData_Sprite) {
-				mainWindow->draw(*currentRenderObj.sprite);
-			}
-			else if (currentRenderObj.dataType == renderData_Text) {
-				mainWindow->draw(*currentRenderObj.text);
-			}
-		}
-
-		for (RenderData currentRenderObj : mapTilesList) {
+		//RTEMEBER STAIC OBJECTS ARE ALWAYS IN THE BACGROUND
+		for (RenderData currentRenderObj : staticRenderListList) {
 			if (currentRenderObj.dataType == renderData_Sprite) {
 				mainWindow->draw(*currentRenderObj.sprite);
 			}

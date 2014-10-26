@@ -5,6 +5,7 @@ SubController::SubController(Vortex * gameEngine){
 
 	this->gameEngine = gameEngine;
 	currentRenderController = this;
+	updateStaticRenderData = true;
 
 }
 
