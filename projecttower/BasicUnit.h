@@ -7,7 +7,7 @@ public:
 
 	void update();
 	void render();
-	VortexSprite * getRenderSprite();
+	std::vector<VortexSprite *> getRenderSprites();
 
 
 private:

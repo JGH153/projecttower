@@ -56,6 +56,11 @@ void render() {
 	int lastRenderFrameTime = 0;
 	sf::Clock renderFrameTime;
 
+
+	sf::Clock oneSecTimeClock;
+	int oneSecTime = 0;
+	int numFramesSek = 0;
+
 	while (gameEngine->running) {
 //		std::cout << "THREAD" << std::endl;
 
@@ -82,6 +87,15 @@ void render() {
 		renderer->doRenderLoop();
 
 		int frameTime = renderFrameTime.restart().asMilliseconds();
+
+		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
+		numFramesSek++;
+		//one sec
+		if (oneSecTime > 1000) {
+			oneSecTime = 0;
+			//std::cout << "Num render pr sek: " << numFramesSek << std::endl;
+			numFramesSek = 0;
+		}
 
 		if (frameTime < minimumRenderFrameTimeInMilliseconds) {
 			sf::sleep(sf::milliseconds(minimumRenderFrameTimeInMilliseconds - frameTime));
@@ -125,8 +139,14 @@ int main(int argc, char* argv[]){
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
 
-	int minimumLogicFrameTimeInMilliseconds = 1000.f/60.f; //60 fps
+	int minimumLogicFrameTimeInMilliseconds = 1000.f/30.f; //30 fps
 	
+
+	sf::Clock oneSecTimeClock;
+	int oneSecTime = 0;
+	int numFramesSek = 0;
+
+
 
 	std::cout << "Starting main loop" << std::endl;
 	while (gameEngine->running) {
@@ -159,10 +179,22 @@ int main(int argc, char* argv[]){
 
 		gameEngine->frameEnd();
 
-		// If the last frame was shorter than 1 millisecond, sleep for 1 millisecond
-		if (gameEngine->getTimeFromFrameStart().asMilliseconds() < minimumLogicFrameTimeInMilliseconds){
-			sf::sleep(sf::milliseconds(minimumLogicFrameTimeInMilliseconds));
+		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
+		numFramesSek++;
+		//one sec
+		if (oneSecTime > 1000) {
+			oneSecTime = 0;
+			//std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
+			numFramesSek = 0;
 		}
+
+		// SLEEEP 
+		if (gameEngine->getTimeFromFrameStart().asMilliseconds() < minimumLogicFrameTimeInMilliseconds){
+			sf::sleep(sf::milliseconds(minimumLogicFrameTimeInMilliseconds - gameEngine->getTimeFromFrameStart().asMilliseconds()));
+		}
+
+
+
 	}
 
 	//wait for render thred to finish

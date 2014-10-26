@@ -47,6 +47,7 @@ private:
 
 	std::vector <VortexConvexButton> buttonList;
 	std::vector <VortexButton> rectButtonTest; //DEBUG: Delete if i forget
+	std::vector <VortexButton *> someButtons; //DEBUG: Delete if i forget
 
 	std::vector <Unit *> unitList;
 

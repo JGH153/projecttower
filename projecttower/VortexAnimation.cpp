@@ -44,9 +44,9 @@ void VortexAnimation::addFrame(std::string path){
 
 
 
-VortexSprite * VortexAnimation::getRenderSprite() {
+std::vector<VortexSprite *>  VortexAnimation::getRenderSprites() {
 
-	return frames[currentFrame].getRenderSprite();
+	return frames[currentFrame].getRenderSprites();
 
 }
 

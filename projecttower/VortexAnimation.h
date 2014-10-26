@@ -25,7 +25,7 @@ public:
 	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes);
 
 	void update();
-	VortexSprite * getRenderSprite();
+	std::vector<VortexSprite *> getRenderSprites();
 
 	void reset();
 

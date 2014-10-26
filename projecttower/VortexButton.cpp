@@ -56,7 +56,7 @@ void VortexButton::setPosition(double x, double y){
 	text.setPosition(posX, posY);
 	image.setPosition(posX, posY);
 	
-	update(0);
+	update();
 
 }
 
@@ -67,7 +67,7 @@ sf::Vector2f VortexButton::getPosition(){
 }
 
 
-void VortexButton::update(float delta){
+void VortexButton::update(){
 
 	if (gameEngine->eventMouseMove){
 		if (mouseOver()){
@@ -101,8 +101,19 @@ void VortexButton::update(float delta){
 	}
 
 
-	gameEngine->getWindow()->draw(image);
-	gameEngine->getWindow()->draw(text);
+	//gameEngine->getWindow()->draw(image);
+	//gameEngine->getWindow()->draw(text);
+
+}
+
+std::vector<VortexSprite *> VortexButton::getRenderSprites() {
+
+	//std::vector<VortexSprite *> returnVector;
+	//returnVector.push_back(&image);
+	////returnVector.push_back(&text);
+	//return returnVector;
+
+	return image.getRenderSprites();
 
 }
 

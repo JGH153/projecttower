@@ -199,7 +199,7 @@ void VortexUseExample::update(){
 
 	gameEngine->getWindow()->draw(text);
 
-	testButton->update(0);
+	testButton->update();
 
 	gameEngine->getWindow()->draw(*particles);
 

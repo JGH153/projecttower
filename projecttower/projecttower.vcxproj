@@ -93,6 +93,7 @@
     <ClCompile Include="VortexLoader.cpp" />
     <ClCompile Include="VortexParticleSystem.cpp" />
     <ClCompile Include="VortexSprite.cpp" />
+    <ClCompile Include="VortexText.cpp" />
     <ClCompile Include="VortexUseExample.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +117,7 @@
     <ClInclude Include="VortexLoader.h" />
     <ClInclude Include="VortexParticleSystem.h" />
     <ClInclude Include="VortexSprite.h" />
+    <ClInclude Include="VortexText.h" />
     <ClInclude Include="VortexUseExample.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

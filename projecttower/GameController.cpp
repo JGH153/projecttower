@@ -92,6 +92,9 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//renderer->currentRenderSubController = this;
 
 
+	renderObjectsVector.push_back(new VortexButton(10, 10, 150, 55, "Graphics/button.png", "En knapp", gameEngine));
+
+
 
 	
 }
@@ -139,16 +142,26 @@ std::vector<VortexSprite *> GameController::getRenderSprites() {
 
 	}
 
-	for (auto currentRenderObj : renderObjectsVector) {
+	for (auto currentRenderVector : renderObjectsVector) {
 
-		spriteList.push_back(currentRenderObj->getRenderSprite());
+		for (auto currentRenderObj : currentRenderVector->getRenderSprites()) {
+			spriteList.push_back(currentRenderObj);
+		}
+
+		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
+		//spriteList.push_back(currentRenderObj->getRenderSprites());
 		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
 
 	}
 
-	for (auto currentRenderObj : unitList) {
+	for (auto currentRenderVector : unitList) {
 
-		spriteList.push_back(currentRenderObj->getRenderSprite());
+		for (auto currentRenderObj : currentRenderVector->getRenderSprites()) {
+			spriteList.push_back(currentRenderObj);
+		}
+
+		//spriteList.insert(spriteList.end(), currentRenderObj->getRenderSprites().begin(), currentRenderObj->getRenderSprites().end());
+		//spriteList.push_back(currentRenderObj->getRenderSprites());
 		//gameEngine->getWindow()->draw(*currentRenderObj->getRenderSprite());
 
 	}
@@ -195,6 +208,12 @@ void GameController::update() {
 	
 
 	//for (Entity * current : entityList){
+
+	for (auto * current : renderObjectsVector) {
+
+		current->update();
+
+	}
 	
 	for (Unit * current : unitList) {
 		//std::cout << "Move me!" << std::endl;
