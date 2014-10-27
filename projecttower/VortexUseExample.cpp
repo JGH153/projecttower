@@ -65,7 +65,7 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 	sprit = new VortexSprite(*texImage);
 
 
-	testButton = new VortexButtonRectangle(400, 400, 150, 55, "Graphics/button.png", gameEngine);
+	testButton = new VortexButtonRectangle(400, 400, 150, 55, "Graphics/button.png", "Button", gameEngine);
 
 
 

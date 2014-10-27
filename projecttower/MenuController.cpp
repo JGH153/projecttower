@@ -8,7 +8,16 @@ MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
 	int buttonWidth = 180;
 	int buttonHeight = 60;
 
-	guiObjects.push_back(new VortexButtonRectangle(centerX - (buttonWidth / 2), centerY - (buttonHeight / 2), buttonWidth, buttonHeight, "Graphics/button.png", gameEngine));
+	std::vector<sf::Vector2f> vertices;
+	vertices.push_back(sf::Vector2f(50, 50));
+	vertices.push_back(sf::Vector2f(200, 50));
+	vertices.push_back(sf::Vector2f(300, 100));
+	vertices.push_back(sf::Vector2f(150, 275));
+	vertices.push_back(sf::Vector2f(10, 210));
+	vertices.push_back(sf::Vector2f(0, 85));
+
+	guiObjects.push_back(new VortexButtonRectangle(centerX - (buttonWidth / 2), centerY - (buttonHeight / 2), buttonWidth, buttonHeight, "Graphics/button.png", "Menubutton", gameEngine));
+	guiObjects.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
 }
 
 

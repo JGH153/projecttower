@@ -80,9 +80,9 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	vertices.push_back(sf::Vector2f(150, 275));
 	vertices.push_back(sf::Vector2f(10, 210));
 	vertices.push_back(sf::Vector2f(0, 85));
-	VortexConvexButton testButton(vertices, "Graphics/button.png", "", "Poop", gameEngine);
+	VortexConvexButton testButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine);
 	buttonList.push_back(testButton);
-
+	renderObjectsVector.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
 	/*renderer->mapTiles = mapTiles;
 	renderer->unitList = unitList;
 	renderer->bgSprite = bgSprite;
@@ -92,7 +92,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//renderer->currentRenderSubController = this;
 
 
-	renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", gameEngine));
+	renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", "Button", gameEngine));
 
 
 

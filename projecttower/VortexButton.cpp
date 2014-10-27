@@ -1,9 +1,23 @@
 #include "VortexButton.h"
 
-VortexButton::VortexButton(double x, double y, std::string imagePath, Vortex * gameEngine){
+VortexButton::VortexButton(double x, double y, std::string imagePath, std::string title, Vortex * gameEngine){
 	this->gameEngine = gameEngine;
 	image = VortexSprite(gameEngine->loadImageToSprite(imagePath));
-	setPosition(x, y);
+	posX = x;
+	posY = y;
+	this->title = title;
+
+	font = *gameEngine->loadFont("Fonts/arial.ttf");
+	// select the font
+	text.setFont(font); // font is a sf::Font
+	// set the string to display
+	text.setString(title);
+	// set the character size
+	text.setCharacterSize(28); // in pixels, not points!
+	// set the color
+	text.setColor(sf::Color::Red);
+	// set the text style
+	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
 }
 
@@ -27,12 +41,12 @@ int VortexButton::getHeight(){
 	return height;
 }
 
-void VortexButton::setPosition(sf::Vector2f newPosition){
-	posX = newPosition.x;
-	posY = newPosition.y;
-	image.setPosition(newPosition);
-}
 
-void VortexButton::setPosition(double x, double y){
-	setPosition(sf::Vector2f(x, y));
+
+bool VortexButton::buttonClicked(){
+	if (gameEngine->eventMouseClickedLeft){
+		sf::Vector2i mouse = gameEngine->getMousePosition();
+		return hitPoint(gameEngine->getMapPixelToCoords(mouse));
+	}
+	return false;
 }
