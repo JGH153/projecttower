@@ -1,64 +1,17 @@
 #include "VortexButton.h"
 
-
-VortexButton::VortexButton(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine){
-
-	
-	width = w;
-	height = h;
-
+VortexButton::VortexButton(double x, double y, std::string imagePath, Vortex * gameEngine){
 	this->gameEngine = gameEngine;
-	
 	image = VortexSprite(gameEngine->loadImageToSprite(imagePath));
-	this->title = title;
-
-	
-
-
-	font = *gameEngine->loadFont("Fonts/arial.ttf");
-
-
-	// select the font
-	text.setFont(font); // font is a sf::Font
-
-	
-
-	// set the string to display
-	text.setString(title);
-
-	// set the character size
-	text.setCharacterSize(28); // in pixels, not points!
-
-	// set the color
-	text.setColor(sf::Color::Red);
-
-	// set the text style
-	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-
-	
 	setPosition(x, y);
-	image.setSize(width, height);
 
 }
 
 
 VortexButton::~VortexButton(){
 
-	
-
 }
 
-void VortexButton::setPosition(double x, double y){
-
-	posX = x;
-	posY = y;
-
-	text.setPosition(posX, posY);
-	image.setPosition(posX, posY);
-	
-	update();
-
-}
 
 sf::Vector2f VortexButton::getPosition(){
 
@@ -66,86 +19,20 @@ sf::Vector2f VortexButton::getPosition(){
 
 }
 
-
-void VortexButton::update(){
-
-	if (gameEngine->eventMouseMove){
-		if (mouseOver()){
-
-			if (!mouseOverButton){
-
-				mouseOverButton = true;
-				image.setSize(width - 2, height - 2);
-				image.setPosition(posX + 1, posY + 1);
-
-				text.setPosition(posX + 1, posY + 1);
-				text.setCharacterSize(text.getCharacterSize() - 1);
-
-			}
-
-		}else{
-
-			if (mouseOverButton){
-
-				mouseOverButton = false;
-				image.setSize(width + 2, height + 2);
-				image.setPosition(posX - 1, posY - 1);
-
-				text.setPosition(posX - 1, posY - 1);
-				text.setCharacterSize(text.getCharacterSize() + 1);
-
-			}
-
-		}
-
-	}
-
-
-	//gameEngine->getWindow()->draw(image);
-	//gameEngine->getWindow()->draw(text);
-
+int VortexButton::getWidth(){
+	return width;
 }
 
-std::vector<RenderData>  VortexButton::getRenderData() {
-
-	//std::vector<VortexSprite *> returnVector;
-	//returnVector.push_back(&image);
-	////returnVector.push_back(&text);
-	//return returnVector;
-
-	auto dataVec = image.getRenderData();
-	dataVec.push_back(RenderData(&text));
-	return dataVec;
-
+int VortexButton::getHeight(){
+	return height;
 }
 
-bool VortexButton::buttonClicked(){
-
-	if(gameEngine->eventMouseReleasedLeft)
-		return mouseOver();
-
-	return false;
-
+void VortexButton::setPosition(sf::Vector2f newPosition){
+	posX = newPosition.x;
+	posY = newPosition.y;
+	image.setPosition(newPosition);
 }
 
-bool VortexButton::hitPoint(sf::Vector2f point){
-	return hitPoint(point.x, point.y);
-}
-
-bool VortexButton::hitPoint(double x, double y){
-
-	if (x >= this->posX && x <= this->posX + this->width
-		&& y >= this->posY && y <= this->posY + this->height){
-		return true;
-	}
-
-	return false;
-}
-
-
-bool VortexButton::mouseOver(){
-
-	sf::Vector2i mouse = gameEngine->getMousePosition();
-	return hitPoint(gameEngine->getMapPixelToCoords(mouse));
-
+void VortexButton::setPosition(double x, double y){
+	setPosition(sf::Vector2f(x, y));
 }

@@ -14,38 +14,27 @@
 class VortexButton : public RenderObject
 {
 public:
-	VortexButton(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine);
+	VortexButton(double x, double y, std::string imagePath, Vortex * gameEngine);
 	~VortexButton();
 
+	void setPosition(sf::Vector2f newPosition);
 	void setPosition(double x, double y);
 	sf::Vector2f getPosition();
+	int getWidth();
+	int getHeight();
 
-	void update();
-	std::vector<RenderData> getRenderData();
+	virtual bool hitPoint(sf::Vector2f point) = 0;
+	virtual bool hitPoint(double x, double y) = 0;
 
-	bool hitPoint(sf::Vector2f point);
-	bool hitPoint(double x, double y);
-
-	bool mouseOver();
-
-	bool buttonClicked(); //return if mouse button was realeased this frame and over the button
-
-private:
+	virtual bool buttonClicked() = 0;
+protected:
 
 	double posX;
 	double posY;
 	int width;
 	int height;
 
-	std::string title;
-	sf::Font font;
-	sf::Text text;
-
 	VortexSprite image;
-
 	Vortex * gameEngine;
-
-	bool mouseOverButton = false;
-
 };
 

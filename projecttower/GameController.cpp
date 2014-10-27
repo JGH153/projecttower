@@ -63,7 +63,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 10000; i++){
+	for (int i = 0; i < 100; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -92,7 +92,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//renderer->currentRenderSubController = this;
 
 
-	renderObjectsVector.push_back(new VortexButton(10, 10, 150, 55, "Graphics/button.png", "En knapp", gameEngine));
+	renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", gameEngine));
 
 
 

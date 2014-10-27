@@ -14,6 +14,7 @@
 #include "BasicUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
+#include "VortexButtonRectangle.h"
 
 #include "GameGuiController.h"
 #include "GlobalDefines.h"

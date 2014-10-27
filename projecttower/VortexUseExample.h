@@ -11,8 +11,7 @@
 #include "VortexParticleSystem.h"
 #include "VortexAnimation.h"
 #include "VortexSprite.h"
-#include "VortexButton.h"
-
+#include "VortexButtonRectangle.h"
 #include "sVar.h"
 
 class VortexUseExample
