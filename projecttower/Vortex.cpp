@@ -25,7 +25,7 @@ void Vortex::initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPa
 
 	std::cout << std::endl;
 
-	for each (auto Mode in sf::VideoMode::getFullscreenModes()){
+	for each (auto Mode in sf::VideoMode::getFullscreenModes()){ 
 
 		std::cout << "Mode (fullscreen) " << Mode.width << "-" << Mode.height << "-" << Mode.bitsPerPixel << " is valid" << std::endl;
 
@@ -33,7 +33,14 @@ void Vortex::initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPa
 	defaultFont = loadFont(defaultFontPath);
 
 	totalTime.restart();
+
+	randomNumberGenerator = std::default_random_engine(time(NULL));
+
+	
+
+
 }
+
 
 
 
@@ -427,6 +434,33 @@ void Vortex::setSpriteSize(sf::Sprite * sprite, double w, double h){
 
 }
 
+
+
+int Vortex::getRandInt(int min, int max) {
+
+	//random number between 0 and 1
+	//std::uniform_real_distribution<int> distribution(min, max);
+
+	//return distribution(randomNumberGenerator);
+	return min + (rand() % (int)(max - min + 1));
+
+}
+
+float Vortex::getRandFloat(float min, float max) {
+
+	std::uniform_real_distribution<float> distribution(min, max);
+
+	return distribution(randomNumberGenerator);
+
+}
+
+double Vortex::getRandDouble(double min, double max) {
+
+	std::uniform_real_distribution<double> distribution(min, max);
+
+	return distribution(randomNumberGenerator);
+
+}
 
 
 void Vortex::closeApplication(){
