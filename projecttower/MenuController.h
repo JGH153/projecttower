@@ -9,6 +9,7 @@
 
 #include "Vortex.h"
 #include "SubController.h"
+#include "BasicUnit.h"
 
 class MenuController : public SubController {
 
@@ -17,12 +18,14 @@ public:
 	~MenuController();
 
 	void update();
-	void render() {};
+	std::vector<RenderData> getDynamicRenderData();
+	std::vector<RenderData> getStaticRenderData();
 
 	std::vector<RenderObject *> getRenderObjectList();
 
 private:
-	VortexSprite testSprite;
+	std::mutex guiMutex;
+	std::vector<RenderObject *> guiObjects;
 
 };
 
