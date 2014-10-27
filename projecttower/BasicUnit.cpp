@@ -10,13 +10,14 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 	int randNum = rand() % 10;
 
 	if (randNum < 8){
-		speed = 0.04f;
+		speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.04f);
 		width = 32;
 		height = 48;
 	}else{
-		speed = 0.08f;
+		speed = 0.08f + gameEngine->getRandFloat(0.01f, 0.2f);
 		width = 96/2;
 		height = 96/2;
+
 	}
 
 

@@ -181,11 +181,7 @@ GameController::~GameController(){
 
 
 void GameController::update() {
-
-	//renderBG();
-
-	//renderTiles();
-
+	//std::cout << "In game controller" << std::endl;
 
 	if (gameEngine->eventMousePressedRight) {
 		

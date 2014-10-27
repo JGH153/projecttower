@@ -9,6 +9,8 @@
 #include <thread>         // std::thread
 #include <mutex> // std::mutex
 
+#include <random> //std::default_random_engine and std::uniform_real_distribution
+
 #include "VortexSprite.h"
 #include "GlobalDefines.h"
 
@@ -86,6 +88,11 @@ public:
 	std::vector<sf::Event> getWindowEvents();
 
 	void closeApplication();
+
+	int getRandInt(int min, int max);
+	float getRandFloat(float min, float max);
+	double getRandDouble(double min, double max);
+
 	
 
 	bool running;
@@ -121,6 +128,8 @@ public:
 	sf::Time deltaTime;
 
 private:
+
+	std::default_random_engine randomNumberGenerator;
 
 	sf::Texture * checkForCopyOfTex(std::string path, sf::IntRect rec);
 	sf::SoundBuffer * checkForCopyOfSound(std::string path);

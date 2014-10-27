@@ -28,6 +28,7 @@ void VortexAnimation::addFrame(sf::Texture * tex){
 
 	image.setPosition(posX, posY);
 	image.setSize(width, height);
+	image.setColor(sf::Color(gameEngine->getRandInt(0, 255), gameEngine->getRandInt(0, 255), gameEngine->getRandInt(0, 255), 255));
 	frames.push_back(image);
 
 
@@ -39,6 +40,7 @@ void VortexAnimation::addFrame(std::string path){
 
 	image.setPosition(posX, posY);
 	image.setSize(width, height);
+	
 	frames.push_back(image);
 
 }

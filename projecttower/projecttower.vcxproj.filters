@@ -103,7 +103,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VortexText.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
     <ClCompile Include="VortexButtonRectangle.cpp">
       <Filter>Source Files</Filter>
@@ -174,7 +174,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexText.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
     <ClInclude Include="VortexButtonRectangle.h">
       <Filter>Header Files</Filter>

@@ -5,12 +5,10 @@ ProgramController::ProgramController(Vortex * gameEngine) : SubController(gameEn
 
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
-	//subControllers.push_back(new MenuController(gameEngine));
+	subControllers.push_back(new MenuController(gameEngine));
 	subControllers.push_back(new GameController(gameEngine));
-	activeSubController = 0;
+	activeSubController = MENU_CONTROLLER_ID;
 	currentRenderController = subControllers[activeSubController];
-
-
 
 }
 
@@ -44,4 +42,5 @@ void ProgramController::update(){
 
 	//std::cout << "Something something darkside" << std::endl;
 	subControllers[activeSubController]->setNextControllerID(activeSubController);
+	currentRenderController = subControllers[activeSubController];
 }
