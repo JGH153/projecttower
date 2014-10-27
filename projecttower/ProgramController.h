@@ -25,8 +25,6 @@ public:
 	std::vector<RenderData> getStaticRenderData();
 
 
-
-
 private:
 	Vortex * gameEngine;
 	std::vector<SubController*> subControllers;
