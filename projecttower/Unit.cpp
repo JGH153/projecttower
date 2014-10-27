@@ -14,7 +14,7 @@ Unit::Unit(Vortex * gameEngine) : Entity(gameEngine){
 
 Unit::~Unit()
 {
-	std::cout << "I am dead, goodbye" << std::endl;
+	//std::cout << "I am dead, goodbye" << std::endl;
 }
 
 //bool Unit::takeDamageAndCheckIfDead(int damage) {

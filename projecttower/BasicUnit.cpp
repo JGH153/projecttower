@@ -46,7 +46,9 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 
 BasicUnit::~BasicUnit(){
 
-
+	for (auto current : moveAnimations) {
+		delete current;
+	}
 
 }
 

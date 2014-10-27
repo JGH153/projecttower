@@ -187,7 +187,7 @@ void GameController::update() {
 	//renderTiles();
 
 
-	if (gameEngine->eventMousePressedLeft) {
+	if (gameEngine->eventMousePressedRight) {
 		
 		auto mousePos = gameEngine->getMousePositionLocal();
 
@@ -201,6 +201,26 @@ void GameController::update() {
 
 		unitList.push_back(testUnit);
 		//renderObjectsVector.push_back(testUnit);
+
+		vectorMutex.unlock();
+
+	}
+
+	if (gameEngine->eventMouseClickedLeft) {
+
+		vectorMutex.lock();
+
+		auto mousePos = gameEngine->getMousePositionLocal();
+
+		for (int i = 0; i < unitList.size(); i++) {
+
+			if (unitList[i]->posX < mousePos.x) {
+				delete unitList[i];
+				unitList.erase(unitList.begin()+i);
+				i--;
+			}
+
+		}
 
 		vectorMutex.unlock();
 
@@ -224,6 +244,18 @@ void GameController::update() {
 	//sorting units so the unit with the lowest base y is renderd first
 	std::sort(unitList.begin(), unitList.end(), sortingInstanceDistance);
 	
+	//delete testing
+	//if (rand() % 100 < 10 && unitList.size() > 0) {
+
+	//	vectorMutex.lock();
+
+	//	auto unit = unitList[unitList.size() - 1];
+	//	delete unit;
+	//	unitList.pop_back();
+
+	//	vectorMutex.unlock();
+
+	//}
 
 
 	//Check if units are in proxmity to towers.

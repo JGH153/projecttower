@@ -52,7 +52,7 @@ void render() {
 
 	renderer->topLevelRenderController = programController;
 
-	float msToWait = 1000.f / (MAXFPS/2);
+	float msToWait = 1000.f / MAXFPS;
 	float lastRenderFrameTime = 0;
 	sf::Clock renderFrameTime;
 
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]){
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
 
-	float minimumLogicFrameTimeInMilliseconds = 1000.f / MAXFPS; //30 fps
+	float minimumLogicFrameTimeInMilliseconds = 1000.f / (MAXFPS / 2); //30 fps
 	
 
 	sf::Clock oneSecTimeClock;

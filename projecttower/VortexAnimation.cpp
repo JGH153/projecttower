@@ -18,6 +18,7 @@ VortexAnimation::VortexAnimation(float x, float y, int width, int height, float 
 
 
 VortexAnimation::~VortexAnimation(){
+
 }
 
 
