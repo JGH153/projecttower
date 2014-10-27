@@ -7,6 +7,7 @@
 #include "Unit.h"
 #include "SubController.h"
 #include "GlobalDefines.h"
+#include "VortexText.h"
 
 class SubController;
 

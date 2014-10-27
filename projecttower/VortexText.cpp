@@ -1,11 +1,17 @@
 #include "VortexText.h"
 
 
-VortexText::VortexText() {
+VortexText::VortexText() : sf::Text() {
 }
 
 
 VortexText::~VortexText() {
+}
+
+VortexText::VortexText(const std::string &string, const sf::Font &font, unsigned int characterSize) : sf::Text(string, font, characterSize) {
+
+
+
 }
 
 

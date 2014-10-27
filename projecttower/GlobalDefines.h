@@ -28,12 +28,13 @@ enum {
 };
 
 class VortexSprite;
+class VortexText;
 
 struct RenderData {
 
 	int dataType; //0 = none, 1 = sprite, 2 = text
 	VortexSprite * sprite;
-	sf::Text * text;
+	VortexText * text;
 
 	RenderData(VortexSprite * sprite) {
 		this->sprite = sprite;
@@ -43,7 +44,7 @@ struct RenderData {
 	//	this->sprite = &sprite;
 	//	dataType = renderData_Sprite;
 	//}
-	RenderData(sf::Text  * text) {
+	RenderData(VortexText  * text) {
 		this->text = text;
 		dataType = renderData_Text;
 	}
@@ -56,7 +57,7 @@ struct RenderData {
 		this->sprite = sprite;
 		dataType = renderData_Sprite;
 	}
-	void  operator = (sf::Text  * text) {
+	void  operator = (VortexText  * text) {
 		this->text = text;
 		dataType = renderData_Text;
 	}
@@ -64,7 +65,7 @@ struct RenderData {
 	operator VortexSprite * () {
 		return sprite;
 	}
-	operator sf::Text  * () {
+	operator VortexText  * () {
 		return text;
 	}
 

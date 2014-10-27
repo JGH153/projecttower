@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-//#include "Vortex.h"
+
 #include "RenderObject.h"
 #include "GlobalDefines.h"
 
@@ -21,7 +21,6 @@ public:
 	void setSize(sf::Vector2f newSize);
 
 	void update();
-	void render();
 
 	std::vector<RenderData> getRenderData();
 
