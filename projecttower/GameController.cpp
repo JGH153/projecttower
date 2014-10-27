@@ -120,21 +120,21 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-std::vector<RenderData> GameController::getStaticRenderData() {
-	std::vector<RenderData> renderList;
+std::vector<sf::Drawable *> GameController::getStaticRenderData() {
+	std::vector<sf::Drawable *> renderList;
 
 	vectorMutex.lock();
 
 	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
-		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
+		for (auto currentRenderObj : currentRenderObj->getRenderDrawable()) {
 			renderList.push_back(currentRenderObj);
 		}
 	}
 
 	for (auto currentRenderObj : mapTiles) {
 
-		for (auto currentRenderObj : currentRenderObj->getRenderData()) {
+		for (auto currentRenderObj : currentRenderObj->getRenderDrawable()) {
 			renderList.push_back(currentRenderObj);
 		}
 	}
@@ -143,16 +143,16 @@ std::vector<RenderData> GameController::getStaticRenderData() {
 	return renderList;
 }
 
-std::vector<RenderData> GameController::getDynamicRenderData() {
+std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
 	
-	std::vector<RenderData> renderList;
+	std::vector<sf::Drawable *> renderList;
 
 	vectorMutex.lock();
 
 
 	for (auto currentRenderVector : renderObjectsVector) {
 
-		for (auto currentRenderObj : currentRenderVector->getRenderData()) {
+		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
 			renderList.push_back(currentRenderObj);
 		}
 
@@ -160,7 +160,7 @@ std::vector<RenderData> GameController::getDynamicRenderData() {
 
 	for (auto currentRenderVector : unitList) {
 
-		for (auto currentRenderObj : currentRenderVector->getRenderData()) {
+		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
 			renderList.push_back(currentRenderObj);
 		}
 

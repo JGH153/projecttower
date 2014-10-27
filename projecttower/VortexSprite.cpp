@@ -3,6 +3,7 @@
 
 VortexSprite::VortexSprite() : sf::Sprite(){
 
+
 }
 
 VortexSprite::VortexSprite(const sf::Texture &texture) : sf::Sprite(texture){
@@ -39,10 +40,11 @@ void VortexSprite::update() {
 
 }
 
-std::vector<RenderData> VortexSprite::getRenderData() {
 
-	std::vector<RenderData> returnVector;
-	returnVector.push_back(RenderData(this));
-	return returnVector;
+std::vector<sf::Drawable *> VortexSprite::getRenderDrawable() {
+
+	std::vector<sf::Drawable *> returnVector2;
+	returnVector2.push_back(this);
+	return returnVector2;
 
 }

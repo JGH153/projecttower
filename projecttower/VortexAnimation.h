@@ -25,7 +25,7 @@ public:
 	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes);
 
 	void update();
-	std::vector<RenderData> getRenderData();
+	std::vector<sf::Drawable *> getRenderDrawable();
 
 	void reset();
 

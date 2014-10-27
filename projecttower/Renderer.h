@@ -44,6 +44,6 @@ private:
 	sf::RenderWindow * mainWindow;
 	std::string windowName;
 	float fps;
-	std::vector<RenderData> staticRenderListList;
+	std::vector<sf::Drawable *> staticRenderListList;
 };
 

@@ -19,10 +19,10 @@ public:
 	~MenuController();
 
 	void update();
-	std::vector<RenderData> getDynamicRenderData();
-	std::vector<RenderData> getStaticRenderData();
+	std::vector<sf::Drawable *> getDynamicRenderData();
+	std::vector<sf::Drawable *> getStaticRenderData();
 
-	std::vector<RenderObject *> getRenderObjectList();
+	//std::vector<RenderObject *> getRenderObjectList();
 
 private:
 	std::mutex guiMutex;

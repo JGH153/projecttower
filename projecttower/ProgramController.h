@@ -21,8 +21,8 @@ public:
 	~ProgramController();
 
 	void update();
-	std::vector<RenderData> getDynamicRenderData();
-	std::vector<RenderData> getStaticRenderData();
+	std::vector<sf::Drawable *> getDynamicRenderData();
+	std::vector<sf::Drawable *> getStaticRenderData();
 
 
 private:

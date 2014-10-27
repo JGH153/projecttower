@@ -12,7 +12,11 @@ public:
 	~RenderObject();
 
 	virtual void update() = 0;
-	virtual std::vector<RenderData> getRenderData() = 0;
+	virtual std::vector<sf::Drawable *> getRenderDrawable() = 0;
+
+protected:
+
+	std::vector<RenderData> returnVector;
 
 };
 

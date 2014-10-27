@@ -17,7 +17,7 @@ public:
 	~VortexText();
 
 	void update();
-	std::vector<RenderData> getRenderData();
+	std::vector<sf::Drawable *> getRenderDrawable();
 
 };
 

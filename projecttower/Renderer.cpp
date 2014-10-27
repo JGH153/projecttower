@@ -98,23 +98,15 @@ void Renderer::doRenderLoop() {
 		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
 
 		//REMEBER STATIC OBJECTS ARE ALWAYS IN THE BACKGROUND
-		for (RenderData currentRenderObj : staticRenderListList) {
-			if (currentRenderObj.dataType == renderData_Sprite) {
-				mainWindow->draw(*currentRenderObj.sprite);
-			}
-			else if (currentRenderObj.dataType == renderData_Text) {
-				mainWindow->draw(*currentRenderObj.text);
-			}
+		for (auto currentRenderObj : staticRenderListList) {
+			
+			mainWindow->draw(*currentRenderObj);
+
 		}
 
-		for (RenderData currentRenderObj : renderList) {
+		for (auto currentRenderObj : renderList) {
 
-			if (currentRenderObj.dataType == renderData_Sprite) {
-				mainWindow->draw(*currentRenderObj.sprite);
-			}
-			else if (currentRenderObj.dataType == renderData_Text) {
-				mainWindow->draw(*currentRenderObj.text);
-			}
+			mainWindow->draw(*currentRenderObj);
 			
 
 		}

@@ -17,8 +17,11 @@ void VortexButtonRectangle::update(){
 
 }
 
-std::vector<RenderData> VortexButtonRectangle::getRenderData(){
-	return image.getRenderData();
+
+std::vector<sf::Drawable *> VortexButtonRectangle::getRenderDrawable() {
+
+	return image.getRenderDrawable();
+
 }
 
 

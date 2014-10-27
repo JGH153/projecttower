@@ -7,7 +7,7 @@ public:
 
 	void update();
 	void render();
-	std::vector<RenderData> getRenderData();
+	std::vector<sf::Drawable *> getRenderDrawable();
 
 
 private:

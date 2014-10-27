@@ -53,8 +53,10 @@ BasicUnit::~BasicUnit(){
 
 }
 
-std::vector<RenderData> BasicUnit::getRenderData() {
-	return moveAnimations[currentMoveAnimationIndex]->getRenderData();
+
+
+std::vector<sf::Drawable *> BasicUnit::getRenderDrawable() {
+	return moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
 }
 
 

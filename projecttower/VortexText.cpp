@@ -21,10 +21,10 @@ void VortexText::update() {
 }
 
 
-std::vector<RenderData>  VortexText::getRenderData() {
+std::vector<sf::Drawable *> VortexText::getRenderDrawable() {
 
-	std::vector<RenderData> returnVector;
-	returnVector.push_back(RenderData(this));
-	return returnVector;
+	std::vector<sf::Drawable *> returnVector2;
+	returnVector2.push_back(this);
+	return returnVector2;
 
 }

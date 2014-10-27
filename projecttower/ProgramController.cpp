@@ -19,16 +19,16 @@ ProgramController::~ProgramController(){
 
 }
 
-std::vector<RenderData> ProgramController::getStaticRenderData() {
+std::vector<sf::Drawable *> ProgramController::getStaticRenderData() {
 
-	std::vector<RenderData> renderList;
+	std::vector<sf::Drawable *> renderList;
 	return renderList;
 }
 
 
-std::vector<RenderData> ProgramController::getDynamicRenderData() {
+std::vector<sf::Drawable *> ProgramController::getDynamicRenderData() {
 
-	std::vector<RenderData> renderList;
+	std::vector<sf::Drawable *> renderList;
 	return renderList;
 }
 
