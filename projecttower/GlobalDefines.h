@@ -40,7 +40,7 @@ struct RenderData {
 		this->sprite = sprite;
 		dataType = renderData_Sprite;
 	}
-	//RenderData(VortexSprite sprite) {
+	//RenderData(VortexSprite &sprite) {
 	//	this->sprite = &sprite;
 	//	dataType = renderData_Sprite;
 	//}

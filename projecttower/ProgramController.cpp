@@ -8,6 +8,7 @@ ProgramController::ProgramController(Vortex * gameEngine) : SubController(gameEn
 	subControllers.push_back(new MenuController(gameEngine));
 	subControllers.push_back(new GameController(gameEngine));
 	activeSubController = MENU_CONTROLLER_ID;
+	//activeSubController = GAME_CONTROLLER_ID;
 	currentRenderController = subControllers[activeSubController];
 
 }

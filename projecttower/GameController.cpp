@@ -127,16 +127,18 @@ std::vector<sf::Drawable *> GameController::getStaticRenderData() {
 
 	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
-		for (auto currentRenderObj : currentRenderObj->getRenderDrawable()) {
-			renderList.push_back(currentRenderObj);
-		}
+		auto tempVector = currentRenderObj->getRenderDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
 	}
 
 	for (auto currentRenderObj : mapTiles) {
 
-		for (auto currentRenderObj : currentRenderObj->getRenderDrawable()) {
-			renderList.push_back(currentRenderObj);
-		}
+		auto tempVector = currentRenderObj->getRenderDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
 	}
 
 	vectorMutex.unlock();
@@ -150,19 +152,20 @@ std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
 	vectorMutex.lock();
 
 
+
 	for (auto currentRenderVector : renderObjectsVector) {
 
-		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
-			renderList.push_back(currentRenderObj);
-		}
+		auto tempVector = currentRenderVector->getRenderDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
 
 	for (auto currentRenderVector : unitList) {
 
-		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
-			renderList.push_back(currentRenderObj);
-		}
+		auto tempVector = currentRenderVector->getRenderDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
 

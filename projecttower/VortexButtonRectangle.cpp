@@ -20,10 +20,12 @@ void VortexButtonRectangle::update(){
 
 
 std::vector<sf::Drawable *> VortexButtonRectangle::getRenderDrawable() {
+
 	std::vector<sf::Drawable *> drawData;
 	drawData.push_back(&image);
 	drawData.push_back(&text);
 	return drawData;
+
 
 }
 

@@ -42,8 +42,6 @@ void render() {
 
 	renderThreadOnline = true;
 
-	float rotation = 360.f;
-
 	while (programController == nullptr) {
 
 		sf::sleep(sf::milliseconds(10));
@@ -106,7 +104,8 @@ int main(int argc, char* argv[]){
 	gameEngine = new Vortex();
 
 	std::cout << "Starting render thread" << std::endl;
-	std::thread renderThread(render);
+	//std::thread renderThread(&Vortex::frameStart, gameEngine);
+	std::thread renderThread(&render);
 
 	
 
