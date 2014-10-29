@@ -63,7 +63,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 5000; i++){
+	for (int i = 0; i < 500; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);

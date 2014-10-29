@@ -14,7 +14,7 @@ class SubController;
 class Renderer
 {
 public:
-	Renderer(int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, bool fullscreen);
+	Renderer::Renderer(Vortex * gameEngine, int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, bool fullscreen);
 	~Renderer();
 
 	void drawClear();
@@ -38,14 +38,26 @@ public:
 	sf::RenderWindow * getWindow();
 	bool loaded;
 
+	bool renderThreadOnline;
+
 
 	//SubController * currentRenderSubController = nullptr;
 	SubController * topLevelRenderController = nullptr;
 
 private:
+
+	Vortex * gameEngine;
+
 	sf::RenderWindow * mainWindow;
 	std::string windowName;
 	float fps;
 	std::vector<std::vector<sf::Drawable *>> staticRenderList;
+
+	//temp values:
+
+	int screenWidth, screenHeight;
+	std::string iconPath;
+	bool fullscreen;
+
 };
 

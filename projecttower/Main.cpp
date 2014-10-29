@@ -22,106 +22,31 @@
 
 #include "RenderObject.h"
 
-Renderer * renderer;
-bool renderThreadOnline = false;
-Vortex * gameEngine;
-
-ProgramController * programController = nullptr;
-
-
-void render() {
-
-	renderer = new Renderer(WINDOWSIZEX, WINDOWSIZEY, 60.f, "Main Window", "Graphics/sfml.png", false);
-	std::cout << "Render thread started" << std::endl;
-	if (!renderer->loaded) {
-		std::cout << "Error initializing renderer" << std::endl;
-		std::cin.get();
-	}
-
-	std::cout << "Entering render loop" << std::endl;
-
-	renderThreadOnline = true;
-
-	while (programController == nullptr) {
-
-		sf::sleep(sf::milliseconds(10));
-
-	}
-
-	renderer->topLevelRenderController = programController;
-
-	float msToWait = 1000.f / MAXFPS;
-	float lastRenderFrameTime = 0;
-	sf::Clock renderFrameTime;
-
-
-	sf::Clock oneSecTimeClock;
-	int oneSecTime = 0;
-	int numFramesSek = 0;
-
-
-	while (gameEngine->running) {
-//		std::cout << "THREAD" << std::endl;
-
-
-		sf::Event mainEvent;
-		while (renderer->getWindow()->pollEvent(mainEvent)) {
-			gameEngine->pushEvent(mainEvent);
-
-		}
-
-		renderer->doRenderLoop();
-
-		int frameTime = renderFrameTime.restart().asMilliseconds();
-
-		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
-		numFramesSek++;
-		//one sec
-
-		if (oneSecTime > 1000) {
-			oneSecTime = 0;
-			std::cout << "Num render fps: " << numFramesSek << std::endl;
-			numFramesSek = 0;
-		}
-
-		if (frameTime < msToWait) {
-			sf::sleep(sf::milliseconds(msToWait - frameTime));
-			renderFrameTime.restart();
-		}
-		
-
-
-
-	}
-
-	renderThreadOnline = false;
-
-}
 
 int main(int argc, char* argv[]){
 
-	std::cout << "Creating new vortex" << std::endl;
-	gameEngine = new Vortex();
+	std::cout << "Creating new vortex and Renderer" << std::endl;
+
+	Vortex * gameEngine = new Vortex();
+	Renderer * renderer = new Renderer(gameEngine, WINDOWSIZEX, WINDOWSIZEY, 60.f, "Gregers Spill", "Graphics/sfml.png", false);
 
 	std::cout << "Starting render thread" << std::endl;
-	//std::thread renderThread(&Vortex::frameStart, gameEngine);
-	std::thread renderThread(&render);
+	//starting new thread caling renderer->renderMainLoop();
+	std::thread renderThread(&Renderer::renderMainLoop, renderer);
 
-	
-
-	//wait for render thred to start
-	while (!renderThreadOnline) {
+	//wait for render thread to start
+	while (!renderer->renderThreadOnline) {
 
 		sf::sleep(sf::milliseconds(10));
 
 	}
 
 	std::cout << "Initing vortex" << std::endl;
-
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");
 	
-
-	programController = new ProgramController(gameEngine);
+	//Seting up controllers (an loading all the data like sprites and textures into memory)
+	ProgramController * programController = new ProgramController(gameEngine);
+	renderer->topLevelRenderController = programController;
 	
 	//Just a class here i hvae contaned all the exaples of how to use Vortex
 	//VortexUseExample vortexUseExample(gameEngine);
@@ -137,38 +62,20 @@ int main(int argc, char* argv[]){
 
 	std::cout << "Starting main loop" << std::endl;
 	while (gameEngine->running) {
-//		std::cout << "MAIN" << std::endl;
-
-
 
 		gameEngine->frameStart();
-
-		//vortexUseExample.update();
-
-		//std::cout << gameEngine->getWindowEvents().size() << std::endl;
 
 		for each (sf::Event currentEvent in gameEngine->getWindowEvents()){
 			
 		}
 
-	/*	if (gameEngine->eventMouseClicked) {
-
-			sf::Vector2i mouse = gameEngine->getMousePosition();
-			auto mousePos = gameEngine->getMapPixelToCoords(mouse);
-
-			std::cout << mousePos.x << " " << mousePos.y << std::endl;
-
-
-		}*/
-		
-		//std::cout << "Updating program controller" << std::endl;
 		programController->update();
 
 		gameEngine->frameEnd();
 
 		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
 		numFramesSek++;
-		//one sec
+		//one sec, only preformed once each sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
 			std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
@@ -185,7 +92,7 @@ int main(int argc, char* argv[]){
 	}
 
 	//wait for render thread to finish
-	while (renderThreadOnline) {
+	while (renderer->renderThreadOnline) {
 
 		sf::sleep(sf::milliseconds(10));
 

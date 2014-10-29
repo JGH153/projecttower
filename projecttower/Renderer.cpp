@@ -1,37 +1,28 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, bool fullscreen) {
+Renderer::Renderer(Vortex * gameEngine, int screenWidth, int screenHeight, float fps, std::string windowName, std::string iconPath, bool fullscreen) {
 	bool initError = false;
 	this->fps = fps;
 
-	sf::ContextSettings openGLSettings;
-	openGLSettings.antialiasingLevel = 1;
+	this->gameEngine = gameEngine;
 
-	int windowSettings = sf::Style::Resize;
-	windowSettings = sf::Style::Default;
+	renderThreadOnline = false;
 
-	if (fullscreen){
+	
 
-		auto bestRes = sf::VideoMode::getFullscreenModes();
+	
 
-		screenWidth = bestRes[0].width;
-		screenHeight = bestRes[0].height;
+	topLevelRenderController = nullptr;
 
-		windowSettings = windowSettings | sf::Style::Fullscreen;
+	
+	
 
-	}
-
-	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName, windowSettings, openGLSettings);
-
-	sf::Image image;
-	if (!image.loadFromFile(iconPath)){
-		std::cout << "FATAL iconPath";
-		std::cin.get();
-		initError = true;
-	}
-
-	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
+	this->screenWidth = screenWidth;
+	this->screenHeight = screenHeight;
+	this->windowName = windowName;
+	this->iconPath = iconPath;
+	this->fullscreen = fullscreen;
 
 	/*sf::View view(sf::FloatRect(200, 200, 300, 200));
 	view.setRotation(20);
@@ -66,6 +57,96 @@ void Renderer::handleStaticBackground() {
 
 void Renderer::renderMainLoop() {
 
+	std::cout << "Render thread started" << std::endl;
+
+	sf::ContextSettings openGLSettings;
+	openGLSettings.antialiasingLevel = 1;
+
+	int windowSettings = sf::Style::Resize;
+	windowSettings = sf::Style::Default;
+
+	if (fullscreen) {
+
+		auto bestRes = sf::VideoMode::getFullscreenModes();
+
+		screenWidth = bestRes[0].width;
+		screenHeight = bestRes[0].height;
+
+		windowSettings = windowSettings | sf::Style::Fullscreen;
+
+	}
+
+	mainWindow = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName, windowSettings, openGLSettings);
+
+	sf::Image image;
+	if (!image.loadFromFile(iconPath)) {
+		std::cout << "FATAL iconPath";
+		std::cin.get();
+	}
+
+	mainWindow->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
+
+	if (!loaded) {
+		std::cout << "Error initializing renderer" << std::endl;
+		std::cin.get();
+	}
+
+	std::cout << "Entering render loop" << std::endl;
+
+	renderThreadOnline = true;
+
+	while (topLevelRenderController == nullptr) {
+
+		sf::sleep(sf::milliseconds(10));
+
+	}
+
+
+
+
+	float msToWait = 1000.f / MAXFPS;
+	float lastRenderFrameTime = 0;
+	sf::Clock renderFrameTime;
+
+
+	sf::Clock oneSecTimeClock;
+	int oneSecTime = 0;
+	int numFramesSek = 0;
+
+
+	while (gameEngine->running) {
+
+		sf::Event mainEvent;
+		while (getWindow()->pollEvent(mainEvent)) {
+			gameEngine->pushEvent(mainEvent);
+
+		}
+
+		doRenderLoop();
+
+		int frameTime = renderFrameTime.restart().asMilliseconds();
+
+
+		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
+		numFramesSek++;
+		//one sec, only preformed once each sec
+		if (oneSecTime > 1000) {
+			oneSecTime = 0;
+			std::cout << "Num render fps: " << numFramesSek << std::endl;
+			numFramesSek = 0;
+		}
+
+		if (frameTime < msToWait) {
+			sf::sleep(sf::milliseconds(msToWait - frameTime));
+			renderFrameTime.restart();
+		}
+
+
+
+
+	}
+
+	renderThreadOnline = false;
 
 
 }
