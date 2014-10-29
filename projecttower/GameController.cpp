@@ -5,16 +5,16 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
 	gameGuiController = new GameGuiController(gameEngine);
 
-	int tileSize = 50;
+	float forestTileSize = 50;
 
-	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++) {
-		for (int y = 0; y < (gameEngine->getWindowSize().y / tileSize); y++) {
+	for (int x = 0; x < (gameEngine->getWindowSize().x / forestTileSize); x++) {
+		for (int y = 0; y < (gameEngine->getWindowSize().y / forestTileSize); y++) {
 
 			sf::Texture * texImageTile;
 			texImageTile = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
 			VortexSprite * tempSprite = new VortexSprite(*texImageTile);
-			tempSprite->setPosition(x * tileSize, y * tileSize);
-			tempSprite->setSize(tileSize, tileSize);
+			tempSprite->setPosition(x * forestTileSize, y * forestTileSize);
+			tempSprite->setSize(forestTileSize, forestTileSize);
 			backgroundTextures.push_back(tempSprite);
 
 
@@ -33,27 +33,53 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	bgSprite.setPosition(0, 0);
 	//bgSprite.setSize((sf::Vector2f)gameEngine->getWindowSize());
 
-	int guiOffsetY = 50;
-	tileSize = 25;
+	//tileSize = 25;
+	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 
-	for (int x = 0; x < (gameEngine->getWindowSize().x / tileSize); x++){
-		for (int y = 0; y < ((gameEngine->getWindowSize().y / tileSize) - ((guiOffsetY * 2) / tileSize)); y++){
+	for (int x = 0; x < GAMEMAPSIZEX; x++){
+		for (int y = 0; y < GAMEMAPSIZEY; y++){
 
 			sf::Texture * texImageTile;
+			
 
+			if (x == (GAMEMAPSIZEX / 2)) {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+			}
+			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) - 1 || y == (GAMEMAPSIZEY / 2) + 1)) {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+			}
+			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) || y == (GAMEMAPSIZEY / 2))) {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/cave.png");
+			}
+			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)))) {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
+			}
+			else {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/grass_tile.png");
+			}
+
+			if ((x == (GAMEMAPSIZEX / 10) - 1 || x == (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10))) && y != GAMEMAPSIZEY / 2) {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+			}
+
+			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY) - (GAMEMAPSIZEY / 6)) {
+				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
+			}
+			/*
 			int num = rand() % 101;
 			if (num < 25)
 				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
 			else if (num < 50)
-				texImageTile = gameEngine->loadImageToTexture("Graphics/grass.png");
+				
 			else if (num < 75)
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
 			else
 				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
 
+				*/
 			VortexSprite * tempSprite = new VortexSprite(*texImageTile);
-			tempSprite->setPosition(x * tileSize, guiOffsetY + (y * tileSize));
-			tempSprite->setSize(tileSize, tileSize);
+			tempSprite->setPosition(x * gridTileSize, y * gridTileSize);
+			tempSprite->setSize(gridTileSize, gridTileSize);
 			mapTiles.push_back(tempSprite);
 
 		}
@@ -103,9 +129,15 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 
 	//renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", "Button", gameEngine));
 
-
+	int viewWidth = WINDOWSIZEX / 2;
+	int viewHeight = WINDOWSIZEY / 2;
+	sf::View view(sf::FloatRect(((WINDOWSIZEX / 2) - (viewWidth / 2)), ((WINDOWSIZEY / 2) - (viewHeight / 2)), viewWidth, viewHeight));
+	gameView = view;
 
 	
+}
+sf::View GameController::getView() {
+	return gameView;
 }
 
 struct sortinStructDistance {
@@ -215,11 +247,40 @@ GameController::~GameController(){
 
 void GameController::update() {
 	//std::cout << "In game controller" << std::endl;
-
+	auto mousePos = gameEngine->getMousePosition();
+	
+	
 	if (gameEngine->eventMousePressedRight) {
-		
-		auto mousePos = gameEngine->getMousePositionLocal();
+		if (gameEngine->eventMouseMove) {
+			//Move the viewport
+			int viewChangeX = previousMousePos.x - mousePos.x;
+			int viewChangeY = previousMousePos.y - mousePos.y;
 
+			//If going out of bounds on the left side
+			if (gameView.getCenter().x + viewChangeX < gameView.getSize().x / 2) {
+				gameView.setCenter(sf::Vector2f(gameView.getSize().x / 2, gameView.getCenter().y));
+				viewChangeX = 0;
+			} 
+			//If going out of bounds on the right side
+			else if (gameView.getCenter().x + viewChangeX > gameView.getSize().x + gameView.getSize().x / 2) {
+				gameView.setCenter(sf::Vector2f(gameView.getSize().x + gameView.getSize().x / 2, gameView.getCenter().y));
+				viewChangeX = 0;
+			}
+
+			//If going out of bounds on top
+			if (gameView.getCenter().y + viewChangeY < gameView.getSize().y / 2) {
+				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, gameView.getSize().y / 2));
+				viewChangeY = 0;
+			}
+			//If going out of bounds on bottom
+			else if (gameView.getCenter().y + viewChangeY > gameView.getSize().y + gameView.getSize().y / 2) {
+				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, gameView.getSize().y + gameView.getSize().y / 2));
+				viewChangeY = 0;
+			}
+
+			gameView.move(viewChangeX, viewChangeY);
+		}
+		/*
 		BasicUnit * testUnit = new BasicUnit(gameEngine, mousePos.x, mousePos.y);
 		testUnit->posX = testUnit->posX - (testUnit->width / 2);
 		testUnit->posY = testUnit->posY - (testUnit->height / 2);
@@ -232,22 +293,44 @@ void GameController::update() {
 		//renderObjectsVector.push_back(testUnit);
 
 		vectorMutex.unlock();
+		*/
+		
+		
+	}
+	if (gameEngine->eventMouseClickedLeft) {
+		vectorMutex.lock();
+
+		auto mousePos = gameEngine->getMousePositionLocal();
+
+		bool towerExists = false;
+		for (int i = 0; i < towerList.size(); i++) {
+			if (mousePos == towerList[i]->getPos()) {
+				std::cout << "Tower exists fool!" << std::endl;
+				towerExists = true;
+				break;
+			}
+		}
+		if (!towerExists) {
+			std::cout << "Adding tower at" << mousePos.x << ", " << mousePos.y << std::endl;
+			BasicTower * testTower = new BasicTower(gameEngine, mousePos.x, mousePos.y);
+			towerList.push_back(testTower);
+		}
+		vectorMutex.unlock();
 
 	}
-
 	if (gameEngine->eventMousePressedLeft) {
 
 		vectorMutex.lock();
 
 		auto mousePos = gameEngine->getMousePositionLocal();
-
+		/*
 		for (int i = 0; i < unitList.size(); i++) {
 
-			/*if (unitList[i]->posX < mousePos.x) {
+			if (unitList[i]->posX < mousePos.x) {
 				delete unitList[i];
 				unitList.erase(unitList.begin()+i);
 				i--;
-			}*/
+			}
 
 			if (unitList[i]->hitPoint(mousePos)) {
 				delete unitList[i];
@@ -255,6 +338,8 @@ void GameController::update() {
 			}
 
 		}
+		*/
+		
 
 		vectorMutex.unlock();
 
@@ -337,6 +422,6 @@ void GameController::update() {
 
 
 	gameGuiController->update();
-	
+	previousMousePos = mousePos;
 	
 }

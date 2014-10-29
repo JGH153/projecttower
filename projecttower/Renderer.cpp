@@ -24,9 +24,7 @@ Renderer::Renderer(Vortex * gameEngine, int screenWidth, int screenHeight, float
 	this->iconPath = iconPath;
 	this->fullscreen = fullscreen;
 
-	/*sf::View view(sf::FloatRect(200, 200, 300, 200));
-	view.setRotation(20);
-	mainWindow->setView(view);*/
+	
 
 
 	this->windowName = windowName;
@@ -113,6 +111,8 @@ void Renderer::renderMainLoop() {
 	int oneSecTime = 0;
 	int numFramesSek = 0;
 
+	//mainWindow->setFramerateLimit(MAXFPS);
+	
 
 	while (gameEngine->running) {
 
@@ -173,7 +173,6 @@ void Renderer::doRenderLoop() {
 
 	//t1 = tidTaker.getElapsedTime();
 
-
 	//make the sub controller render itself
 	if (tempControllerPointer != nullptr) {
 		//tempControllerPointer->render();
@@ -182,8 +181,8 @@ void Renderer::doRenderLoop() {
 		bool staticDone = false;
 		bool dynamicDone = false;
 
+		mainWindow->setView(tempControllerPointer->getView());
 		auto dynamicRenderList = tempControllerPointer->getDynamicRenderData();
-
 		//t2 = tidTaker.getElapsedTime();
 
 		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";

@@ -34,6 +34,7 @@ public:
 	void update();
 	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
 	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
+	sf::View getView();
 
 	//std::vector<RenderObject *> getRenderObjectList();
 	
@@ -43,10 +44,11 @@ private:
 	//void renderTiles();
 
 	VortexSprite bgSprite;
-
+	float gridTileSize;
 	std::vector<VortexSprite *> backgroundTextures;
 	std::vector<VortexSprite *> mapTiles;
-
+	sf::View gameView;
+	sf::Vector2i previousMousePos;
 
 	std::vector <VortexConvexButton> buttonList;
 	std::vector <VortexButton> rectButtonTest; //DEBUG: Delete if i forget
@@ -60,7 +62,7 @@ private:
 
 	std::mutex vectorMutex;
 
-
+	
 
 };
 

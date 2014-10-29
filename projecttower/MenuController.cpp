@@ -76,3 +76,7 @@ std::vector<std::vector<sf::Drawable *>> MenuController::getStaticRenderData() {
 	
 	return renderList;
 }
+
+sf::View MenuController::getView() {
+	return sf::View(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
+}

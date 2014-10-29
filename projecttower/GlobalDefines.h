@@ -13,8 +13,12 @@ const sf::Vector2i DIR_WEST =		{ -1, 0 };
 const sf::Vector2i DIR_EAST =		{ 1, 0 };
 const sf::Vector2i DIR_NORTH	=	{ 0, -1 };
 
-const int WINDOWSIZEX = 1000;
-const int WINDOWSIZEY = 600;
+const int WINDOWSIZEX = 1280;
+const int WINDOWSIZEY = 720;
+
+//Maintain ratio based on resolution (16(+1):9) atm. +1 due to the middle column used for separation between players
+const int GAMEMAPSIZEX = 49; 
+const int GAMEMAPSIZEY = 27;
 
 const int MAXFPS = 60;
 

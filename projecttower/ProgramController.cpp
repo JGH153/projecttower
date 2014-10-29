@@ -23,6 +23,10 @@ ProgramController::~ProgramController(){
 
 }
 
+sf::View ProgramController::getView() {
+	return sf::View(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
+}
+
 std::vector<std::vector<sf::Drawable *>> ProgramController::getStaticRenderData() {
 
 	std::vector<std::vector<sf::Drawable *>> renderList;

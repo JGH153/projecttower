@@ -27,6 +27,7 @@ public:
 	virtual void update();
 	virtual std::vector<std::vector<sf::Drawable *>> getDynamicRenderData() = 0;
 	virtual std::vector<std::vector<sf::Drawable *>> getStaticRenderData() = 0;
+	virtual sf::View getView() = 0;
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
 	void setNextControllerID(int ID);

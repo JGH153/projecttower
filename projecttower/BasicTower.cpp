@@ -13,7 +13,7 @@ BasicTower::BasicTower(Vortex * gameEngine, int posX, int posY) : Tower(gameEngi
 	towerSprite = new VortexSprite(*texImageTile);
 	towerSprite->setPosition(posX, posY);
 	towerSprite->setSize(50, 50);
-
+	//towerSprite->rotate(180);
 }
 
 
