@@ -16,7 +16,7 @@
 class MenuController : public SubController {
 
 public:
-	MenuController(Vortex * gameEngine);
+	MenuController(Vortex * gameEngine, int controllerID);
 	~MenuController();
 
 	void update();

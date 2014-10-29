@@ -1,13 +1,13 @@
 #include "ProgramController.h"
 
 
-ProgramController::ProgramController(Vortex * gameEngine) : SubController(gameEngine) {
+ProgramController::ProgramController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
 
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
-	subControllers.push_back(new MenuController(gameEngine));
+	subControllers.push_back(new MenuController(gameEngine, MENU_CONTROLLER_ID));
 	subControllers[subControllers.size() - 1]->setNextControllerID(MENU_CONTROLLER_ID);
-	subControllers.push_back(new GameController(gameEngine));
+	subControllers.push_back(new GameController(gameEngine, GAME_CONTROLLER_ID));
 	subControllers[subControllers.size() - 1]->setNextControllerID(GAME_CONTROLLER_ID);
 
 	activeSubController = MENU_CONTROLLER_ID;

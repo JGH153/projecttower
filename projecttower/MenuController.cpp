@@ -1,7 +1,7 @@
 #include "MenuController.h"
 
 
-MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
+MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
 	nextControllerID = MENU_CONTROLLER_ID;
 	int centerX = gameEngine->getWindowSize().x / 2;
 	int centerY = gameEngine->getWindowSize().y / 2;

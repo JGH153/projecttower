@@ -22,7 +22,7 @@
 class GameController : public SubController
 {
 public:
-	GameController(Vortex * gameEngine);
+	GameController(Vortex * gameEngine, int controllerID);
 	~GameController();
 	std::vector<Tower*> towers;
 	std::vector<Unit*> units;

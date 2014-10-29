@@ -22,7 +22,7 @@ protected:
 	SubController * currentRenderController = nullptr;
 
 public:
-	SubController(Vortex * gameEngine);
+	SubController(Vortex * gameEngine, int controllerID);
 	~SubController();
 	virtual void update();
 	virtual std::vector<std::vector<sf::Drawable *>> getDynamicRenderData() = 0;
