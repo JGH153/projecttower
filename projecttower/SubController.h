@@ -25,8 +25,8 @@ public:
 	SubController(Vortex * gameEngine);
 	~SubController();
 	virtual void update();
-	virtual std::vector<sf::Drawable *> getDynamicRenderData() = 0;
-	virtual std::vector<sf::Drawable *> getStaticRenderData() = 0;
+	virtual std::vector<std::vector<sf::Drawable *>> getDynamicRenderData() = 0;
+	virtual std::vector<std::vector<sf::Drawable *>> getStaticRenderData() = 0;
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
 	void setNextControllerID(int ID);

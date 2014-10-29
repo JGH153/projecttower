@@ -20,10 +20,24 @@ public:
 	Entity(Vortex * gameEngine);
 	~Entity();
 
+
+	sf::Vector2f getPos();
+	sf::Vector2i getSize();
+
+	void setPos(float posX, float posY);
+	void setSize(int width, int height);
 	
 	//virtual void update();
 
+	float posX;
+	float posY;
+
+	int width;
+	int height;
+
 protected:
+
+	
 
 	Vortex * gameEngine;
 

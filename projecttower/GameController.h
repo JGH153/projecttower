@@ -10,7 +10,7 @@
 
 #include "Vortex.h"
 
-#include "Tower.h"
+#include "BasicTower.h"
 #include "BasicUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
@@ -32,8 +32,8 @@ public:
 	
 
 	void update();
-	std::vector<sf::Drawable *> getDynamicRenderData();
-	std::vector<sf::Drawable *> getStaticRenderData();
+	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
+	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
 
 	//std::vector<RenderObject *> getRenderObjectList();
 	
@@ -53,6 +53,8 @@ private:
 	std::vector <VortexButton *> someButtons; //DEBUG: Delete if i forget
 
 	std::vector <Unit *> unitList;
+	std::vector <Tower *> towerList;
+	
 
 	std::vector<RenderObject *> renderObjectsVector;
 

@@ -1,24 +1,9 @@
 #include "VortexButton.h"
 
-VortexButton::VortexButton(double x, double y, std::string imagePath, std::string title, Vortex * gameEngine){
+VortexButton::VortexButton(double x, double y, Vortex * gameEngine){
 	this->gameEngine = gameEngine;
-	image = VortexSprite(gameEngine->loadImageToSprite(imagePath));
 	posX = x;
 	posY = y;
-	this->title = title;
-
-	font = *gameEngine->loadFont("Fonts/arial.ttf");
-	// select the font
-	text.setFont(font); // font is a sf::Font
-	// set the string to display
-	text.setString(title);
-	// set the character size
-	text.setCharacterSize(28); // in pixels, not points!
-	// set the color
-	text.setColor(sf::Color::Red);
-	// set the text style
-	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-
 }
 
 
@@ -49,4 +34,9 @@ bool VortexButton::buttonClicked(){
 		return hitPoint(gameEngine->getMapPixelToCoords(mouse));
 	}
 	return false;
+}
+
+bool VortexButton::mouseOver(){	
+	sf::Vector2i mouse = gameEngine->getMousePosition();
+	return hitPoint(gameEngine->getMapPixelToCoords(mouse));
 }

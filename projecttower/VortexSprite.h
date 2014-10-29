@@ -4,6 +4,7 @@
 #include <SFML\Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <string>
 
 
 #include "RenderObject.h"
@@ -14,11 +15,15 @@ class Vortex;
 class VortexSprite : public sf::Sprite, public RenderObject{
 public:
 	VortexSprite();
+	//VortexSprite(std::string path, float posX, float posY);
 	VortexSprite(const sf::Texture &texture);
 	~VortexSprite();
 
 	void setSize(double w, double h);
 	void setSize(sf::Vector2f newSize);
+
+	bool hitPoint(sf::Vector2f point);
+	bool hitPoint(double x, double y);
 
 	void update();
 

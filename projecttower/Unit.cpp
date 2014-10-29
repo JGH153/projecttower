@@ -17,6 +17,21 @@ Unit::~Unit()
 	//std::cout << "I am dead, goodbye" << std::endl;
 }
 
+
+bool Unit::hitPoint(sf::Vector2f point) {
+	return hitPoint(point.x, point.y);
+}
+
+bool Unit::hitPoint(double x, double y) {
+
+	if (x >= this->posX && x <= this->posX + this->width
+		&& y >= this->posY && y <= this->posY + this->height) {
+		return true;
+	}
+
+	return false;
+}
+
 //bool Unit::takeDamageAndCheckIfDead(int damage) {
 //	hp -= damage;
 //	if (hp <= 0) {

@@ -63,11 +63,20 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//Tower * testTower = new Tower(gameEngine);
 	//unitList.push_back(testTower);
 
-	for (int i = 0; i < 5000; i++){
+	for (int i = 0; i < 100; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
 		unitList.push_back(testUnit);
+		//renderObjectsVector.push_back(testUnit);
+
+	}
+
+	for (int i = 0; i < 10; i++) {
+
+		BasicTower * testTower = new BasicTower(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
+		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
+		towerList.push_back(testTower);
 		//renderObjectsVector.push_back(testUnit);
 
 	}
@@ -82,7 +91,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	vertices.push_back(sf::Vector2f(0, 85));
 	VortexConvexButton testButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine);
 	buttonList.push_back(testButton);
-	renderObjectsVector.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
+	//renderObjectsVector.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
 	/*renderer->mapTiles = mapTiles;
 	renderer->unitList = unitList;
 	renderer->bgSprite = bgSprite;
@@ -92,7 +101,7 @@ GameController::GameController(Vortex * gameEngine) : SubController(gameEngine){
 	//renderer->currentRenderSubController = this;
 
 
-	renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", "Button", gameEngine));
+	//renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", "Button", gameEngine));
 
 
 
@@ -103,7 +112,7 @@ struct sortinStructDistance {
 
 	bool operator() (Unit * a, Unit * b) {
 
-		if (a->posY + a->height < b->posY + b->height) {
+		if (a->getPos().y + a->getSize().y < b->getPos().y + b->getSize().y) {
 
 			//if (a->posX + a->width < b->posX + b->height) {
 				return true;
@@ -120,7 +129,10 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-std::vector<sf::Drawable *> GameController::getStaticRenderData() {
+std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
+	
+	std::vector<std::vector<sf::Drawable *>> renderSuperList;
+
 	std::vector<sf::Drawable *> renderList;
 
 	vectorMutex.lock();
@@ -142,11 +154,16 @@ std::vector<sf::Drawable *> GameController::getStaticRenderData() {
 	}
 
 	vectorMutex.unlock();
-	return renderList;
+
+	renderSuperList.push_back(renderList);
+
+	return renderSuperList;
 }
 
-std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
+std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() {
 	
+	std::vector<std::vector<sf::Drawable *>> renderSuperList;
+
 	std::vector<sf::Drawable *> renderList;
 
 	vectorMutex.lock();
@@ -161,6 +178,17 @@ std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
 
 	}
 
+	
+
+	for (auto currentRenderVector : towerList) {
+
+		auto tempVector = currentRenderVector->getRenderDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
+	}
+
+
 	for (auto currentRenderVector : unitList) {
 
 		auto tempVector = currentRenderVector->getRenderDrawable();
@@ -172,9 +200,11 @@ std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
 
 	vectorMutex.unlock();
 
+	renderSuperList.push_back(renderList);
+
 
 	
-	return renderList;
+	return renderSuperList;
 
 }
 
@@ -205,7 +235,7 @@ void GameController::update() {
 
 	}
 
-	if (gameEngine->eventMouseClickedLeft) {
+	if (gameEngine->eventMousePressedLeft) {
 
 		vectorMutex.lock();
 
@@ -213,10 +243,15 @@ void GameController::update() {
 
 		for (int i = 0; i < unitList.size(); i++) {
 
-			if (unitList[i]->posX < mousePos.x) {
+			/*if (unitList[i]->posX < mousePos.x) {
 				delete unitList[i];
 				unitList.erase(unitList.begin()+i);
 				i--;
+			}*/
+
+			if (unitList[i]->hitPoint(mousePos)) {
+				delete unitList[i];
+				unitList.erase(unitList.begin() + i);
 			}
 
 		}

@@ -2,8 +2,18 @@
 #include "VortexConvexButton.h"
 
 
-VortexConvexButton::VortexConvexButton(int x, int y, std::vector<sf::Vector2f> vertices, std::string imageSource, std::string title, Vortex * gameEngine) : VortexButton(x, y, imageSource, title, gameEngine){
-	shape.setTexture(image.getTexture());
+VortexConvexButton::VortexConvexButton(int x, int y, std::vector<sf::Vector2f> vertices, std::string imageSource, std::string title, Vortex * gameEngine) : VortexButton(x, y, gameEngine){
+	image = new VortexSprite(gameEngine->loadImageToSprite(imageSource));
+	shape.setTexture(image->getTexture());
+
+	this->title = title;
+	font = *gameEngine->loadFont("Fonts/arial.ttf");
+	text.setFont(font);
+	text.setString(title);
+	text.setCharacterSize(28);
+	text.setColor(sf::Color::Blue);
+	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
 
 	float lowestX = 999999999.0f;
 	float highestX = 0.0f;
@@ -45,8 +55,16 @@ VortexConvexButton::~VortexConvexButton()
 {
 }
 
-bool VortexConvexButton::hitPoint(sf::Vector2f point){
-	return hitPoint(point.x, point.y);
+void VortexConvexButton::update(){
+	if (mouseOver()){
+		shape.setOutlineThickness(3.0f);
+		shape.setFillColor(sf::Color(225, 225, 225, 255));
+		shape.setOutlineColor(sf::Color(215, 215, 215, 255));
+	}
+	else {
+		shape.setOutlineThickness(0.0f);
+		shape.setFillColor(sf::Color(255, 255, 255, 255));
+	}
 }
 
 std::vector<sf::Drawable *> VortexConvexButton::getRenderDrawable() {
@@ -54,6 +72,10 @@ std::vector<sf::Drawable *> VortexConvexButton::getRenderDrawable() {
 	returnVector2.push_back(&shape);
 	returnVector2.push_back(&text);
 	return returnVector2;
+}
+
+bool VortexConvexButton::hitPoint(sf::Vector2f point){
+	return hitPoint(point.x, point.y);
 }
 
 // Winding number test for a point in a polygon
@@ -115,15 +137,15 @@ int VortexConvexButton::isLeft(sf::Vector2f P0, sf::Vector2f P1, sf::Vector2f P2
 	return ((P1.x - P0.x) * (P2.y - P0.y) - (P2.x - P0.x) * (P1.y - P0.y));
 }
 
-void VortexConvexButton::update(){
-
-}
-
 void VortexConvexButton::setPosition(sf::Vector2f newPosition) {
+	for (int i = 0; i < shape.getPointCount(); i++){
+		sf::Vector2f newPoint = shape.getPoint(i);
+		newPoint.x += newPosition.x - (newPosition.x - posX);
+		newPoint.y += newPosition.y - (newPosition.y - posY);
+		shape.setPoint(i, newPoint);
+	}
 	posX = newPosition.x;
 	posY = newPosition.y;
-	image.setPosition(newPosition);
-	shape.setPosition(newPosition);
 	newPosition.x += shape.getGlobalBounds().width / 2 - text.getGlobalBounds().width / 2;
 	newPosition.y += shape.getGlobalBounds().height / 2;
 	text.setPosition(newPosition);

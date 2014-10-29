@@ -25,4 +25,9 @@ public:
 	int isLeft(sf::Vector2f P0, sf::Vector2f P1, sf::Vector2f P2);
 private:
 	sf::ConvexShape shape;
+	std::string title;
+	VortexText text;
+	sf::Font font;
+	VortexSprite * image;
+
 };

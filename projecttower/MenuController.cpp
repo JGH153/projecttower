@@ -16,8 +16,11 @@ MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
 	vertices.push_back(sf::Vector2f(10, 210));
 	vertices.push_back(sf::Vector2f(0, 85));
 
-	guiObjects.push_back(new VortexButtonRectangle(centerX - (buttonWidth / 2), centerY - (buttonHeight / 2), buttonWidth, buttonHeight, "Graphics/button.png", "Menubutton", gameEngine));
-	guiObjects.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
+	VortexButtonRectangle * rectangleTestButton = new VortexButtonRectangle(centerX - (buttonWidth / 2), centerY - (buttonHeight / 2), buttonWidth, buttonHeight, "Graphics/button.png", "Menubutton", gameEngine);
+	VortexConvexButton * convexTestButton = new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine);
+	rectangleTestButton->setHoverImage("Graphics/dirt.png");
+	guiObjects.push_back(rectangleTestButton);
+	guiObjects.push_back(convexTestButton);
 }
 
 
@@ -36,8 +39,14 @@ void MenuController::update() {
 	}
 }
 
-std::vector<sf::Drawable *> MenuController::getDynamicRenderData() {
-	std::vector<sf::Drawable *> returnList;
+std::vector<std::vector<sf::Drawable *>> MenuController::getDynamicRenderData() {
+	
+	std::vector<std::vector<sf::Drawable *>> renderList;
+
+	std::vector<sf::Drawable *> renderListSub;
+	renderList.push_back(renderListSub);
+	return renderList;
+	
 	/*
 	//Add dynamic objects to be rendered into the return list
 	guiMutex.lock();
@@ -48,19 +57,25 @@ std::vector<sf::Drawable *> MenuController::getDynamicRenderData() {
 	}
 	guiMutex.unlock();
 	*/
-	return returnList;
+	return renderList;
 }
-std::vector<sf::Drawable *> MenuController::getStaticRenderData() {
-	std::vector<sf::Drawable *> returnList;
+std::vector<std::vector<sf::Drawable *>> MenuController::getStaticRenderData() {
+	
+	std::vector<std::vector<sf::Drawable *>> renderList;
+
+	std::vector<sf::Drawable *> renderListSub;
+	
 	
 	//Add static objects to be rendered into the return list
 	guiMutex.lock();
 	for (auto currentRenderVector : guiObjects) {
 		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
-			returnList.push_back(currentRenderObj);
+			renderListSub.push_back(currentRenderObj);
 		}
 	}
 	guiMutex.unlock();
+
+	renderList.push_back(renderListSub);
 	
-	return returnList;
+	return renderList;
 }

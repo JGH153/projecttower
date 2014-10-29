@@ -108,6 +108,9 @@
     <ClCompile Include="VortexButtonRectangle.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
+    <ClCompile Include="BasicTower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="VortexButtonRectangle.h">
       <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicTower.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

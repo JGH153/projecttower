@@ -73,6 +73,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicTower.cpp" />
     <ClCompile Include="BasicUnit.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameController.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="VortexUseExample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicTower.h" />
     <ClInclude Include="BasicUnit.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameController.h" />
