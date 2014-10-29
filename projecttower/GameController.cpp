@@ -20,9 +20,9 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 		}
 	}
-
-
-
+	sf::Texture * tempBuildTexture = gameEngine->loadImageToTexture("Graphics/Towers/NormalReducedCanvas.png");
+	towerBuildSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", 0, 0, tempBuildTexture->getSize().x / 2.1, tempBuildTexture->getSize().y / 2.1);
+	towerBuildSprite->setColor(UNABLETOBUILD); //A bit red and transparent = cannot build here
 
 	sf::Texture * texImage = gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
 	texImage->setRepeated(true);
@@ -54,7 +54,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 				texImageTile = gameEngine->loadImageToTexture("Graphics/cave.png");
 				buildable[x][y] = false;
 			}
-			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)))) {
+			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)) || ((x == GAMEMAPSIZEX / 2 - 2) || (x == GAMEMAPSIZEX / 2 + 2) || (x <= GAMEMAPSIZEX / 10) || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10) - 1)) && (y == GAMEMAPSIZEY / 2))) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
 				buildable[x][y] = false;
 			}
@@ -104,7 +104,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 		//renderObjectsVector.push_back(testUnit);
 
 	}
-
+	/*
 	for (int i = 0; i < 10; i++) {
 
 		BasicTower * testTower = new BasicTower(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
@@ -185,6 +185,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
+	renderList.push_back(towerBuildSprite);
 
 	vectorMutex.unlock();
 
@@ -247,9 +248,24 @@ GameController::~GameController(){
 
 
 void GameController::update() {
-	//std::cout << "In game controller" << std::endl;
+	building = true; //Should be true when player wants to build
 	auto mousePos = gameEngine->getMousePosition();
 	
+	if (gameEngine->eventMouseMove && building == true) {
+		auto mousePos = gameEngine->getMousePositionLocal();
+
+		int xpos = mousePos.x / gridTileSize;
+		int ypos = mousePos.y / gridTileSize;
+
+		towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
+
+		if (buildable[xpos][ypos]) {
+			towerBuildSprite->setColor(ABLETOBUILD);
+		}
+		else {
+			towerBuildSprite->setColor(UNABLETOBUILD);
+		}
+	}
 	
 	if (gameEngine->eventMousePressedRight) {
 		if (gameEngine->eventMouseMove) {
@@ -298,6 +314,7 @@ void GameController::update() {
 		
 		
 	}
+	
 	if (gameEngine->eventMouseClickedLeft) {
 		
 		auto mousePos = gameEngine->getMousePositionLocal();
@@ -306,14 +323,14 @@ void GameController::update() {
 		int ypos = mousePos.y / gridTileSize;
 
 		if (buildable[xpos][ypos]) {
-			std::cout << "Adding tower at " << xpos << ", " << ypos << std::endl;
 			BasicTower * testTower = new BasicTower(gameEngine, xpos * gridTileSize, ypos * gridTileSize);
 			vectorMutex.lock();
 			towerList.push_back(testTower);
 			vectorMutex.unlock();
 			buildable[xpos][ypos] = false;
+			building = false;
 		} else {
-			std::cout << "Tower exists fool!" << std::endl;
+			// Play unable to build beep sound
 		}
 		
 

@@ -22,6 +22,9 @@ const int GAMEMAPSIZEY = 27;
 
 const int MAXFPS = 60;
 
+const sf::Color UNABLETOBUILD(150, 0, 0, 200);
+const sf::Color ABLETOBUILD(0, 150, 0, 200);
+
 
 const std::array<sf::Vector2i, 4> DIRECTIONS = { DIR_SOUTH, DIR_WEST, DIR_EAST, DIR_NORTH };
 

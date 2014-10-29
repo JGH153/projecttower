@@ -51,6 +51,9 @@ private:
 	sf::View gameView;
 	sf::Vector2i previousMousePos;
 
+	bool building;
+	VortexSprite * towerBuildSprite;
+
 	std::vector <VortexConvexButton> buttonList;
 	std::vector <VortexButton> rectButtonTest; //DEBUG: Delete if i forget
 	std::vector <VortexButton *> someButtons; //DEBUG: Delete if i forget
