@@ -19,6 +19,6 @@ public:
 
 	//bool canAttack();
 	//bool attack();
-	virtual void update();
+	//virtual void update();
 };
 

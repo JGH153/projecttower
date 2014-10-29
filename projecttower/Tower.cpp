@@ -37,20 +37,20 @@ Tower::~Tower()
 //	return true;
 //}
 
-void Tower::update() {
-
-	//std::cout << "TOWER" << std::endl;
-	//std::cout << gameEngine->getWindow()->getSize().x;
-
-	//gameEngine->getWindow()->draw(sprite);
-	//if (!target) {
-	//	return;
-	//}
-	//double xdist = abs(position.x - target->position.x);
-	//double ydist = abs(position.y - target->position.y);
-
-	////Target has moved out of range
-	//if ((xdist + xdist) * (ydist + ydist) > (range * range)) {
-	//	target = NULL;
-	//}
-}
+//void Tower::update() {
+//
+//	//std::cout << "TOWER" << std::endl;
+//	//std::cout << gameEngine->getWindow()->getSize().x;
+//
+//	//gameEngine->getWindow()->draw(sprite);
+//	//if (!target) {
+//	//	return;
+//	//}
+//	//double xdist = abs(position.x - target->position.x);
+//	//double ydist = abs(position.y - target->position.y);
+//
+//	////Target has moved out of range
+//	//if ((xdist + xdist) * (ydist + ydist) > (range * range)) {
+//	//	target = NULL;
+//	//}
+//}

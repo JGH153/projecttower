@@ -17,12 +17,11 @@ public:
 	//bool takeDamageAndCheckIfDead(int damage);
 	//void update();
 
+	bool hitPoint(sf::Vector2f point);
+	bool hitPoint(double x, double y);
 
-	float posX;
-	float posY;
 
-	int width;
-	int height;
+	
 
 
 protected:
