@@ -6,13 +6,14 @@ VortexSprite::VortexSprite() : sf::Sprite(){
 
 }
 
-//VortexSprite::VortexSprite(std::string path, float posX, float posY) : sf::Sprite() {
-//
-//	setTexture(gameEngine->loadImageToTexture("Graphics/Textures/foresttile.png");
-//
-// NEED TO SEPARATE ASSETS LOADING AND VORTEX
-//
-//}
+VortexSprite::VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY, double width, double height) : sf::Sprite() {
+
+	setTexture(*gameEngine->loadImageToTexture(path));
+	setPosition(posX, posY);
+	setSize(width, height);
+
+
+}
 
 VortexSprite::VortexSprite(const sf::Texture &texture) : sf::Sprite(texture){
 	
