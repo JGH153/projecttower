@@ -9,8 +9,9 @@ BasicTower::BasicTower(Vortex * gameEngine, int posX, int posY) : Tower(gameEngi
 	//towerSprite = new VortexSprite("Graphics/button.png", posX, posY);
 
 	sf::Texture * texImageTile;
-	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/Normal.png");
-	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/Normal.png", posX, posY, 50, 50);
+	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/NormalReducedCanvas.png");
+	
+	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX, posY - texImageTile->getSize().y / 5, texImageTile->getSize().x / 2.1, texImageTile->getSize().y / 2.1);
 }
 
 

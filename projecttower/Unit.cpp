@@ -4,17 +4,11 @@
 Unit::Unit(Vortex * gameEngine) : Entity(gameEngine){
 
 	this->gameEngine = gameEngine;
-
-	//position = pos;
-	//hp = hitpoints;
-	//speed = spd;
-	//sprite = spr;
 }
 
 
 Unit::~Unit()
 {
-	//std::cout << "I am dead, goodbye" << std::endl;
 }
 
 

@@ -45,6 +45,7 @@ private:
 
 	VortexSprite bgSprite;
 	float gridTileSize;
+	bool buildable[GAMEMAPSIZEX][GAMEMAPSIZEY];
 	std::vector<VortexSprite *> backgroundTextures;
 	std::vector<VortexSprite *> mapTiles;
 	sf::View gameView;

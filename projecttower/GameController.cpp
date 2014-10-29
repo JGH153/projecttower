@@ -44,26 +44,33 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 			if (x == (GAMEMAPSIZEX / 2)) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+				buildable[x][y] = false;
 			}
 			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) - 1 || y == (GAMEMAPSIZEY / 2) + 1)) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+				buildable[x][y] = false;
 			}
 			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) || y == (GAMEMAPSIZEY / 2))) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/cave.png");
+				buildable[x][y] = false;
 			}
 			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)))) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
+				buildable[x][y] = false;
 			}
 			else {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/grass_tile.png");
+				buildable[x][y] = true;
 			}
 
 			if ((x == (GAMEMAPSIZEX / 10) - 1 || x == (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10))) && y != GAMEMAPSIZEY / 2) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
+				buildable[x][y] = false;
 			}
 
 			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY) - (GAMEMAPSIZEY / 6)) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
+				buildable[x][y] = false;
 			}
 			/*
 			int num = rand() % 101;
@@ -140,26 +147,20 @@ sf::View GameController::getView() {
 	return gameView;
 }
 
-struct sortinStructDistance {
+struct unitSortingStructDistance {
 
 	bool operator() (Unit * a, Unit * b) {
 
 		if (a->getPos().y + a->getSize().y < b->getPos().y + b->getSize().y) {
-
-			//if (a->posX + a->width < b->posX + b->height) {
-				return true;
-			//} else {
-			//	return false;
-			//}
-
-
-		} else {
+			return true;
+		}
+		else {
 			return false;
 		}
 
 	}
 
-} sortingInstanceDistance;
+} unitSortingStructDistance;
 
 std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 	
@@ -298,24 +299,23 @@ void GameController::update() {
 		
 	}
 	if (gameEngine->eventMouseClickedLeft) {
-		vectorMutex.lock();
-
+		
 		auto mousePos = gameEngine->getMousePositionLocal();
 
-		bool towerExists = false;
-		for (int i = 0; i < towerList.size(); i++) {
-			if (mousePos == towerList[i]->getPos()) {
-				std::cout << "Tower exists fool!" << std::endl;
-				towerExists = true;
-				break;
-			}
-		}
-		if (!towerExists) {
-			std::cout << "Adding tower at" << mousePos.x << ", " << mousePos.y << std::endl;
-			BasicTower * testTower = new BasicTower(gameEngine, mousePos.x, mousePos.y);
+		int xpos = mousePos.x / gridTileSize;
+		int ypos = mousePos.y / gridTileSize;
+
+		if (buildable[xpos][ypos]) {
+			std::cout << "Adding tower at " << xpos << ", " << ypos << std::endl;
+			BasicTower * testTower = new BasicTower(gameEngine, xpos * gridTileSize, ypos * gridTileSize);
+			vectorMutex.lock();
 			towerList.push_back(testTower);
+			vectorMutex.unlock();
+			buildable[xpos][ypos] = false;
+		} else {
+			std::cout << "Tower exists fool!" << std::endl;
 		}
-		vectorMutex.unlock();
+		
 
 	}
 	if (gameEngine->eventMousePressedLeft) {
@@ -361,7 +361,7 @@ void GameController::update() {
 	}
 
 	//sorting units so the unit with the lowest base y is renderd first
-	std::sort(unitList.begin(), unitList.end(), sortingInstanceDistance);
+	std::sort(unitList.begin(), unitList.end(), unitSortingStructDistance);
 	
 	//delete testing
 	//if (rand() % 100 < 10 && unitList.size() > 0) {
