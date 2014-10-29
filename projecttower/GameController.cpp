@@ -120,7 +120,10 @@ struct sortinStructDistance {
 
 } sortingInstanceDistance;
 
-std::vector<sf::Drawable *> GameController::getStaticRenderData() {
+std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
+	
+	std::vector<std::vector<sf::Drawable *>> renderSuperList;
+
 	std::vector<sf::Drawable *> renderList;
 
 	vectorMutex.lock();
@@ -142,11 +145,16 @@ std::vector<sf::Drawable *> GameController::getStaticRenderData() {
 	}
 
 	vectorMutex.unlock();
-	return renderList;
+
+	renderSuperList.push_back(renderList);
+
+	return renderSuperList;
 }
 
-std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
+std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() {
 	
+	std::vector<std::vector<sf::Drawable *>> renderSuperList;
+
 	std::vector<sf::Drawable *> renderList;
 
 	vectorMutex.lock();
@@ -172,9 +180,11 @@ std::vector<sf::Drawable *> GameController::getDynamicRenderData() {
 
 	vectorMutex.unlock();
 
+	renderSuperList.push_back(renderList);
+
 
 	
-	return renderList;
+	return renderSuperList;
 
 }
 

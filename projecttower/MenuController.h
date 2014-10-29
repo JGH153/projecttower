@@ -20,8 +20,8 @@ public:
 	~MenuController();
 
 	void update();
-	std::vector<sf::Drawable *> getDynamicRenderData();
-	std::vector<sf::Drawable *> getStaticRenderData();
+	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
+	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
 
 	//std::vector<RenderObject *> getRenderObjectList();
 

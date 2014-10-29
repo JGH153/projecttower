@@ -57,11 +57,17 @@ void Renderer::handleStaticBackground() {
 		//only update of controller has updated the static assets (like changing lvl)
 		if (tempControllerPointer->updateStaticRenderData) {
 
-			staticRenderListList = tempControllerPointer->getStaticRenderData();
+			staticRenderList = tempControllerPointer->getStaticRenderData();
 			tempControllerPointer->updateStaticRenderData = false;
 
 		}
 	}
+}
+
+void Renderer::renderMainLoop() {
+
+
+
 }
 
 
@@ -91,23 +97,50 @@ void Renderer::doRenderLoop() {
 	if (tempControllerPointer != nullptr) {
 		//tempControllerPointer->render();
 
-		auto renderList = tempControllerPointer->getDynamicRenderData();
+		int currentLayer = 0;
+		bool staticDone = false;
+		bool dynamicDone = false;
+
+		auto dynamicRenderList = tempControllerPointer->getDynamicRenderData();
 
 		//t2 = tidTaker.getElapsedTime();
 
 		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
 
 		//REMEBER STATIC OBJECTS ARE ALWAYS IN THE BACKGROUND
-		for (auto currentRenderObj : staticRenderListList) {
-			
-			mainWindow->draw(*currentRenderObj);
 
-		}
+		while (!staticDone || !dynamicDone) {
 
-		for (auto currentRenderObj : renderList) {
+			if (staticRenderList.size() > currentLayer) {
 
-			mainWindow->draw(*currentRenderObj);
-			
+				auto currentRenderList = staticRenderList[currentLayer];
+
+				for (auto currentRenderObj : currentRenderList) {
+
+					mainWindow->draw(*currentRenderObj);
+
+				}
+
+			} else {
+				staticDone = true;
+			}
+
+			if (dynamicRenderList.size() > currentLayer) {
+
+				auto currentRenderList = dynamicRenderList[currentLayer];
+
+				for (auto currentRenderObj : currentRenderList) {
+
+					mainWindow->draw(*currentRenderObj);
+
+				}
+
+			} else {
+				dynamicDone = true;
+			}
+
+
+			currentLayer++;
 
 		}
 

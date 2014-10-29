@@ -6,7 +6,10 @@ ProgramController::ProgramController(Vortex * gameEngine) : SubController(gameEn
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
 	subControllers.push_back(new MenuController(gameEngine));
+	subControllers[subControllers.size() - 1]->setNextControllerID(MENU_CONTROLLER_ID);
 	subControllers.push_back(new GameController(gameEngine));
+	subControllers[subControllers.size() - 1]->setNextControllerID(GAME_CONTROLLER_ID);
+
 	activeSubController = MENU_CONTROLLER_ID;
 	//activeSubController = GAME_CONTROLLER_ID;
 	currentRenderController = subControllers[activeSubController];
@@ -20,16 +23,22 @@ ProgramController::~ProgramController(){
 
 }
 
-std::vector<sf::Drawable *> ProgramController::getStaticRenderData() {
+std::vector<std::vector<sf::Drawable *>> ProgramController::getStaticRenderData() {
 
-	std::vector<sf::Drawable *> renderList;
+	std::vector<std::vector<sf::Drawable *>> renderList;
+
+	std::vector<sf::Drawable *> renderListSub;
+	renderList.push_back(renderListSub);
 	return renderList;
 }
 
 
-std::vector<sf::Drawable *> ProgramController::getDynamicRenderData() {
+std::vector<std::vector<sf::Drawable *>> ProgramController::getDynamicRenderData() {
 
-	std::vector<sf::Drawable *> renderList;
+	std::vector<std::vector<sf::Drawable *>> renderList;
+
+	std::vector<sf::Drawable *> renderListSub;
+	renderList.push_back(renderListSub);
 	return renderList;
 }
 

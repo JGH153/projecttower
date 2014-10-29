@@ -23,6 +23,8 @@ public:
 //	SubController * currentSubCotroller = nullptr;
 
 
+	void renderMainLoop();
+
 	void doRenderLoop();
 
 	//TODO: Have an entity list containing all towers and units, and a list with GUI elements
@@ -44,6 +46,6 @@ private:
 	sf::RenderWindow * mainWindow;
 	std::string windowName;
 	float fps;
-	std::vector<sf::Drawable *> staticRenderListList;
+	std::vector<std::vector<sf::Drawable *>> staticRenderList;
 };
 

@@ -36,8 +36,14 @@ void MenuController::update() {
 	}
 }
 
-std::vector<sf::Drawable *> MenuController::getDynamicRenderData() {
-	std::vector<sf::Drawable *> returnList;
+std::vector<std::vector<sf::Drawable *>> MenuController::getDynamicRenderData() {
+	
+	std::vector<std::vector<sf::Drawable *>> renderList;
+
+	std::vector<sf::Drawable *> renderListSub;
+	renderList.push_back(renderListSub);
+	return renderList;
+	
 	/*
 	//Add dynamic objects to be rendered into the return list
 	guiMutex.lock();
@@ -48,19 +54,25 @@ std::vector<sf::Drawable *> MenuController::getDynamicRenderData() {
 	}
 	guiMutex.unlock();
 	*/
-	return returnList;
+	return renderList;
 }
-std::vector<sf::Drawable *> MenuController::getStaticRenderData() {
-	std::vector<sf::Drawable *> returnList;
+std::vector<std::vector<sf::Drawable *>> MenuController::getStaticRenderData() {
+	
+	std::vector<std::vector<sf::Drawable *>> renderList;
+
+	std::vector<sf::Drawable *> renderListSub;
+	
 	
 	//Add static objects to be rendered into the return list
 	guiMutex.lock();
 	for (auto currentRenderVector : guiObjects) {
 		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
-			returnList.push_back(currentRenderObj);
+			renderListSub.push_back(currentRenderObj);
 		}
 	}
 	guiMutex.unlock();
+
+	renderList.push_back(renderListSub);
 	
-	return returnList;
+	return renderList;
 }
