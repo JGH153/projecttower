@@ -6,7 +6,9 @@ ProgramController::ProgramController(Vortex * gameEngine) : SubController(gameEn
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
 	subControllers.push_back(new MenuController(gameEngine));
+	subControllers[0]->setNextControllerID(MENU_CONTROLLER_ID);
 	subControllers.push_back(new GameController(gameEngine));
+	subControllers[1]->setNextControllerID(GAME_CONTROLLER_ID);
 	activeSubController = MENU_CONTROLLER_ID;
 	//activeSubController = GAME_CONTROLLER_ID;
 	currentRenderController = subControllers[activeSubController];
