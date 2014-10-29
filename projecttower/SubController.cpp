@@ -1,11 +1,13 @@
 #include "SubController.h"
 
 
-SubController::SubController(Vortex * gameEngine){
+SubController::SubController(Vortex * gameEngine, int controllerID) {
 
 	this->gameEngine = gameEngine;
 	currentRenderController = this;
 	updateStaticRenderData = true;
+
+	nextControllerID = controllerID;
 
 }
 

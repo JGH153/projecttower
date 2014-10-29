@@ -13,6 +13,15 @@ public:
 	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine);
 	~VortexButtonRectangle();
 
+	void setIdleImage(sf::Texture * newImage);
+	void setHoverImage(sf::Texture * newImage);
+	void setPressedImage(sf::Texture * newImage);
+
+	void setIdleImage(std::string imagePath);
+	void setHoverImage(std::string imagePath);
+	void setPressedImage(std::string imagePath);
+
+
 	void setPosition(sf::Vector2f newPosition);
 	void setPosition(double x, double y);
 
@@ -22,6 +31,17 @@ public:
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();
 
+private:
+	bool hovering;
+	bool pressed;
+
+	std::string title;
+	VortexText text;
+	sf::Font font;
+	VortexSprite * image;
+	sf::Texture * idleImage;
+	sf::Texture * hoverImage;
+	sf::Texture * pressedImage;
 
 };
 

@@ -17,6 +17,8 @@
 //#define uint unsigned int
 typedef unsigned int uint;
 
+class VortexSprite;
+
 
 struct texElement{
 

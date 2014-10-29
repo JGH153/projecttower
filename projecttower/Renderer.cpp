@@ -111,7 +111,7 @@ void Renderer::renderMainLoop() {
 	int oneSecTime = 0;
 	int numFramesSek = 0;
 
-	//mainWindow->setFramerateLimit(MAXFPS);
+	mainWindow->setFramerateLimit(MAXFPS);
 	
 
 	while (gameEngine->running) {

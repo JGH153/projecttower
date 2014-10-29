@@ -361,6 +361,11 @@ void Vortex::regEvents(){
 		if (currentEvent.type == sf::Event::LostFocus){
 			//myGame.pause();
 			windowInFocus = false;
+
+			eventMousePressedLeft = false;
+			eventMousePressedRight = false;
+			eventMousePressed = false;
+
 		}
 
 		if (currentEvent.type == sf::Event::GainedFocus){

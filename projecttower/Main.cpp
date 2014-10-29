@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");
 	
 	//Seting up controllers (an loading all the data like sprites and textures into memory)
-	ProgramController * programController = new ProgramController(gameEngine);
+	ProgramController * programController = new ProgramController(gameEngine, -1);
 	renderer->topLevelRenderController = programController;
 	
 	//Just a class here i hvae contaned all the exaples of how to use Vortex

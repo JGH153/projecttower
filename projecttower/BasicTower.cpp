@@ -10,10 +10,7 @@ BasicTower::BasicTower(Vortex * gameEngine, int posX, int posY) : Tower(gameEngi
 
 	sf::Texture * texImageTile;
 	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/Normal.png");
-	towerSprite = new VortexSprite(*texImageTile);
-	towerSprite->setPosition(posX, posY);
-	towerSprite->setSize(50, 50);
-	//towerSprite->rotate(180);
+	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/Normal.png", posX, posY, 50, 50);
 }
 
 

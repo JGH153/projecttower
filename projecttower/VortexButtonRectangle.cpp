@@ -2,11 +2,25 @@
 #include "VortexButtonRectangle.h"
 
 
-VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine) : VortexButton(x, y, imagePath, title, gameEngine) {
+VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine) : VortexButton(x, y, gameEngine) {
 	width = w;
 	height = h;
+	
+	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
+	setIdleImage(imagePath);
+	hoverImage = nullptr;
+	pressedImage = nullptr;
+	
+	image->setSize(width, height);
 
-	image.setSize(width, height);
+	this->title = title;
+	font = *gameEngine->loadFont("Fonts/arial.ttf");
+	text.setFont(font);
+	text.setString(title);
+	text.setCharacterSize(28);
+	text.setColor(sf::Color::Blue);
+	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
 	setPosition(posX, posY);
 }
 
@@ -15,18 +29,71 @@ VortexButtonRectangle::~VortexButtonRectangle()
 }
 
 void VortexButtonRectangle::update(){
-
+	if (hoverImage != nullptr){
+		if (mouseOver() && !hovering){
+			image->setTexture(*hoverImage);
+			hovering = true;
+		}
+		else if (!mouseOver() && hovering){
+			image->setTexture(*idleImage);
+			hovering = false;
+		}
+	}
+	if (pressedImage != nullptr){
+		if (buttonClicked() && !pressed){
+			image->setTexture(*pressedImage);
+			pressed = true;
+		}
+		else if (!buttonClicked() && pressed){
+			image->setTexture(*idleImage);
+			pressed = false;
+		}
+	}
 }
 
 
 std::vector<sf::Drawable *> VortexButtonRectangle::getRenderDrawable() {
 
 	std::vector<sf::Drawable *> drawData;
-	drawData.push_back(&image);
+	drawData.push_back(image);
 	drawData.push_back(&text);
 	return drawData;
 
 
+}
+
+void VortexButtonRectangle::setIdleImage(sf::Texture * newImage){
+	delete idleImage;
+	idleImage = newImage;
+}
+void VortexButtonRectangle::setHoverImage(sf::Texture * newImage){
+	if (hoverImage != nullptr){
+		delete hoverImage;
+	}
+	hoverImage = newImage;
+}
+void VortexButtonRectangle::setPressedImage(sf::Texture * newImage){
+	if (pressedImage != nullptr){
+		delete pressedImage;
+	}
+	pressedImage = newImage;
+}
+
+void VortexButtonRectangle::setIdleImage(std::string imagePath){
+	delete idleImage;
+	idleImage = gameEngine->loadImageToTexture(imagePath);
+}
+void VortexButtonRectangle::setHoverImage(std::string imagePath){
+	if (hoverImage != nullptr){
+		delete hoverImage;
+	}
+	hoverImage = gameEngine->loadImageToTexture(imagePath);
+}
+void VortexButtonRectangle::setPressedImage(std::string imagePath){
+	if (pressedImage != nullptr){
+		delete pressedImage;
+	}
+	pressedImage = gameEngine->loadImageToTexture(imagePath);
 }
 
 
@@ -48,7 +115,7 @@ void VortexButtonRectangle::setPosition(sf::Vector2f newPosition){
 	posX = newPosition.x;
 	posY = newPosition.y;
 	text.setPosition(newPosition);
-	image.setPosition(newPosition);
+	image->setPosition(newPosition);
 }
 
 void VortexButtonRectangle::setPosition(double x, double y){

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-
+#include "Vortex.h"
 #include "RenderObject.h"
 #include "GlobalDefines.h"
 
@@ -15,7 +15,7 @@ class Vortex;
 class VortexSprite : public sf::Sprite, public RenderObject{
 public:
 	VortexSprite();
-	//VortexSprite(std::string path, float posX, float posY);
+	VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY, double width, double height);
 	VortexSprite(const sf::Texture &texture);
 	~VortexSprite();
 

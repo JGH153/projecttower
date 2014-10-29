@@ -1,7 +1,7 @@
 #include "MenuController.h"
 
 
-MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
+MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
 	nextControllerID = MENU_CONTROLLER_ID;
 	int centerX = gameEngine->getWindowSize().x / 2;
 	int centerY = gameEngine->getWindowSize().y / 2;
@@ -16,8 +16,11 @@ MenuController::MenuController(Vortex * gameEngine) : SubController(gameEngine){
 	vertices.push_back(sf::Vector2f(10, 210));
 	vertices.push_back(sf::Vector2f(0, 85));
 
-	guiObjects.push_back(new VortexButtonRectangle(centerX - (buttonWidth / 2), centerY - (buttonHeight / 2), buttonWidth, buttonHeight, "Graphics/button.png", "Menubutton", gameEngine));
-	guiObjects.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
+	VortexButtonRectangle * rectangleTestButton = new VortexButtonRectangle(centerX - (buttonWidth / 2), centerY - (buttonHeight / 2), buttonWidth, buttonHeight, "Graphics/button.png", "Menubutton", gameEngine);
+	VortexConvexButton * convexTestButton = new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine);
+	rectangleTestButton->setHoverImage("Graphics/dirt.png");
+	guiObjects.push_back(rectangleTestButton);
+	guiObjects.push_back(convexTestButton);
 }
 
 
