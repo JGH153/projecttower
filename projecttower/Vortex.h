@@ -117,6 +117,10 @@ public:
 	bool eventMouseReleasedLeft = false;
 	bool eventMouseReleasedRight = false;
 
+	bool eventMouseWheelScroll = false;
+	bool eventMouseWheelScrollUp = false;
+	bool eventMouseWheelScrollDown = false;
+
 	bool windowInFocus = true;
 
 	static void setSpriteSize(sf::Sprite * sprite, double w, double h);

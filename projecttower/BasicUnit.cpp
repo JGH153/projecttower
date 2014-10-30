@@ -10,13 +10,13 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 	int randNum = rand() % 10;
 
 	if (randNum < 8){
-		speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.04f);
-		width = 32;
-		height = 48;
+		speed = 0.02f + gameEngine->getRandFloat(0.01f, 0.02f);
+		width = 32/2;
+		height = 48/2;
 	}else{
-		speed = 0.08f + gameEngine->getRandFloat(0.01f, 0.2f);
-		width = 96/2;
-		height = 96/2;
+		speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.08f);
+		width = 96/4;
+		height = 96/4;
 
 	}
 
@@ -29,7 +29,7 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
 		if (randNum < 8) {
-			tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", width, height, DIRECTIONS[i], 4);
+			tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", 32, 48, DIRECTIONS[i], 4);
 		}
 		else{
 			tempAni->asembleSpritesheetAnimation("Graphics/bahamut.png", 96, 96, DIRECTIONS[i], 4);

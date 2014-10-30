@@ -3,7 +3,8 @@
 
 GameController::GameController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
 
-	gameGuiController = new GameGuiController(gameEngine);
+	gameGuiController = new GameGuiController(gameEngine, 1);
+	childControllers.push_back(gameGuiController);
 
 	float forestTileSize = 50;
 
@@ -136,10 +137,20 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	//renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", "Button", gameEngine));
 
-	int viewWidth = WINDOWSIZEX / 2;
-	int viewHeight = WINDOWSIZEY / 2;
+	//set view size relative to org window size
+
+	viewRelativeSizeX = 2.f;
+	viewRelativeSizeY = 2.f;
+
+	viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
+	viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
+
+	//set view to center
 	sf::View view(sf::FloatRect(((WINDOWSIZEX / 2) - (viewWidth / 2)), ((WINDOWSIZEY / 2) - (viewHeight / 2)), viewWidth, viewHeight));
+	//sf::View view(sf::FloatRect(((WINDOWSIZEX) - (viewWidth)), ((WINDOWSIZEY) - (viewHeight)), viewWidth, viewHeight));
 	gameView = view;
+
+	towerUnderMouse = false;
 
 	
 }
@@ -147,9 +158,9 @@ sf::View GameController::getView() {
 	return gameView;
 }
 
-struct unitSortingStructDistance {
+struct EntitySortingStructDistance {
 
-	bool operator() (Unit * a, Unit * b) {
+	bool operator() (Entity * a, Entity * b) {
 
 		if (a->getPos().y + a->getSize().y < b->getPos().y + b->getSize().y) {
 			return true;
@@ -160,7 +171,7 @@ struct unitSortingStructDistance {
 
 	}
 
-} unitSortingStructDistance;
+} entitySortingStructDistanceDistance;
 
 std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 	
@@ -185,7 +196,8 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
-	renderList.push_back(towerBuildSprite);
+
+	
 
 	vectorMutex.unlock();
 
@@ -231,6 +243,10 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	}
 
+	if (gameGuiController->building) {
+		renderList.push_back(towerBuildSprite);
+	}
+
 
 	vectorMutex.unlock();
 
@@ -246,12 +262,21 @@ GameController::~GameController(){
 }
 
 
+std::vector<SubController *> GameController::getChildControllers() {
+
+	return childControllers;
+
+}
+
 
 void GameController::update() {
-	building = true; //Should be true when player wants to build
+
+	gameEngine->getWindow()->setView(gameView);
+
+	 //Should be true when player wants to build
 	auto mousePos = gameEngine->getMousePosition();
 	
-	if (gameEngine->eventMouseMove && building == true) {
+	if (gameEngine->eventMouseMove && gameGuiController->building == true) {
 		auto mousePos = gameEngine->getMousePositionLocal();
 
 		int xpos = mousePos.x / gridTileSize;
@@ -266,6 +291,42 @@ void GameController::update() {
 			towerBuildSprite->setColor(UNABLETOBUILD);
 		}
 	}
+
+
+	if (gameEngine->eventMouseWheelScrollUp) {
+
+		std::cout << "WHEEL +! " << viewRelativeSizeX << " " << viewRelativeSizeY << "\n";
+		if (viewRelativeSizeX < 10.f) {
+			viewRelativeSizeX *= 2.0f;
+			viewRelativeSizeY *= 2.0f;
+
+			viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
+			viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
+
+			gameView.reset(sf::FloatRect(gameView.getCenter().x - (viewWidth / 2), gameView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight));
+		}
+
+		
+
+	}
+
+	if (gameEngine->eventMouseWheelScrollDown) {
+
+		if (viewRelativeSizeX > 1.f) {
+			std::cout << "WHEEL -!\n";
+			viewRelativeSizeX /= 2.0f;
+			viewRelativeSizeY /= 2.0f;
+
+			viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
+			viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
+
+			gameView.reset(sf::FloatRect(gameView.getCenter().x - (viewWidth / 2), gameView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight));
+		}
+
+		
+
+	}
+
 	
 	if (gameEngine->eventMousePressedRight) {
 		if (gameEngine->eventMouseMove) {
@@ -322,13 +383,13 @@ void GameController::update() {
 		int xpos = mousePos.x / gridTileSize;
 		int ypos = mousePos.y / gridTileSize;
 
-		if (buildable[xpos][ypos]) {
+		if (buildable[xpos][ypos] && gameGuiController->building) {
 			BasicTower * testTower = new BasicTower(gameEngine, xpos * gridTileSize, ypos * gridTileSize);
 			vectorMutex.lock();
 			towerList.push_back(testTower);
 			vectorMutex.unlock();
 			buildable[xpos][ypos] = false;
-			building = false;
+			//gameGuiController->building = false;
 		} else {
 			// Play unable to build beep sound
 		}
@@ -378,7 +439,8 @@ void GameController::update() {
 	}
 
 	//sorting units so the unit with the lowest base y is renderd first
-	std::sort(unitList.begin(), unitList.end(), unitSortingStructDistance);
+	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
+	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
 	
 	//delete testing
 	//if (rand() % 100 < 10 && unitList.size() > 0) {
@@ -436,9 +498,10 @@ void GameController::update() {
 
 
 
+	for (auto currentController : childControllers) {
+		currentController->update();
+	}
 
-
-	gameGuiController->update();
 	previousMousePos = mousePos;
 	
 }

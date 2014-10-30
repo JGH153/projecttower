@@ -24,6 +24,7 @@ public:
 	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
 	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
 	sf::View getView();
+	std::vector<SubController *> getChildControllers();
 
 
 private:

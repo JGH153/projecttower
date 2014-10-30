@@ -349,6 +349,10 @@ void Vortex::regEvents(){
 	eventMouseReleasedLeft = false;
 	eventMouseReleasedRight = false;
 
+	eventMouseWheelScroll = false;
+	eventMouseWheelScrollUp = false;
+	eventMouseWheelScrollDown = false;
+
 	for each (sf::Event currentEvent in getWindowEvents()){
 
 		if (currentEvent.type == sf::Event::KeyPressed){
@@ -378,7 +382,7 @@ void Vortex::regEvents(){
 			eventMouseMove = true;
 
 		}
-		
+
 		if (currentEvent.type == sf::Event::MouseButtonPressed){
 
 			eventMouseClicked = true;
@@ -407,6 +411,25 @@ void Vortex::regEvents(){
 			if (currentEvent.mouseButton.button == sf::Mouse::Right){
 				eventMouseReleasedRight = true;
 				eventMousePressedRight = false;
+			}
+
+		}
+
+		if (currentEvent.type == sf::Event::MouseWheelMoved) {
+
+			//positive is up, negative is down)
+			int wheelDelta = currentEvent.mouseWheel.delta;
+
+			eventMouseWheelScroll = true;
+
+			if (wheelDelta > 0) {
+
+				eventMouseWheelScrollUp = true;
+
+			} else if(wheelDelta < 0) {
+
+				eventMouseWheelScrollDown = true;
+
 			}
 
 		}

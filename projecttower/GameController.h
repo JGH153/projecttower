@@ -35,6 +35,7 @@ public:
 	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
 	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
 	sf::View getView();
+	std::vector<SubController *> getChildControllers();
 
 	//std::vector<RenderObject *> getRenderObjectList();
 	
@@ -48,13 +49,20 @@ private:
 	bool buildable[GAMEMAPSIZEX][GAMEMAPSIZEY];
 	std::vector<VortexSprite *> backgroundTextures;
 	std::vector<VortexSprite *> mapTiles;
-	sf::View gameView;
+	
 	sf::Vector2i previousMousePos;
 
+	float viewRelativeSizeX;
+	float viewRelativeSizeY;
+
+	int viewWidth;
+	int viewHeight;
+
 	bool building;
+	bool towerUnderMouse;
 	VortexSprite * towerBuildSprite;
 
-	std::vector <VortexConvexButton> buttonList;
+	std::vector <VortexButton> buttonList;
 	std::vector <VortexButton> rectButtonTest; //DEBUG: Delete if i forget
 	std::vector <VortexButton *> someButtons; //DEBUG: Delete if i forget
 

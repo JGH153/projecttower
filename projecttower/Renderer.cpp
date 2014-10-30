@@ -37,20 +37,65 @@ Renderer::~Renderer()
 }
 
 void Renderer::handleStaticBackground() {
-	SubController * tempControllerPointer = topLevelRenderController;
-	//ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
-	while (tempControllerPointer != tempControllerPointer->getCurrentRenderController()) {
-		tempControllerPointer = tempControllerPointer->getCurrentRenderController();
-	}
-	if (tempControllerPointer != nullptr) {
-		//only update of controller has updated the static assets (like changing lvl)
-		if (tempControllerPointer->updateStaticRenderData) {
 
-			staticRenderList = tempControllerPointer->getStaticRenderData();
-			tempControllerPointer->updateStaticRenderData = false;
+	SubController * mainControllerPointer = topLevelRenderController;
+	std::vector<SubController *> controllerRenderList;
+
+
+	//ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
+	while (mainControllerPointer != mainControllerPointer->getCurrentRenderController()) {
+
+		mainControllerPointer = mainControllerPointer->getCurrentRenderController();
+
+	}
+
+	if (!mainControllerPointer->updateStaticRenderData)
+		return;
+
+
+	staticRenderList.clear();
+
+	controllerRenderList.push_back(mainControllerPointer);
+
+
+	for each (auto currentController in  mainControllerPointer->getChildControllers()) {
+		controllerRenderList.push_back(currentController);
+	}
+
+
+	for (int currentControllerID = 0; currentControllerID < controllerRenderList.size(); currentControllerID++) {
+
+		std::vector<std::vector < sf::Drawable * >> tempStaticRenderList;
+
+		if (controllerRenderList[currentControllerID] != nullptr) {
+			//only update of controller has updated the static assets (like changing lvl)
+
+			tempStaticRenderList = controllerRenderList[currentControllerID]->getStaticRenderData();
+			controllerRenderList[currentControllerID]->updateStaticRenderData = false;
+
 
 		}
+
+		staticRenderList.push_back(tempStaticRenderList);
+
 	}
+
+	
+
+	//SubController * tempControllerPointer = topLevelRenderController;
+	////ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
+	//while (tempControllerPointer != tempControllerPointer->getCurrentRenderController()) {
+	//	tempControllerPointer = tempControllerPointer->getCurrentRenderController();
+	//}
+	//if (tempControllerPointer != nullptr) {
+	//	//only update of controller has updated the static assets (like changing lvl)
+	//	if (tempControllerPointer->updateStaticRenderData) {
+
+	//		staticRenderList = tempControllerPointer->getStaticRenderData();
+	//		tempControllerPointer->updateStaticRenderData = false;
+
+	//	}
+	//}
 }
 
 void Renderer::renderMainLoop() {
@@ -161,76 +206,101 @@ void Renderer::doRenderLoop() {
 
 	drawClear();
 
-	SubController * tempControllerPointer = topLevelRenderController;
+	SubController * mainControllerPointer = topLevelRenderController;
+	std::vector<SubController *> controllerRenderList;
 
 
 	//ask top lvl controller to tell render if it has a active sub controller. if so, ask it if it has an sub controller. repeat untill getCurrentRenderController returns itself
-	while (tempControllerPointer != tempControllerPointer->getCurrentRenderController()) {
+	while (mainControllerPointer != mainControllerPointer->getCurrentRenderController()) {
 
-		tempControllerPointer = tempControllerPointer->getCurrentRenderController();
+		mainControllerPointer = mainControllerPointer->getCurrentRenderController();
 
 	}
+
+	controllerRenderList.push_back(mainControllerPointer);
+
+	for each (auto currentController in  mainControllerPointer->getChildControllers()) {
+		controllerRenderList.push_back(currentController);
+	}
+
 
 	//t1 = tidTaker.getElapsedTime();
 
-	//make the sub controller render itself
-	if (tempControllerPointer != nullptr) {
-		//tempControllerPointer->render();
+	//for each (auto currentController in controllerRenderList) {
+	for (int currentControllerID = 0; currentControllerID < controllerRenderList.size(); currentControllerID++) {
 
-		int currentLayer = 0;
-		bool staticDone = false;
-		bool dynamicDone = false;
 
-		mainWindow->setView(tempControllerPointer->getView());
-		auto dynamicRenderList = tempControllerPointer->getDynamicRenderData();
-		//t2 = tidTaker.getElapsedTime();
 
-		//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
+		//make the sub controller render itself
+		if (controllerRenderList[currentControllerID] != nullptr) {
+			//tempControllerPointer->render();
 
-		//REMEBER STATIC OBJECTS ARE ALWAYS IN THE BACKGROUND
+			int currentLayer = 0;
+			bool staticDone = false;
+			bool dynamicDone = false;
 
-		while (!staticDone || !dynamicDone) {
+			mainWindow->setView(controllerRenderList[currentControllerID]->getView());
 
-			if (staticRenderList.size() > currentLayer) {
+		
 
-				auto currentRenderList = staticRenderList[currentLayer];
 
-				for (auto currentRenderObj : currentRenderList) {
+			auto dynamicRenderList = controllerRenderList[currentControllerID]->getDynamicRenderData();
+			//t2 = tidTaker.getElapsedTime();
 
-					mainWindow->draw(*currentRenderObj);
+			//std::cout << "size: " << renderList.size() << " (" << renderList.size()*sizeof(RenderData) << ")\n";
 
+			//REMEBER STATIC OBJECTS ARE ALWAYS IN THE BACKGROUND
+
+			while (!staticDone || !dynamicDone) {
+
+				if (staticRenderList[currentControllerID].size() > currentLayer) {
+
+					auto currentRenderList = staticRenderList[currentControllerID][currentLayer];
+
+					for (auto currentRenderObj : currentRenderList) {
+
+						mainWindow->draw(*currentRenderObj);
+
+					}
+
+				} else {
+					staticDone = true;
 				}
 
-			} else {
-				staticDone = true;
-			}
 
-			if (dynamicRenderList.size() > currentLayer) {
+				if (dynamicRenderList.size() > currentLayer) {
 
-				auto currentRenderList = dynamicRenderList[currentLayer];
+					auto currentRenderList = dynamicRenderList[currentLayer];
 
-				for (auto currentRenderObj : currentRenderList) {
+					for (auto currentRenderObj : currentRenderList) {
 
-					mainWindow->draw(*currentRenderObj);
+						mainWindow->draw(*currentRenderObj);
 
+					}
+
+				} else {
+					dynamicDone = true;
 				}
 
-			} else {
-				dynamicDone = true;
+
+				currentLayer++;
+
 			}
 
+			//t3 = tidTaker.getElapsedTime();
 
-			currentLayer++;
+
 
 		}
 
-		//t3 = tidTaker.getElapsedTime();
-
-
+		
 
 	}
 
+	
 	drawDisplay();
+
+
 
 	//std::cout << "T1: " << t1.asMilliseconds() << " T2: " << t2.asMilliseconds() << " T3: " << t3.asMilliseconds() << std::endl;
 

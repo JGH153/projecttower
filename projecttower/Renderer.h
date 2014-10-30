@@ -51,7 +51,9 @@ private:
 	sf::RenderWindow * mainWindow;
 	std::string windowName;
 	float fps;
-	std::vector<std::vector<sf::Drawable *>> staticRenderList;
+
+	//[each subController (stating from main at 0][draw layer][layer Drawable list]
+	std::vector<std::vector<std::vector<sf::Drawable *>>> staticRenderList;
 
 	//temp values:
 
