@@ -19,6 +19,13 @@
 #include "GameGuiController.h"
 #include "GlobalDefines.h"
 
+#define TILE_TYPE_GRASS 0
+#define TILE_TYPE_DIRT 1
+#define TILE_TYPE_WATER 2
+#define TILE_TYPE_WALL 3
+#define TILE_TYPE_CAVE 4
+#define TILE_TYPE_TOWER 5
+
 class GameController : public SubController
 {
 public:
@@ -46,12 +53,13 @@ private:
 
 	VortexSprite bgSprite;
 	float gridTileSize;
-	bool buildable[GAMEMAPSIZEX][GAMEMAPSIZEY];
+	int tileType[GAMEMAPSIZEX][GAMEMAPSIZEY];
 	std::vector<VortexSprite *> backgroundTextures;
 	std::vector<VortexSprite *> mapTiles;
 	
 	sf::Vector2i previousMousePos;
 
+	float zoomRate;
 	float viewRelativeSizeX;
 	float viewRelativeSizeY;
 

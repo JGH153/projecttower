@@ -114,7 +114,15 @@ bool VortexButtonRectangle::hitPoint(double x, double y){
 void VortexButtonRectangle::setPosition(sf::Vector2f newPosition){
 	posX = newPosition.x;
 	posY = newPosition.y;
-	text.setPosition(newPosition);
+	int buttonWidth = this->getWidth();
+	int buttonHeight = this->getHeight();
+	float textWidth = text.getLocalBounds().width;
+	float textHeight = text.getLocalBounds().height;
+	//Text has a bit empty transparent space above, so dividing height by 2 makes it look like it isnt centered
+	sf::Vector2f textPos(newPosition.x + (buttonWidth / 2 - textWidth / 2), newPosition.y + (buttonHeight / 2 - textHeight / 1.2)); 
+	
+
+	text.setPosition(textPos);
 	image->setPosition(newPosition);
 }
 

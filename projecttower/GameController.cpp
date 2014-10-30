@@ -29,12 +29,9 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	texImage->setRepeated(true);
 	texImage->getSize();
 	VortexSprite temp(*texImage);
-	//VortexSprite temp(gameEngine->loadImageToSprite("Graphics/tile_1.png"));
 	bgSprite = temp;
 	bgSprite.setPosition(0, 0);
-	//bgSprite.setSize((sf::Vector2f)gameEngine->getWindowSize());
 
-	//tileSize = 25;
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 
 	for (int x = 0; x < GAMEMAPSIZEX; x++){
@@ -45,57 +42,42 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 			if (x == (GAMEMAPSIZEX / 2)) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-				buildable[x][y] = false;
+				tileType[x][y] = TILE_TYPE_WALL;
 			}
 			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) - 1 || y == (GAMEMAPSIZEY / 2) + 1)) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-				buildable[x][y] = false;
+				tileType[x][y] = TILE_TYPE_WALL;
 			}
 			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) || y == (GAMEMAPSIZEY / 2))) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/cave.png");
-				buildable[x][y] = false;
+				tileType[x][y] = TILE_TYPE_CAVE;
 			}
 			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)) || ((x == GAMEMAPSIZEX / 2 - 2) || (x == GAMEMAPSIZEX / 2 + 2) || (x <= GAMEMAPSIZEX / 10) || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10) - 1)) && (y == GAMEMAPSIZEY / 2))) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
-				buildable[x][y] = false;
+				tileType[x][y] = TILE_TYPE_DIRT;
 			}
 			else {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/grass_tile.png");
-				buildable[x][y] = true;
+				tileType[x][y] = TILE_TYPE_GRASS;
 			}
 
 			if ((x == (GAMEMAPSIZEX / 10) - 1 || x == (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10))) && y != GAMEMAPSIZEY / 2) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-				buildable[x][y] = false;
+				tileType[x][y] = TILE_TYPE_WALL;
 			}
 
 			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY) - (GAMEMAPSIZEY / 6)) {
 				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
-				buildable[x][y] = false;
+				tileType[x][y] = TILE_TYPE_WATER;
 			}
-			/*
-			int num = rand() % 101;
-			if (num < 25)
-				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
-			else if (num < 50)
-				
-			else if (num < 75)
-				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-			else
-				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
 
-				*/
 			VortexSprite * tempSprite = new VortexSprite(*texImageTile);
 			tempSprite->setPosition(x * gridTileSize, y * gridTileSize);
 			tempSprite->setSize(gridTileSize, gridTileSize);
 			mapTiles.push_back(tempSprite);
 
 		}
-
 	}
-
-	//Tower * testTower = new Tower(gameEngine);
-	//unitList.push_back(testTower);
 
 	for (int i = 0; i < 100; i++){
 
@@ -105,55 +87,22 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 		//renderObjectsVector.push_back(testUnit);
 
 	}
-	/*
-	for (int i = 0; i < 10; i++) {
-
-		BasicTower * testTower = new BasicTower(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
-		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
-		towerList.push_back(testTower);
-		//renderObjectsVector.push_back(testUnit);
-
-	}
-
-	//Testing convex buttonz
-	std::vector<sf::Vector2f> vertices;
-	vertices.push_back(sf::Vector2f(50, 50));
-	vertices.push_back(sf::Vector2f(200, 50));
-	vertices.push_back(sf::Vector2f(300, 100));
-	vertices.push_back(sf::Vector2f(150, 275));
-	vertices.push_back(sf::Vector2f(10, 210));
-	vertices.push_back(sf::Vector2f(0, 85));
-	VortexConvexButton testButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine);
-	buttonList.push_back(testButton);
-	//renderObjectsVector.push_back(new VortexConvexButton(300, 300, vertices, "Graphics/button.png", "Poop", gameEngine));
-	/*renderer->mapTiles = mapTiles;
-	renderer->unitList = unitList;
-	renderer->bgSprite = bgSprite;
-
-	renderer->renderObjectsVector = renderObjectsVector;*/
-
-	//renderer->currentRenderSubController = this;
-
-
-	//renderObjectsVector.push_back(new VortexButtonRectangle(10, 10, 150, 55, "Graphics/button.png", "Button", gameEngine));
 
 	//set view size relative to org window size
-
-	viewRelativeSizeX = 2.f;
-	viewRelativeSizeY = 2.f;
+	viewRelativeSizeX = 2.0f;
+	viewRelativeSizeY = 2.0f;
+	zoomRate = 1.2f;
 
 	viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
 	viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
 
 	//set view to center
 	sf::View view(sf::FloatRect(((WINDOWSIZEX / 2) - (viewWidth / 2)), ((WINDOWSIZEY / 2) - (viewHeight / 2)), viewWidth, viewHeight));
-	//sf::View view(sf::FloatRect(((WINDOWSIZEX) - (viewWidth)), ((WINDOWSIZEY) - (viewHeight)), viewWidth, viewHeight));
 	gameView = view;
 
 	towerUnderMouse = false;
-
-	
 }
+
 sf::View GameController::getView() {
 	return gameView;
 }
@@ -271,9 +220,6 @@ std::vector<SubController *> GameController::getChildControllers() {
 
 void GameController::update() {
 
-	gameEngine->getWindow()->setView(gameView);
-
-	 //Should be true when player wants to build
 	auto mousePos = gameEngine->getMousePosition();
 	
 	if (gameEngine->eventMouseMove && gameGuiController->building == true) {
@@ -284,7 +230,7 @@ void GameController::update() {
 
 		towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
 
-		if (buildable[xpos][ypos]) {
+		if (tileType[xpos][ypos] == TILE_TYPE_GRASS) {
 			towerBuildSprite->setColor(ABLETOBUILD);
 		}
 		else {
@@ -295,36 +241,54 @@ void GameController::update() {
 
 	if (gameEngine->eventMouseWheelScrollUp) {
 
-		std::cout << "WHEEL +! " << viewRelativeSizeX << " " << viewRelativeSizeY << "\n";
-		if (viewRelativeSizeX < 10.f) {
-			viewRelativeSizeX *= 2.0f;
-			viewRelativeSizeY *= 2.0f;
+		if (viewRelativeSizeX < 5.f) {
+			viewRelativeSizeX *= zoomRate;
+			viewRelativeSizeY *= zoomRate;
 
-			viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
-			viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
-
+			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
+			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
+			
 			gameView.reset(sf::FloatRect(gameView.getCenter().x - (viewWidth / 2), gameView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight));
 		}
-
-		
-
 	}
 
 	if (gameEngine->eventMouseWheelScrollDown) {
 
 		if (viewRelativeSizeX > 1.f) {
-			std::cout << "WHEEL -!\n";
-			viewRelativeSizeX /= 2.0f;
-			viewRelativeSizeY /= 2.0f;
+			viewRelativeSizeX /= zoomRate;
+			viewRelativeSizeY /= zoomRate;
 
-			viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
-			viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
+			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
+			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
+			
+			//Zooming out so that view comes out of bounds on left side fix
+			if (gameView.getCenter().x - viewWidth / 2 < 0) {
+				gameView.setCenter(sf::Vector2f(viewWidth / 2, gameView.getCenter().y));
+			}
+			//Zooming out so that view comes out of bounds on right side fix
+			else if (gameView.getCenter().x + viewWidth / 2 > WINDOWSIZEX) {
+				gameView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, gameView.getCenter().y));
+			}
+
+			//Zooming out so that view comes out of bounds on top fix
+			if (gameView.getCenter().y - viewHeight / 2 < 0) {
+				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, viewHeight / 2));
+			}
+			//Zooming out so that view comes out of bounds on bottom fix
+			else if (gameView.getCenter().y + viewHeight / 2 > WINDOWSIZEY) {
+				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
+			}
+
+			//At max zoom out level, center view to screen
+			if (viewWidth > WINDOWSIZEX) {
+				viewWidth = WINDOWSIZEX;
+				viewHeight = WINDOWSIZEY;
+				gameView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
+			}
 
 			gameView.reset(sf::FloatRect(gameView.getCenter().x - (viewWidth / 2), gameView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight));
+			
 		}
-
-		
-
 	}
 
 	
@@ -334,45 +298,32 @@ void GameController::update() {
 			int viewChangeX = previousMousePos.x - mousePos.x;
 			int viewChangeY = previousMousePos.y - mousePos.y;
 
+			
+
 			//If going out of bounds on the left side
-			if (gameView.getCenter().x + viewChangeX < gameView.getSize().x / 2) {
-				gameView.setCenter(sf::Vector2f(gameView.getSize().x / 2, gameView.getCenter().y));
-				viewChangeX = 0;
-			} 
-			//If going out of bounds on the right side
-			else if (gameView.getCenter().x + viewChangeX > gameView.getSize().x + gameView.getSize().x / 2) {
-				gameView.setCenter(sf::Vector2f(gameView.getSize().x + gameView.getSize().x / 2, gameView.getCenter().y));
+			if (gameView.getCenter().x + viewChangeX < viewWidth / 2) {
+				gameView.setCenter(sf::Vector2f(viewWidth / 2, gameView.getCenter().y));
 				viewChangeX = 0;
 			}
-
+			
+			//If going out of bounds on the right side
+			else if (gameView.getCenter().x + viewChangeX > WINDOWSIZEX - viewWidth / 2) {
+				gameView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, gameView.getCenter().y));
+				viewChangeX = 0;
+			}
 			//If going out of bounds on top
-			if (gameView.getCenter().y + viewChangeY < gameView.getSize().y / 2) {
-				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, gameView.getSize().y / 2));
+			if (gameView.getCenter().y + viewChangeY < viewHeight / 2) {
+				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, viewHeight / 2));
 				viewChangeY = 0;
 			}
 			//If going out of bounds on bottom
-			else if (gameView.getCenter().y + viewChangeY > gameView.getSize().y + gameView.getSize().y / 2) {
-				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, gameView.getSize().y + gameView.getSize().y / 2));
+			else if (gameView.getCenter().y + viewChangeY > WINDOWSIZEY - viewHeight / 2) {
+				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
 				viewChangeY = 0;
 			}
 
 			gameView.move(viewChangeX, viewChangeY);
 		}
-		/*
-		BasicUnit * testUnit = new BasicUnit(gameEngine, mousePos.x, mousePos.y);
-		testUnit->posX = testUnit->posX - (testUnit->width / 2);
-		testUnit->posY = testUnit->posY - (testUnit->height / 2);
-		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
-
-		//an vector is NOT thread safe (R/W)
-		vectorMutex.lock();
-
-		unitList.push_back(testUnit);
-		//renderObjectsVector.push_back(testUnit);
-
-		vectorMutex.unlock();
-		*/
-		
 		
 	}
 	
@@ -383,18 +334,16 @@ void GameController::update() {
 		int xpos = mousePos.x / gridTileSize;
 		int ypos = mousePos.y / gridTileSize;
 
-		if (buildable[xpos][ypos] && gameGuiController->building) {
+		if (tileType[xpos][ypos] == TILE_TYPE_GRASS && gameGuiController->building) {
 			BasicTower * testTower = new BasicTower(gameEngine, xpos * gridTileSize, ypos * gridTileSize);
 			vectorMutex.lock();
 			towerList.push_back(testTower);
 			vectorMutex.unlock();
-			buildable[xpos][ypos] = false;
+			tileType[xpos][ypos] = TILE_TYPE_TOWER;
 			//gameGuiController->building = false;
 		} else {
 			// Play unable to build beep sound
 		}
-		
-
 	}
 	if (gameEngine->eventMousePressedLeft) {
 
@@ -424,8 +373,6 @@ void GameController::update() {
 	}
 	
 
-	//for (Entity * current : entityList){
-
 	for (auto * current : renderObjectsVector) {
 
 		current->update();
@@ -433,27 +380,13 @@ void GameController::update() {
 	}
 	
 	for (Unit * current : unitList) {
-		//std::cout << "Move me!" << std::endl;
 		current->update();
-//		std::cout << current->posX << "  " << current->posY << std::endl;
 	}
 
-	//sorting units so the unit with the lowest base y is renderd first
+	//sorting units so the unit with the lowest base y is rendered first
 	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
 	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
 	
-	//delete testing
-	//if (rand() % 100 < 10 && unitList.size() > 0) {
-
-	//	vectorMutex.lock();
-
-	//	auto unit = unitList[unitList.size() - 1];
-	//	delete unit;
-	//	unitList.pop_back();
-
-	//	vectorMutex.unlock();
-
-	//}
 
 
 	//Check if units are in proxmity to towers.
@@ -493,9 +426,6 @@ void GameController::update() {
 	//		}
 	//	}
 	//}
-
-
-
 
 
 	for (auto currentController : childControllers) {

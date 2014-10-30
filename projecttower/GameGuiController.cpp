@@ -16,7 +16,7 @@ GameGuiController::~GameGuiController() {
 
 void GameGuiController::update() {
 
-	gameEngine->getWindow()->setView(gameView);
+	//gameEngine->getWindow()->setView(gameView);
 
 	//std::cout << "In menu controller" << std::endl;
 	for (auto *current : guiObjects) {
