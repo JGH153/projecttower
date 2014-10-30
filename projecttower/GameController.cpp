@@ -91,7 +91,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	//set view size relative to org window size
 	viewRelativeSizeX = 2.0f;
 	viewRelativeSizeY = 2.0f;
-	zoomRate = 1.2f;
+	zoomRate = 1.15f;
 
 	viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
 	viewHeight = WINDOWSIZEY / viewRelativeSizeY; ///2
@@ -101,6 +101,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gameView = view;
 
 	towerUnderMouse = false;
+	zoomEndPoint = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
 }
 
 sf::View GameController::getView() {
@@ -217,8 +218,39 @@ std::vector<SubController *> GameController::getChildControllers() {
 
 }
 
+void GameController::lerpZoom(float t) {
+	if (t > 1.0f) {
+		t = 1;
+	}
+	//If t = 1, then we are at the end point
+	sf::FloatRect currentViewport;
+	currentViewport.width = gameView.getSize().x;
+	currentViewport.height = gameView.getSize().y;
+	currentViewport.top = gameView.getCenter().y - gameView.getSize().y / 2;
+	currentViewport.left = gameView.getCenter().x - gameView.getSize().x / 2;
+
+	currentViewport.width = (1 - t) * currentViewport.width + t * zoomEndPoint.width;
+	currentViewport.height = (1 - t) * currentViewport.height + t * zoomEndPoint.height;
+	currentViewport.top = (1 - t) * currentViewport.top + t * zoomEndPoint.top;
+	currentViewport.left = (1 - t) * currentViewport.left + t * zoomEndPoint.left;
+
+	gameView.reset(currentViewport);
+
+	if (t >= 1.0f) {
+		zoomEndPoint.height = 0;
+		zoomEndPoint.width = 0;
+		zoomEndPoint.top = 0;
+		zoomEndPoint.left = 0;
+		zooming = false;
+	}
+
+}
 
 void GameController::update() {
+	if (zooming) {
+		lerpTime += 1.0f * ((float)gameEngine->deltaTime.asMilliseconds() / 200);
+		lerpZoom(lerpTime);
+	}
 
 	auto mousePos = gameEngine->getMousePosition();
 	
@@ -248,7 +280,55 @@ void GameController::update() {
 			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
 			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
 			
-			gameView.reset(sf::FloatRect(gameView.getCenter().x - (viewWidth / 2), gameView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight));
+			float xdiff = (mousePos.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
+			float ydiff = (mousePos.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
+
+			sf::View tempView = gameView;
+
+			//Zooming out so that view comes out of bounds on left side fix
+			if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
+				tempView.setCenter(sf::Vector2f(viewWidth / 2, tempView.getCenter().y));
+			}
+			//Zooming out so that view comes out of bounds on right side fix
+			else if (tempView.getCenter().x + viewWidth / 2 + xdiff > WINDOWSIZEX) {
+				tempView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, tempView.getCenter().y));
+			}
+
+			//Zooming out so that view comes out of bounds on top fix
+			if (tempView.getCenter().y - viewHeight / 2 + ydiff < 0) {
+				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, viewHeight / 2));
+			}
+			//Zooming out so that view comes out of bounds on bottom fix
+			else if (tempView.getCenter().y + viewHeight / 2 + ydiff > WINDOWSIZEY) {
+				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
+			}
+
+			//At max zoom out level, center view to screen
+			if (viewWidth > WINDOWSIZEX) {
+				viewWidth = WINDOWSIZEX;
+				viewHeight = WINDOWSIZEY;
+				tempView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
+			}
+
+
+			sf::FloatRect newZoom(tempView.getCenter().x - (viewWidth / 2), tempView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight);
+			
+			//If center has not changed
+			if (tempView.getCenter().x == gameView.getCenter().x) {
+				newZoom.left += xdiff;
+			}
+
+			if (tempView.getCenter().y == gameView.getCenter().y) {
+				newZoom.top += ydiff;
+			}
+
+			zoomEndPoint.width = newZoom.width;
+			zoomEndPoint.height = newZoom.height;
+			zoomEndPoint.top = newZoom.top;
+			zoomEndPoint.left = newZoom.left;
+
+			zooming = true;
+			lerpTime = 0.0f;
 		}
 	}
 
@@ -260,34 +340,55 @@ void GameController::update() {
 
 			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
 			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
-			
+
+			sf::View tempView = gameView;
+			float xdiff = (gameView.getCenter().x - mousePos.x) * viewRelativeSizeX / 5.f;
+			float ydiff = (gameView.getCenter().y - mousePos.y) * viewRelativeSizeX / 5.f;
+
 			//Zooming out so that view comes out of bounds on left side fix
-			if (gameView.getCenter().x - viewWidth / 2 < 0) {
-				gameView.setCenter(sf::Vector2f(viewWidth / 2, gameView.getCenter().y));
+			if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
+				tempView.setCenter(sf::Vector2f(viewWidth / 2, tempView.getCenter().y));
 			}
 			//Zooming out so that view comes out of bounds on right side fix
-			else if (gameView.getCenter().x + viewWidth / 2 > WINDOWSIZEX) {
-				gameView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, gameView.getCenter().y));
+			else if (tempView.getCenter().x + viewWidth / 2 + xdiff > WINDOWSIZEX) {
+				tempView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, tempView.getCenter().y));
 			}
 
 			//Zooming out so that view comes out of bounds on top fix
-			if (gameView.getCenter().y - viewHeight / 2 < 0) {
-				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, viewHeight / 2));
+			if (tempView.getCenter().y - viewHeight / 2 + ydiff < 0) {
+				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, viewHeight / 2));
 			}
 			//Zooming out so that view comes out of bounds on bottom fix
-			else if (gameView.getCenter().y + viewHeight / 2 > WINDOWSIZEY) {
-				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
+			else if (tempView.getCenter().y + viewHeight / 2 + ydiff > WINDOWSIZEY) {
+				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
 			}
 
 			//At max zoom out level, center view to screen
 			if (viewWidth > WINDOWSIZEX) {
 				viewWidth = WINDOWSIZEX;
 				viewHeight = WINDOWSIZEY;
-				gameView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
+				tempView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
 			}
 
-			gameView.reset(sf::FloatRect(gameView.getCenter().x - (viewWidth / 2), gameView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight));
-			
+			sf::FloatRect newZoom(tempView.getCenter().x - (viewWidth / 2), tempView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight);
+
+			//If center has not changed
+			if (tempView.getCenter().x == gameView.getCenter().x) {
+				newZoom.left += xdiff;
+			}
+
+			if (tempView.getCenter().y == gameView.getCenter().y) {
+				newZoom.top += ydiff;
+			}
+
+			zoomEndPoint.width = newZoom.width;
+			zoomEndPoint.height = newZoom.height;
+			zoomEndPoint.top = newZoom.top;
+			zoomEndPoint.left = newZoom.left;
+
+			zooming = true;
+			lerpTime = 0.0f;
+
 		}
 	}
 

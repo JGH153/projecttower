@@ -70,6 +70,11 @@ private:
 	bool towerUnderMouse;
 	VortexSprite * towerBuildSprite;
 
+	void lerpZoom(float t); //Linear interpolation
+	float lerpTime;
+	bool zooming;
+	sf::FloatRect zoomEndPoint;
+
 	std::vector <VortexButton> buttonList;
 	std::vector <VortexButton> rectButtonTest; //DEBUG: Delete if i forget
 	std::vector <VortexButton *> someButtons; //DEBUG: Delete if i forget
