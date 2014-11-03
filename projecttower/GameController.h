@@ -72,6 +72,7 @@ private:
 	bool towerUnderMouse;
 	VortexSprite * towerBuildSprite;
 
+	void updateGhostBuildingSprite(sf::Vector2f mousePosView);
 	void lerpZoom(float t); //Linear interpolation
 	float lerpTime;
 	bool zooming;
