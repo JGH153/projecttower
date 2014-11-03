@@ -30,13 +30,13 @@ int VortexButton::getHeight(){
 
 bool VortexButton::buttonClicked(){
 	if (gameEngine->eventMouseClickedLeft){
-		sf::Vector2i mouse = gameEngine->getMousePosition();
+		sf::Vector2i mouse = gameEngine->getMousePositionRelativeToWindow();
 		return hitPoint(gameEngine->getMapPixelToCoords(mouse));
 	}
 	return false;
 }
 
 bool VortexButton::mouseOver(){	
-	sf::Vector2i mouse = gameEngine->getMousePosition();
+	sf::Vector2i mouse = gameEngine->getMousePositionRelativeToWindow();
 	return hitPoint(gameEngine->getMapPixelToCoords(mouse));
 }

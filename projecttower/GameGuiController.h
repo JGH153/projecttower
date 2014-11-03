@@ -27,6 +27,9 @@ public:
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
+	bool mouseOverSomeButton(sf::View resetToView);
+	
+
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;

@@ -14,7 +14,26 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 GameGuiController::~GameGuiController() {
 }
 
+bool GameGuiController::mouseOverSomeButton(sf::View resetToView) {
+	bool overSomeButton = false;
+
+	gameEngine->setMousePosView(gameView);
+
+	if (buildButton->mouseOver()) {
+		overSomeButton = true;
+	}
+
+	gameEngine->setMousePosView(resetToView);
+
+	return overSomeButton;
+
+}
+
 void GameGuiController::update() {
+
+	gameEngine->setMousePosView(gameView);
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 	//gameEngine->getWindow()->setView(gameView);
 

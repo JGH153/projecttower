@@ -71,7 +71,23 @@ public:
 
 	sf::Texture checkForBackupImage(std::string path);
 
+	void setMousePosView(sf::View gameView);
+	//Requiers a set sf::View by setMousePosView
+	sf::Vector2f getMousePositionRelativeToSetView();
+	//Requiers a set sf::View by setMousePosView
+	sf::Vector2i getMousePositionRelativeToSetViewInt();
+
+	//Do not use 3)
 	sf::Vector2i getMousePosition();
+
+	//Do not requiers a set sf::View by setMousePosView
+	sf::Vector2i getMousePositionRelativeToWindow();
+
+	sf::Vector2f getMousePositionRelativeToViewFloat(sf::View gameView);
+	sf::Vector2i getMousePositionRelativeToView(sf::View gameView);
+
+	
+
 	sf::Vector2f getMapPixelToCoords(sf::Vector2i point);
 	sf::Vector2f getMousePositionLocal();
 
@@ -133,7 +149,11 @@ public:
 	sf::Time lastRenderTime;
 	sf::Time deltaTime;
 
+
 private:
+
+
+	sf::View currentMousePosView;
 
 	std::default_random_engine randomNumberGenerator;
 

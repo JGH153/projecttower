@@ -267,9 +267,62 @@ sf::Texture Vortex::checkForBackupImage(std::string path) {
 }
 
 
+void Vortex::setMousePosView(sf::View gameView) {
+	currentMousePosView = gameView;
+}
+
+
+sf::Vector2f Vortex::getMousePositionRelativeToSetView() {
+
+	auto mouseFirst = sf::Mouse::getPosition(*mainWindow);
+
+	return mainWindow->mapPixelToCoords(sf::Mouse::getPosition(*mainWindow), currentMousePosView);
+
+}
+
+sf::Vector2i Vortex::getMousePositionRelativeToSetViewInt() {
+
+	auto cordD = getMousePositionRelativeToSetView();
+
+	sf::Vector2i returnPoint;
+	returnPoint.x = cordD.x;
+	returnPoint.y = cordD.y;
+
+	return returnPoint;
+}
+
+
+
+
+
 sf::Vector2i Vortex::getMousePosition(){
 	return sf::Mouse::getPosition(*mainWindow);
 }
+
+sf::Vector2i Vortex::getMousePositionRelativeToWindow() {
+	return sf::Mouse::getPosition(*mainWindow);
+}
+
+sf::Vector2f Vortex::getMousePositionRelativeToViewFloat(sf::View gameView) {
+
+	auto mouseFirst = sf::Mouse::getPosition(*mainWindow);
+
+	return mainWindow->mapPixelToCoords(sf::Mouse::getPosition(*mainWindow), gameView);
+
+}
+
+sf::Vector2i Vortex::getMousePositionRelativeToView(sf::View gameView) {
+
+	auto cordD = getMousePositionRelativeToViewFloat(gameView);
+
+	sf::Vector2i returnPoint;
+	returnPoint.x= cordD.x;
+	returnPoint.y = cordD.y;
+
+	return returnPoint;
+}
+
+
 sf::Vector2f Vortex::getMapPixelToCoords(sf::Vector2i point){
 	return mainWindow->mapPixelToCoords(point);
 }
@@ -500,3 +553,4 @@ void Vortex::closeApplication(){
 sf::RenderWindow * Vortex::getWindow() {
 	return mainWindow;
 }
+

@@ -247,18 +247,32 @@ void GameController::lerpZoom(float t) {
 }
 
 void GameController::update() {
+
+	
+
 	if (zooming) {
 		lerpTime += 1.0f * ((float)gameEngine->deltaTime.asMilliseconds() / 200);
 		lerpZoom(lerpTime);
 	}
 
-	auto mousePos = gameEngine->getMousePosition();
+	gameEngine->setMousePosView(gameView);
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
+	//if (gameEngine->eventMouseClickedLeft) {
+
+	//	std::cout << "mousePosWindowX: " << mousePosWindow.x << "mousePosWindowY: " << mousePosWindow.y << " | ";
+	//	std::cout << "mousePosViewX: " << mousePosView.x << "mousePosViewX: " << mousePosView.y << std::endl;
+
+	//}
+
+
+
 	
 	if (gameEngine->eventMouseMove && gameGuiController->building == true) {
-		auto mousePos = gameEngine->getMousePositionLocal();
 
-		int xpos = mousePos.x / gridTileSize;
-		int ypos = mousePos.y / gridTileSize;
+		int xpos = mousePosView.x / gridTileSize;
+		int ypos = mousePosView.y / gridTileSize;
 
 		towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
 
@@ -280,8 +294,8 @@ void GameController::update() {
 			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
 			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
 			
-			float xdiff = (mousePos.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
-			float ydiff = (mousePos.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
+			float xdiff = (mousePosWindow.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
+			float ydiff = (mousePosWindow.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
 
 			sf::View tempView = gameView;
 
@@ -342,8 +356,8 @@ void GameController::update() {
 			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
 
 			sf::View tempView = gameView;
-			float xdiff = (gameView.getCenter().x - mousePos.x) * viewRelativeSizeX / 5.f;
-			float ydiff = (gameView.getCenter().y - mousePos.y) * viewRelativeSizeX / 5.f;
+			float xdiff = (gameView.getCenter().x - mousePosWindow.x) * viewRelativeSizeX / 5.f;
+			float ydiff = (gameView.getCenter().y - mousePosWindow.y) * viewRelativeSizeX / 5.f;
 
 			//Zooming out so that view comes out of bounds on left side fix
 			if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
@@ -396,8 +410,8 @@ void GameController::update() {
 	if (gameEngine->eventMousePressedRight) {
 		if (gameEngine->eventMouseMove) {
 			//Move the viewport
-			int viewChangeX = previousMousePos.x - mousePos.x;
-			int viewChangeY = previousMousePos.y - mousePos.y;
+			int viewChangeX = previousMousePos.x - mousePosWindow.x;
+			int viewChangeY = previousMousePos.y - mousePosWindow.y;
 
 			
 
@@ -429,18 +443,17 @@ void GameController::update() {
 	}
 	
 	if (gameEngine->eventMouseClickedLeft) {
-		
-		auto mousePos = gameEngine->getMousePositionLocal();
 
-		int xpos = mousePos.x / gridTileSize;
-		int ypos = mousePos.y / gridTileSize;
+		int xpos = mousePosView.x / gridTileSize;
+		int ypos = mousePosView.y / gridTileSize;
 
-		if (tileType[xpos][ypos] == TILE_TYPE_GRASS && gameGuiController->building) {
+		if (tileType[xpos][ypos] == TILE_TYPE_GRASS && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView)) {
 			BasicTower * testTower = new BasicTower(gameEngine, xpos * gridTileSize, ypos * gridTileSize);
 			vectorMutex.lock();
 			towerList.push_back(testTower);
 			vectorMutex.unlock();
 			tileType[xpos][ypos] = TILE_TYPE_TOWER;
+			towerBuildSprite->setColor(UNABLETOBUILD);
 			//gameGuiController->building = false;
 		} else {
 			// Play unable to build beep sound
@@ -449,18 +462,16 @@ void GameController::update() {
 	if (gameEngine->eventMousePressedLeft) {
 
 		vectorMutex.lock();
-
-		auto mousePos = gameEngine->getMousePositionLocal();
 		/*
 		for (int i = 0; i < unitList.size(); i++) {
 
-			if (unitList[i]->posX < mousePos.x) {
+			if (unitList[i]->posX < mousePosView.x) {
 				delete unitList[i];
 				unitList.erase(unitList.begin()+i);
 				i--;
 			}
 
-			if (unitList[i]->hitPoint(mousePos)) {
+			if (unitList[i]->hitPoint(mousePosView)) {
 				delete unitList[i];
 				unitList.erase(unitList.begin() + i);
 			}
@@ -533,6 +544,6 @@ void GameController::update() {
 		currentController->update();
 	}
 
-	previousMousePos = mousePos;
+	previousMousePos = mousePosWindow;
 	
 }
