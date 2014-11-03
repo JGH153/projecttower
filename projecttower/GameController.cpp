@@ -218,6 +218,20 @@ std::vector<SubController *> GameController::getChildControllers() {
 
 }
 
+void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
+	int xpos = mousePosView.x / gridTileSize;
+	int ypos = mousePosView.y / gridTileSize;
+
+	towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
+
+	if (tileType[xpos][ypos] == TILE_TYPE_GRASS) {
+		towerBuildSprite->setColor(ABLETOBUILD);
+	}
+	else {
+		towerBuildSprite->setColor(UNABLETOBUILD);
+	}
+}
+
 void GameController::lerpZoom(float t) {
 	if (t > 1.0f) {
 		t = 1;
@@ -235,7 +249,7 @@ void GameController::lerpZoom(float t) {
 	currentViewport.left = (1 - t) * currentViewport.left + t * zoomEndPoint.left;
 
 	gameView.reset(currentViewport);
-
+	
 	if (t >= 1.0f) {
 		zoomEndPoint.height = 0;
 		zoomEndPoint.width = 0;
@@ -243,21 +257,21 @@ void GameController::lerpZoom(float t) {
 		zoomEndPoint.left = 0;
 		zooming = false;
 	}
-
 }
 
 void GameController::update() {
 
-	
+	gameEngine->setMousePosView(gameView);
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 	if (zooming) {
 		lerpTime += 1.0f * ((float)gameEngine->deltaTime.asMilliseconds() / 200);
 		lerpZoom(lerpTime);
+		updateGhostBuildingSprite(mousePosView);
 	}
 
-	gameEngine->setMousePosView(gameView);
-	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
-	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+	
 
 	//if (gameEngine->eventMouseClickedLeft) {
 
@@ -270,18 +284,7 @@ void GameController::update() {
 
 	
 	if (gameEngine->eventMouseMove && gameGuiController->building == true) {
-
-		int xpos = mousePosView.x / gridTileSize;
-		int ypos = mousePosView.y / gridTileSize;
-
-		towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
-
-		if (tileType[xpos][ypos] == TILE_TYPE_GRASS) {
-			towerBuildSprite->setColor(ABLETOBUILD);
-		}
-		else {
-			towerBuildSprite->setColor(UNABLETOBUILD);
-		}
+		updateGhostBuildingSprite(mousePosView);		
 	}
 
 
@@ -294,8 +297,8 @@ void GameController::update() {
 			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
 			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
 			
-			float xdiff = (mousePosWindow.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
-			float ydiff = (mousePosWindow.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
+			float xdiff = (mousePosView.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
+			float ydiff = (mousePosView.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
 
 			sf::View tempView = gameView;
 
@@ -356,8 +359,8 @@ void GameController::update() {
 			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
 
 			sf::View tempView = gameView;
-			float xdiff = (gameView.getCenter().x - mousePosWindow.x) * viewRelativeSizeX / 5.f;
-			float ydiff = (gameView.getCenter().y - mousePosWindow.y) * viewRelativeSizeX / 5.f;
+			float xdiff = (gameView.getCenter().x - mousePosView.x) * viewRelativeSizeX / 5.f;
+			float ydiff = (gameView.getCenter().y - mousePosView.y) * viewRelativeSizeX / 5.f;
 
 			//Zooming out so that view comes out of bounds on left side fix
 			if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
@@ -402,7 +405,6 @@ void GameController::update() {
 
 			zooming = true;
 			lerpTime = 0.0f;
-
 		}
 	}
 
