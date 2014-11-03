@@ -10,6 +10,10 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 }
 
+void GameGuiController::preloadAssets() {
+
+}
+
 
 GameGuiController::~GameGuiController() {
 }

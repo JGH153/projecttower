@@ -45,6 +45,8 @@ public:
 	std::vector<SubController *> getChildControllers();
 
 	//std::vector<RenderObject *> getRenderObjectList();
+
+	void preloadAssets();
 	
 private:
 

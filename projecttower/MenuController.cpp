@@ -28,6 +28,10 @@ MenuController::~MenuController()
 {
 }
 
+void MenuController::preloadAssets() {
+
+}
+
 void MenuController::update() {
 	//std::cout << "In menu controller" << std::endl;
 	for (auto *current : guiObjects) {

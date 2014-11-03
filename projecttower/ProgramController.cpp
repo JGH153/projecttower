@@ -23,6 +23,11 @@ ProgramController::~ProgramController(){
 
 }
 
+void ProgramController::preloadAssets() {
+
+}
+
+
 sf::View ProgramController::getView() {
 	return sf::View(sf::FloatRect(0, 0, WINDOWSIZEX, WINDOWSIZEY));
 }

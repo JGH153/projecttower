@@ -28,6 +28,8 @@ public:
 	//std::vector<RenderObject *> getRenderObjectList();
 
 	bool mouseOverSomeButton(sf::View resetToView);
+
+	void preloadAssets();
 	
 
 private:

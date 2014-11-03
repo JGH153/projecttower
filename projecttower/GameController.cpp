@@ -79,6 +79,12 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 		}
 	}
 
+
+	preloadAssets();
+
+
+
+
 	for (int i = 0; i < 100; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
@@ -103,6 +109,22 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	towerUnderMouse = false;
 	zoomEndPoint = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
 }
+
+
+void GameController::preloadAssets() {
+
+	std::vector<BasicUnit *> preloadUnitList;
+	preloadUnitList.push_back(new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100))));
+
+	for (auto currentUnit : preloadUnitList) {
+		delete currentUnit;
+	}
+	preloadUnitList.clear();
+
+}
+
+
+
 
 sf::View GameController::getView() {
 	return gameView;
@@ -442,7 +464,8 @@ void GameController::update() {
 		
 	}
 	
-	if (gameEngine->eventMouseClickedLeft) {
+	//if (gameEngine->eventMouseClickedLeft) {
+	if (gameEngine->eventMousePressedLeft) {
 
 		int xpos = mousePosView.x / gridTileSize;
 		int ypos = mousePosView.y / gridTileSize;

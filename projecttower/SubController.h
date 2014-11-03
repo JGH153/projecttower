@@ -38,6 +38,8 @@ public:
 	int getNextControllerID();
 	void setNextControllerID(int ID);
 
+	virtual void preloadAssets() = 0;
+
 	bool updateStaticRenderData;
 
 	SubController * getCurrentRenderController();

@@ -26,6 +26,8 @@ public:
 	sf::View getView();
 	std::vector<SubController *> getChildControllers();
 
+	void preloadAssets();
+
 
 private:
 	Vortex * gameEngine;

@@ -27,6 +27,8 @@ public:
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
+	void preloadAssets();
+
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
