@@ -15,6 +15,7 @@
 #include "SubController.h"
 #include "VortexConvexButton.h"
 #include "VortexButtonRectangle.h"
+#include "MapTile.h"
 
 #include "GameGuiController.h"
 #include "GlobalDefines.h"
@@ -55,9 +56,13 @@ private:
 
 	VortexSprite bgSprite;
 	float gridTileSize;
-	int tileType[GAMEMAPSIZEX][GAMEMAPSIZEY];
+	//int tileType[GAMEMAPSIZEX][GAMEMAPSIZEY];
 	std::vector<VortexSprite *> backgroundTextures;
-	std::vector<VortexSprite *> mapTiles;
+	//std::vector<VortexSprite *> mapTiles;
+
+
+	std::vector<std::vector<MapTile *>> mapGroundTile;
+
 	
 	sf::Vector2i previousMousePos;
 

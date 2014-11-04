@@ -1,7 +1,13 @@
 #include "BasicTower.h"
 
 
-BasicTower::BasicTower(Vortex * gameEngine, int posX, int posY) : Tower(gameEngine) {
+BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY) : Tower(gameEngine, enemyList) {
+
+	damage = 2.f;
+	range = 200;
+	reloadTimeMS = 300;
+
+	reloading = false;
 
 	this->posX = posX;
 	this->posY = posY;
@@ -26,5 +32,22 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
 
 void BasicTower::update() {
+
+	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
+		reloading = false;
+	}
+
+	if (!reloading) {
+
+		Unit * target = findTarget();
+		if (target != nullptr) {
+			//fire!
+			//std::cout << "im firing my lazer" << std::endl;
+			reloading = true;
+			reloadTimer.restart();
+			target->damage(damage);
+		}
+
+	}
 
 }

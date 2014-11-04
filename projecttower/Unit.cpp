@@ -26,6 +26,23 @@ bool Unit::hitPoint(double x, double y) {
 	return false;
 }
 
+void Unit::damage(float damage) {
+
+	health -= damage;
+	//std::cout << health << std::endl;
+
+}
+
+bool Unit::isDead() {
+
+	if (health <= 0.f) {
+		return true;
+	}
+
+	return false;
+
+}
+
 //bool Unit::takeDamageAndCheckIfDead(int damage) {
 //	hp -= damage;
 //	if (hp <= 0) {

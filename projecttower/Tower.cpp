@@ -1,14 +1,33 @@
 #include "Tower.h"
 
 
-Tower::Tower(Vortex * gameEngine) : Entity(gameEngine){
+Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList) : Entity(gameEngine) {
 
+	
+	this->enemyList = enemyList;
 
 }
 
 
 Tower::~Tower()
 {
+}
+
+Unit * Tower::findTarget() {
+
+	for (int i = 0; i < enemyList->size(); i++) {
+
+		if (abs(enemyList->at(i)->posX - posX) < range / 2 && abs(enemyList->at(i)->posY - posY) < range / 2) {
+
+			//if ((!enemyList->at(i)->dead) && (!enemyList->at(i)->deathAnimationActive))
+				return enemyList->at(i);
+
+		}
+
+	}
+
+	return nullptr;
+
 }
 
 //bool Tower::canAttack() {

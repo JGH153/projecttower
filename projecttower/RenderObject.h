@@ -16,7 +16,7 @@ public:
 
 protected:
 
-	std::vector<RenderData> returnVector;
+	//std::vector<RenderData> returnVector;
 
 };
 

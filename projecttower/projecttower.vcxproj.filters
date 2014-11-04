@@ -111,6 +111,9 @@
     <ClCompile Include="BasicTower.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -183,6 +186,9 @@
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
     <ClInclude Include="BasicTower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

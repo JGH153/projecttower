@@ -20,14 +20,16 @@ public:
 	bool hitPoint(sf::Vector2f point);
 	bool hitPoint(double x, double y);
 
-
+	//is damaged
+	void damage(float damage);
+	bool isDead();
 	
 
 
 protected:
 
 	
-
+	float health;
 	sf::Vector2i moveDirection;
 	float speed;
 

@@ -33,59 +33,60 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	bgSprite.setPosition(0, 0);
 
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
+	gridTileSize = 25;
 
-	for (int x = 0; x < GAMEMAPSIZEX; x++){
-		for (int y = 0; y < GAMEMAPSIZEY; y++){
 
-			sf::Texture * texImageTile;
-			
+
+
+
+	
+	
+
+		
+		
+	for (int x = 0; x < GAMEMAPSIZEX; x++) {
+
+		std::vector<MapTile *> tempVec;
+
+		for (int y = 0; y < GAMEMAPSIZEY; y++) {
+
+			int ID = 0;
 
 			if (x == (GAMEMAPSIZEX / 2)) {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-				tileType[x][y] = TILE_TYPE_WALL;
+				ID = TileTypes::wall;
 			}
 			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) - 1 || y == (GAMEMAPSIZEY / 2) + 1)) {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-				tileType[x][y] = TILE_TYPE_WALL;
+				ID = TileTypes::wall;
 			}
 			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) || y == (GAMEMAPSIZEY / 2))) {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/cave.png");
-				tileType[x][y] = TILE_TYPE_CAVE;
+				ID = TileTypes::cave;
 			}
 			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)) || ((x == GAMEMAPSIZEX / 2 - 2) || (x == GAMEMAPSIZEX / 2 + 2) || (x <= GAMEMAPSIZEX / 10) || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10) - 1)) && (y == GAMEMAPSIZEY / 2))) {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/dirt.png");
-				tileType[x][y] = TILE_TYPE_DIRT;
+				ID = TileTypes::dirt;
+			}else {
+				ID = TileTypes::grass;
 			}
-			else {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/grass_tile.png");
-				tileType[x][y] = TILE_TYPE_GRASS;
-			}
-
 			if ((x == (GAMEMAPSIZEX / 10) - 1 || x == (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10))) && y != GAMEMAPSIZEY / 2) {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/wall.png");
-				tileType[x][y] = TILE_TYPE_WALL;
+				ID = TileTypes::wall;
 			}
-
 			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY) - (GAMEMAPSIZEY / 6)) {
-				texImageTile = gameEngine->loadImageToTexture("Graphics/water.png");
-				tileType[x][y] = TILE_TYPE_WATER;
+				ID = TileTypes::water;
 			}
 
-			VortexSprite * tempSprite = new VortexSprite(*texImageTile);
-			tempSprite->setPosition(x * gridTileSize, y * gridTileSize);
-			tempSprite->setSize(gridTileSize, gridTileSize);
-			mapTiles.push_back(tempSprite);
+			tempVec.push_back(new MapTile(gameEngine, ID, x * gridTileSize, y * gridTileSize, gridTileSize, gridTileSize));
 
 		}
+
+		mapGroundTile.push_back(tempVec);
+
 	}
 
+	std::cout << mapGroundTile.size() << " " << mapGroundTile[0].size() << std::endl;
 
 	preloadAssets();
 
 
-
-
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 10000; i++){
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
@@ -95,8 +96,8 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	}
 
 	//set view size relative to org window size
-	viewRelativeSizeX = 2.0f;
-	viewRelativeSizeY = 2.0f;
+	viewRelativeSizeX = 1.0f;
+	viewRelativeSizeY = 1.0f;
 	zoomRate = 1.15f;
 
 	viewWidth = WINDOWSIZEX / viewRelativeSizeX; ///2
@@ -161,11 +162,23 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 	}
 
-	for (auto currentRenderObj : mapTiles) {
+	//for (auto currentRenderObj : mapTiles) {
 
-		auto tempVector = currentRenderObj->getRenderDrawable();
+	//	auto tempVector = currentRenderObj->getRenderDrawable();
 
-		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+	//	renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
+	//}
+
+	for (auto currentRenderList : mapGroundTile) {
+
+		for (auto currentRenderObj : currentRenderList) {
+
+			auto tempVector = currentRenderObj->getRenderDrawable();
+
+			renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
+		}
 
 	}
 
@@ -246,7 +259,12 @@ void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 
 	towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
 
-	if (tileType[xpos][ypos] == TILE_TYPE_GRASS) {
+	//prevent out of vector error
+	if (xpos >= mapGroundTile.size() || ypos >= mapGroundTile[0].size()) {
+		return;
+	}
+
+	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass) {
 		towerBuildSprite->setColor(ABLETOBUILD);
 	}
 	else {
@@ -472,12 +490,12 @@ void GameController::update() {
 		int xpos = mousePosView.x / gridTileSize;
 		int ypos = mousePosView.y / gridTileSize;
 
-		if (tileType[xpos][ypos] == TILE_TYPE_GRASS && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView)) {
-			BasicTower * testTower = new BasicTower(gameEngine, xpos * gridTileSize, ypos * gridTileSize);
+		if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView)) {
+			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize);
 			vectorMutex.lock();
 			towerList.push_back(testTower);
 			vectorMutex.unlock();
-			tileType[xpos][ypos] = TILE_TYPE_TOWER;
+			mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
 			towerBuildSprite->setColor(UNABLETOBUILD);
 			//gameGuiController->building = false;
 		} else {
@@ -515,8 +533,25 @@ void GameController::update() {
 		current->update();
 
 	}
+
 	
-	for (Unit * current : unitList) {
+	for (auto * current : towerList) {
+		current->update();
+	}
+
+	for (int i = 0; i < unitList.size(); i++) {
+
+		if (unitList[i]->isDead()) {
+			vectorMutex.lock();
+			delete unitList[i];
+			unitList.erase(unitList.begin() + i);
+			i--;
+			vectorMutex.unlock();
+		}
+
+	}
+	
+	for (auto * current : unitList) {
 		current->update();
 	}
 

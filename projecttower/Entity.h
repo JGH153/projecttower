@@ -13,7 +13,7 @@
 #include "VortexSprite.h"
 #include "VortexAnimation.h"
 
-#include "GameGuiController.h"
+//#include "GameGuiController.h"
 
 class Entity : public RenderObject {
 public:

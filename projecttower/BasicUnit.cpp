@@ -20,6 +20,7 @@ BasicUnit::BasicUnit(Vortex * gameEngine, int posX, int posY) : Unit(gameEngine)
 
 	}
 
+	health = 5.f;
 
 	moveDirection = DIRECTIONS[rand() % 4];
 

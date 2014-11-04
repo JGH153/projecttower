@@ -4,7 +4,7 @@
 
 class BasicTower : public Tower {
 public:
-	BasicTower(Vortex * gameEngine, int posX, int posY);
+	BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY);
 	~BasicTower();
 
 	void update();

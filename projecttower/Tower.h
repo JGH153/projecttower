@@ -6,7 +6,7 @@
 
 class Tower : public Entity{
 public:
-	Tower(Vortex * gameEngine);
+	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList);
 	~Tower();
 	//sf::Vector2i position;
 	//int damage;
@@ -20,5 +20,22 @@ public:
 	//bool canAttack();
 	//bool attack();
 	//virtual void update();
+
+	Unit * Tower::findTarget();
+
+protected:
+
+	sf::Clock reloadTimer;
+
+	int reloadTimeMS;
+	float damage;
+	int range;
+
+	bool reloading;
+
+	
+
+	std::vector<Unit *> * enemyList;
+
 };
 

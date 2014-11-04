@@ -5,6 +5,15 @@
 #include <iostream>
 
 
+namespace TileTypes {
+	extern const int grass;
+	extern const int dirt;
+	extern const int water;
+	extern const int wall;
+	extern const int cave;
+	extern const int tower;
+}
+
 
 int getDirectionIndex(sf::Vector2i direction);
 

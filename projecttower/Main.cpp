@@ -78,7 +78,7 @@ int main(int argc, char* argv[]){
 		//one sec, only preformed once each sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			//std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
+			std::cout << "Num logic pr sek: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 

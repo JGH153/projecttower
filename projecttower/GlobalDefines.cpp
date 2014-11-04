@@ -16,5 +16,13 @@ int getDirectionIndex(sf::Vector2i direction){
 
 }
 
+namespace TileTypes {
+	const int grass = 1;
+	const int dirt = 2;
+	const int water = 3;
+	const int wall = 4;
+	const int cave = 5;
+	const int tower = 6;
+}
 
 
