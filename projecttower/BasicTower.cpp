@@ -1,7 +1,7 @@
 #include "BasicTower.h"
 
 
-BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY) : Tower(gameEngine, enemyList) {
+BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY) : Tower(gameEngine, enemyList, posX, posY) {
 
 	damage = 2.f;
 	range = 200;
@@ -9,8 +9,8 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 
 	reloading = false;
 
-	this->posX = posX;
-	this->posY = posY;
+	/*this->posX = posX;
+	this->posY = posY;*/
 
 	//towerSprite = new VortexSprite("Graphics/button.png", posX, posY);
 

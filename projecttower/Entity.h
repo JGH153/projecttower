@@ -17,7 +17,7 @@
 
 class Entity : public RenderObject {
 public:
-	Entity(Vortex * gameEngine);
+	Entity(Vortex * gameEngine, int posX, int posY);
 	~Entity();
 
 

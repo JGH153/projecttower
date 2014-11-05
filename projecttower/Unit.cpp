@@ -1,12 +1,24 @@
 #include "Unit.h"
 
 
-Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles) : Entity(gameEngine) {
+Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, float maxHealth) : Entity(gameEngine, posX, posY) {
 
 	this->gameEngine = gameEngine;
 	this->mapGroundTiles = mapGroundTiles;
+	this->maxHealth = maxHealth;
+	this->currentHealth = maxHealth;
 
+	sf::Texture * temp = gameEngine->loadImageToTexture("Graphics/GUI/HealthBar/HealthBarBG.gif");
+	int scaleFactorX = 12;
+	int scaleFactorY = 8;
+	int healthBarWidth = temp->getSize().x / scaleFactorX;
+	int healthBarHeight = temp->getSize().y / scaleFactorY;
+	int healthBarPosX = posX - healthBarWidth / 4;
+	int healthBarPosY = posY - healthBarHeight;
 
+	healthBarBG = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarBG.gif", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
+	healthBarFG = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarFG.gif", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
+	healthBarFrame = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarFrame.png", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
 }
 
 
@@ -30,15 +42,19 @@ bool Unit::hitPoint(double x, double y) {
 }
 
 void Unit::damage(float damage) {
-
-	health -= damage;
+	if (isDead()) {
+		return;
+	}
+	currentHealth -= damage;
+	float percentageHP = currentHealth / maxHealth;
+	healthBarFG->setSize(healthBarBG->getSize().x * percentageHP, healthBarFG->getSize().y);
 	//std::cout << health << std::endl;
 
 }
 
 bool Unit::isDead() {
 
-	if (health <= 0.f) {
+	if (currentHealth <= 0.f) {
 		return true;
 	}
 
@@ -120,4 +136,10 @@ sf::Vector2i Unit::WorldPosToMapGroundTilePos(double x, double y) {
 	double gridTileSize = 25.0;
 	return sf::Vector2i(x/gridTileSize, y/gridTileSize);
 
+}
+
+void Unit::moveHealthBar(sf::Vector2f offset) {
+	healthBarBG->move(offset);
+	healthBarFG->move(offset);
+	healthBarFrame->move(offset);
 }

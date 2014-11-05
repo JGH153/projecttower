@@ -1,10 +1,10 @@
 #include "Entity.h"
 
 
-Entity::Entity(Vortex * gameEngine){
+Entity::Entity(Vortex * gameEngine, int posX, int posY){
 
 	this->gameEngine = gameEngine;
-
+	setPos(posX, posY);
 }
 
 

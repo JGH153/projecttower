@@ -1,10 +1,10 @@
 #include "BasicUnit.h"
 
 
-BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY) : Unit(gameEngine, mapGroundTiles) {
+BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, float maxHealth) : Unit(gameEngine, mapGroundTiles, posX, posY, maxHealth) {
 
-	this->posX = posX;
-	this->posY = posY;
+	/*this->posX = posX;
+	this->posY = posY;*/
 
 	//
 	int randNum = rand() % 10;
@@ -20,7 +20,7 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 
 	}
 
-	health = 5.f;
+	//health = 5.f;
 
 	moveDirection = DIRECTIONS[rand() % 4];
 
@@ -57,7 +57,11 @@ BasicUnit::~BasicUnit(){
 
 
 std::vector<sf::Drawable *> BasicUnit::getRenderDrawable() {
-	return moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
+	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
+	temp.push_back(healthBarBG);
+	temp.push_back(healthBarFG);
+	temp.push_back(healthBarFrame);
+	return temp;
 }
 
 
@@ -116,9 +120,14 @@ void BasicUnit::update() {
 	}
 	
 
+	sf::Vector2f offset(moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds(), moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds());
 
-	posX += moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds();
-	posY += moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds();
+	posX += offset.x;
+	posY += offset.y;
+	moveHealthBar(offset);
+	/*posX += moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds();
+	posY += moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds();*/
+	
 
 //	std::cout << gameEngine->deltaTime.asMilliseconds() << std::endl;
 
@@ -152,4 +161,5 @@ void BasicUnit::update() {
 
 	moveAnimations[currentMoveAnimationIndex]->update();
 
+	damage(0.25f);
 }

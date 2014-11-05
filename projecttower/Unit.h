@@ -8,7 +8,7 @@
 
 class Unit : public Entity{
 public:
-	Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles);
+	Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, float maxHealth);
 	~Unit();
 	//sf::Vector2i position;
 	//int hp;
@@ -36,7 +36,8 @@ protected:
 	sf::Vector2i currentWaypointTarget;
 
 	
-	float health;
+	float currentHealth;
+	float maxHealth;
 	sf::Vector2i moveDirection;
 	float speed;
 
@@ -49,5 +50,10 @@ protected:
 	sf::Vector2f mapGroundTilePosToWorldPos(int x, int y);
 	sf::Vector2i WorldPosToMapGroundTilePos(double x, double y);
 
+	VortexSprite *healthBarBG;
+	VortexSprite *healthBarFG;
+	VortexSprite *healthBarFrame;
+
+	void moveHealthBar(sf::Vector2f offset);
 };
 

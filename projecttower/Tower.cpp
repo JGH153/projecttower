@@ -1,7 +1,7 @@
 #include "Tower.h"
 
 
-Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList) : Entity(gameEngine) {
+Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY) : Entity(gameEngine, posX, posY) {
 
 	
 	this->enemyList = enemyList;

@@ -6,7 +6,7 @@
 
 class Tower : public Entity{
 public:
-	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList);
+	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY);
 	~Tower();
 	//sf::Vector2i position;
 	//int damage;
