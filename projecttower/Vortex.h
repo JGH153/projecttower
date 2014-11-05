@@ -149,7 +149,6 @@ public:
 	sf::Time lastRenderTime;
 	sf::Time deltaTime;
 
-
 private:
 
 
@@ -174,6 +173,8 @@ private:
 
 
 	std::mutex pendingEventsMutex;
+
+	
 
 };
 

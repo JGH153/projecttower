@@ -20,13 +20,6 @@
 #include "GameGuiController.h"
 #include "GlobalDefines.h"
 
-#define TILE_TYPE_GRASS 0
-#define TILE_TYPE_DIRT 1
-#define TILE_TYPE_WATER 2
-#define TILE_TYPE_WALL 3
-#define TILE_TYPE_CAVE 4
-#define TILE_TYPE_TOWER 5
-
 class GameController : public SubController
 {
 public:
@@ -44,6 +37,7 @@ public:
 	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
 	sf::View getView();
 	std::vector<SubController *> getChildControllers();
+	bool unitOnTile(int x, int y);
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
@@ -96,7 +90,11 @@ private:
 
 	std::vector<RenderObject *> renderObjectsVector;
 
-	std::mutex vectorMutex;
+	std::mutex backgroundListMutex;
+	std::mutex groundTileListMutex;
+	std::mutex renderObjectsListMutex;
+	std::mutex unitListMutex;
+	std::mutex towerListMutex;
 
 	
 

@@ -9,7 +9,7 @@ MapTile::MapTile(Vortex * gameEngine, int ID, double posX, double posY, double w
 	this->posY = posY;
 	this->width = width;
 	this->height = height;
-
+	
 	setLoadPathBasedOnCurrentID();
 	
 	tileSprite = VortexSprite(gameEngine, loadPath, posX, posY, width, height);

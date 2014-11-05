@@ -71,7 +71,7 @@ bool Unit::atCurrentWaypointTarget() {
 	//std::cout << abs(currentWaypointTargetWorldCord.x - posX) << " | " << abs(currentWaypointTargetWorldCord.y - posY) << std::endl;
 
 	if (abs(currentWaypointTargetWorldCord.x - posX) < range / 2 && abs(currentWaypointTargetWorldCord.y - posY) < range / 2) {
-		std::cout << "YESS\n";
+		//std::cout << "YESS\n";
 		return true;
 	}
 

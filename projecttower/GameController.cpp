@@ -150,10 +150,10 @@ struct EntitySortingStructDistance {
 std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 	
 	std::vector<std::vector<sf::Drawable *>> renderSuperList;
-
 	std::vector<sf::Drawable *> renderList;
 
-	vectorMutex.lock();
+
+	backgroundListMutex.lock();
 
 	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
@@ -163,13 +163,9 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 	}
 
-	//for (auto currentRenderObj : mapTiles) {
+	backgroundListMutex.unlock();
 
-	//	auto tempVector = currentRenderObj->getRenderDrawable();
-
-	//	renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
-
-	//}
+	groundTileListMutex.lock();
 
 	for (auto currentRenderList : mapGroundTile) {
 
@@ -183,9 +179,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 	}
 
-	
-
-	vectorMutex.unlock();
+	groundTileListMutex.unlock();
 
 	renderSuperList.push_back(renderList);
 
@@ -198,9 +192,9 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	std::vector<sf::Drawable *> renderList;
 
-	vectorMutex.lock();
+	
 
-
+	renderObjectsListMutex.lock();
 
 	for (auto currentRenderVector : renderObjectsVector) {
 
@@ -210,7 +204,8 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	}
 
-	
+	renderObjectsListMutex.unlock();
+	towerListMutex.lock();
 
 	for (auto currentRenderVector : towerList) {
 
@@ -220,6 +215,8 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	}
 
+	towerListMutex.unlock();
+	unitListMutex.lock();
 
 	for (auto currentRenderVector : unitList) {
 
@@ -229,15 +226,15 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	}
 
+	unitListMutex.unlock();
+
+
 	if (gameGuiController->building) {
 		renderList.push_back(towerBuildSprite);
 	}
 
 
-	vectorMutex.unlock();
-
 	renderSuperList.push_back(renderList);
-
 
 	
 	return renderSuperList;
@@ -254,6 +251,19 @@ std::vector<SubController *> GameController::getChildControllers() {
 
 }
 
+bool GameController::unitOnTile(int x, int y) {
+	int unitposX;
+	int unitposY;
+	for (auto *current : unitList) {
+		unitposX = (current->getPos().x + (current->width / 2)) / gridTileSize;
+		unitposY = (current->getPos().y + current->height) / gridTileSize;
+		if (unitposX == x && unitposY == y) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 	int xpos = mousePosView.x / gridTileSize;
 	int ypos = mousePosView.y / gridTileSize;
@@ -265,7 +275,7 @@ void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 		return;
 	}
 
-	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass) {
+	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && !unitOnTile(xpos, ypos)) {
 		towerBuildSprite->setColor(ABLETOBUILD);
 	}
 	else {
@@ -317,15 +327,15 @@ void GameController::update() {
 
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS) {
 
-		vectorMutex.lock();
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
+
+		unitListMutex.lock();
 
 		unitSpawnTimer.restart();
 
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
-
 		unitList.push_back(testUnit);
 
-		vectorMutex.unlock();
+		unitListMutex.unlock();
 
 	}
 
@@ -341,11 +351,9 @@ void GameController::update() {
 
 
 
-	
-	if (gameEngine->eventMouseMove && gameGuiController->building == true) {
-		updateGhostBuildingSprite(mousePosView);		
+	if (gameEngine->eventMouseMove || gameGuiController->building == true) {
+		updateGhostBuildingSprite(mousePosView);
 	}
-
 
 	if (gameEngine->eventMouseWheelScrollUp) {
 
@@ -509,21 +517,19 @@ void GameController::update() {
 		int xpos = mousePosView.x / gridTileSize;
 		int ypos = mousePosView.y / gridTileSize;
 
-		if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView)) {
+		if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
 			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize);
-			vectorMutex.lock();
+			towerListMutex.lock();
 			towerList.push_back(testTower);
-			vectorMutex.unlock();
+			towerListMutex.unlock();
 			mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
 			towerBuildSprite->setColor(UNABLETOBUILD);
-			//gameGuiController->building = false;
 		} else {
 			// Play unable to build beep sound
 		}
 	}
 	if (gameEngine->eventMousePressedLeft) {
 
-		vectorMutex.lock();
 		/*
 		for (int i = 0; i < unitList.size(); i++) {
 
@@ -540,9 +546,6 @@ void GameController::update() {
 
 		}
 		*/
-		
-
-		vectorMutex.unlock();
 
 	}
 	
@@ -558,17 +561,16 @@ void GameController::update() {
 		current->update();
 	}
 
+	unitListMutex.lock();
 	for (int i = 0; i < unitList.size(); i++) {
 
 		if (unitList[i]->isDead()) {
-			vectorMutex.lock();
 			delete unitList[i];
 			unitList.erase(unitList.begin() + i);
 			i--;
-			vectorMutex.unlock();
 		}
-
 	}
+	unitListMutex.unlock();
 	
 	for (auto * current : unitList) {
 		current->update();
@@ -623,6 +625,7 @@ void GameController::update() {
 		currentController->update();
 	}
 
+	
 	previousMousePos = mousePosWindow;
 	
 }
