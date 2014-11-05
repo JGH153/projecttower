@@ -96,22 +96,25 @@
     <ClCompile Include="VortexConvexButton.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VortexText.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
     <ClCompile Include="VortexButtonRectangle.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
-    <ClCompile Include="BasicTower.cpp">
+    <ClCompile Include="MapTile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapTile.cpp">
+    <ClCompile Include="RenderObject.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicTower.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="aStar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,22 +176,25 @@
     <ClInclude Include="SubController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VortexText.h">
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
     <ClInclude Include="VortexButtonRectangle.h">
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
-    <ClInclude Include="BasicTower.h">
+    <ClInclude Include="MapTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapTile.h">
+    <ClInclude Include="BasicTower.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="aStar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

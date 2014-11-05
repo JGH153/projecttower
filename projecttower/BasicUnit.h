@@ -2,7 +2,7 @@
 #include "Unit.h"
 class BasicUnit : public Unit {
 public:
-	BasicUnit(Vortex * gameEngine, int posX, int posY);
+	BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY);
 	~BasicUnit();
 
 	void update();

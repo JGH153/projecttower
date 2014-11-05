@@ -73,6 +73,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="aStar.cpp" />
     <ClCompile Include="BasicTower.cpp" />
     <ClCompile Include="BasicUnit.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="VortexUseExample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aStar.h" />
     <ClInclude Include="BasicTower.h" />
     <ClInclude Include="BasicUnit.h" />
     <ClInclude Include="Entity.h" />

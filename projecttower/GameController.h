@@ -51,6 +51,9 @@ public:
 	
 private:
 
+	sf::Clock unitSpawnTimer;
+	int spawnDelayMS;
+
 	//void renderBG();
 	//void renderTiles();
 

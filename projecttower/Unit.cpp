@@ -1,9 +1,12 @@
 #include "Unit.h"
 
 
-Unit::Unit(Vortex * gameEngine) : Entity(gameEngine){
+Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles) : Entity(gameEngine) {
 
 	this->gameEngine = gameEngine;
+	this->mapGroundTiles = mapGroundTiles;
+
+
 }
 
 
@@ -58,3 +61,63 @@ bool Unit::isDead() {
 //	std::cout << "UNIT" << std::endl;
 //
 //}
+
+bool Unit::atCurrentWaypointTarget() {
+
+	float range = 10.f; //px?
+
+	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
+
+	//std::cout << abs(currentWaypointTargetWorldCord.x - posX) << " | " << abs(currentWaypointTargetWorldCord.y - posY) << std::endl;
+
+	if (abs(currentWaypointTargetWorldCord.x - posX) < range / 2 && abs(currentWaypointTargetWorldCord.y - posY) < range / 2) {
+		std::cout << "YESS\n";
+		return true;
+	}
+
+	return false;
+
+}
+
+bool Unit::atCurrentWaypointTargetX() {
+
+	float range = 10.f; //px?
+
+	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
+
+	if (abs(currentWaypointTargetWorldCord.x - posX) < range / 2) {
+		//std::cout << "YESS\n";
+		return true;
+	}
+
+	return false;
+
+}
+
+bool Unit::atCurrentWaypointTargetY() {
+
+	float range = 10.f; //px?
+
+	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
+
+	if (abs(currentWaypointTargetWorldCord.y - posY) < range / 2) {
+		std::cout << "YESS\n";
+		return true;
+	}
+
+	return false;
+
+}
+
+sf::Vector2f Unit::mapGroundTilePosToWorldPos(int x, int y) {
+	int gridTileSize = 25;
+	return sf::Vector2f(x*gridTileSize, y*gridTileSize);
+
+
+}
+
+sf::Vector2i Unit::WorldPosToMapGroundTilePos(double x, double y) {
+	double gridTileSize = 25.0;
+	return sf::Vector2i(x/gridTileSize, y/gridTileSize);
+
+}

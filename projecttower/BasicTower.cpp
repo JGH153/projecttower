@@ -5,7 +5,7 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 
 	damage = 2.f;
 	range = 200;
-	reloadTimeMS = 300;
+	reloadTimeMS = 600;
 
 	reloading = false;
 
@@ -45,7 +45,7 @@ void BasicTower::update() {
 			//std::cout << "im firing my lazer" << std::endl;
 			reloading = true;
 			reloadTimer.restart();
-			target->damage(damage);
+			//target->damage(damage);
 		}
 
 	}

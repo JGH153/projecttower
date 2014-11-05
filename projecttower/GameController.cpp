@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-
+	spawnDelayMS = 200;
 
 
 
@@ -86,9 +86,10 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	preloadAssets();
 
 
-	for (int i = 0; i < 10000; i++){
+	for (int i = 0; i < 1; i++){
 
-		BasicUnit * testUnit = new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
+		//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2)-25);
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
 		unitList.push_back(testUnit);
 		//renderObjectsVector.push_back(testUnit);
@@ -115,7 +116,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 void GameController::preloadAssets() {
 
 	std::vector<BasicUnit *> preloadUnitList;
-	preloadUnitList.push_back(new BasicUnit(gameEngine, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100))));
+	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100))));
 
 	for (auto currentUnit : preloadUnitList) {
 		delete currentUnit;
@@ -310,6 +311,24 @@ void GameController::update() {
 		lerpZoom(lerpTime);
 		updateGhostBuildingSprite(mousePosView);
 	}
+
+
+
+
+	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS) {
+
+		vectorMutex.lock();
+
+		unitSpawnTimer.restart();
+
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
+
+		unitList.push_back(testUnit);
+
+		vectorMutex.unlock();
+
+	}
+
 
 	
 

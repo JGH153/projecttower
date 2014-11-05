@@ -25,6 +25,8 @@
 
 int main(int argc, char* argv[]){
 
+	srand(time(0));
+
 	std::cout << "Creating new vortex and Renderer" << std::endl;
 
 	Vortex * gameEngine = new Vortex();

@@ -3,10 +3,12 @@
 #include "GlobalDefines.h"
 #include "Entity.h"
 
+#include "aStar.h"
+
 
 class Unit : public Entity{
 public:
-	Unit(Vortex * gameEngine);
+	Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles);
 	~Unit();
 	//sf::Vector2i position;
 	//int hp;
@@ -28,10 +30,24 @@ public:
 
 protected:
 
+	deque<sf::Vector2i> pathToTarget;
+
+	bool atWaypointTarget;
+	sf::Vector2i currentWaypointTarget;
+
 	
 	float health;
 	sf::Vector2i moveDirection;
 	float speed;
+
+	std::vector<std::vector<MapTile *>> * mapGroundTiles;
+
+	bool atCurrentWaypointTarget();
+	bool atCurrentWaypointTargetX();
+	bool atCurrentWaypointTargetY();
+
+	sf::Vector2f mapGroundTilePosToWorldPos(int x, int y);
+	sf::Vector2i WorldPosToMapGroundTilePos(double x, double y);
 
 };
 

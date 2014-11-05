@@ -15,6 +15,46 @@ namespace TileTypes {
 }
 
 
+
+class node {
+public:
+
+	int x;
+	int y;
+
+	float disFromStart;
+	float disFromTarget;
+	float sum;
+	node * parent;
+
+	node(int x, int y, float disFromStart, float disFromTarget, node * parent) :
+		x(x),
+		y(y),
+		disFromStart(disFromStart),
+		disFromTarget(disFromTarget),
+		parent(parent) {
+
+		sum = disFromStart + disFromTarget;
+
+	}
+
+
+
+};
+
+struct startEndStruct {
+public:
+	int startX;
+	int startY;
+	int endX;
+	int endY;
+	startEndStruct(int startX, int startY, int endX, int endY) :
+		startX(startX), startY(startY), endX(endX), endY(endY) {
+	}
+
+};
+
+
 int getDirectionIndex(sf::Vector2i direction);
 
 const sf::Vector2i DIR_SOUTH	=	{ 0, 1 };
