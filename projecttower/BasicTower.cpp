@@ -23,11 +23,11 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	float towerSpriteOffsetY = 23.f;
 
 
-	spritePos.x = posX - towerSpriteOffsetX;
-	spritePos.y = posY - towerSpriteOffsetY;
+	/*spritePos.x = posX - towerSpriteOffsetX;
+	spritePos.y = posY - towerSpriteOffsetY;*/
 	width = gridTileSize;
 	height = gridTileSize + towerSpriteOffsetY;
-	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", spritePos.x, spritePos.y, width, height);
+	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, width, height);
 }
 
 

@@ -25,7 +25,8 @@ public:
 	bool newTargetCloser(Unit *previousBest, Unit *newPotential);
 	bool targetWithinRange(Unit *testSubject);
 
-	sf::Vector2f spritePos;
+	//sf::Vector2f spritePos;
+	VortexSprite* getTowerSprite();
 
 protected:
 
@@ -41,10 +42,8 @@ protected:
 
 	double gridTileSize;
 
-	
 
-	
-
+	VortexSprite *towerSprite;
 	std::vector<Unit *> * enemyList;
 
 };

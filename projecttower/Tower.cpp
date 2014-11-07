@@ -63,3 +63,7 @@ bool Tower::targetWithinRange(Unit *testSubject) {
 	}
 	return true;
 }
+
+VortexSprite* Tower::getTowerSprite() {
+	return towerSprite;
+}

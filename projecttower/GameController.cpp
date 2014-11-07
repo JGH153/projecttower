@@ -420,10 +420,10 @@ void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
 			sf::Vector2i towerGridPos(towerList[i]->posX / gridTileSize, towerList[i]->posY / gridTileSize);
 			if (towerGridPos.x == xpos && towerGridPos.y == ypos) {
 				selectedTower = towerList[i];
-				selectionGizmo->selectionSprites[0]->setPosition(selectedTower->spritePos); //NW gizmo
-				selectionGizmo->selectionSprites[1]->setPosition(selectedTower->spritePos.x + selectedTower->width, selectedTower->spritePos.y); //NE gizmo
-				selectionGizmo->selectionSprites[2]->setPosition(selectedTower->spritePos.x + selectedTower->width, selectedTower->spritePos.y + selectedTower->height); //SE gizmo
-				selectionGizmo->selectionSprites[3]->setPosition(selectedTower->spritePos.x, selectedTower->spritePos.y + selectedTower->height); //SW gizmo
+				selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
+				selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
+				selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
+				selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
 				break;
 			}
 		}
