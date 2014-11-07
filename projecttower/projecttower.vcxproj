@@ -86,6 +86,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="SelectionGizmo.cpp" />
     <ClCompile Include="SubController.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderObject.h" />
+    <ClInclude Include="SelectionGizmo.h" />
     <ClInclude Include="SubController.h" />
     <ClInclude Include="sVar.h" />
     <ClInclude Include="Tower.h" />

@@ -117,6 +117,9 @@
     <ClCompile Include="aStar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SelectionGizmo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -195,6 +198,9 @@
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
     <ClInclude Include="aStar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectionGizmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

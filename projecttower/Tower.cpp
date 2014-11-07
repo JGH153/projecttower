@@ -5,7 +5,7 @@ Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int
 
 	
 	this->enemyList = enemyList;
-
+	selected = false;
 }
 
 
@@ -14,62 +14,52 @@ Tower::~Tower()
 }
 
 Unit * Tower::findTarget() {
+	Unit *closestEnemy = nullptr;
 
 	for (int i = 0; i < enemyList->size(); i++) {
-
-		if (abs(enemyList->at(i)->posX - posX) < range / 2 && abs(enemyList->at(i)->posY - posY) < range / 2) {
-
-			//if ((!enemyList->at(i)->dead) && (!enemyList->at(i)->deathAnimationActive))
-				return enemyList->at(i);
-
+		//wat? funker egentlig dette bra eller er det noen som har drukket for mye karsk?
+		//if (abs(enemyList->at(i)->posX - posX) < range / 2 && abs(enemyList->at(i)->posY - posY) < range / 2) { 
+		//	if ((!enemyList->at(i)->dead) && (!enemyList->at(i)->deathAnimationActive))
+		//		return enemyList->at(i);
+		if (targetWithinRange(enemyList->at(i))) {
+			// If there is no target set the first one found in range as a potential target, as best target
+			if (closestEnemy == nullptr) {
+				closestEnemy = enemyList->at(i);
+			}
+			// If the new target is closer than the other target, pick it in favor
+			else if (newTargetCloser(closestEnemy, enemyList->at(i))) {
+				closestEnemy = enemyList->at(i);
+			}
 		}
-
 	}
 
-	return nullptr;
+	return closestEnemy;
 
 }
 
-//bool Tower::canAttack() {
-//	timeSinceLastAttack = stopwatch.getElapsedTime();
-//
-//	//Tower is on cooldown and cannot attack
-//	if (timeSinceLastAttack.asMilliseconds() < speed * 1000) {
-//		return false;
-//	}
-//
-//	//Tower can attack
-//	stopwatch.restart();
-//	return true;
-//}
-//
-//bool Tower::attack() {
-//	if (!canAttack()) {
-//		return false;
-//	}
-//	std::cout << "DEBUG: Ima firin' mah lazor pewpew" << std::endl;
-//	if (!target->takeDamageAndCheckIfDead(damage)) {
-//		//If unit survived the attack, return false.
-//		return false;
-//	}
-//	//Unit is dead, send true signal to remove it
-//	return true;
-//}
+bool Tower::newTargetCloser(Unit *previousBest, Unit *newPotential) {
+	float oldUnitDistX = abs(posX - previousBest->posX);
+	float oldUnitDistY = abs(posX - previousBest->posY);
+	float oldUnitDist = (oldUnitDistX * oldUnitDistX) + (oldUnitDistY * oldUnitDistY);
 
-//void Tower::update() {
-//
-//	//std::cout << "TOWER" << std::endl;
-//	//std::cout << gameEngine->getWindow()->getSize().x;
-//
-//	//gameEngine->getWindow()->draw(sprite);
-//	//if (!target) {
-//	//	return;
-//	//}
-//	//double xdist = abs(position.x - target->position.x);
-//	//double ydist = abs(position.y - target->position.y);
-//
-//	////Target has moved out of range
-//	//if ((xdist + xdist) * (ydist + ydist) > (range * range)) {
-//	//	target = NULL;
-//	//}
-//}
+	float newUnitDistX = abs(posX - newPotential->posX);
+	float newUnitDistY = abs(posX - newPotential->posY);
+	float newUnitDist = (newUnitDistX * newUnitDistX) + (newUnitDistY * newUnitDistY);
+
+	// If the distance between tower and the new unit is less than the previous best, return true
+	if (oldUnitDist < newUnitDist) {
+		return false;
+	}
+	return true;
+}
+
+bool Tower::targetWithinRange(Unit *testSubject) {
+	float xdist = abs(posX - testSubject->posX);
+	float ydist = abs(posX - testSubject->posY);
+	
+	//Target out of range
+	if ((xdist * xdist) + (ydist * ydist) > (range * range)) {
+		return false;
+	}
+	return true;
+}

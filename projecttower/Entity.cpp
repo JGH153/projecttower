@@ -37,3 +37,4 @@ void Entity::setSize(int width, int height){
 	this->height = height;
 
 }
+

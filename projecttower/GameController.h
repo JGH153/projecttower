@@ -16,6 +16,7 @@
 #include "VortexConvexButton.h"
 #include "VortexButtonRectangle.h"
 #include "MapTile.h"
+#include "SelectionGizmo.h"
 
 #include "GameGuiController.h"
 #include "GlobalDefines.h"
@@ -38,6 +39,9 @@ public:
 	sf::View getView();
 	std::vector<SubController *> getChildControllers();
 	bool unitOnTile(int x, int y);
+	void handlePlayerTowerAction(sf::Vector2f mousePosView);
+	void moveViewport(sf::Vector2i mousePosWindow);
+	bool calculateZoom(bool zoomOut, sf::Vector2f mousePosView);
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
@@ -73,6 +77,8 @@ private:
 	bool building;
 	bool towerUnderMouse;
 	VortexSprite * towerBuildSprite;
+	Tower* selectedTower;
+	SelectionGizmo* selectionGizmo;
 
 	void updateGhostBuildingSprite(sf::Vector2f mousePosView);
 	void lerpZoom(float t); //Linear interpolation

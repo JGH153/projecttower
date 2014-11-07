@@ -22,7 +22,12 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	float towerSpriteOffsetX = 0.f;
 	float towerSpriteOffsetY = 23.f;
 
-	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, gridTileSize, gridTileSize + towerSpriteOffsetY);
+
+	spritePos.x = posX - towerSpriteOffsetX;
+	spritePos.y = posY - towerSpriteOffsetY;
+	width = gridTileSize;
+	height = gridTileSize + towerSpriteOffsetY;
+	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", spritePos.x, spritePos.y, width, height);
 }
 
 
@@ -37,20 +42,29 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
 
 void BasicTower::update() {
-
 	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
 		reloading = false;
 	}
 
-	if (!reloading) {
+	// If tower has a previous target, check if that target is still within range
+	if (currentTarget != nullptr) {
+		if (!targetWithinRange(currentTarget)) {
+			currentTarget = nullptr;
+		}
+	}
 
-		Unit * target = findTarget();
-		if (target != nullptr) {
+	if (!reloading) {
+		// If tower has no target, find one
+		if (currentTarget == nullptr) {
+			currentTarget = findTarget();
+		}
+		// If it has a viable target by now, attack it
+		if (currentTarget != nullptr) {
 			//fire!
 			//std::cout << "im firing my lazer" << std::endl;
 			reloading = true;
 			reloadTimer.restart();
-			target->damage(damage);
+			currentTarget->damage(damage);
 		}
 
 	}

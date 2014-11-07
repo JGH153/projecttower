@@ -22,6 +22,10 @@ public:
 	//virtual void update();
 
 	Unit * Tower::findTarget();
+	bool newTargetCloser(Unit *previousBest, Unit *newPotential);
+	bool targetWithinRange(Unit *testSubject);
+
+	sf::Vector2f spritePos;
 
 protected:
 
@@ -30,10 +34,14 @@ protected:
 	int reloadTimeMS;
 	float damage;
 	int range;
+	Unit *currentTarget;
 
 	bool reloading;
+	bool selected;
 
 	double gridTileSize;
+
+	
 
 	
 

@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-	spawnDelayMS = 200;
+	spawnDelayMS = 500;
 
 
 
@@ -110,6 +110,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	towerUnderMouse = false;
 	zoomEndPoint = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
+	selectionGizmo = new SelectionGizmo(gameEngine, 0, 0);
 }
 
 
@@ -233,6 +234,11 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		renderList.push_back(towerBuildSprite);
 	}
 
+	if (selectedTower != nullptr) {
+		for (int i = 0; i < 4; i++) {
+			renderList.push_back(selectionGizmo->selectionSprites[i]);
+		}
+	}
 
 	renderSuperList.push_back(renderList);
 
@@ -341,223 +347,27 @@ void GameController::update() {
 	}
 
 
-	
-
-	//if (gameEngine->eventMouseClickedLeft) {
-
-	//	std::cout << "mousePosWindowX: " << mousePosWindow.x << "mousePosWindowY: " << mousePosWindow.y << " | ";
-	//	std::cout << "mousePosViewX: " << mousePosView.x << "mousePosViewX: " << mousePosView.y << std::endl;
-
-	//}
-
-
-
 	if (gameEngine->eventMouseMove || gameGuiController->building == true) {
 		updateGhostBuildingSprite(mousePosView);
 	}
 
 	if (gameEngine->eventMouseWheelScrollUp) {
-
-		if (viewRelativeSizeX < 5.f) {
-			viewRelativeSizeX *= zoomRate;
-			viewRelativeSizeY *= zoomRate;
-
-			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
-			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
-			
-			float xdiff = (mousePosView.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
-			float ydiff = (mousePosView.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
-
-			sf::View tempView = gameView;
-
-			//Zooming out so that view comes out of bounds on left side fix
-			if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
-				tempView.setCenter(sf::Vector2f(viewWidth / 2, tempView.getCenter().y));
-			}
-			//Zooming out so that view comes out of bounds on right side fix
-			else if (tempView.getCenter().x + viewWidth / 2 + xdiff > WINDOWSIZEX) {
-				tempView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, tempView.getCenter().y));
-			}
-
-			//Zooming out so that view comes out of bounds on top fix
-			if (tempView.getCenter().y - viewHeight / 2 + ydiff < 0) {
-				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, viewHeight / 2));
-			}
-			//Zooming out so that view comes out of bounds on bottom fix
-			else if (tempView.getCenter().y + viewHeight / 2 + ydiff > WINDOWSIZEY) {
-				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
-			}
-
-			//At max zoom out level, center view to screen
-			if (viewWidth > WINDOWSIZEX) {
-				viewWidth = WINDOWSIZEX;
-				viewHeight = WINDOWSIZEY;
-				tempView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
-			}
-
-
-			sf::FloatRect newZoom(tempView.getCenter().x - (viewWidth / 2), tempView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight);
-			
-			//If center has not changed
-			if (tempView.getCenter().x == gameView.getCenter().x) {
-				newZoom.left += xdiff;
-			}
-
-			if (tempView.getCenter().y == gameView.getCenter().y) {
-				newZoom.top += ydiff;
-			}
-
-			zoomEndPoint.width = newZoom.width;
-			zoomEndPoint.height = newZoom.height;
-			zoomEndPoint.top = newZoom.top;
-			zoomEndPoint.left = newZoom.left;
-
-			zooming = true;
-			lerpTime = 0.0f;
-		}
+		zooming = calculateZoom(false, mousePosView);
 	}
-
-	if (gameEngine->eventMouseWheelScrollDown) {
-
-		if (viewRelativeSizeX > 1.f) {
-			viewRelativeSizeX /= zoomRate;
-			viewRelativeSizeY /= zoomRate;
-
-			viewWidth = WINDOWSIZEX / viewRelativeSizeX;
-			viewHeight = WINDOWSIZEY / viewRelativeSizeY;
-
-			sf::View tempView = gameView;
-			float xdiff = (gameView.getCenter().x - mousePosView.x) * viewRelativeSizeX / 5.f;
-			float ydiff = (gameView.getCenter().y - mousePosView.y) * viewRelativeSizeX / 5.f;
-
-			//Zooming out so that view comes out of bounds on left side fix
-			if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
-				tempView.setCenter(sf::Vector2f(viewWidth / 2, tempView.getCenter().y));
-			}
-			//Zooming out so that view comes out of bounds on right side fix
-			else if (tempView.getCenter().x + viewWidth / 2 + xdiff > WINDOWSIZEX) {
-				tempView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, tempView.getCenter().y));
-			}
-
-			//Zooming out so that view comes out of bounds on top fix
-			if (tempView.getCenter().y - viewHeight / 2 + ydiff < 0) {
-				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, viewHeight / 2));
-			}
-			//Zooming out so that view comes out of bounds on bottom fix
-			else if (tempView.getCenter().y + viewHeight / 2 + ydiff > WINDOWSIZEY) {
-				tempView.setCenter(sf::Vector2f(tempView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
-			}
-
-			//At max zoom out level, center view to screen
-			if (viewWidth > WINDOWSIZEX) {
-				viewWidth = WINDOWSIZEX;
-				viewHeight = WINDOWSIZEY;
-				tempView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
-			}
-
-			sf::FloatRect newZoom(tempView.getCenter().x - (viewWidth / 2), tempView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight);
-
-			//If center has not changed
-			if (tempView.getCenter().x == gameView.getCenter().x) {
-				newZoom.left += xdiff;
-			}
-
-			if (tempView.getCenter().y == gameView.getCenter().y) {
-				newZoom.top += ydiff;
-			}
-
-			zoomEndPoint.width = newZoom.width;
-			zoomEndPoint.height = newZoom.height;
-			zoomEndPoint.top = newZoom.top;
-			zoomEndPoint.left = newZoom.left;
-
-			zooming = true;
-			lerpTime = 0.0f;
-		}
+	else if (gameEngine->eventMouseWheelScrollDown) {
+		zooming = calculateZoom(true, mousePosView);
 	}
 
 	
 	if (gameEngine->eventMousePressedRight) {
 		if (gameEngine->eventMouseMove) {
-			//Move the viewport
-			int viewChangeX = previousMousePos.x - mousePosWindow.x;
-			int viewChangeY = previousMousePos.y - mousePosWindow.y;
-
-			
-
-			//If going out of bounds on the left side
-			if (gameView.getCenter().x + viewChangeX < viewWidth / 2) {
-				gameView.setCenter(sf::Vector2f(viewWidth / 2, gameView.getCenter().y));
-				viewChangeX = 0;
-			}
-			
-			//If going out of bounds on the right side
-			else if (gameView.getCenter().x + viewChangeX > WINDOWSIZEX - viewWidth / 2) {
-				gameView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, gameView.getCenter().y));
-				viewChangeX = 0;
-			}
-			//If going out of bounds on top
-			if (gameView.getCenter().y + viewChangeY < viewHeight / 2) {
-				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, viewHeight / 2));
-				viewChangeY = 0;
-			}
-			//If going out of bounds on bottom
-			else if (gameView.getCenter().y + viewChangeY > WINDOWSIZEY - viewHeight / 2) {
-				gameView.setCenter(sf::Vector2f(gameView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
-				viewChangeY = 0;
-			}
-
-			gameView.move(viewChangeX, viewChangeY);
+			moveViewport(mousePosWindow);
 		}
-		
 	}
 	
 	//if (gameEngine->eventMouseClickedLeft) {
 	if (gameEngine->eventMousePressedLeft) {
-
-		int xpos = mousePosView.x / gridTileSize;
-		int ypos = mousePosView.y / gridTileSize;
-
-		if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
-			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize);
-			towerListMutex.lock();
-			towerList.push_back(testTower);
-			towerListMutex.unlock();
-			mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
-			towerBuildSprite->setColor(UNABLETOBUILD);
-		} else {
-			// Play unable to build beep sound
-		}
-
-		if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {
-
-			for (int i = 0; i < towerList.size(); i++) {
-
-			}
-
-		}
-
-
-	}
-	if (gameEngine->eventMousePressedLeft) {
-
-		/*
-		for (int i = 0; i < unitList.size(); i++) {
-
-			if (unitList[i]->posX < mousePosView.x) {
-				delete unitList[i];
-				unitList.erase(unitList.begin()+i);
-				i--;
-			}
-
-			if (unitList[i]->hitPoint(mousePosView)) {
-				delete unitList[i];
-				unitList.erase(unitList.begin() + i);
-			}
-
-		}
-		*/
-
+		handlePlayerTowerAction(mousePosView);
 	}
 	
 
@@ -590,53 +400,164 @@ void GameController::update() {
 	//sorting units so the unit with the lowest base y is rendered first
 	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
 	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
-	
-
-
-	//Check if units are in proxmity to towers.
-	//TODO use spatial index grid instead of matching the pos of every fucking entity?
-	//for (uint i = 0; i < towers.size(); i++) {
-	//	//If tower has a target, make sure it is still in range
-	//	towers[i]->update();
-
-	//	//If tower has no target find the closest unit within range
-	//	double bestRange = 99999999999;
-	//	if (!towers[i]->target) {
-	//		for (uint j = 0; j < units.size(); j++) {
-	//			//Get distance between objects
-	//			double xdist = abs(towers[i]->position.x - units[j]->position.x);
-	//			double ydist = abs(towers[i]->position.y - units[j]->position.y);
-
-	//			//No point square rooting me thinks
-	//			//katet^2 + katet^2 = hypotenus^2 eller noe sånt
-	//			double totdist = (xdist + xdist) * (ydist + ydist);
-	//			double totrange = (towers[i]->range * towers[i]->range);
-	//			if (totdist <= totrange && totdist < bestRange) {
-	//				towers[i]->target = units[j];
-	//			}
-	//		}
-	//	}
-	//	//If the tower has a target by now it should attack
-	//	if (towers[i]->target) {
-	//		//If unit was destroyed, remove it.
-	//		if (towers[i]->attack()) {
-	//			for (uint j = 0; j < units.size(); j++) {
-	//				if (units[j] == towers[i]->target) {
-	//					delete units[j];
-	//					units.erase(units.begin() + j);
-	//				}
-
-	//			}
-	//		}
-	//	}
-	//}
 
 
 	for (auto currentController : childControllers) {
 		currentController->update();
 	}
 
-	
 	previousMousePos = mousePosWindow;
 	
+}
+
+void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
+	int xpos = mousePosView.x / gridTileSize;
+	int ypos = mousePosView.y / gridTileSize;
+
+	//Not building, not deleting, and clicked on tower
+	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
+		for (int i = 0; i < towerList.size(); i++) {
+			sf::Vector2i towerGridPos(towerList[i]->posX / gridTileSize, towerList[i]->posY / gridTileSize);
+			if (towerGridPos.x == xpos && towerGridPos.y == ypos) {
+				selectedTower = towerList[i];
+				selectionGizmo->selectionSprites[0]->setPosition(selectedTower->spritePos); //NW gizmo
+				selectionGizmo->selectionSprites[1]->setPosition(selectedTower->spritePos.x + selectedTower->width, selectedTower->spritePos.y); //NE gizmo
+				selectionGizmo->selectionSprites[2]->setPosition(selectedTower->spritePos.x + selectedTower->width, selectedTower->spritePos.y + selectedTower->height); //SE gizmo
+				selectionGizmo->selectionSprites[3]->setPosition(selectedTower->spritePos.x, selectedTower->spritePos.y + selectedTower->height); //SW gizmo
+				break;
+			}
+		}
+		// TODO HERE: DISPLAY TOWER UPGRADE OPTIONS
+	}
+	//Not building, not deleting, and didnt click on tower - clear selection
+	else if (mapGroundTile[xpos][ypos]->getTileTypeID() != TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
+		selectedTower = nullptr;
+	}
+	//Building, and zone buildable
+	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
+		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize);
+		towerListMutex.lock();
+		towerList.push_back(testTower);
+		towerListMutex.unlock();
+		mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
+		towerBuildSprite->setColor(UNABLETOBUILD);
+	}
+	//Clicked on tower and is deleting
+	else if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {
+
+		for (int i = 0; i < towerList.size(); i++) {
+
+		}
+
+	}
+	else {
+		// Play unable to do action beep sound
+	}
+}
+
+void GameController::moveViewport(sf::Vector2i mousePosWindow) {
+	//Move the viewport
+	int viewChangeX = previousMousePos.x - mousePosWindow.x;
+	int viewChangeY = previousMousePos.y - mousePosWindow.y;
+
+
+
+	//If going out of bounds on the left side
+	if (gameView.getCenter().x + viewChangeX < viewWidth / 2) {
+		gameView.setCenter(sf::Vector2f(viewWidth / 2, gameView.getCenter().y));
+		viewChangeX = 0;
+	}
+
+	//If going out of bounds on the right side
+	else if (gameView.getCenter().x + viewChangeX > WINDOWSIZEX - viewWidth / 2) {
+		gameView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, gameView.getCenter().y));
+		viewChangeX = 0;
+	}
+	//If going out of bounds on top
+	if (gameView.getCenter().y + viewChangeY < viewHeight / 2) {
+		gameView.setCenter(sf::Vector2f(gameView.getCenter().x, viewHeight / 2));
+		viewChangeY = 0;
+	}
+	//If going out of bounds on bottom
+	else if (gameView.getCenter().y + viewChangeY > WINDOWSIZEY - viewHeight / 2) {
+		gameView.setCenter(sf::Vector2f(gameView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
+		viewChangeY = 0;
+	}
+
+	gameView.move(viewChangeX, viewChangeY);
+}
+
+bool GameController::calculateZoom(bool zoomOut, sf::Vector2f mousePosView) {
+	float xdiff;
+	float ydiff;
+	if (zoomOut) {
+		if (viewRelativeSizeX <= 1.f) {
+			return false;
+		}
+
+		viewRelativeSizeX /= zoomRate;
+		viewRelativeSizeY /= zoomRate;
+		xdiff = (gameView.getCenter().x - mousePosView.x) * viewRelativeSizeX / 5.f;
+		ydiff = (gameView.getCenter().y - mousePosView.y) * viewRelativeSizeX / 5.f;
+
+	} else {
+		if (viewRelativeSizeX >= 5.f) {
+			return false;
+		}
+
+		viewRelativeSizeX *= zoomRate;
+		viewRelativeSizeY *= zoomRate;
+		xdiff = (mousePosView.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
+		ydiff = (mousePosView.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
+	}
+
+	viewWidth = WINDOWSIZEX / viewRelativeSizeX;
+	viewHeight = WINDOWSIZEY / viewRelativeSizeY;
+
+	sf::View tempView = gameView;
+	
+
+	//Zooming out so that view comes out of bounds on left side fix
+	if (tempView.getCenter().x - viewWidth / 2 + xdiff < 0) {
+		tempView.setCenter(sf::Vector2f(viewWidth / 2, tempView.getCenter().y));
+	}
+	//Zooming out so that view comes out of bounds on right side fix
+	else if (tempView.getCenter().x + viewWidth / 2 + xdiff > WINDOWSIZEX) {
+		tempView.setCenter(sf::Vector2f(WINDOWSIZEX - viewWidth / 2, tempView.getCenter().y));
+	}
+
+	//Zooming out so that view comes out of bounds on top fix
+	if (tempView.getCenter().y - viewHeight / 2 + ydiff < 0) {
+		tempView.setCenter(sf::Vector2f(tempView.getCenter().x, viewHeight / 2));
+	}
+	//Zooming out so that view comes out of bounds on bottom fix
+	else if (tempView.getCenter().y + viewHeight / 2 + ydiff > WINDOWSIZEY) {
+		tempView.setCenter(sf::Vector2f(tempView.getCenter().x, WINDOWSIZEY - viewHeight / 2));
+	}
+
+	//At max zoom out level, center view to screen
+	if (viewWidth > WINDOWSIZEX) {
+		viewWidth = WINDOWSIZEX;
+		viewHeight = WINDOWSIZEY;
+		tempView.setCenter(sf::Vector2f(WINDOWSIZEX / 2, WINDOWSIZEY / 2));
+	}
+
+	sf::FloatRect newZoom(tempView.getCenter().x - (viewWidth / 2), tempView.getCenter().y - (viewHeight / 2), viewWidth, viewHeight);
+
+	//If center has not changed
+	if (tempView.getCenter().x == gameView.getCenter().x) {
+		newZoom.left += xdiff;
+	}
+
+	if (tempView.getCenter().y == gameView.getCenter().y) {
+		newZoom.top += ydiff;
+	}
+
+	zoomEndPoint.width = newZoom.width;
+	zoomEndPoint.height = newZoom.height;
+	zoomEndPoint.top = newZoom.top;
+	zoomEndPoint.left = newZoom.left;
+
+	lerpTime = 0.0f;
+	return true;
 }
