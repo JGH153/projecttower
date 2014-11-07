@@ -1,11 +1,23 @@
 #include "Unit.h"
 
 
-Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, float maxHealth) : Entity(gameEngine, posX, posY) {
+Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY) : Entity(gameEngine, posX, posY) {
 
 	this->gameEngine = gameEngine;
 	this->mapGroundTiles = mapGroundTiles;
-	this->maxHealth = maxHealth;
+
+}
+
+
+Unit::~Unit()
+{
+	//std::cout << "BYE";
+}
+
+void Unit::initUnit() {
+
+	atWaypointTarget = true;
+
 	this->currentHealth = maxHealth;
 
 	sf::Texture * temp = gameEngine->loadImageToTexture("Graphics/GUI/HealthBar/HealthBarBG.gif");
@@ -19,11 +31,7 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 	healthBarBG = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarBG.gif", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
 	healthBarFG = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarFG.gif", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
 	healthBarFrame = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarFrame.png", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
-}
 
-
-Unit::~Unit()
-{
 }
 
 

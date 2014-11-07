@@ -33,6 +33,8 @@ protected:
 
 	bool reloading;
 
+	double gridTileSize;
+
 	
 
 	std::vector<Unit *> * enemyList;

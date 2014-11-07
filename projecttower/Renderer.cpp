@@ -177,7 +177,7 @@ void Renderer::renderMainLoop() {
 		//one sec, only preformed once each sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			//std::cout << "Num render fps: " << numFramesSek << std::endl;
+			std::cout << "Num render fps: " << numFramesSek << std::endl;
 			numFramesSek = 0;
 		}
 

@@ -8,7 +8,7 @@
 
 class Unit : public Entity{
 public:
-	Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, float maxHealth);
+	Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY);
 	~Unit();
 	//sf::Vector2i position;
 	//int hp;
@@ -25,6 +25,8 @@ public:
 	//is damaged
 	void damage(float damage);
 	bool isDead();
+
+	void initUnit();
 	
 
 

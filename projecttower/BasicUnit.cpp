@@ -1,7 +1,7 @@
 #include "BasicUnit.h"
 
 
-BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, float maxHealth) : Unit(gameEngine, mapGroundTiles, posX, posY, maxHealth) {
+BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
 
 	/*this->posX = posX;
 	this->posY = posY;*/
@@ -13,11 +13,12 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 		speed = 0.02f + gameEngine->getRandFloat(0.01f, 0.02f);
 		width = 32/2;
 		height = 48/2;
+		maxHealth = 30.f;
 	}else{
 		speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.08f);
 		width = 96/4;
 		height = 96/4;
-
+		maxHealth = 40.f;
 	}
 
 	//health = 5.f;
@@ -40,7 +41,9 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 	}
 
 	
-	atWaypointTarget = true;
+	
+
+	initUnit();
 	
 
 }
@@ -86,13 +89,23 @@ void BasicUnit::update() {
 
 		//std::cin.get();
 
-		currentWaypointTarget = pathToTarget[pathToTarget.size() - 1];
-		pathToTarget.pop_back();
-		//std::cout << "popper \n";
+		if (pathToTarget.size() > 0) {
+
+			currentWaypointTarget = pathToTarget[pathToTarget.size() - 1];
+			pathToTarget.pop_back();
+			//std::cout << "popper \n";
+
+		} else {
+
+			std::cout << "No Path \n";
+
+		}
+
+		
 
 	}
 
-	if (atCurrentWaypointTarget()) {
+	if (atCurrentWaypointTarget() && pathToTarget.size() > 0) {
 
 		currentWaypointTarget = pathToTarget[pathToTarget.size() - 1];
 		pathToTarget.pop_back();
@@ -161,5 +174,5 @@ void BasicUnit::update() {
 
 	moveAnimations[currentMoveAnimationIndex]->update();
 
-	damage(0.25f);
+	//damage(0.25f);
 }

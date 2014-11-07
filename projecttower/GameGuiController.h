@@ -24,6 +24,7 @@ public:
 	std::vector<SubController *> getChildControllers();
 
 	bool building;
+	bool deleting;
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
@@ -36,5 +37,6 @@ private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
 	VortexButtonRectangle * buildButton;
+	VortexButtonRectangle * deleteTowerButton;
 };
 

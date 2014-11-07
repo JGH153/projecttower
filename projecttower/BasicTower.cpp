@@ -1,13 +1,15 @@
 #include "BasicTower.h"
 
 
-BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY) : Tower(gameEngine, enemyList, posX, posY) {
+BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize) : Tower(gameEngine, enemyList, posX, posY) {
 
 	damage = 2.f;
 	range = 200;
-	reloadTimeMS = 600;
+	reloadTimeMS = 500;
 
 	reloading = false;
+
+	this->gridTileSize = gridTileSize;
 
 	/*this->posX = posX;
 	this->posY = posY;*/
@@ -17,7 +19,10 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	sf::Texture * texImageTile;
 	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/NormalReducedCanvas.png");
 	
-	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX, posY - texImageTile->getSize().y / 5, texImageTile->getSize().x / 2.1, texImageTile->getSize().y / 2.1);
+	float towerSpriteOffsetX = 0.f;
+	float towerSpriteOffsetY = 23.f;
+
+	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, gridTileSize, gridTileSize + towerSpriteOffsetY);
 }
 
 
@@ -45,7 +50,7 @@ void BasicTower::update() {
 			//std::cout << "im firing my lazer" << std::endl;
 			reloading = true;
 			reloadTimer.restart();
-			//target->damage(damage);
+			target->damage(damage);
 		}
 
 	}

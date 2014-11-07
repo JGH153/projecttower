@@ -89,7 +89,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	for (int i = 0; i < 1; i++){
 
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2)-25, 100.f);
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2)-25);
 		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
 		unitList.push_back(testUnit);
 		//renderObjectsVector.push_back(testUnit);
@@ -116,7 +116,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 void GameController::preloadAssets() {
 
 	std::vector<BasicUnit *> preloadUnitList;
-	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)), 100.f));
+	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100))));
 
 	for (auto currentUnit : preloadUnitList) {
 		delete currentUnit;
@@ -327,7 +327,8 @@ void GameController::update() {
 
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS) {
 
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25, 100.f);
+
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
 
 		unitListMutex.lock();
 
@@ -518,7 +519,7 @@ void GameController::update() {
 		int ypos = mousePosView.y / gridTileSize;
 
 		if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
-			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize);
+			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize);
 			towerListMutex.lock();
 			towerList.push_back(testTower);
 			towerListMutex.unlock();
@@ -527,6 +528,16 @@ void GameController::update() {
 		} else {
 			// Play unable to build beep sound
 		}
+
+		if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {
+
+			for (int i = 0; i < towerList.size(); i++) {
+
+			}
+
+		}
+
+
 	}
 	if (gameEngine->eventMousePressedLeft) {
 

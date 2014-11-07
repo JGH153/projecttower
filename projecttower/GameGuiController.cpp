@@ -6,7 +6,11 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buildButton = new VortexButtonRectangle(0, 0, 200, 50, "Graphics/button.png", "Toggle Build", gameEngine);
 	buildButton->setHoverImage("Graphics/dirt.png");
 
+	deleteTowerButton = new VortexButtonRectangle(200, 0, 200, 50, "Graphics/button.png", "Toggle del", gameEngine);
+	deleteTowerButton->setHoverImage("Graphics/dirt.png");
+
 	building = true;
+	deleting = false;
 
 }
 
@@ -51,14 +55,36 @@ void GameGuiController::update() {
 	}
 
 	buildButton->update();
+	deleteTowerButton->update();
 
 	if (gameEngine->eventMouseReleasedLeft) {
 
 		if (buildButton->mouseOver()) {
 
-			building = !building;
+			if (building) {
+				building = false;
+				
+			} else {
+				building = true;
+				deleting = false;
+			}
+
 
 		}
+
+		if (deleteTowerButton->mouseOver()) {
+
+			if (deleting) {
+				deleting = false;
+				
+			} else {
+				deleting = true;
+				building = false;
+			}
+
+
+		}
+
 	}
 
 }
@@ -72,6 +98,8 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getDynamicRenderData
 
 	renderList.push_back(renderListSub);
 	renderList.push_back(buildButton->getRenderDrawable());
+	renderList.push_back(deleteTowerButton->getRenderDrawable());
+	
 	return renderList;
 
 	/*
