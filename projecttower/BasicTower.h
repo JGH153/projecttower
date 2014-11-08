@@ -9,6 +9,7 @@ public:
 
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();
+	VortexSprite *projectileSprite;
 
 private:
 

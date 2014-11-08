@@ -11,6 +11,9 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 
 Unit::~Unit()
 {
+	delete healthBarBG;
+	delete healthBarFG;
+	delete healthBarFrame;
 	//std::cout << "BYE";
 }
 
@@ -55,6 +58,9 @@ void Unit::damage(float damage) {
 	}
 	currentHealth -= damage;
 	float percentageHP = currentHealth / maxHealth;
+	if (percentageHP < 0) {
+		percentageHP = 0;
+	}
 	healthBarFG->setSize(healthBarBG->getSize().x * percentageHP, healthBarFG->getSize().y);
 	//std::cout << health << std::endl;
 

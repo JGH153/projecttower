@@ -33,7 +33,6 @@ public:
 
 	float posX;
 	float posY;
-	
 
 	int width;
 	int height;

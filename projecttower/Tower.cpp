@@ -5,7 +5,6 @@ Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int
 
 	
 	this->enemyList = enemyList;
-	selected = false;
 }
 
 

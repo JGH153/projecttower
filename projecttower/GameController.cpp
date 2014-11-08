@@ -377,10 +377,11 @@ void GameController::update() {
 
 	}
 
-	
+	towerListMutex.lock();
 	for (auto * current : towerList) {
 		current->update();
 	}
+	towerListMutex.unlock();
 
 	unitListMutex.lock();
 	for (int i = 0; i < unitList.size(); i++) {

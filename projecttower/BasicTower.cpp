@@ -6,6 +6,7 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	damage = 2.f;
 	range = 200;
 	reloadTimeMS = 500;
+	projectileSpeed = 0.2f;
 
 	reloading = false;
 
@@ -18,6 +19,7 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 
 	sf::Texture * texImageTile;
 	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/NormalReducedCanvas.png");
+	sf::Texture * texArrow = gameEngine->loadImageToTexture("Graphics/Projectiles/Arrow.png");
 	
 	float towerSpriteOffsetX = 0.f;
 	float towerSpriteOffsetY = 23.f;
@@ -28,6 +30,7 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	width = gridTileSize;
 	height = gridTileSize + towerSpriteOffsetY;
 	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, width, height);
+	projectileSprite = new VortexSprite(gameEngine, "Graphics/Projectiles/Arrow.png", posX + width / 2, posY - towerSpriteOffsetY, texArrow->getSize().x / 2, texArrow->getSize().y / 2);
 }
 
 
@@ -36,12 +39,25 @@ BasicTower::~BasicTower() {
 
 
 std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
-	return towerSprite->getRenderDrawable();
+	auto temp = towerSprite->getRenderDrawable();
+	for (auto current : projectiles) {
+		temp.push_back(current->projectileSprite);
+	}
+	return temp;
 }
 
 
 
 void BasicTower::update() {
+	for (int i = 0; i < projectiles.size(); i++) {
+		if (projectiles[i]->hasHitTarget() || projectiles[i]->target == nullptr || projectiles[i]->posX < 0 || projectiles[i]->posX > WINDOWSIZEX || projectiles[i]->posY < 0 || projectiles[i]->posX > WINDOWSIZEY) {
+			projectiles.erase(projectiles.begin() + i);
+			i--;
+		}
+	}
+	for (auto current : projectiles) {
+		current->update();
+	}
 	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
 		reloading = false;
 	}
@@ -62,9 +78,10 @@ void BasicTower::update() {
 		if (currentTarget != nullptr) {
 			//fire!
 			//std::cout << "im firing my lazer" << std::endl;
+			projectiles.push_back(new Projectile(gameEngine, posX, posY, projectileSprite, currentTarget, projectileSpeed, damage));
 			reloading = true;
 			reloadTimer.restart();
-			currentTarget->damage(damage);
+			
 		}
 
 	}

@@ -3,8 +3,9 @@
 #include "Unit.h"
 
 #include "Entity.h"
+#include "Projectile.h"
 
-class Tower : public Entity{
+class Tower : public Entity {
 public:
 	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY);
 	~Tower();
@@ -33,18 +34,18 @@ protected:
 	sf::Clock reloadTimer;
 
 	int reloadTimeMS;
+	float projectileSpeed;
 	float damage;
 	int range;
 	Unit *currentTarget;
 
 	bool reloading;
-	bool selected;
 
 	double gridTileSize;
 
 
 	VortexSprite *towerSprite;
 	std::vector<Unit *> * enemyList;
-
+	std::vector<Projectile*> projectiles;
 };
 
