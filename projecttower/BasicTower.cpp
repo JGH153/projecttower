@@ -40,8 +40,13 @@ BasicTower::~BasicTower() {
 
 std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 	auto temp = towerSprite->getRenderDrawable();
-	for (auto current : projectiles) {
-		temp.push_back(current->projectileSprite);
+	for (auto currentProjectile : projectiles) {
+		towerProjectileMutex.lock();
+		auto arrows = currentProjectile->getRenderDrawable();
+		for (auto currentDrawable : arrows) {
+			temp.push_back(currentDrawable);
+		}
+		towerProjectileMutex.unlock();
 	}
 	return temp;
 }
@@ -50,8 +55,11 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
 void BasicTower::update() {
 	for (int i = 0; i < projectiles.size(); i++) {
-		if (projectiles[i]->hasHitTarget() || projectiles[i]->target == nullptr || projectiles[i]->posX < 0 || projectiles[i]->posX > WINDOWSIZEX || projectiles[i]->posY < 0 || projectiles[i]->posX > WINDOWSIZEY) {
+		if (projectiles[i]->destroyProjectile == true || projectiles[i]->posX < 0 || projectiles[i]->posX > WINDOWSIZEX || projectiles[i]->posY < 0 || projectiles[i]->posX > WINDOWSIZEY) {
+			towerProjectileMutex.lock();
+			delete projectiles[i];
 			projectiles.erase(projectiles.begin() + i);
+			towerProjectileMutex.unlock();
 			i--;
 		}
 	}
@@ -76,9 +84,9 @@ void BasicTower::update() {
 		}
 		// If it has a viable target by now, attack it
 		if (currentTarget != nullptr) {
-			//fire!
-			//std::cout << "im firing my lazer" << std::endl;
+			towerProjectileMutex.lock();
 			projectiles.push_back(new Projectile(gameEngine, posX + towerSprite->getSize().x/2, posY, projectileSprite, currentTarget, projectileSpeed, damage));
+			towerProjectileMutex.unlock();
 			reloading = true;
 			reloadTimer.restart();
 			

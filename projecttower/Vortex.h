@@ -149,6 +149,13 @@ public:
 	sf::Time lastRenderTime;
 	sf::Time deltaTime;
 
+	std::mutex backgroundListMutex;
+	std::mutex groundTileListMutex;
+	std::mutex renderObjectsListMutex;
+	std::mutex unitListMutex;
+	std::mutex towerListMutex;
+	
+
 private:
 
 

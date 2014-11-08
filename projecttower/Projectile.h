@@ -9,10 +9,11 @@ public:
 	~Projectile();
 
 	void update();
-	bool hasHitTarget();
+	bool checkIfHitTarget();
 	std::vector<sf::Drawable*> getRenderDrawable();
 	VortexSprite *projectileSprite;
 	Unit *target;
+	bool destroyProjectile;
 	
 private:
 	Vortex *gameEngine;

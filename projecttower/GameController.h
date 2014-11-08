@@ -96,11 +96,7 @@ private:
 
 	std::vector<RenderObject *> renderObjectsVector;
 
-	std::mutex backgroundListMutex;
-	std::mutex groundTileListMutex;
-	std::mutex renderObjectsListMutex;
-	std::mutex unitListMutex;
-	std::mutex towerListMutex;
+	
 
 	
 

@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-	spawnDelayMS = 500;
+	spawnDelayMS = 100;
 
 
 
@@ -154,7 +154,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 	std::vector<sf::Drawable *> renderList;
 
 
-	backgroundListMutex.lock();
+	gameEngine->backgroundListMutex.lock();
 
 	for (VortexSprite * currentRenderObj : backgroundTextures) {
 
@@ -164,9 +164,9 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 	}
 
-	backgroundListMutex.unlock();
+	gameEngine->backgroundListMutex.unlock();
 
-	groundTileListMutex.lock();
+	gameEngine->groundTileListMutex.lock();
 
 	for (auto currentRenderList : mapGroundTile) {
 
@@ -180,7 +180,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 	}
 
-	groundTileListMutex.unlock();
+	gameEngine->groundTileListMutex.unlock();
 
 	renderSuperList.push_back(renderList);
 
@@ -195,7 +195,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	
 
-	renderObjectsListMutex.lock();
+	gameEngine->renderObjectsListMutex.lock();
 
 	for (auto currentRenderVector : renderObjectsVector) {
 
@@ -205,8 +205,8 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	}
 
-	renderObjectsListMutex.unlock();
-	towerListMutex.lock();
+	gameEngine->renderObjectsListMutex.unlock();
+	gameEngine->towerListMutex.lock();
 
 	for (auto currentRenderVector : towerList) {
 
@@ -215,9 +215,8 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
-
-	towerListMutex.unlock();
-	unitListMutex.lock();
+	gameEngine->towerListMutex.unlock();
+	gameEngine->unitListMutex.lock();
 
 	for (auto currentRenderVector : unitList) {
 
@@ -227,7 +226,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	}
 
-	unitListMutex.unlock();
+	gameEngine->unitListMutex.unlock();
 
 
 	if (gameGuiController->building) {
@@ -336,13 +335,13 @@ void GameController::update() {
 
 		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
 
-		unitListMutex.lock();
+		gameEngine->unitListMutex.lock();
 
 		unitSpawnTimer.restart();
 
 		unitList.push_back(testUnit);
 
-		unitListMutex.unlock();
+		gameEngine->unitListMutex.unlock();
 
 	}
 
@@ -370,20 +369,25 @@ void GameController::update() {
 		handlePlayerTowerAction(mousePosView);
 	}
 	
-
+	gameEngine->renderObjectsListMutex.lock();
 	for (auto * current : renderObjectsVector) {
 
 		current->update();
 
 	}
+	gameEngine->renderObjectsListMutex.unlock();
 
-	towerListMutex.lock();
+	gameEngine->towerListMutex.lock();
 	for (auto * current : towerList) {
 		current->update();
 	}
-	towerListMutex.unlock();
+	gameEngine->towerListMutex.unlock();
 
-	unitListMutex.lock();
+	gameEngine->unitListMutex.lock();
+	for (auto * current : unitList) {
+		current->update();
+	}
+
 	for (int i = 0; i < unitList.size(); i++) {
 
 		if (unitList[i]->isDead()) {
@@ -392,11 +396,7 @@ void GameController::update() {
 			i--;
 		}
 	}
-	unitListMutex.unlock();
-	
-	for (auto * current : unitList) {
-		current->update();
-	}
+	gameEngine->unitListMutex.unlock();
 
 	//sorting units so the unit with the lowest base y is rendered first
 	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
@@ -437,9 +437,10 @@ void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
 	//Building, and zone buildable
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
 		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize);
-		towerListMutex.lock();
+		gameEngine->towerListMutex.lock();
 		towerList.push_back(testTower);
-		towerListMutex.unlock();
+		gameEngine->towerListMutex.unlock();
+		
 		mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
 		towerBuildSprite->setColor(UNABLETOBUILD);
 	}

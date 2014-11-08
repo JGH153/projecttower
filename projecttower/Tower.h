@@ -47,5 +47,6 @@ protected:
 	VortexSprite *towerSprite;
 	std::vector<Unit *> * enemyList;
 	std::vector<Projectile*> projectiles;
+	std::mutex towerProjectileMutex;
 };
 
