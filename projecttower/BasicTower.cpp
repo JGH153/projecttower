@@ -78,7 +78,7 @@ void BasicTower::update() {
 		if (currentTarget != nullptr) {
 			//fire!
 			//std::cout << "im firing my lazer" << std::endl;
-			projectiles.push_back(new Projectile(gameEngine, posX, posY, projectileSprite, currentTarget, projectileSpeed, damage));
+			projectiles.push_back(new Projectile(gameEngine, posX + towerSprite->getSize().x/2, posY, projectileSprite, currentTarget, projectileSpeed, damage));
 			reloading = true;
 			reloadTimer.restart();
 			

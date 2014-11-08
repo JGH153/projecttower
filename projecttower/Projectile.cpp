@@ -47,9 +47,14 @@ void Projectile::update() {
 	velocity.x /= cardVelocity;
 	velocity.y /= cardVelocity;
 
+	//std::cout << "Rad: " << angle << " Deg: " << angle * 180 / 3.14159 << std::endl;
 
 	// new position is +velocity
 	posX = posX + velocity.x * speed * gameEngine->deltaTime.asMilliseconds();
 	posY = posY + velocity.y * speed * gameEngine->deltaTime.asMilliseconds();
-	projectileSprite->setPosition(posX, posY);
+
+	//The following code affects every single arrow which uses the same sprite. Temp test until shit works, fix the getRenderDrawable function.
+	projectileSprite->setPosition(posX, posY); 
+	float angle = atan2(target->posY - posY, target->posX - posX);
+	projectileSprite->setRotation(angle * 180 / 3.14159);
 }
