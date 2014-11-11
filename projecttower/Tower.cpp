@@ -1,10 +1,12 @@
 #include "Tower.h"
 
 
-Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY) : Entity(gameEngine, posX, posY) {
+Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex) : Entity(gameEngine, posX, posY) {
 
 	
 	this->enemyList = enemyList;
+	this->mapGroundTileIndex = mapGroundTileIndex;
+
 }
 
 
@@ -65,4 +67,10 @@ bool Tower::targetWithinRange(Unit *testSubject) {
 
 VortexSprite* Tower::getTowerSprite() {
 	return towerSprite;
+}
+
+sf::Vector2i Tower::getMapGroundTileIndex() {
+
+	return mapGroundTileIndex;
+
 }

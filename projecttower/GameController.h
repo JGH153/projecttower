@@ -39,9 +39,9 @@ public:
 	sf::View getView();
 	std::vector<SubController *> getChildControllers();
 	bool unitOnTile(int x, int y);
-	void handlePlayerTowerAction(sf::Vector2f mousePosView);
-	void moveViewport(sf::Vector2i mousePosWindow);
-	bool calculateZoom(bool zoomOut, sf::Vector2f mousePosView);
+	void handlePlayerTowerAction();
+	void moveViewport();
+	bool calculateZoom(bool zoomOut);
 
 	//std::vector<RenderObject *> getRenderObjectList();
 

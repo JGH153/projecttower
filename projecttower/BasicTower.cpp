@@ -1,11 +1,11 @@
 #include "BasicTower.h"
 
 
-BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize) : Tower(gameEngine, enemyList, posX, posY) {
+BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex) {
 
 	damage = 2.f;
 	range = 200;
-	reloadTimeMS = 500;
+	reloadTimeMS = 1;
 	projectileSpeed = 0.2f;
 
 	reloading = false;
@@ -19,10 +19,9 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 
 	sf::Texture * texImageTile;
 	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/NormalReducedCanvas.png");
-	sf::Texture * texArrow = gameEngine->loadImageToTexture("Graphics/Projectiles/Arrow.png");
 	
-	float towerSpriteOffsetX = 0.f;
-	float towerSpriteOffsetY = 23.f;
+	towerSpriteOffsetX = 0.f;
+	towerSpriteOffsetY = 23.f;
 
 
 	/*spritePos.x = posX - towerSpriteOffsetX;
@@ -30,7 +29,8 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	width = gridTileSize;
 	height = gridTileSize + towerSpriteOffsetY;
 	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, width, height);
-	projectileSprite = new VortexSprite(gameEngine, "Graphics/Projectiles/Arrow.png", posX + width / 2, posY - towerSpriteOffsetY, texArrow->getSize().x / 2, texArrow->getSize().y / 2);
+	//projectileSprite = new 
+	projectileSpritePath = "Graphics/Projectiles/Arrow.png";
 }
 
 
@@ -85,7 +85,10 @@ void BasicTower::update() {
 		// If it has a viable target by now, attack it
 		if (currentTarget != nullptr) {
 			towerProjectileMutex.lock();
-			projectiles.push_back(new Projectile(gameEngine, posX + towerSprite->getSize().x/2, posY, projectileSprite, currentTarget, projectileSpeed, damage));
+			auto sprite =  new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
+			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage);
+			//auto projectile = new Projectile(gameEngine, 100, 100, (new VortexSprite(gameEngine, "Graphics/Projectiles/Arrow.png", 100, 100, 10, 10)), nullptr, 1.f, 1.f);
+			projectiles.push_back(projectile);
 			towerProjectileMutex.unlock();
 			reloading = true;
 			reloadTimer.restart();

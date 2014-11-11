@@ -19,6 +19,8 @@ private:
 	Vortex *gameEngine;
 	float damage;
 	float speed;
+
+	void updatePos();
 	
 };
 

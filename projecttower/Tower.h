@@ -7,7 +7,7 @@
 
 class Tower : public Entity {
 public:
-	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY);
+	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex);
 	~Tower();
 	//sf::Vector2i position;
 	//int damage;
@@ -29,6 +29,8 @@ public:
 	//sf::Vector2f spritePos;
 	VortexSprite* getTowerSprite();
 
+	sf::Vector2i getMapGroundTileIndex();
+
 protected:
 
 	sf::Clock reloadTimer;
@@ -42,6 +44,13 @@ protected:
 	bool reloading;
 
 	double gridTileSize;
+
+	std::string projectileSpritePath;
+
+	float towerSpriteOffsetX;
+	float towerSpriteOffsetY;
+
+	sf::Vector2i mapGroundTileIndex;
 
 
 	VortexSprite *towerSprite;

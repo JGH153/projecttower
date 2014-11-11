@@ -15,6 +15,17 @@ VortexSprite::VortexSprite(Vortex * gameEngine, std::string path, float posX, fl
 
 }
 
+//create sprite using image size as sprite size
+VortexSprite::VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY) : sf::Sprite() {
+
+	auto tex = gameEngine->loadImageToTexture(path);
+	setTexture(*tex);
+	setPosition(posX, posY);
+	setSize(tex->getSize().x, tex->getSize().y);
+
+
+}
+
 VortexSprite::VortexSprite(const sf::Texture &texture) : sf::Sprite(texture){
 	
 

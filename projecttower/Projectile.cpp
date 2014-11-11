@@ -8,6 +8,8 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	this->projectileSprite = projectileSprite;
 	this->damage = damage;
 	destroyProjectile = false;
+
+	updatePos();
 }
 
 
@@ -32,6 +34,23 @@ bool Projectile::checkIfHitTarget() {
 	return false;
 }
 
+void Projectile::updatePos() {
+
+	sf::Vector2f velocity(target->posX - posX, target->posY - posY);
+	float cardVelocity = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
+	velocity.x /= cardVelocity;
+	velocity.y /= cardVelocity;
+
+
+	posX = posX + velocity.x * speed * gameEngine->deltaTime.asMilliseconds();
+	posY = posY + velocity.y * speed * gameEngine->deltaTime.asMilliseconds();
+
+	projectileSprite->setPosition(posX, posY);
+	float angle = atan2(target->posY - posY, target->posX - posX);
+	projectileSprite->setRotation(angle * 180 / 3.14159);
+
+}
+
 void Projectile::update() {
 	if (destroyProjectile == true) {
 		target = nullptr;
@@ -47,18 +66,7 @@ void Projectile::update() {
 		return;
 	}
 
-	sf::Vector2f velocity(target->posX - posX, target->posY - posY);
-	float cardVelocity = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
-	velocity.x /= cardVelocity;
-	velocity.y /= cardVelocity;
-
-
-	posX = posX + velocity.x * speed * gameEngine->deltaTime.asMilliseconds();
-	posY = posY + velocity.y * speed * gameEngine->deltaTime.asMilliseconds();
-
-	projectileSprite->setPosition(posX, posY); 
-	float angle = atan2(target->posY - posY, target->posX - posX);
-	projectileSprite->setRotation(angle * 180 / 3.14159);
+	updatePos();
 
 	destroyProjectile = checkIfHitTarget();
 }

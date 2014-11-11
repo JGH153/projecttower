@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-	spawnDelayMS = 100;
+	spawnDelayMS = 1000;
 
 
 
@@ -351,22 +351,22 @@ void GameController::update() {
 	}
 
 	if (gameEngine->eventMouseWheelScrollUp) {
-		zooming = calculateZoom(false, mousePosView);
+		zooming = calculateZoom(false);
 	}
 	else if (gameEngine->eventMouseWheelScrollDown) {
-		zooming = calculateZoom(true, mousePosView);
+		zooming = calculateZoom(true);
 	}
 
 	
 	if (gameEngine->eventMousePressedRight) {
 		if (gameEngine->eventMouseMove) {
-			moveViewport(mousePosWindow);
+			moveViewport();
 		}
 	}
 	
 	//if (gameEngine->eventMouseClickedLeft) {
 	if (gameEngine->eventMousePressedLeft) {
-		handlePlayerTowerAction(mousePosView);
+		handlePlayerTowerAction();
 	}
 	
 	gameEngine->renderObjectsListMutex.lock();
@@ -392,6 +392,7 @@ void GameController::update() {
 
 		if (unitList[i]->isDead()) {
 			delete unitList[i];
+			unitList[i] = nullptr;
 			unitList.erase(unitList.begin() + i);
 			i--;
 		}
@@ -411,9 +412,15 @@ void GameController::update() {
 	
 }
 
-void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
+void GameController::handlePlayerTowerAction() {
+
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
 	int xpos = mousePosView.x / gridTileSize;
 	int ypos = mousePosView.y / gridTileSize;
+
+	
 
 	//Not building, not deleting, and clicked on tower
 	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
@@ -436,7 +443,7 @@ void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
 	}
 	//Building, and zone buildable
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
-		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize);
+		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos));
 		gameEngine->towerListMutex.lock();
 		towerList.push_back(testTower);
 		gameEngine->towerListMutex.unlock();
@@ -449,6 +456,25 @@ void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
 
 		for (int i = 0; i < towerList.size(); i++) {
 
+			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);
+
+			if (towerList[i]->getMapGroundTileIndex().x == mouseGridPos.x
+				&&	towerList[i]->getMapGroundTileIndex().y == mouseGridPos.y) {
+
+				gameEngine->towerListMutex.lock();
+
+				mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
+				
+				delete towerList[i];
+				towerList[i] = nullptr;
+				towerList.erase(towerList.begin() + i);
+				i--;
+
+				gameEngine->towerListMutex.unlock();
+
+			}
+
+			
 		}
 
 	}
@@ -457,7 +483,11 @@ void GameController::handlePlayerTowerAction(sf::Vector2f mousePosView) {
 	}
 }
 
-void GameController::moveViewport(sf::Vector2i mousePosWindow) {
+void GameController::moveViewport() {
+
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
 	//Move the viewport
 	int viewChangeX = previousMousePos.x - mousePosWindow.x;
 	int viewChangeY = previousMousePos.y - mousePosWindow.y;
@@ -489,7 +519,11 @@ void GameController::moveViewport(sf::Vector2i mousePosWindow) {
 	gameView.move(viewChangeX, viewChangeY);
 }
 
-bool GameController::calculateZoom(bool zoomOut, sf::Vector2f mousePosView) {
+bool GameController::calculateZoom(bool zoomOut) {
+
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
 	float xdiff;
 	float ydiff;
 	if (zoomOut) {
