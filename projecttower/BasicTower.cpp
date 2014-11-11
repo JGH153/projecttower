@@ -40,32 +40,50 @@ BasicTower::~BasicTower() {
 
 std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 	auto temp = towerSprite->getRenderDrawable();
+
 	for (auto currentProjectile : projectiles) {
-		towerProjectileMutex.lock();
-		auto arrows = currentProjectile->getRenderDrawable();
+
+		if (currentProjectile == nullptr) {
+			std::cout << "lol";
+		}
+
+			auto arrows = currentProjectile->getRenderDrawable();
 		for (auto currentDrawable : arrows) {
 			temp.push_back(currentDrawable);
 		}
-		towerProjectileMutex.unlock();
+		
 	}
+
+
 	return temp;
 }
 
 
 
 void BasicTower::update() {
+
+
+
+	gameEngine->towerProjectileMutex.lock();
+
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i]->destroyProjectile == true || projectiles[i]->posX < 0 || projectiles[i]->posX > WINDOWSIZEX || projectiles[i]->posY < 0 || projectiles[i]->posX > WINDOWSIZEY) {
-			towerProjectileMutex.lock();
+
 			delete projectiles[i];
+			projectiles[i] = (Projectile*)0x01;
 			projectiles.erase(projectiles.begin() + i);
-			towerProjectileMutex.unlock();
 			i--;
+
 		}
 	}
+
+
 	for (auto current : projectiles) {
 		current->update();
 	}
+
+	gameEngine->towerProjectileMutex.unlock();
+
 	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
 		reloading = false;
 	}
@@ -84,12 +102,14 @@ void BasicTower::update() {
 		}
 		// If it has a viable target by now, attack it
 		if (currentTarget != nullptr) {
-			towerProjectileMutex.lock();
+			gameEngine->towerProjectileMutex.lock();
 			auto sprite =  new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
 			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage);
+
+			
 			//auto projectile = new Projectile(gameEngine, 100, 100, (new VortexSprite(gameEngine, "Graphics/Projectiles/Arrow.png", 100, 100, 10, 10)), nullptr, 1.f, 1.f);
 			projectiles.push_back(projectile);
-			towerProjectileMutex.unlock();
+			gameEngine->towerProjectileMutex.unlock();
 			reloading = true;
 			reloadTimer.restart();
 			

@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-	spawnDelayMS = 1000;
+	spawnDelayMS = 10;
 
 
 
@@ -86,15 +86,15 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	preloadAssets();
 
 
-	for (int i = 0; i < 1; i++){
+	//for (int i = 0; i < 1; i++){
 
-		//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2)-25);
-		//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
-		unitList.push_back(testUnit);
-		//renderObjectsVector.push_back(testUnit);
+	//	//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
+	//	BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2)-25);
+	//	//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
+	//	unitList.push_back(testUnit);
+	//	//renderObjectsVector.push_back(testUnit);
 
-	}
+	//}
 
 	//set view size relative to org window size
 	viewRelativeSizeX = 1.0f;
@@ -206,7 +206,10 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	}
 
 	gameEngine->renderObjectsListMutex.unlock();
+
 	gameEngine->towerListMutex.lock();
+	gameEngine->towerProjectileMutex.lock();
+
 
 	for (auto currentRenderVector : towerList) {
 
@@ -215,6 +218,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
+	gameEngine->towerProjectileMutex.unlock();
 	gameEngine->towerListMutex.unlock();
 	gameEngine->unitListMutex.lock();
 
@@ -259,6 +263,9 @@ std::vector<SubController *> GameController::getChildControllers() {
 bool GameController::unitOnTile(int x, int y) {
 	int unitposX;
 	int unitposY;
+
+	std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
+
 	for (auto *current : unitList) {
 		unitposX = (current->getPos().x + (current->width / 2)) / gridTileSize;
 		unitposY = (current->getPos().y + current->height) / gridTileSize;
@@ -378,9 +385,16 @@ void GameController::update() {
 	gameEngine->renderObjectsListMutex.unlock();
 
 	gameEngine->towerListMutex.lock();
-	for (auto * current : towerList) {
-		current->update();
+
+	for (int i = 0; i < towerList.size(); i++) {
+
+		towerList[i]->update();
+
 	}
+
+	/*for (auto * current : towerList) {
+		current->update();
+	}*/
 	gameEngine->towerListMutex.unlock();
 
 	gameEngine->unitListMutex.lock();
@@ -397,11 +411,13 @@ void GameController::update() {
 			i--;
 		}
 	}
-	gameEngine->unitListMutex.unlock();
+	
 
 	//sorting units so the unit with the lowest base y is rendered first
 	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
 	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
+
+	gameEngine->unitListMutex.unlock();
 
 
 	for (auto currentController : childControllers) {
@@ -420,6 +436,8 @@ void GameController::handlePlayerTowerAction() {
 	int xpos = mousePosView.x / gridTileSize;
 	int ypos = mousePosView.y / gridTileSize;
 
+	if (xpos < 0 || xpos > mapGroundTile.size() || ypos < 0 || ypos > mapGroundTile[0].size())
+		return;
 	
 
 	//Not building, not deleting, and clicked on tower
@@ -443,10 +461,13 @@ void GameController::handlePlayerTowerAction() {
 	}
 	//Building, and zone buildable
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
+		gameEngine->unitListMutex.lock();
 		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos));
 		gameEngine->towerListMutex.lock();
 		towerList.push_back(testTower);
+		
 		gameEngine->towerListMutex.unlock();
+		gameEngine->unitListMutex.unlock();
 		
 		mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
 		towerBuildSprite->setColor(UNABLETOBUILD);

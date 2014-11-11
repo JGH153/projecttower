@@ -30,8 +30,8 @@ public:
 	//TODO: Have an entity list containing all towers and units, and a list with GUI elements
 	std::vector<RenderObject *> renderObjectsVector;
 
-	std::vector<VortexSprite> mapTiles;
-	std::vector <Unit *> unitList;
+	//std::vector<VortexSprite> mapTiles;
+	//std::vector <Unit *> unitList;
 	VortexSprite bgSprite;
 	
 	void handleStaticBackground();

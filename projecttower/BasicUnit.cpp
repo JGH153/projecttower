@@ -174,5 +174,12 @@ void BasicUnit::update() {
 
 	moveAnimations[currentMoveAnimationIndex]->update();
 
+
+	float percentageHP = currentHealth / maxHealth;
+	if (percentageHP < 0) {
+		percentageHP = 0;
+	}
+	healthBarFG->setSize(healthBarBG->getSize().x * percentageHP, healthBarFG->getSize().y);
+
 	//damage(0.25f);
 }

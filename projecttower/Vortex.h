@@ -154,6 +154,7 @@ public:
 	std::mutex renderObjectsListMutex;
 	std::mutex unitListMutex;
 	std::mutex towerListMutex;
+	std::mutex towerProjectileMutex;
 	
 
 private:

@@ -23,11 +23,10 @@ void Unit::initUnit() {
 
 	this->currentHealth = maxHealth;
 
-	sf::Texture * temp = gameEngine->loadImageToTexture("Graphics/GUI/HealthBar/HealthBarBG.gif");
 	int scaleFactorX = 12;
 	int scaleFactorY = 8;
-	int healthBarWidth = temp->getSize().x / scaleFactorX;
-	int healthBarHeight = temp->getSize().y / scaleFactorY;
+	int healthBarWidth = 266 / scaleFactorX;
+	int healthBarHeight = 65 / scaleFactorY;
 	int healthBarPosX = posX - healthBarWidth / 4;
 	int healthBarPosY = posY - healthBarHeight;
 
@@ -57,11 +56,8 @@ void Unit::damage(float damage) {
 		return;
 	}
 	currentHealth -= damage;
-	float percentageHP = currentHealth / maxHealth;
-	if (percentageHP < 0) {
-		percentageHP = 0;
-	}
-	healthBarFG->setSize(healthBarBG->getSize().x * percentageHP, healthBarFG->getSize().y);
+	
+	
 	//std::cout << health << std::endl;
 
 }

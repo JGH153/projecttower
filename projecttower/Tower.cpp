@@ -17,6 +17,8 @@ Tower::~Tower()
 Unit * Tower::findTarget() {
 	Unit *closestEnemy = nullptr;
 
+	gameEngine->unitListMutex.lock();
+
 	for (int i = 0; i < enemyList->size(); i++) {
 		//wat? funker egentlig dette bra eller er det noen som har drukket for mye karsk?
 		//if (abs(enemyList->at(i)->posX - posX) < range / 2 && abs(enemyList->at(i)->posY - posY) < range / 2) { 
@@ -33,6 +35,8 @@ Unit * Tower::findTarget() {
 			}
 		}
 	}
+
+	gameEngine->unitListMutex.unlock();
 
 	return closestEnemy;
 
