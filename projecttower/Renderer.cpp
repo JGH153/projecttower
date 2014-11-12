@@ -257,11 +257,25 @@ void Renderer::doRenderLoop() {
 
 					auto currentRenderList = staticRenderList[currentControllerID][currentLayer];
 
+					//gameEngine->backgroundListMutex.lock();
+					//gameEngine->groundTileListMutex.lock();
+					//gameEngine->renderObjectsListMutex.lock();
+					//gameEngine->unitListMutex.lock();
+					//gameEngine->towerListMutex.lock();
+					//gameEngine->towerProjectileMutex.lock();
+
 					for (auto currentRenderObj : currentRenderList) {
 
 						mainWindow->draw(*currentRenderObj);
 
 					}
+
+					//gameEngine->backgroundListMutex.unlock();
+					//gameEngine->groundTileListMutex.unlock();
+					//gameEngine->renderObjectsListMutex.unlock();
+					//gameEngine->unitListMutex.unlock();
+					//gameEngine->towerListMutex.unlock();
+					//gameEngine->towerProjectileMutex.unlock();
 
 				} else {
 					staticDone = true;
@@ -272,11 +286,25 @@ void Renderer::doRenderLoop() {
 
 					auto currentRenderList = dynamicRenderList[currentLayer];
 
+					//gameEngine->backgroundListMutex.lock();
+					//gameEngine->groundTileListMutex.lock();
+					//gameEngine->renderObjectsListMutex.lock();
+					//gameEngine->unitListMutex.lock();
+					//gameEngine->towerListMutex.lock();
+					//gameEngine->towerProjectileMutex.lock();
+
 					for (auto currentRenderObj : currentRenderList) {
 
 						mainWindow->draw(*currentRenderObj);
 
 					}
+
+					//gameEngine->backgroundListMutex.unlock();
+					//gameEngine->groundTileListMutex.unlock();
+					//gameEngine->renderObjectsListMutex.unlock();
+					//gameEngine->unitListMutex.unlock();
+					//gameEngine->towerListMutex.unlock();
+					//gameEngine->towerProjectileMutex.unlock();
 
 				} else {
 					dynamicDone = true;

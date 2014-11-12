@@ -398,7 +398,7 @@ void GameController::update() {
 	gameEngine->towerListMutex.unlock();
 
 	gameEngine->unitListMutex.lock();
-	for (auto * current : unitList) {
+	for (Unit * current : unitList) {
 		current->update();
 	}
 

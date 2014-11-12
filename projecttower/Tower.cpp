@@ -17,7 +17,7 @@ Tower::~Tower()
 Unit * Tower::findTarget() {
 	Unit *closestEnemy = nullptr;
 
-	gameEngine->unitListMutex.lock();
+	std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
 
 	for (int i = 0; i < enemyList->size(); i++) {
 		//wat? funker egentlig dette bra eller er det noen som har drukket for mye karsk?
@@ -35,8 +35,6 @@ Unit * Tower::findTarget() {
 			}
 		}
 	}
-
-	gameEngine->unitListMutex.unlock();
 
 	return closestEnemy;
 

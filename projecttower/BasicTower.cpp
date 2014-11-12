@@ -95,13 +95,17 @@ void BasicTower::update() {
 		}
 	}
 
+	
+
 	if (!reloading) {
 		// If tower has no target, find one
+		
 		if (currentTarget == nullptr) {
 			currentTarget = findTarget();
 		}
 		// If it has a viable target by now, attack it
 		if (currentTarget != nullptr) {
+
 			gameEngine->towerProjectileMutex.lock();
 			auto sprite =  new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
 			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage);
@@ -116,5 +120,7 @@ void BasicTower::update() {
 		}
 
 	}
+
+	std::cout << "hehe";
 
 }
