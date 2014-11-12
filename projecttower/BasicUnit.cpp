@@ -45,9 +45,9 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 
 BasicUnit::~BasicUnit(){
 
-	for (auto current : moveAnimations) {
+	/*for (auto current : moveAnimations) {
 		delete current;
-	}
+	}*/
 
 }
 

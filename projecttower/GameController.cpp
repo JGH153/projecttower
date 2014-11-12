@@ -394,7 +394,7 @@ void GameController::update() {
 				}
 			}
 			gameEngine->gameControllerProjectileMutex.unlock();
-			//delete unitList[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
+			delete unitList[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
 			unitList[i] = nullptr;
 			unitList.erase(unitList.begin() + i);
 			i--;
@@ -563,8 +563,8 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 		viewRelativeSizeX /= zoomRate;
 		viewRelativeSizeY /= zoomRate;
-		xdiff = (gameView.getCenter().x - mousePosView.x) / viewRelativeSizeX; // 5.f;
-		ydiff = (gameView.getCenter().y - mousePosView.y) / viewRelativeSizeX; // 5.f;
+		xdiff = (gameView.getCenter().x - mousePosView.x) * viewRelativeSizeX / 5.f;
+		ydiff = (gameView.getCenter().y - mousePosView.y) * viewRelativeSizeX / 5.f;
 
 	} else {
 		if (viewRelativeSizeX >= 5.f) {
@@ -573,8 +573,8 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 		viewRelativeSizeX *= zoomRate;
 		viewRelativeSizeY *= zoomRate;
-		xdiff = (mousePosView.x - gameView.getCenter().x) / viewRelativeSizeX; // 5.f;
-		ydiff = (mousePosView.y - gameView.getCenter().y) / viewRelativeSizeX; // 5.f;
+		xdiff = (mousePosView.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
+		ydiff = (mousePosView.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
 	}
 
 	viewWidth = WINDOWSIZEX / viewRelativeSizeX;

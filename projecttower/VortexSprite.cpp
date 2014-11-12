@@ -34,6 +34,7 @@ VortexSprite::VortexSprite(const sf::Texture &texture) : sf::Sprite(texture){
 
 VortexSprite::~VortexSprite()
 {
+	
 }
 
 void VortexSprite::setSize(double w, double h){

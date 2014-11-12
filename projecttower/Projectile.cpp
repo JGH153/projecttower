@@ -15,7 +15,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 
 
 Projectile::~Projectile() {
-	delete projectileSprite;
+	//delete projectileSprite;
 }
 
 std::vector<sf::Drawable*> Projectile::getRenderDrawable() {

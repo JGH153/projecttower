@@ -49,7 +49,7 @@ void BasicTower::update() {
 
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i]->destroyProjectile == true) {
-			//delete projectiles[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
+			delete projectiles[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
 			projectiles[i] = nullptr;
 			projectiles.erase(projectiles.begin() + i);
 			i--;
