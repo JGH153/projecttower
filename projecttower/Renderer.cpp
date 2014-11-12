@@ -294,7 +294,7 @@ void Renderer::doRenderLoop() {
 					//gameEngine->towerProjectileMutex.lock();
 
 					for (auto currentRenderObj : currentRenderList) {
-
+						
 						mainWindow->draw(*currentRenderObj);
 
 					}

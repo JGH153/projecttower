@@ -489,10 +489,9 @@ void GameController::handlePlayerTowerAction() {
 
 			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);
 
+			gameEngine->towerListMutex.lock();
 			if (towerList[i]->getMapGroundTileIndex().x == mouseGridPos.x
 				&&	towerList[i]->getMapGroundTileIndex().y == mouseGridPos.y) {
-
-				gameEngine->towerListMutex.lock();
 
 				mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
 				
@@ -501,10 +500,10 @@ void GameController::handlePlayerTowerAction() {
 				towerList.erase(towerList.begin() + i);
 				i--;
 
-				gameEngine->towerListMutex.unlock();
+				
 
 			}
-
+			gameEngine->towerListMutex.unlock();
 			
 		}
 
@@ -520,8 +519,8 @@ void GameController::moveViewport() {
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 	//Move the viewport
-	int viewChangeX = previousMousePos.x - mousePosWindow.x;
-	int viewChangeY = previousMousePos.y - mousePosWindow.y;
+	float viewChangeX = ((float)previousMousePos.x - (float)mousePosWindow.x) / (viewRelativeSizeX);
+	float viewChangeY = ((float)previousMousePos.y - (float)mousePosWindow.y) / (viewRelativeSizeY);
 
 
 
@@ -564,8 +563,8 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 		viewRelativeSizeX /= zoomRate;
 		viewRelativeSizeY /= zoomRate;
-		xdiff = (gameView.getCenter().x - mousePosView.x) * viewRelativeSizeX / 5.f;
-		ydiff = (gameView.getCenter().y - mousePosView.y) * viewRelativeSizeX / 5.f;
+		xdiff = (gameView.getCenter().x - mousePosView.x) / viewRelativeSizeX; // 5.f;
+		ydiff = (gameView.getCenter().y - mousePosView.y) / viewRelativeSizeX; // 5.f;
 
 	} else {
 		if (viewRelativeSizeX >= 5.f) {
@@ -574,8 +573,8 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 		viewRelativeSizeX *= zoomRate;
 		viewRelativeSizeY *= zoomRate;
-		xdiff = (mousePosView.x - gameView.getCenter().x) * viewRelativeSizeX / 5.f;
-		ydiff = (mousePosView.y - gameView.getCenter().y) * viewRelativeSizeX / 5.f;
+		xdiff = (mousePosView.x - gameView.getCenter().x) / viewRelativeSizeX; // 5.f;
+		ydiff = (mousePosView.y - gameView.getCenter().y) / viewRelativeSizeX; // 5.f;
 	}
 
 	viewWidth = WINDOWSIZEX / viewRelativeSizeX;
