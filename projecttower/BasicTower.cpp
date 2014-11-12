@@ -39,18 +39,24 @@ BasicTower::~BasicTower() {
 
 
 std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
+
 	auto temp = towerSprite->getRenderDrawable();
 
 	for (auto currentProjectile : projectiles) {
+	//for (int i = 0; i < projectiles.size(); i ++){
 
 		if (currentProjectile == nullptr) {
 			std::cout << "lol";
 		}
 
-			auto arrows = currentProjectile->getRenderDrawable();
-		for (auto currentDrawable : arrows) {
-			temp.push_back(currentDrawable);
-		}
+		auto arrows = currentProjectile->getRenderDrawable();
+
+		temp.insert(temp.end(), arrows.begin(), arrows.end());
+
+
+		//for (auto currentDrawable : arrows) {
+		//	temp.push_back(currentDrawable);
+		//}
 		
 	}
 
@@ -121,6 +127,5 @@ void BasicTower::update() {
 
 	}
 
-	std::cout << "hehe";
 
 }

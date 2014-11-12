@@ -133,11 +133,7 @@ void BasicUnit::update() {
 	}
 	
 
-	sf::Vector2f offset(moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds(), moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds());
-
-	posX += offset.x;
-	posY += offset.y;
-	moveHealthBar(offset);
+	
 	/*posX += moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds();
 	posY += moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds();*/
 	
@@ -167,6 +163,26 @@ void BasicUnit::update() {
 	//	currentMoveAnimationIndex = getDirectionIndex(moveDirection);
 	//}
 
+
+
+	//std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
+	sf::Vector2f offset(moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds(), moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds());
+
+	posX += offset.x;
+	posY += offset.y;
+	moveHealthBar(offset);
+
+
+
+
+	//Locking a loced mutex
+	//try {
+	//	std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
+	//} catch (const std::system_error& e) {
+	//	std::cout << "Caught system_error with code :" << e.code() << "\n"
+	//		<< " meaning: " << e.what() << '\n';
+	//	std::cin.get();
+	//}
 
 	moveAnimations[currentMoveAnimationIndex]->setPos(posX, posY);
 
