@@ -155,6 +155,9 @@ public:
 	std::mutex unitListMutex;
 	std::mutex towerListMutex;
 	std::mutex towerProjectileMutex;
+	std::mutex gameControllerProjectileMutex;
+	std::mutex builderSpriteMutex;
+	std::mutex selectionSpriteMutex;
 	
 
 private:

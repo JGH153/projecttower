@@ -12,24 +12,15 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 
 	this->gridTileSize = gridTileSize;
 
-	/*this->posX = posX;
-	this->posY = posY;*/
-
-	//towerSprite = new VortexSprite("Graphics/button.png", posX, posY);
-
 	sf::Texture * texImageTile;
 	texImageTile = gameEngine->loadImageToTexture("Graphics/Towers/NormalReducedCanvas.png");
 	
 	towerSpriteOffsetX = 0.f;
 	towerSpriteOffsetY = 23.f;
 
-
-	/*spritePos.x = posX - towerSpriteOffsetX;
-	spritePos.y = posY - towerSpriteOffsetY;*/
 	width = gridTileSize;
 	height = gridTileSize + towerSpriteOffsetY;
 	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, width, height);
-	//projectileSprite = new 
 	projectileSpritePath = "Graphics/Projectiles/Arrow.png";
 }
 
@@ -43,24 +34,10 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 	auto temp = towerSprite->getRenderDrawable();
 
 	for (auto currentProjectile : projectiles) {
-	//for (int i = 0; i < projectiles.size(); i ++){
-
-		if (currentProjectile == nullptr) {
-			std::cout << "lol";
-		}
-
 		auto arrows = currentProjectile->getRenderDrawable();
 
 		temp.insert(temp.end(), arrows.begin(), arrows.end());
-
-
-		//for (auto currentDrawable : arrows) {
-		//	temp.push_back(currentDrawable);
-		//}
-		
 	}
-
-
 	return temp;
 }
 
@@ -68,18 +45,14 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
 void BasicTower::update() {
 
-
-
-	gameEngine->towerProjectileMutex.lock();
+	//gameEngine->towerProjectileMutex.lock();
 
 	for (int i = 0; i < projectiles.size(); i++) {
-		if (projectiles[i]->destroyProjectile == true || projectiles[i]->posX < 0 || projectiles[i]->posX > WINDOWSIZEX || projectiles[i]->posY < 0 || projectiles[i]->posX > WINDOWSIZEY) {
-
-			delete projectiles[i];
-			projectiles[i] = (Projectile*)0x01;
+		if (projectiles[i]->destroyProjectile == true) {
+			//delete projectiles[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
+			projectiles[i] = nullptr;
 			projectiles.erase(projectiles.begin() + i);
 			i--;
-
 		}
 	}
 
@@ -88,7 +61,7 @@ void BasicTower::update() {
 		current->update();
 	}
 
-	gameEngine->towerProjectileMutex.unlock();
+	//gameEngine->towerProjectileMutex.unlock();
 
 	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
 		reloading = false;
@@ -96,13 +69,12 @@ void BasicTower::update() {
 
 	// If tower has a previous target, check if that target is still within range
 	if (currentTarget != nullptr) {
-		if (!targetWithinRange(currentTarget)) {
+		if (!targetWithinRange(currentTarget) || currentTarget->isDead()) {
 			currentTarget = nullptr;
 		}
 	}
 
 	
-
 	if (!reloading) {
 		// If tower has no target, find one
 		
@@ -112,20 +84,14 @@ void BasicTower::update() {
 		// If it has a viable target by now, attack it
 		if (currentTarget != nullptr) {
 
-			gameEngine->towerProjectileMutex.lock();
 			auto sprite =  new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
 			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage);
-
 			
-			//auto projectile = new Projectile(gameEngine, 100, 100, (new VortexSprite(gameEngine, "Graphics/Projectiles/Arrow.png", 100, 100, 10, 10)), nullptr, 1.f, 1.f);
+			//gameEngine->towerProjectileMutex.lock();
 			projectiles.push_back(projectile);
-			gameEngine->towerProjectileMutex.unlock();
+			//gameEngine->towerProjectileMutex.unlock();
 			reloading = true;
 			reloadTimer.restart();
-			
 		}
-
 	}
-
-
 }

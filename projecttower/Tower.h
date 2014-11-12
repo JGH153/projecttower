@@ -30,6 +30,7 @@ public:
 	VortexSprite* getTowerSprite();
 
 	sf::Vector2i getMapGroundTileIndex();
+	std::vector<Projectile*> getProjectileList();
 
 protected:
 

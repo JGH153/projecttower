@@ -6,6 +6,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	this->speed = speed;
 	this->target = target;
 	this->projectileSprite = projectileSprite;
+	projectileSprite->setScale(0.5f, 0.5f);
 	this->damage = damage;
 	destroyProjectile = false;
 
@@ -14,6 +15,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 
 
 Projectile::~Projectile() {
+	delete projectileSprite;
 }
 
 std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
@@ -22,10 +24,10 @@ std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
 
 
 bool Projectile::checkIfHitTarget() {
-	float radius = 50;
+	float radius = 35;
 
 	float diffX = abs(target->posX - posX);
-	float diffY = abs(target->posY- posY);
+	float diffY = abs(target->posY + target->height / 2 - posY);
 
 	if (diffX * diffX + diffY * diffY < radius * radius) {
 		target->damage(damage);
@@ -36,7 +38,7 @@ bool Projectile::checkIfHitTarget() {
 
 void Projectile::updatePos() {
 
-	sf::Vector2f velocity(target->posX - posX, target->posY - posY);
+	sf::Vector2f velocity(target->posX - posX, target->posY + target->height / 2 - posY);
 	float cardVelocity = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	velocity.x /= cardVelocity;
 	velocity.y /= cardVelocity;
@@ -46,9 +48,8 @@ void Projectile::updatePos() {
 	posY = posY + velocity.y * speed * gameEngine->deltaTime.asMilliseconds();
 
 	projectileSprite->setPosition(posX, posY);
-	float angle = atan2(target->posY - posY, target->posX - posX);
+	float angle = atan2(target->posY + target->height / 2 - posY, target->posX - posX);
 	projectileSprite->setRotation(angle * 180 / 3.14159);
-
 }
 
 void Projectile::update() {
@@ -65,8 +66,13 @@ void Projectile::update() {
 		destroyProjectile = true;
 		return;
 	}
-
+	
 	updatePos();
 
 	destroyProjectile = checkIfHitTarget();
+	
+
+	if (posX < 0 || posX > WINDOWSIZEX || posY < 0 || posX > WINDOWSIZEY) {
+		destroyProjectile = true;
+	}
 }

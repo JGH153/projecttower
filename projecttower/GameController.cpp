@@ -85,17 +85,6 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	preloadAssets();
 
-
-	//for (int i = 0; i < 1; i++){
-
-	//	//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100)));
-	//	BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2)-25);
-	//	//BasicUnit * testUnit = new BasicUnit(gameEngine, 200, 200);
-	//	unitList.push_back(testUnit);
-	//	//renderObjectsVector.push_back(testUnit);
-
-	//}
-
 	//set view size relative to org window size
 	viewRelativeSizeX = 1.0f;
 	viewRelativeSizeY = 1.0f;
@@ -117,7 +106,9 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 void GameController::preloadAssets() {
 
 	std::vector<BasicUnit *> preloadUnitList;
+	gameEngine->groundTileListMutex.lock();
 	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100))));
+	gameEngine->groundTileListMutex.unlock();
 
 	for (auto currentUnit : preloadUnitList) {
 		delete currentUnit;
@@ -208,9 +199,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	gameEngine->renderObjectsListMutex.unlock();
 
 	gameEngine->towerListMutex.lock();
-	gameEngine->towerProjectileMutex.lock();
-
-
+	//gameEngine->towerProjectileMutex.lock();
 	for (auto currentRenderVector : towerList) {
 
 		auto tempVector = currentRenderVector->getRenderDrawable();
@@ -218,10 +207,11 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
-	gameEngine->towerProjectileMutex.unlock();
+	//gameEngine->towerProjectileMutex.unlock();
 	gameEngine->towerListMutex.unlock();
-	gameEngine->unitListMutex.lock();
 
+
+	gameEngine->unitListMutex.lock();
 	for (auto currentRenderVector : unitList) {
 
 		auto tempVector = currentRenderVector->getRenderDrawable();
@@ -229,19 +219,21 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
 	}
-
 	gameEngine->unitListMutex.unlock();
 
-
+	gameEngine->builderSpriteMutex.lock();
 	if (gameGuiController->building) {
 		renderList.push_back(towerBuildSprite);
 	}
+	gameEngine->builderSpriteMutex.unlock();
 
+	gameEngine->selectionSpriteMutex.lock();
 	if (selectedTower != nullptr) {
 		for (int i = 0; i < 4; i++) {
 			renderList.push_back(selectionGizmo->selectionSprites[i]);
 		}
 	}
+	gameEngine->selectionSpriteMutex.unlock();
 
 	renderSuperList.push_back(renderList);
 
@@ -280,6 +272,7 @@ void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 	int xpos = mousePosView.x / gridTileSize;
 	int ypos = mousePosView.y / gridTileSize;
 
+	//gameEngine->builderSpriteMutex.lock();
 	towerBuildSprite->setPosition(xpos * gridTileSize, (ypos * gridTileSize) - (towerBuildSprite->getTextureRect().height / 5));
 
 	//prevent out of vector error
@@ -293,6 +286,7 @@ void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 	else {
 		towerBuildSprite->setColor(UNABLETOBUILD);
 	}
+	//gameEngine->builderSpriteMutex.unlock();
 }
 
 void GameController::lerpZoom(float t) {
@@ -339,8 +333,9 @@ void GameController::update() {
 
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS) {
 
-
+		gameEngine->groundTileListMutex.lock();
 		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
+		gameEngine->groundTileListMutex.unlock();
 
 		gameEngine->unitListMutex.lock();
 
@@ -384,40 +379,53 @@ void GameController::update() {
 	}
 	gameEngine->renderObjectsListMutex.unlock();
 
-	gameEngine->towerListMutex.lock();
-
-	for (int i = 0; i < towerList.size(); i++) {
-
-		towerList[i]->update();
-
-	}
-
-	/*for (auto * current : towerList) {
-		current->update();
-	}*/
-	gameEngine->towerListMutex.unlock();
 
 	gameEngine->unitListMutex.lock();
-	for (Unit * current : unitList) {
-		current->update();
-	}
-
 	for (int i = 0; i < unitList.size(); i++) {
-
+		unitList[i]->update();
 		if (unitList[i]->isDead()) {
-			delete unitList[i];
+			gameEngine->gameControllerProjectileMutex.lock();
+			for (int j = 0; j < projectileList.size(); j++) {
+				if (unitList[i] == projectileList[j]->target || projectileList[j]->destroyProjectile == true) {
+					projectileList[j]->target = nullptr;
+					projectileList[j]->destroyProjectile = true;
+					projectileList.erase(projectileList.begin() + j);
+					j--;
+				}
+			}
+			gameEngine->gameControllerProjectileMutex.unlock();
+			//delete unitList[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
 			unitList[i] = nullptr;
 			unitList.erase(unitList.begin() + i);
 			i--;
 		}
 	}
-	
 
 	//sorting units so the unit with the lowest base y is rendered first
 	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
-	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
 
 	gameEngine->unitListMutex.unlock();
+
+
+	gameEngine->towerListMutex.lock();
+	for (auto * current : towerList) {
+		current->update();
+
+		//gameEngine->towerProjectileMutex.lock();
+		gameEngine->gameControllerProjectileMutex.lock();
+
+		auto currentProjectiles = current->getProjectileList();
+		projectileList.insert(projectileList.end(), currentProjectiles.begin(), currentProjectiles.end());
+
+		gameEngine->gameControllerProjectileMutex.unlock();
+		//gameEngine->towerProjectileMutex.unlock();
+	}
+
+	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
+
+	gameEngine->towerListMutex.unlock();
+
+	
 
 
 	for (auto currentController : childControllers) {
@@ -446,10 +454,12 @@ void GameController::handlePlayerTowerAction() {
 			sf::Vector2i towerGridPos(towerList[i]->posX / gridTileSize, towerList[i]->posY / gridTileSize);
 			if (towerGridPos.x == xpos && towerGridPos.y == ypos) {
 				selectedTower = towerList[i];
+				gameEngine->selectionSpriteMutex.lock();
 				selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
 				selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
 				selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
 				selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
+				gameEngine->selectionSpriteMutex.unlock();
 				break;
 			}
 		}
@@ -463,12 +473,12 @@ void GameController::handlePlayerTowerAction() {
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
 		gameEngine->unitListMutex.lock();
 		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos));
+		gameEngine->unitListMutex.unlock();
+
 		gameEngine->towerListMutex.lock();
 		towerList.push_back(testTower);
-		
 		gameEngine->towerListMutex.unlock();
-		gameEngine->unitListMutex.unlock();
-		
+
 		mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
 		towerBuildSprite->setColor(UNABLETOBUILD);
 	}

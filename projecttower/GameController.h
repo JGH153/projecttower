@@ -92,6 +92,7 @@ private:
 
 	std::vector <Unit *> unitList;
 	std::vector <Tower *> towerList;
+	std::vector <Projectile*> projectileList;
 	
 
 	std::vector<RenderObject *> renderObjectsVector;

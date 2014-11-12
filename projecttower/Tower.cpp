@@ -20,11 +20,7 @@ Unit * Tower::findTarget() {
 	std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
 
 	for (int i = 0; i < enemyList->size(); i++) {
-		//wat? funker egentlig dette bra eller er det noen som har drukket for mye karsk?
-		//if (abs(enemyList->at(i)->posX - posX) < range / 2 && abs(enemyList->at(i)->posY - posY) < range / 2) { 
-		//	if ((!enemyList->at(i)->dead) && (!enemyList->at(i)->deathAnimationActive))
-		//		return enemyList->at(i);
-		if (targetWithinRange(enemyList->at(i))) {
+		if (targetWithinRange(enemyList->at(i)) && !enemyList->at(i)->isDead()) {
 			// If there is no target set the first one found in range as a potential target, as best target
 			if (closestEnemy == nullptr) {
 				closestEnemy = enemyList->at(i);
@@ -35,9 +31,7 @@ Unit * Tower::findTarget() {
 			}
 		}
 	}
-
 	return closestEnemy;
-
 }
 
 bool Tower::newTargetCloser(Unit *previousBest, Unit *newPotential) {
@@ -58,7 +52,7 @@ bool Tower::newTargetCloser(Unit *previousBest, Unit *newPotential) {
 
 bool Tower::targetWithinRange(Unit *testSubject) {
 	float xdist = abs(posX - testSubject->posX);
-	float ydist = abs(posX - testSubject->posY);
+	float ydist = abs(posY - testSubject->posY);
 	
 	//Target out of range
 	if ((xdist * xdist) + (ydist * ydist) > (range * range)) {
@@ -75,4 +69,8 @@ sf::Vector2i Tower::getMapGroundTileIndex() {
 
 	return mapGroundTileIndex;
 
+}
+
+std::vector<Projectile*> Tower::getProjectileList() {
+	return projectiles;
 }

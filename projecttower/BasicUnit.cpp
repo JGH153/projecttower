@@ -3,10 +3,6 @@
 
 BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
 
-	/*this->posX = posX;
-	this->posY = posY;*/
-
-	//
 	int randNum = rand() % 10;
 
 	if (randNum < 8){
@@ -20,8 +16,6 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 		height = 96/4;
 		maxHealth = 40.f;
 	}
-
-	//health = 5.f;
 
 	moveDirection = DIRECTIONS[rand() % 4];
 
@@ -70,6 +64,10 @@ std::vector<sf::Drawable *> BasicUnit::getRenderDrawable() {
 
 
 void BasicUnit::update() {
+
+	if (isDead()) {
+		return;
+	}
 
 	if (pathToTarget.size() == 0) {
 
