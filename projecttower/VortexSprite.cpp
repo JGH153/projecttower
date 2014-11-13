@@ -32,9 +32,16 @@ VortexSprite::VortexSprite(const sf::Texture &texture) : sf::Sprite(texture){
 }
 
 
-VortexSprite::~VortexSprite()
-{
+VortexSprite::~VortexSprite(){
+
+
 	
+}
+
+void VortexSprite::killYourself() {
+
+	delete this;
+
 }
 
 void VortexSprite::setSize(double w, double h){

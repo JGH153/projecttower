@@ -45,9 +45,9 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 
 BasicUnit::~BasicUnit(){
 
-	/*for (auto current : moveAnimations) {
-		delete current;
-	}*/
+	for (auto current : moveAnimations) {
+		gameEngine->addRemovableObjectToList(current);
+	}
 
 }
 
@@ -76,7 +76,7 @@ void BasicUnit::update() {
 		//std::cout << "Astart starter " << std::endl;
 
 		aStar aStarPath = aStar(*mapGroundTiles);
-		startEndStruct startStop = startEndStruct(4, 14, 21, 14);
+		startEndStruct startStop = startEndStruct(4, 13, 21, 13);
 		pathToTarget = aStarPath.findPath(startStop);
 
 		//std::cout << "printer vei med lengde: " << pathToTarget.size() << std::endl;
@@ -95,7 +95,7 @@ void BasicUnit::update() {
 
 		} else {
 
-			std::cout << "No Path \n";
+			//std::cout << "No Path \n";
 
 		}
 
@@ -196,4 +196,10 @@ void BasicUnit::update() {
 	healthBarFG->setSize(healthBarBG->getSize().x * percentageHP, healthBarFG->getSize().y);
 
 	//damage(0.25f);
+}
+
+void BasicUnit::killYourself() {
+
+	delete this;
+
 }

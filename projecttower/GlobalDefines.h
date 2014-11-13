@@ -127,3 +127,7 @@ struct RenderData {
 
 
 };
+
+class RemovableObject;
+//
+//std::vector<RemovableObject * > RemovableObjectList;

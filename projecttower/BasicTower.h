@@ -11,6 +11,9 @@ public:
 	std::vector<sf::Drawable *> getRenderDrawable();
 	//VortexSprite *projectileSprite;
 
+	void killYourself();
+
+
 private:
 
 	

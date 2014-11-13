@@ -9,10 +9,11 @@
 #include "Vortex.h"
 #include "RenderObject.h"
 #include "GlobalDefines.h"
+#include "RemovableObject.h"
 
 class Vortex;
 
-class VortexSprite : public sf::Sprite, public RenderObject{
+class VortexSprite : public sf::Sprite, public RenderObject, public RemovableObject {
 public:
 	VortexSprite();
 	VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY, double width, double height);
@@ -32,6 +33,8 @@ public:
 	
 
 	sf::Vector2f getSize();
+
+	void killYourself();
 	
 };
 

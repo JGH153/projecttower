@@ -27,3 +27,9 @@ std::vector<sf::Drawable*> SelectionGizmo::getRenderDrawable() {
 void SelectionGizmo::update() {
 
 }
+
+void SelectionGizmo::killYourself() {
+
+	delete this;
+
+}

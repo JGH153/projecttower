@@ -13,6 +13,7 @@
 
 #include "VortexSprite.h"
 #include "GlobalDefines.h"
+#include "GarbageCollector.h"
 
 //#define uint unsigned int
 typedef unsigned int uint;
@@ -158,9 +159,14 @@ public:
 	std::mutex gameControllerProjectileMutex;
 	std::mutex builderSpriteMutex;
 	std::mutex selectionSpriteMutex;
+
+	// add to garbageCollector
+	void addRemovableObjectToList(RemovableObject * object);
 	
 
 private:
+
+	GarbageCollector objectHandler;
 
 
 	sf::View currentMousePosView;

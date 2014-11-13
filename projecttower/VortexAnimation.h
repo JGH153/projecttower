@@ -10,10 +10,11 @@
 #include "VortexLoader.h"
 #include "Vortex.h"
 #include "VortexSprite.h"
+#include "RemovableObject.h"
 
 #include "GlobalDefines.h"
 
-class VortexAnimation : public RenderObject
+class VortexAnimation : public RenderObject, public RemovableObject
 {
 public:
 	VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine);
@@ -36,6 +37,8 @@ public:
 	sf::Vector2f getPos();
 
 	VortexSprite *  getDrawData();
+
+	void killYourself();
 
 private:
 

@@ -51,6 +51,9 @@ void Vortex::frameStart(){
 	deltaTime = getTimeFromProgramStart() - lastRenderTime;
 	lastRenderTime = getTimeFromProgramStart();
 	auto timePri = frameTime.restart();
+
+	objectHandler.update();
+
 	regEvents();
 
 }
@@ -554,3 +557,10 @@ sf::RenderWindow * Vortex::getWindow() {
 	return mainWindow;
 }
 
+
+
+void Vortex::addRemovableObjectToList(RemovableObject * object) {
+
+	objectHandler.add(object);
+
+}

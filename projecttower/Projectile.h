@@ -14,6 +14,8 @@ public:
 	VortexSprite *projectileSprite;
 	Unit *target;
 	bool destroyProjectile;
+
+	void killYourself();
 	
 private:
 	Vortex *gameEngine;

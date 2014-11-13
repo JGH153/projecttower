@@ -177,7 +177,7 @@ deque<sf::Vector2i> aStar::findPath(startEndStruct startAndEnd) {
 		int nextIndex = getNextByLowestSum(openNodes);
 
 		if (nextIndex < 0){
-			cout << "Det finnes ingen vei!\n";
+			//cout << "Det finnes ingen vei!\n";
 			//returnerer tom vei:
 			deque<sf::Vector2i> veien;
 
@@ -193,9 +193,18 @@ deque<sf::Vector2i> aStar::findPath(startEndStruct startAndEnd) {
 		//Vi er fremme når slutten ligger i closedNodes:
 		if (isAtEnd(closedNodes, startAndEnd)){
 
+			auto pathHomeReturn = getPathHome(closedNodes, startAndEnd);
+
 			//cout << "Veien er funnet, A* er i mal!" << endl;
+			for (int i = 0; i < openNodes->size(); i++) {
+				delete openNodes->at(i);
+			}
 			delete openNodes;
-			return getPathHome(closedNodes, startAndEnd);
+			for (int i = 0; i < closedNodes->size(); i++) {
+				delete closedNodes->at(i);
+			}
+			delete closedNodes;
+			return pathHomeReturn;
 
 		}
 		else{
@@ -299,8 +308,8 @@ deque<sf::Vector2i> aStar::getPathHome(deque<node*> * closedNodes, startEndStruc
 	displayMap(moveMap);
 	cout << endl;*/
 
-	delete currentNode;
-	delete closedNodes;
+	//delete currentNode;
+	//delete closedNodes;
 
 	return roadHomePos;
 

@@ -11,9 +11,9 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 
 Unit::~Unit()
 {
-	/*delete healthBarBG;
-	delete healthBarFG;
-	delete healthBarFrame;*/
+	gameEngine->addRemovableObjectToList(healthBarBG);
+	gameEngine->addRemovableObjectToList(healthBarFG);
+	gameEngine->addRemovableObjectToList(healthBarFrame);
 	//std::cout << "BYE";
 }
 

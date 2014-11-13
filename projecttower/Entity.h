@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include "RenderObject.h"
+#include "RemovableObject.h"
 
 #include "Vortex.h"
 #include "VortexSprite.h"
@@ -15,7 +16,7 @@
 
 //#include "GameGuiController.h"
 
-class Entity : public RenderObject {
+class Entity : public RenderObject, public RemovableObject {
 public:
 	Entity(Vortex * gameEngine, int posX, int posY);
 	~Entity();

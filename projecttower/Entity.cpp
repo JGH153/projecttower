@@ -9,6 +9,8 @@ Entity::Entity(Vortex * gameEngine, int posX, int posY){
 
 
 Entity::~Entity(){
+
+
 }
 
 

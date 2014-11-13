@@ -140,3 +140,9 @@ void VortexAnimation::setPos(float x, float y){
 
 
 }
+
+void VortexAnimation::killYourself() {
+
+	delete this;
+
+}

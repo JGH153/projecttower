@@ -15,7 +15,9 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 
 
 Projectile::~Projectile() {
-	//delete projectileSprite;
+
+	delete projectileSprite;
+
 }
 
 std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
@@ -75,4 +77,11 @@ void Projectile::update() {
 	if (posX < 0 || posX > WINDOWSIZEX || posY < 0 || posX > WINDOWSIZEY) {
 		destroyProjectile = true;
 	}
+}
+
+
+void Projectile::killYourself() {
+
+	delete this;
+
 }

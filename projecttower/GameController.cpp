@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-	spawnDelayMS = 10;
+	spawnDelayMS = 1;
 
 
 
@@ -111,7 +111,7 @@ void GameController::preloadAssets() {
 	gameEngine->groundTileListMutex.unlock();
 
 	for (auto currentUnit : preloadUnitList) {
-		delete currentUnit;
+		gameEngine->addRemovableObjectToList(currentUnit);
 	}
 	preloadUnitList.clear();
 
@@ -331,7 +331,7 @@ void GameController::update() {
 
 
 
-	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS) {
+	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 100) {
 
 		gameEngine->groundTileListMutex.lock();
 		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
@@ -394,7 +394,7 @@ void GameController::update() {
 				}
 			}
 			gameEngine->gameControllerProjectileMutex.unlock();
-			delete unitList[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
+			gameEngine->addRemovableObjectToList(unitList[i]);
 			unitList[i] = nullptr;
 			unitList.erase(unitList.begin() + i);
 			i--;
@@ -495,7 +495,7 @@ void GameController::handlePlayerTowerAction() {
 
 				mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
 				
-				delete towerList[i];
+				gameEngine->addRemovableObjectToList(towerList[i]);
 				towerList[i] = nullptr;
 				towerList.erase(towerList.begin() + i);
 				i--;

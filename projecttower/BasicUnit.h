@@ -9,6 +9,8 @@ public:
 	void render();
 	std::vector<sf::Drawable *> getRenderDrawable();
 
+	void killYourself();
+
 
 private:
 

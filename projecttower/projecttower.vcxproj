@@ -85,6 +85,8 @@
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="RemovableObject.cpp" />
+    <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="SelectionGizmo.cpp" />
@@ -114,6 +116,8 @@
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="RemovableObject.h" />
+    <ClInclude Include="GarbageCollector.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="SelectionGizmo.h" />

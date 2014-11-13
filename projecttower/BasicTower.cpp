@@ -5,7 +5,7 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 
 	damage = 2.f;
 	range = 200;
-	reloadTimeMS = 1;
+	reloadTimeMS = 10;
 	projectileSpeed = 0.2f;
 
 	reloading = false;
@@ -49,7 +49,8 @@ void BasicTower::update() {
 
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i]->destroyProjectile == true) {
-			delete projectiles[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
+			//delete projectiles[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
+			gameEngine->addRemovableObjectToList(projectiles[i]);
 			projectiles[i] = nullptr;
 			projectiles.erase(projectiles.begin() + i);
 			i--;
@@ -94,4 +95,10 @@ void BasicTower::update() {
 			reloadTimer.restart();
 		}
 	}
+}
+
+void BasicTower::killYourself() {
+
+	delete this;
+
 }

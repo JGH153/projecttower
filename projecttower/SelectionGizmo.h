@@ -11,6 +11,8 @@ public:
 
 	void update();
 
+	void killYourself();
+
 private:
 	
 };
