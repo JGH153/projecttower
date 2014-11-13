@@ -11,9 +11,14 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 
 Unit::~Unit()
 {
-	gameEngine->addRemovableObjectToList(healthBarBG);
-	gameEngine->addRemovableObjectToList(healthBarFG);
-	gameEngine->addRemovableObjectToList(healthBarFrame);
+	//gameEngine->addRemovableObjectToList(healthBarBG);
+	//gameEngine->addRemovableObjectToList(healthBarFG);
+	//gameEngine->addRemovableObjectToList(healthBarFrame);
+
+	delete healthBarBG;
+	delete healthBarFG;
+	delete healthBarFrame;
+
 	//std::cout << "BYE";
 }
 
@@ -127,7 +132,7 @@ bool Unit::atCurrentWaypointTargetY() {
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 
 	if (abs(currentWaypointTargetWorldCord.y - posY) < range / 2) {
-		std::cout << "YESS\n";
+		//std::cout << "YESS\n";
 		return true;
 	}
 

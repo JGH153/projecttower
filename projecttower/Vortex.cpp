@@ -591,18 +591,21 @@ void Vortex::handleGarbageCollector() {
 		//one sec, only preformed once each sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			std::cout << "Num garbage fps: " << numFramesSek << std::endl;
+			std::cout << "Num garbage fps: " << numFramesSek << " Num to del: " << objectHandler.getRemovableObjectListSize() << std::endl;
 			numFramesSek = 0;
 		}
 
 		if (frameTime < msToWait) {
+			//std::cout << "SStart\n";
 			sf::sleep(sf::milliseconds(msToWait - frameTime));
 			renderFrameTime.restart();
+			//std::cout << "SEnd\n";
 		}
 
 
 	}
 
+	std::cout << "DONE2\n";
 
 	garbageCollectorThreadOnline = false;
 

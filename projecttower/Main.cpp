@@ -36,12 +36,14 @@ int main(int argc, char* argv[]){
 	//starting new thread caling renderer->renderMainLoop();
 	std::thread renderThread(&Renderer::renderMainLoop, renderer);
 
+
 	//wait for render thread to start
 	while (!renderer->renderThreadOnline) {
 
 		sf::sleep(sf::milliseconds(10));
 
 	}
+
 
 	std::cout << "Initing vortex" << std::endl;
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");

@@ -13,12 +13,11 @@
 
 struct RemovableObjectContainer {
 
-	int remainingCycles;
+	sf::Clock remainingClock;
 	RemovableObject * object;
 
-	RemovableObjectContainer(RemovableObject * object, int remainingCycles) {
+	RemovableObjectContainer(RemovableObject * object) {
 		this->object = object;
-		this->remainingCycles = remainingCycles;
 	}
 
 };
@@ -33,11 +32,13 @@ public:
 
 	int elementsInList();
 
-	std::mutex garbageMutex;
+	int getRemovableObjectListSize();
 
 private:
 
+	std::mutex garbageMutex;
 
+	std::deque<RemovableObjectContainer> removableObjectListTemp;
 	std::deque<RemovableObjectContainer> removableObjectList;
 
 };
