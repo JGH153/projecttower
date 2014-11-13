@@ -10,7 +10,7 @@ VortexUseExample::VortexUseExample(Vortex * gameEngine){
 	texImage = gameEngine->loadImageToTexture("Graphics/tile_1.png");
 
 
-	particles = new VortexParticleSystem(50000);
+	//particles = new VortexParticleSystem(50000);
 	font = gameEngine->loadFont("Fonts/arial.ttf");
 
 	// select the font

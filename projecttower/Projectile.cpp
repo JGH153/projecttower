@@ -9,6 +9,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	projectileSprite->setScale(0.5f, 0.5f);
 	this->damage = damage;
 	destroyProjectile = false;
+	hitParticleColor = sf::Color(222, 200, 150);
 
 	updatePos();
 }

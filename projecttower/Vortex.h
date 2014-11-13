@@ -12,6 +12,7 @@
 #include <random> //std::default_random_engine and std::uniform_real_distribution
 
 #include "VortexSprite.h"
+#include "VortexParticleSystem.h"
 #include "GlobalDefines.h"
 #include "GarbageCollector.h"
 
@@ -159,6 +160,7 @@ public:
 	std::mutex gameControllerProjectileMutex;
 	std::mutex builderSpriteMutex;
 	std::mutex selectionSpriteMutex;
+	std::mutex particleListMutex;
 
 	// add to garbageCollector
 	void addRemovableObjectToList(RemovableObject * object);

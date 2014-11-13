@@ -16,6 +16,7 @@ public:
 	bool destroyProjectile;
 
 	void killYourself();
+	sf::Color hitParticleColor;
 	
 private:
 	Vortex *gameEngine;

@@ -4,13 +4,17 @@
 #include <SFML\Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "RemovableObject.h"
 
 
-class VortexParticleSystem : public sf::Drawable, public sf::Transformable{
+class VortexParticleSystem : public sf::Drawable, public sf::Transformable, public RemovableObject {
 public:
-	VortexParticleSystem(unsigned int count);
+	VortexParticleSystem(unsigned int count, float posX, float posY, sf::Color baseParticleColor, sf::PrimitiveType type, int generatorLifetimeMS, float spd);
+	~VortexParticleSystem();
 	void setEmitter(sf::Vector2f position);
 	void update(sf::Time elapsed);
+	void killYourself();
+	bool stopEmitting;
 
 private:
 
@@ -20,6 +24,9 @@ private:
 		sf::Vector2f velocity;
 		sf::Time lifetime;
 	};
+	float spd;
+
+	sf::Clock timeAtStart;
 
 	void resetParticle(std::size_t index);
 

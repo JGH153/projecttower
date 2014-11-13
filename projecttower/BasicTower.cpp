@@ -31,14 +31,14 @@ BasicTower::~BasicTower() {
 
 std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
-	auto temp = towerSprite->getRenderDrawable();
+	//auto temp = towerSprite->getRenderDrawable();
 
-	for (auto currentProjectile : projectiles) {
+	/*for (auto currentProjectile : projectiles) {
 		auto arrows = currentProjectile->getRenderDrawable();
 
 		temp.insert(temp.end(), arrows.begin(), arrows.end());
-	}
-	return temp;
+	}*/
+	return towerSprite->getRenderDrawable();
 }
 
 
@@ -49,7 +49,6 @@ void BasicTower::update() {
 
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i]->destroyProjectile == true) {
-			//delete projectiles[i]; //REMOVE COMMENT TO REMOVE MEMLEAK and make it crash alot instead.. why?!?!?! THE?!?!? FUCK?!?!?!
 			gameEngine->addRemovableObjectToList(projectiles[i]);
 			projectiles[i] = nullptr;
 			projectiles.erase(projectiles.begin() + i);

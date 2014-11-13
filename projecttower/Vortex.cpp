@@ -614,7 +614,6 @@ void Vortex::handleGarbageCollector() {
 }
 
 void Vortex::addRemovableObjectToList(RemovableObject * object) {
-
 	objectHandler.add(object);
 
 }

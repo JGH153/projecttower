@@ -34,7 +34,7 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 
 	}
 
-	
+	hitParticleColor = sf::Color(220, 20, 20);
 	
 
 	initUnit();

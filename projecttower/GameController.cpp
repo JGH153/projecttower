@@ -221,6 +221,19 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	}
 	gameEngine->unitListMutex.unlock();
 
+	gameEngine->particleListMutex.lock();
+	for (sf::Drawable* current : particleList) {
+		renderList.push_back(current);
+	}
+	gameEngine->particleListMutex.unlock();
+
+	gameEngine->gameControllerProjectileMutex.lock();
+	for (auto currentRenderVector : projectileList) {
+		auto tempVector = currentRenderVector->getRenderDrawable();
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+	}
+	gameEngine->gameControllerProjectileMutex.unlock();
+
 	gameEngine->builderSpriteMutex.lock();
 	if (gameGuiController->building) {
 		renderList.push_back(towerBuildSprite);
@@ -387,6 +400,10 @@ void GameController::update() {
 			gameEngine->gameControllerProjectileMutex.lock();
 			for (int j = 0; j < projectileList.size(); j++) {
 				if (unitList[i] == projectileList[j]->target || projectileList[j]->destroyProjectile == true) {
+					gameEngine->particleListMutex.lock();
+					particleList.push_back(new VortexParticleSystem(7, projectileList[j]->getPos().x, projectileList[j]->getPos().y, projectileList[j]->hitParticleColor, sf::Quads, 100, 15));
+					//std::cout << projectileList[j]->getSize().x << std::endl; is 0
+					gameEngine->particleListMutex.unlock();
 					projectileList[j]->target = nullptr;
 					projectileList[j]->destroyProjectile = true;
 					projectileList.erase(projectileList.begin() + j);
@@ -395,6 +412,9 @@ void GameController::update() {
 			}
 			gameEngine->gameControllerProjectileMutex.unlock();
 			gameEngine->addRemovableObjectToList(unitList[i]);
+			gameEngine->particleListMutex.lock();
+			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, unitList[i]->hitParticleColor, sf::Quads, 200, 30));
+			gameEngine->particleListMutex.unlock();
 			unitList[i] = nullptr;
 			unitList.erase(unitList.begin() + i);
 			i--;
@@ -425,7 +445,17 @@ void GameController::update() {
 
 	gameEngine->towerListMutex.unlock();
 
-	
+
+	gameEngine->particleListMutex.lock();
+	for (int i = 0; i < particleList.size(); i++) {
+		particleList[i]->update(gameEngine->deltaTime);
+		if (particleList[i]->stopEmitting == true) {
+			gameEngine->addRemovableObjectToList(particleList[i]);
+			particleList[i] == nullptr;
+			particleList.erase(particleList.begin() + i);
+		}
+	}
+	gameEngine->particleListMutex.unlock();
 
 
 	for (auto currentController : childControllers) {

@@ -27,6 +27,7 @@ public:
 	bool isDead();
 
 	void initUnit();
+	sf::Color hitParticleColor;
 	
 	
 
