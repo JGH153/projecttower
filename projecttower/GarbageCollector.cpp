@@ -10,12 +10,30 @@ GarbageCollector::~GarbageCollector() {
 
 void GarbageCollector::add(RemovableObject * object) {
 
-	
-	removableObjectList.push_front(RemovableObjectContainer(object, 10));
+	try {
+
+		std::lock_guard<std::mutex> garbageLockGuard(garbageMutex);
+
+		removableObjectList.push_front(RemovableObjectContainer(object, 10));
+
+
+	} catch (const std::system_error& e) {
+		std::cout << "Caught system_error with code " << e.code()
+			<< " meaning " << e.what() << '\n';
+		std::cin.get();
+	}
+
+}
+
+int GarbageCollector::elementsInList() {
+
+	return removableObjectList.size();
 
 }
 
 void GarbageCollector::update() {
+
+	std::lock_guard<std::mutex> garbageLockGuard(garbageMutex);
 
 	//FUCK, for auto NOT WORKIN, object remain the same!?!?!?!
 	//for (auto currentObject : removableObjectList) {

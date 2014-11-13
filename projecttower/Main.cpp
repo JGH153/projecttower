@@ -45,6 +45,10 @@ int main(int argc, char* argv[]){
 
 	std::cout << "Initing vortex" << std::endl;
 	gameEngine->initVortex(renderer->getWindow(), "Fonts/arial.ttf");
+
+	std::cout << "Starting GarbageCollector thread" << std::endl;
+	//starting new thread caling renderer->renderMainLoop();
+	std::thread garbageCollectorThread(&Vortex::handleGarbageCollector, gameEngine);
 	
 	//Seting up controllers (an loading all the data like sprites and textures into memory)
 	ProgramController * programController = new ProgramController(gameEngine, -1);
@@ -99,8 +103,17 @@ int main(int argc, char* argv[]){
 		sf::sleep(sf::milliseconds(10));
 
 	}
+
+	//wait for garbageCollector thread to finish
+	while (gameEngine->garbageCollectorThreadOnline) {
+
+		sf::sleep(sf::milliseconds(10));
+
+	}
 	
 	renderThread.join();
+	garbageCollectorThread.join();
+
 	return 0;
 
 	

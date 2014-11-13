@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <mutex>
 
 #include "RemovableObject.h"
 
@@ -29,6 +30,10 @@ public:
 
 	void add(RemovableObject * object);
 	void update();
+
+	int elementsInList();
+
+	std::mutex garbageMutex;
 
 private:
 

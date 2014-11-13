@@ -162,6 +162,9 @@ public:
 
 	// add to garbageCollector
 	void addRemovableObjectToList(RemovableObject * object);
+	void handleGarbageCollector();
+
+	bool garbageCollectorThreadOnline;
 	
 
 private:

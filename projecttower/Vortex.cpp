@@ -4,6 +4,7 @@
 Vortex::Vortex(){
 
 	running = true;
+	garbageCollectorThreadOnline = false;
 
 }
 
@@ -52,7 +53,7 @@ void Vortex::frameStart(){
 	lastRenderTime = getTimeFromProgramStart();
 	auto timePri = frameTime.restart();
 
-	objectHandler.update();
+	
 
 	regEvents();
 
@@ -558,6 +559,56 @@ sf::RenderWindow * Vortex::getWindow() {
 }
 
 
+void Vortex::handleGarbageCollector() {
+
+	std::cout << "GarbageCollector thread started" << std::endl;
+
+	garbageCollectorThreadOnline = true;
+
+	float msToWait = 1000.f / (MAXFPS/2); //30 fps
+	float lastRenderFrameTime = 0;
+	sf::Clock renderFrameTime;
+
+	sf::Clock oneSecTimeClock;
+	int oneSecTime = 0;
+	int numFramesSek = 0;
+
+	std::cout << "Entering GarbageCollector loop" << std::endl;
+
+	while (this->running || objectHandler.elementsInList() > 0) {
+
+
+		objectHandler.update();
+
+
+
+
+		int frameTime = renderFrameTime.restart().asMilliseconds();
+
+
+		oneSecTime += oneSecTimeClock.restart().asMilliseconds();
+		numFramesSek++;
+		//one sec, only preformed once each sec
+		if (oneSecTime > 1000) {
+			oneSecTime = 0;
+			std::cout << "Num garbage fps: " << numFramesSek << std::endl;
+			numFramesSek = 0;
+		}
+
+		if (frameTime < msToWait) {
+			sf::sleep(sf::milliseconds(msToWait - frameTime));
+			renderFrameTime.restart();
+		}
+
+
+	}
+
+
+	garbageCollectorThreadOnline = false;
+
+	
+
+}
 
 void Vortex::addRemovableObjectToList(RemovableObject * object) {
 
