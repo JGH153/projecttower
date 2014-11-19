@@ -14,6 +14,19 @@ namespace TileTypes {
 	extern const int tower;
 }
 
+//namespace zIndexLayers {
+//	extern const int background;
+//	extern const int tower;
+//	extern const int projectile;
+//	extern const int unit;
+//}
+
+enum class zIndexlayer : int { 
+	background = 1,
+	tower,
+	projectile,
+	unit
+};
 
 
 class node {

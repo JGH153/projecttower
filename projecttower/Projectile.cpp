@@ -12,6 +12,8 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	hitParticleColor = sf::Color(222, 200, 150);
 
 	updatePos();
+
+	zIndex = zIndexlayer::projectile;
 }
 
 

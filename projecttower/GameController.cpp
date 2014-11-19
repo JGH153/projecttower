@@ -139,6 +139,16 @@ struct EntitySortingStructDistance {
 
 } entitySortingStructDistanceDistance;
 
+struct zIndexSort {
+
+	bool operator() (RenderObject * a, RenderObject * b) {
+
+		return(a->getZIndex() < b->getZIndex());
+		
+	}
+
+} zIndexSortInstance;
+
 std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 	
 	std::vector<std::vector<sf::Drawable *>> renderSuperList;
@@ -199,14 +209,22 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	gameEngine->renderObjectsListMutex.unlock();
 
 	gameEngine->towerListMutex.lock();
+
+	std::vector<sf::Drawable *> renderProjectileList;
+
 	//gameEngine->towerProjectileMutex.lock();
 	for (auto currentRenderVector : towerList) {
 
 		auto tempVector = currentRenderVector->getRenderDrawable();
+		auto tempVectorProject = currentRenderVector->getProjectilesRenderDrawable();
 
 		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+		renderProjectileList.insert(renderProjectileList.end(), tempVectorProject.begin(), tempVectorProject.end());
 
 	}
+
+	renderList.insert(renderList.end(), renderProjectileList.begin(), renderProjectileList.end());
+
 	//gameEngine->towerProjectileMutex.unlock();
 	gameEngine->towerListMutex.unlock();
 
@@ -227,12 +245,17 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	}
 	gameEngine->particleListMutex.unlock();
 
+
+
 	gameEngine->gameControllerProjectileMutex.lock();
-	for (auto currentRenderVector : projectileList) {
-		auto tempVector = currentRenderVector->getRenderDrawable();
-		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
-	}
+	//for (auto currentRenderVector : projectileList) {
+	//	auto tempVector = currentRenderVector->getRenderDrawable();
+	//	renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+	//}
 	gameEngine->gameControllerProjectileMutex.unlock();
+
+
+
 
 	gameEngine->builderSpriteMutex.lock();
 	if (gameGuiController->building) {
@@ -249,6 +272,9 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	gameEngine->selectionSpriteMutex.unlock();
 
 	renderSuperList.push_back(renderList);
+
+
+	//std::sort(renderSuperList.begin(), renderSuperList.end(), zIndexSortInstance);
 
 	
 	return renderSuperList;
@@ -344,7 +370,7 @@ void GameController::update() {
 
 
 
-	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 100) {
+	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000) {
 
 		gameEngine->groundTileListMutex.lock();
 		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
@@ -397,20 +423,20 @@ void GameController::update() {
 	for (int i = 0; i < unitList.size(); i++) {
 		unitList[i]->update();
 		if (unitList[i]->isDead()) {
-			gameEngine->gameControllerProjectileMutex.lock();
-			for (int j = 0; j < projectileList.size(); j++) {
-				if (unitList[i] == projectileList[j]->target || projectileList[j]->destroyProjectile == true) {
-					gameEngine->particleListMutex.lock();
-					particleList.push_back(new VortexParticleSystem(7, projectileList[j]->getPos().x, projectileList[j]->getPos().y, projectileList[j]->hitParticleColor, sf::Quads, 100, 15));
-					//std::cout << projectileList[j]->getSize().x << std::endl; is 0
-					gameEngine->particleListMutex.unlock();
-					projectileList[j]->target = nullptr;
-					projectileList[j]->destroyProjectile = true;
-					projectileList.erase(projectileList.begin() + j);
-					j--;
-				}
-			}
-			gameEngine->gameControllerProjectileMutex.unlock();
+			//gameEngine->gameControllerProjectileMutex.lock();
+			//for (int j = 0; j < projectileList.size(); j++) {
+			//	if (unitList[i] == projectileList[j]->target || projectileList[j]->destroyProjectile == true) {
+			//		gameEngine->particleListMutex.lock();
+			//		particleList.push_back(new VortexParticleSystem(7, projectileList[j]->getPos().x, projectileList[j]->getPos().y, projectileList[j]->hitParticleColor, sf::Quads, 100, 15));
+			//		//std::cout << projectileList[j]->getSize().x << std::endl; is 0
+			//		gameEngine->particleListMutex.unlock();
+			//		projectileList[j]->target = nullptr;
+			//		projectileList[j]->destroyProjectile = true;
+			//		projectileList.erase(projectileList.begin() + j);
+			//		j--;
+			//	}
+			//}
+			//gameEngine->gameControllerProjectileMutex.unlock();
 			gameEngine->addRemovableObjectToList(unitList[i]);
 			gameEngine->particleListMutex.lock();
 			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, unitList[i]->hitParticleColor, sf::Quads, 200, 30));
@@ -432,12 +458,12 @@ void GameController::update() {
 		current->update();
 
 		//gameEngine->towerProjectileMutex.lock();
-		gameEngine->gameControllerProjectileMutex.lock();
+		//gameEngine->gameControllerProjectileMutex.lock();
 
-		auto currentProjectiles = current->getProjectileList();
-		projectileList.insert(projectileList.end(), currentProjectiles.begin(), currentProjectiles.end());
+		//auto currentProjectiles = current->getProjectileList();
+		//projectileList.insert(projectileList.end(), currentProjectiles.begin(), currentProjectiles.end());
 
-		gameEngine->gameControllerProjectileMutex.unlock();
+		//gameEngine->gameControllerProjectileMutex.unlock();
 		//gameEngine->towerProjectileMutex.unlock();
 	}
 
@@ -520,12 +546,15 @@ void GameController::handlePlayerTowerAction() {
 			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);
 
 			gameEngine->towerListMutex.lock();
+			
 			if (towerList[i]->getMapGroundTileIndex().x == mouseGridPos.x
 				&&	towerList[i]->getMapGroundTileIndex().y == mouseGridPos.y) {
 
 				mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
 				
+				towerList[i]->deleteProjectiles();
 				gameEngine->addRemovableObjectToList(towerList[i]);
+				
 				towerList[i] = nullptr;
 				towerList.erase(towerList.begin() + i);
 				i--;
@@ -533,6 +562,7 @@ void GameController::handlePlayerTowerAction() {
 				
 
 			}
+			
 			gameEngine->towerListMutex.unlock();
 			
 		}

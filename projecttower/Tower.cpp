@@ -7,6 +7,8 @@ Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int
 	this->enemyList = enemyList;
 	this->mapGroundTileIndex = mapGroundTileIndex;
 
+	zIndex = zIndexlayer::tower;
+
 }
 
 
@@ -73,4 +75,51 @@ sf::Vector2i Tower::getMapGroundTileIndex() {
 
 std::vector<Projectile*> Tower::getProjectileList() {
 	return projectiles;
+}
+
+void Tower::deleteProjectiles() {
+
+	try {
+
+
+	//gameEngine->towerProjectileMutex.lock();
+
+	while (projectiles.size() > 0) {
+
+		gameEngine->addRemovableObjectToList(projectiles[0]);
+		projectiles[0] = nullptr;
+		projectiles.erase(projectiles.begin() + 0);
+
+	}
+
+	//gameEngine->towerProjectileMutex.lock();
+
+	} catch (const std::system_error& e) {
+		std::cout << "Caught system_error with code " << e.code()
+			<< " meaning " << e.what() << '\n';
+		std::cin.get();
+	}
+
+}
+
+
+std::vector<sf::Drawable *> Tower::getProjectilesRenderDrawable() {
+
+	//auto temp = towerSprite->getRenderDrawable();
+
+	/*for (auto currentProjectile : projectiles) {
+	auto arrows = currentProjectile->getRenderDrawable();
+
+	temp.insert(temp.end(), arrows.begin(), arrows.end());
+	}*/
+	std::vector<sf::Drawable *> returnList;
+	for each (auto currentProRenderList in projectiles) {
+		for each (auto currentPro in currentProRenderList->getRenderDrawable()) {
+			returnList.push_back(currentPro);
+		}
+
+	}
+
+	return returnList;
+
 }

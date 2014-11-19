@@ -25,4 +25,11 @@ namespace TileTypes {
 	const int tower = 6;
 }
 
+//namespace zIndexLayers {
+//	const int background = 1;
+//	const int tower = 2;
+//	const int projectile = 3;
+//	const int unit = 4;
+//}
+
 

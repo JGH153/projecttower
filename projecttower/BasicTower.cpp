@@ -38,7 +38,10 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
 		temp.insert(temp.end(), arrows.begin(), arrows.end());
 	}*/
-	return towerSprite->getRenderDrawable();
+	auto returnList =  towerSprite->getRenderDrawable();
+
+	return returnList;
+
 }
 
 

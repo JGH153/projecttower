@@ -32,6 +32,10 @@ public:
 	sf::Vector2i getMapGroundTileIndex();
 	std::vector<Projectile*> getProjectileList();
 
+	std::vector<sf::Drawable *> getProjectilesRenderDrawable();
+
+	void deleteProjectiles();
+
 protected:
 
 	sf::Clock reloadTimer;

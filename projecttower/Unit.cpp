@@ -6,6 +6,8 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 	this->gameEngine = gameEngine;
 	this->mapGroundTiles = mapGroundTiles;
 
+	zIndex = zIndexlayer::projectile;
+
 }
 
 
