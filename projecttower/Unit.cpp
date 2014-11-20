@@ -8,6 +8,8 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 
 	zIndex = zIndexlayer::projectile;
 
+	offsetComponentsY = 0.f;
+
 }
 
 
@@ -156,6 +158,7 @@ sf::Vector2i Unit::WorldPosToMapGroundTilePos(double x, double y) {
 }
 
 void Unit::moveHealthBar(sf::Vector2f offset) {
+
 	healthBarBG->move(offset);
 	healthBarFG->move(offset);
 	healthBarFrame->move(offset);

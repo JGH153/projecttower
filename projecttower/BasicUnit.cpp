@@ -10,12 +10,15 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 		width = 32/2;
 		height = 48/2;
 		maxHealth = 30.f;
+		offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 	}else{
 		speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.08f);
 		width = 96/4;
 		height = 96/4;
 		maxHealth = 40.f;
+		offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 	}
+
 
 	moveDirection = DIRECTIONS[rand() % 4];
 
@@ -164,7 +167,7 @@ void BasicUnit::update() {
 
 
 	//std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
-	sf::Vector2f offset(moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds(), moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds());
+	sf::Vector2f offset(moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds(), (moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds()));
 
 	posX += offset.x;
 	posY += offset.y;

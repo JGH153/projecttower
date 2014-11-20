@@ -373,7 +373,7 @@ void GameController::update() {
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000) {
 
 		gameEngine->groundTileListMutex.lock();
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, 50, (gameEngine->getWindowSize().y / 2) - 25);
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
 		gameEngine->groundTileListMutex.unlock();
 
 		gameEngine->unitListMutex.lock();

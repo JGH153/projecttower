@@ -59,5 +59,7 @@ protected:
 	VortexSprite *healthBarFrame;
 
 	void moveHealthBar(sf::Vector2f offset);
+
+	float offsetComponentsY;
 };
 
