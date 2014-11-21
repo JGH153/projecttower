@@ -49,6 +49,19 @@ void Vortex::initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPa
 
 
 void Vortex::frameStart(){
+
+	printMutex.lock();
+
+	while (pristList.size() != 0) {
+
+		auto current = pristList[pristList.size() - 1];
+		pristList.pop_back();;
+		std::cout << current;
+
+	}
+
+	printMutex.unlock();
+
 	deltaTime = getTimeFromProgramStart() - lastRenderTime;
 	lastRenderTime = getTimeFromProgramStart();
 	auto timePri = frameTime.restart();
@@ -615,5 +628,15 @@ void Vortex::handleGarbageCollector() {
 
 void Vortex::addRemovableObjectToList(RemovableObject * object) {
 	objectHandler.add(object);
+
+}
+
+
+
+void Vortex::print(std::string printText) {
+
+	std::lock_guard<std::mutex> lock(printMutex);
+
+	pristList.push_back(printText);
 
 }

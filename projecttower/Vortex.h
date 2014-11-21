@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 
+
 #include <thread>         // std::thread
 #include <mutex> // std::mutex
 
@@ -169,7 +170,12 @@ public:
 	bool garbageCollectorThreadOnline;
 	
 
+	void print(std::string printText);
+
 private:
+
+	std::mutex printMutex;
+	std::vector<std::string> pristList;
 
 	GarbageCollector objectHandler;
 
