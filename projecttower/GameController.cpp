@@ -319,7 +319,7 @@ void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 		return;
 	}
 
-	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && !unitOnTile(xpos, ypos)) {
+	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && !unitOnTile(xpos, ypos) && (gameGuiController->getPlayerResources() >= 10)) {
 		towerBuildSprite->setColor(ABLETOBUILD);
 	}
 	else {
@@ -423,20 +423,8 @@ void GameController::update() {
 	for (int i = 0; i < unitList.size(); i++) {
 		unitList[i]->update();
 		if (unitList[i]->isDead()) {
-			//gameEngine->gameControllerProjectileMutex.lock();
-			//for (int j = 0; j < projectileList.size(); j++) {
-			//	if (unitList[i] == projectileList[j]->target || projectileList[j]->destroyProjectile == true) {
-			//		gameEngine->particleListMutex.lock();
-			//		particleList.push_back(new VortexParticleSystem(7, projectileList[j]->getPos().x, projectileList[j]->getPos().y, projectileList[j]->hitParticleColor, sf::Quads, 100, 15));
-			//		//std::cout << projectileList[j]->getSize().x << std::endl; is 0
-			//		gameEngine->particleListMutex.unlock();
-			//		projectileList[j]->target = nullptr;
-			//		projectileList[j]->destroyProjectile = true;
-			//		projectileList.erase(projectileList.begin() + j);
-			//		j--;
-			//	}
-			//}
-			//gameEngine->gameControllerProjectileMutex.unlock();
+			gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() + unitList[i]->killReward);
+
 			gameEngine->addRemovableObjectToList(unitList[i]);
 			gameEngine->particleListMutex.lock();
 			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, unitList[i]->hitParticleColor, sf::Quads, 200, 30));
@@ -456,15 +444,6 @@ void GameController::update() {
 	gameEngine->towerListMutex.lock();
 	for (auto * current : towerList) {
 		current->update();
-
-		//gameEngine->towerProjectileMutex.lock();
-		//gameEngine->gameControllerProjectileMutex.lock();
-
-		//auto currentProjectiles = current->getProjectileList();
-		//projectileList.insert(projectileList.end(), currentProjectiles.begin(), currentProjectiles.end());
-
-		//gameEngine->gameControllerProjectileMutex.unlock();
-		//gameEngine->towerProjectileMutex.unlock();
 	}
 
 	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
@@ -527,16 +506,23 @@ void GameController::handlePlayerTowerAction() {
 	}
 	//Building, and zone buildable
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
-		gameEngine->unitListMutex.lock();
-		BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos));
-		gameEngine->unitListMutex.unlock();
+		// Check if player has resources to build
+		if (gameGuiController->getPlayerResources() >= 10) {
+			gameEngine->unitListMutex.lock();
+			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos));
+			gameEngine->unitListMutex.unlock();
 
-		gameEngine->towerListMutex.lock();
-		towerList.push_back(testTower);
-		gameEngine->towerListMutex.unlock();
+			gameEngine->towerListMutex.lock();
+			towerList.push_back(testTower);
+			gameEngine->towerListMutex.unlock();
 
-		mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
-		towerBuildSprite->setColor(UNABLETOBUILD);
+			mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
+			towerBuildSprite->setColor(UNABLETOBUILD);
+
+			// Subtract building cost from resource
+			gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+		}
+		
 	}
 	//Clicked on tower and is deleting
 	else if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {

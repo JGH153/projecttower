@@ -11,12 +11,16 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 		height = 48/2;
 		maxHealth = 30.f;
 		offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
+
+		killReward = 1;
 	}else{
 		speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.08f);
 		width = 96/4;
 		height = 96/4;
 		maxHealth = 40.f;
 		offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
+
+		killReward = 2;
 	}
 
 

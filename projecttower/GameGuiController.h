@@ -31,6 +31,8 @@ public:
 	bool mouseOverSomeButton(sf::View resetToView);
 
 	void preloadAssets();
+	void setPlayerResources(int newValue);
+	int getPlayerResources();
 	
 
 private:
@@ -38,5 +40,9 @@ private:
 	std::vector<RenderObject *> guiObjects;
 	VortexButtonRectangle * buildButton;
 	VortexButtonRectangle * deleteTowerButton;
+	VortexText* resourceText;
+	sf::RectangleShape* resourcePanel;
+
+	int playerResources;
 };
 

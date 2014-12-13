@@ -12,6 +12,17 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	building = true;
 	deleting = false;
 
+	playerResources = 50;
+
+	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
+	resourceText->setColor(sf::Color::White);
+	resourceText->setStyle(sf::Text::Bold);
+	float textWidth = resourceText->getLocalBounds().width;
+	resourceText->setPosition(WINDOWSIZEX - textWidth, 0);
+
+	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, resourceText->getLocalBounds().height * 1.5));
+	resourcePanel->setFillColor(sf::Color(25, 25, 25, 200));
+	resourcePanel->setPosition(WINDOWSIZEX - textWidth, 0);
 }
 
 void GameGuiController::preloadAssets() {
@@ -120,9 +131,14 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 
 	std::vector<sf::Drawable *> renderListSub;
 
-
 	//Add static objects to be rendered into the return list
 	guiMutex.lock();
+
+	renderListSub.push_back(resourcePanel);
+	for (auto currentRenderObj : resourceText->getRenderDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+
 	for (auto currentRenderVector : guiObjects) {
 		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
 			renderListSub.push_back(currentRenderObj);
@@ -143,4 +159,18 @@ std::vector<SubController *> GameGuiController::getChildControllers() {
 
 	return childControllers;
 
+}
+
+void GameGuiController::setPlayerResources(int newValue) {
+	playerResources = newValue;
+	resourceText->setString("Resources: " + std::to_string(playerResources));
+	float textWidth = resourceText->getLocalBounds().width;
+	resourceText->setPosition(WINDOWSIZEX - textWidth, 0);
+
+	resourcePanel->setPosition(WINDOWSIZEX - textWidth, 0);
+	resourcePanel->setSize(sf::Vector2f(textWidth, resourceText->getLocalBounds().height * 1.5));
+}
+
+int GameGuiController::getPlayerResources() {
+	return playerResources;
 }

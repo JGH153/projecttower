@@ -29,7 +29,7 @@ public:
 	void initUnit();
 	sf::Color hitParticleColor;
 	
-	
+	int killReward;
 
 
 protected:
