@@ -31,10 +31,12 @@ public:
 
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();
+	bool isPressed;
+	bool hovering;
 
 private:
-	bool hovering;
-	bool pressed;
+	
+	
 
 	std::string title;
 	VortexText text;

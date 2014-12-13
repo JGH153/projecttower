@@ -4,6 +4,7 @@
 VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine) : VortexButton(x, y, gameEngine) {
 	width = w;
 	height = h;
+	isPressed = false;
 
 	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
 	setIdleImage(imagePath);
@@ -59,16 +60,26 @@ void VortexButtonRectangle::update(){
 			hovering = false;
 		}
 	}
-	if (pressedImage != nullptr){
-		if (buttonClicked() && !pressed){
-			image->setTexture(*pressedImage);
-			pressed = true;
-		}
-		else if (!buttonClicked() && pressed){
-			image->setTexture(*idleImage);
-			pressed = false;
+
+	if (gameEngine->eventMouseClickedLeft) {
+		if (buttonClicked() && !isPressed){
+			if (pressedImage != nullptr){
+				image->setTexture(*pressedImage);
+			}
+			isPressed = true;
 		}
 	}
+
+	if (gameEngine->eventMouseReleasedLeft) {
+		if (!buttonClicked() && isPressed){
+			if (pressedImage != nullptr){
+				image->setTexture(*idleImage);
+			}
+			isPressed = false;
+		}
+	}
+
+	
 }
 
 

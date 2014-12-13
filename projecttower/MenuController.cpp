@@ -36,19 +36,23 @@ void MenuController::preloadAssets() {
 }
 
 void MenuController::update() {
-	//std::cout << "In menu controller" << std::endl;
-	for (auto *current : guiObjects) {
-		current->update();
-	}
 
 	if (gameEngine->eventMouseReleasedLeft) {
-		if (startGameButton->buttonClicked()) {
+
+		if (startGameButton->isPressed && startGameButton->hovering) {
 			nextControllerID = GAME_CONTROLLER_ID;
 		}
-		else if (quitGameButton->buttonClicked()) {
+		else if (quitGameButton->isPressed && quitGameButton->hovering) {
 			gameEngine->closeApplication();
 		}
 	}
+
+
+	for (auto *current : guiObjects) {
+		current->update();
+	}
+	
+	
 
 }
 
