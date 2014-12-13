@@ -618,6 +618,9 @@ bool GameController::calculateZoom(bool zoomOut) {
 	float ydiff;
 	if (zoomOut) {
 		if (viewRelativeSizeX <= 1.f) {
+			if (zooming) {
+				return true;
+			}
 			return false;
 		}
 
@@ -628,6 +631,9 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 	} else {
 		if (viewRelativeSizeX >= 5.f) {
+			if (zooming) {
+				return true;
+			}
 			return false;
 		}
 
