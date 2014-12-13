@@ -1,16 +1,14 @@
 #pragma once
 #include "VortexButtonRectangle.h"
 
-
 VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine) : VortexButton(x, y, gameEngine) {
 	width = w;
 	height = h;
-	
+
 	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
 	setIdleImage(imagePath);
 	hoverImage = nullptr;
 	pressedImage = nullptr;
-	
 	image->setSize(width, height);
 
 	this->title = title;
@@ -18,8 +16,30 @@ VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, s
 	text.setFont(font);
 	text.setString(title);
 	text.setCharacterSize(28);
-	text.setColor(sf::Color::Blue);
-	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text.setColor(sf::Color::White);
+	text.setStyle(sf::Text::Bold);
+
+	setPosition(posX, posY);
+}
+
+VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity) : VortexButton(x, y, gameEngine) {
+	width = w;
+	height = h;
+	
+	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
+	setIdleImage(imagePath);
+	hoverImage = nullptr;
+	pressedImage = nullptr;
+	image->setColor(sf::Color(255, 255, 255, opacity));
+	image->setSize(width, height);
+
+	this->title = title;
+	font = *gameEngine->loadFont("Fonts/arial.ttf");
+	text.setFont(font);
+	text.setString(title);
+	text.setCharacterSize(28);
+	text.setColor(sf::Color::White);
+	text.setStyle(sf::Text::Bold);
 
 	setPosition(posX, posY);
 }

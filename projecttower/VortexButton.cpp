@@ -29,14 +29,16 @@ int VortexButton::getHeight(){
 
 
 bool VortexButton::buttonClicked(){
-	if (gameEngine->eventMouseClickedLeft){
-		sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
-		return hitPoint(mouse);
+	if (gameEngine->eventMouseReleasedLeft){
+		//sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
+		sf::Vector2i mouse = gameEngine->getMousePosition();
+		return hitPoint(mouse.x, mouse.y);
 	}
 	return false;
 }
 
 bool VortexButton::mouseOver(){	
-	sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
-	return hitPoint(mouse);
+	//sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
+	sf::Vector2i mouse = gameEngine->getMousePosition();
+	return hitPoint(mouse.x, mouse.y);
 }

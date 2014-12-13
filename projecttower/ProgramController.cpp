@@ -11,7 +11,7 @@ ProgramController::ProgramController(Vortex * gameEngine, int controllerID) : Su
 	subControllers[subControllers.size() - 1]->setNextControllerID(GAME_CONTROLLER_ID);
 
 	activeSubController = MENU_CONTROLLER_ID;
-	activeSubController = GAME_CONTROLLER_ID;
+	//activeSubController = GAME_CONTROLLER_ID;
 	currentRenderController = subControllers[activeSubController];
 
 }

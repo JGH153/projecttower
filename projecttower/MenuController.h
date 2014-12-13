@@ -32,6 +32,9 @@ public:
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
+	VortexButtonRectangle * startGameButton;
+	VortexButtonRectangle * quitGameButton;
+	VortexSprite * backgroundImage;
 
 };
 

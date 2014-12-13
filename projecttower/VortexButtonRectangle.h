@@ -11,6 +11,7 @@ class VortexButtonRectangle : public VortexButton
 {
 public:
 	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine);
+	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity);
 	~VortexButtonRectangle();
 
 	void setIdleImage(sf::Texture * newImage);
