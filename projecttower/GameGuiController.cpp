@@ -2,27 +2,55 @@
 
 
 GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
+	int buttonSize = 64;
+	int buttonSpread = 1;
+	bottomToolbarPosY = WINDOWSIZEY - buttonSize;
+	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/diy-hammer-icon.png", "", gameEngine);
+	buildButton->setHoverImage("Graphics/GUI/diy-hammer-hover-icon.png");
 
-	buildButton = new VortexButtonRectangle(0, 0, 200, 50, "Graphics/button.png", "Toggle Build", gameEngine);
-	buildButton->setHoverImage("Graphics/dirt.png");
+	deleteTowerButton = new VortexButtonRectangle(buildButton->getPosition().x - buttonSize - buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine);
+	deleteTowerButton->setHoverImage("Graphics/GUI/delete-hover-icon.png");
 
-	deleteTowerButton = new VortexButtonRectangle(200, 0, 200, 50, "Graphics/button.png", "Toggle del", gameEngine);
-	deleteTowerButton->setHoverImage("Graphics/dirt.png");
+	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine);
+	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
 
 	building = true;
 	deleting = false;
 
 	playerResources = 50;
+	playerIncome = 10;
+	msSinceLastIncome = 30000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);
 	resourceText->setStyle(sf::Text::Bold);
-	float textWidth = resourceText->getLocalBounds().width;
-	resourceText->setPosition(WINDOWSIZEX - textWidth, 0);
+	float resourceTextWidth = resourceText->getLocalBounds().width;
+	resourceText->setPosition(WINDOWSIZEX - resourceTextWidth, 0);
 
-	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, resourceText->getLocalBounds().height * 1.5));
+	incomeText = new VortexText("Income: " + std::to_string(playerIncome), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
+	incomeText->setColor(sf::Color::White);
+	incomeText->setStyle(sf::Text::Bold);
+	float incomeTextWidth = incomeText->getLocalBounds().width;
+	incomeText->setPosition(WINDOWSIZEX - incomeTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height);
+
+	timeText = new VortexText("Time till income: " + std::to_string(msSinceLastIncome / 1000), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
+	timeText->setColor(sf::Color::White);
+	timeText->setStyle(sf::Text::Bold);
+	float timeTextWidth = timeText->getLocalBounds().width;
+	timeText->setPosition(WINDOWSIZEX - timeTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height);
+
+	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
 	resourcePanel->setFillColor(sf::Color(25, 25, 25, 200));
-	resourcePanel->setPosition(WINDOWSIZEX - textWidth, 0);
+	resourcePanel->setPosition(WINDOWSIZEX - resourceTextWidth, 0);
+
+	guiObjects.push_back(buildButton);
+	guiObjects.push_back(deleteTowerButton);
+	guiObjects.push_back(sendUnit1Button);
+	guiObjects.push_back(resourceText);
+	guiObjects.push_back(incomeText);
+	guiObjects.push_back(timeText);
+
+	
 }
 
 void GameGuiController::preloadAssets() {
@@ -54,77 +82,63 @@ void GameGuiController::update() {
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
-	//gameEngine->getWindow()->setView(gameView);
-
-	//std::cout << "In menu controller" << std::endl;
-	for (auto *current : guiObjects) {
-		current->update();
+	msSinceLastIncome -= gameEngine->deltaTime.asMilliseconds();
+	if (msSinceLastIncome <= 0) {
+		msSinceLastIncome += 30000;
+		setPlayerResources(playerResources + playerIncome);
 	}
-
-	if (gameEngine->eventMouseClickedLeft) {
-		nextControllerID = GAME_CONTROLLER_ID;
-	}
-
-	buildButton->update();
-	deleteTowerButton->update();
+	setTimer(msSinceLastIncome / 1000);
 
 	if (gameEngine->eventMouseReleasedLeft) {
 
-		if (buildButton->mouseOver()) {
-
+		if (buildButton->isPressed && buildButton->hovering) {
 			if (building) {
 				building = false;
-				
-			} else {
+
+			}
+			else {
 				building = true;
 				deleting = false;
 			}
-
-
 		}
-
-		if (deleteTowerButton->mouseOver()) {
-
+		else if (deleteTowerButton->isPressed && deleteTowerButton->hovering) {
 			if (deleting) {
 				deleting = false;
-				
-			} else {
+
+			}
+			else {
 				deleting = true;
 				building = false;
 			}
-
-
 		}
 
+		else if (sendUnit1Button->isPressed && sendUnit1Button->hovering) {
+			if (playerResources >= 10) {
+				setPlayerResources(playerResources - 10);
+				setPlayerIncome(playerIncome + 1);
+				unitsToSpawn.push_back(1);
+			}
+		}
 	}
 
+
+
+	for (auto *current : guiObjects) {
+		current->update();
+	}
 }
 
 std::vector<std::vector<sf::Drawable *>> GameGuiController::getDynamicRenderData() {
 
 	std::vector<std::vector<sf::Drawable *>> renderList;
 
-	std::vector<sf::Drawable *> renderListSub;
+	//std::vector<sf::Drawable *> renderListSub;
 
 
-	renderList.push_back(renderListSub);
-	renderList.push_back(buildButton->getRenderDrawable());
-	renderList.push_back(deleteTowerButton->getRenderDrawable());
 	
 	return renderList;
-
-	/*
-	//Add dynamic objects to be rendered into the return list
-	guiMutex.lock();
-	for (auto currentRenderVector : guiObjects) {
-	for (auto currentRenderObj : currentRenderVector->getRenderData()) {
-	returnList.push_back(currentRenderObj);
-	}
-	}
-	guiMutex.unlock();
-	*/
-	return renderList;
 }
+
 std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData() {
 
 	std::vector<std::vector<sf::Drawable *>> renderList;
@@ -135,10 +149,7 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 	guiMutex.lock();
 
 	renderListSub.push_back(resourcePanel);
-	for (auto currentRenderObj : resourceText->getRenderDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-
+	
 	for (auto currentRenderVector : guiObjects) {
 		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
 			renderListSub.push_back(currentRenderObj);
@@ -168,7 +179,20 @@ void GameGuiController::setPlayerResources(int newValue) {
 	resourceText->setPosition(WINDOWSIZEX - textWidth, 0);
 
 	resourcePanel->setPosition(WINDOWSIZEX - textWidth, 0);
-	resourcePanel->setSize(sf::Vector2f(textWidth, resourceText->getLocalBounds().height * 1.5));
+	resourcePanel->setSize(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
+}
+
+void GameGuiController::setPlayerIncome(int newValue) {
+	playerIncome = newValue;
+	incomeText->setString("Income: " + std::to_string(playerIncome));
+	float textWidth = incomeText->getLocalBounds().width;
+	incomeText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height);
+}
+
+void GameGuiController::setTimer(int newValue) {
+	timeText->setString("Time till income: " + std::to_string(newValue));
+	float textWidth = timeText->getLocalBounds().width;
+	timeText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height);
 }
 
 int GameGuiController::getPlayerResources() {

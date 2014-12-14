@@ -32,17 +32,28 @@ public:
 
 	void preloadAssets();
 	void setPlayerResources(int newValue);
+	void setPlayerIncome(int newValue);
+	void setTimer(int newValue);
 	int getPlayerResources();
 	
+	int bottomToolbarPosY;
+	std::vector<int> unitsToSpawn;
 
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
 	VortexButtonRectangle * buildButton;
 	VortexButtonRectangle * deleteTowerButton;
+	VortexButtonRectangle * sendUnit1Button;
+	VortexButtonRectangle * sendUnit2Button;
 	VortexText* resourceText;
+	VortexText* incomeText;
+	VortexText* timeText;
 	sf::RectangleShape* resourcePanel;
+	std::vector<VortexButtonRectangle*> buttons;
 
+	int playerIncome;
 	int playerResources;
+	int msSinceLastIncome;
 };
 

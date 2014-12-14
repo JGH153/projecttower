@@ -35,7 +35,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
-	spawnDelayMS = 1;
+	spawnDelayMS = 2000;
 
 
 
@@ -467,6 +467,24 @@ void GameController::update() {
 		currentController->update();
 	}
 
+	while (!gameGuiController->unitsToSpawn.empty()) {
+		if (gameGuiController->unitsToSpawn.back() == 1) {
+			// Spawn level 1 unit
+			gameEngine->groundTileListMutex.lock();
+			BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
+			gameEngine->groundTileListMutex.unlock();
+
+			gameEngine->unitListMutex.lock();
+			unitList.push_back(testUnit);
+			gameEngine->unitListMutex.unlock();
+		}
+		else {
+			printf("Error spawning unit\n");
+		}
+
+		gameGuiController->unitsToSpawn.pop_back();
+	}
+
 	previousMousePos = mousePosWindow;
 	
 }
@@ -478,6 +496,10 @@ void GameController::handlePlayerTowerAction() {
 
 	int xpos = mousePosView.x / gridTileSize;
 	int ypos = mousePosView.y / gridTileSize;
+
+	if (mousePosWindow.y >= gameGuiController->bottomToolbarPosY) {
+		return;
+	}
 
 	if (xpos < 0 || xpos > mapGroundTile.size() || ypos < 0 || ypos > mapGroundTile[0].size())
 		return;
@@ -612,8 +634,15 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 		viewRelativeSizeX /= zoomRate;
 		viewRelativeSizeY /= zoomRate;
+
+		xdiff = 0;
+		ydiff = 0;
+		// Zoom out relative by mouse pos, but me no likey
+		/*
 		xdiff = (gameView.getCenter().x - mousePosView.x) * viewRelativeSizeX / 5.f;
 		ydiff = (gameView.getCenter().y - mousePosView.y) * viewRelativeSizeX / 5.f;
+		*/
+		
 
 	} else {
 		if (viewRelativeSizeX >= 5.f) {

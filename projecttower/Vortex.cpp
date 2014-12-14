@@ -562,7 +562,6 @@ double Vortex::getRandDouble(double min, double max) {
 
 
 void Vortex::closeApplication(){
-
 	running = false;
 
 }
@@ -604,7 +603,7 @@ void Vortex::handleGarbageCollector() {
 		//one sec, only preformed once each sec
 		if (oneSecTime > 1000) {
 			oneSecTime = 0;
-			std::cout << "Num garbage fps: " << numFramesSek << " Num to del: " << objectHandler.getRemovableObjectListSize() << std::endl;
+			//std::cout << "Num garbage fps: " << numFramesSek << " Num to del: " << objectHandler.getRemovableObjectListSize() << std::endl;
 			numFramesSek = 0;
 		}
 
@@ -618,7 +617,7 @@ void Vortex::handleGarbageCollector() {
 
 	}
 
-	std::cout << "DONE2\n";
+	//std::cout << "DONE2\n";
 
 	garbageCollectorThreadOnline = false;
 

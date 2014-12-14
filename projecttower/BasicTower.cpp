@@ -4,8 +4,8 @@
 BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex) {
 
 	damage = 2.f;
-	range = 200;
-	reloadTimeMS = 10;
+	range = 150;
+	reloadTimeMS = 700;
 	projectileSpeed = 0.2f;
 
 	reloading = false;
