@@ -205,7 +205,7 @@ void GameGuiController::setPlayerResources(int newValue) {
 	resourceText->setPosition(WINDOWSIZEX - textWidth, 0);
 
 	resourcePanel->setPosition(WINDOWSIZEX - textWidth, 0);
-	resourcePanel->setSize(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
+	resourcePanel->setSize(sf::Vector2f(resourceText->getLocalBounds().width, livesText->getPosition().y + livesText->getLocalBounds().height + 10));
 }
 
 void GameGuiController::setPlayerIncome(int newValue) {
