@@ -30,7 +30,9 @@ public:
 	sf::Color hitParticleColor;
 	
 	int killReward;
-
+	bool reachedGoal;
+	bool groundTilesChanged;
+	bool towerRemoved;
 
 protected:
 
@@ -44,6 +46,11 @@ protected:
 	float maxHealth;
 	sf::Vector2i moveDirection;
 	float speed;
+
+	int endPosX;
+	int endPosY;
+	
+	
 
 	std::vector<std::vector<MapTile *>> * mapGroundTiles;
 

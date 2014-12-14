@@ -32,16 +32,19 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	bgSprite = temp;
 	bgSprite.setPosition(0, 0);
 
-	gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
+	//gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
 	spawnDelayMS = 2000;
 
 
-
+	playerUnitSpawnPos = sf::Vector2i(0, 13 * gridTileSize);
+	playerUnitTargetPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 	
 	
-
+	groundTilesChanged = false;
+	playerLost = false;
+	towerRemoved = false;
 		
 		
 	for (int x = 0; x < GAMEMAPSIZEX; x++) {
@@ -107,7 +110,7 @@ void GameController::preloadAssets() {
 
 	std::vector<BasicUnit *> preloadUnitList;
 	gameEngine->groundTileListMutex.lock();
-	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, 50 + (rand() % (gameEngine->getWindowSize().x - 100)), 50 + (rand() % (gameEngine->getWindowSize().y - 100))));
+	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
 	gameEngine->groundTileListMutex.unlock();
 
 	for (auto currentUnit : preloadUnitList) {
@@ -373,7 +376,9 @@ void GameController::update() {
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000) {
 
 		gameEngine->groundTileListMutex.lock();
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
+		
+		//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
+		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
 		gameEngine->groundTileListMutex.unlock();
 
 		gameEngine->unitListMutex.lock();
@@ -421,6 +426,12 @@ void GameController::update() {
 
 	gameEngine->unitListMutex.lock();
 	for (int i = 0; i < unitList.size(); i++) {
+		if (groundTilesChanged) {
+			unitList[i]->groundTilesChanged = true;
+		}
+		if (towerRemoved) {
+			unitList[i]->towerRemoved = true;
+		}
 		unitList[i]->update();
 		if (unitList[i]->isDead()) {
 			gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() + unitList[i]->killReward);
@@ -433,7 +444,24 @@ void GameController::update() {
 			unitList.erase(unitList.begin() + i);
 			i--;
 		}
+
+		else if (unitList[i]->reachedGoal) {
+			// Remove life
+			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, sf::Color(100, 100, 100, 255), sf::Quads, 200, 30));
+			gameGuiController->setPlayerLives(gameGuiController->numLives - 1);
+			if (gameGuiController->numLives == 0) {
+				playerLost = true;
+			}
+
+
+			gameEngine->addRemovableObjectToList(unitList[i]);
+			unitList[i] = nullptr;
+			unitList.erase(unitList.begin() + i);
+			i--;
+		}
 	}
+	groundTilesChanged = false;
+	towerRemoved = false;
 
 	//sorting units so the unit with the lowest base y is rendered first
 	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
@@ -471,11 +499,12 @@ void GameController::update() {
 		if (gameGuiController->unitsToSpawn.back() == 1) {
 			// Spawn level 1 unit
 			gameEngine->groundTileListMutex.lock();
-			BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
+			//BasicUnit * spawnedUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
+			BasicUnit* spawnedUnit = new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
 			gameEngine->groundTileListMutex.unlock();
 
 			gameEngine->unitListMutex.lock();
-			unitList.push_back(testUnit);
+			unitList.push_back(spawnedUnit);
 			gameEngine->unitListMutex.unlock();
 		}
 		else {
@@ -490,6 +519,9 @@ void GameController::update() {
 }
 
 void GameController::handlePlayerTowerAction() {
+	if (playerLost) {
+		return;
+	}
 
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
@@ -543,6 +575,9 @@ void GameController::handlePlayerTowerAction() {
 
 			// Subtract building cost from resource
 			gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+
+			// Notify units to calculate new route if this tile was in their path
+			groundTilesChanged = true;
 		}
 		
 	}
@@ -567,8 +602,7 @@ void GameController::handlePlayerTowerAction() {
 				towerList.erase(towerList.begin() + i);
 				i--;
 
-				
-
+				towerRemoved = true;
 			}
 			
 			gameEngine->towerListMutex.unlock();

@@ -16,9 +16,12 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	building = true;
 	deleting = false;
+	playerLost = false;
+	addedLoserText = false;
 
 	playerResources = 50;
 	playerIncome = 10;
+	numLives = 15;
 	msSinceLastIncome = 30000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
@@ -39,7 +42,13 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	float timeTextWidth = timeText->getLocalBounds().width;
 	timeText->setPosition(WINDOWSIZEX - timeTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height);
 
-	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
+	livesText = new VortexText("Lives remaining: " + std::to_string(numLives), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
+	livesText->setColor(sf::Color::White);
+	livesText->setStyle(sf::Text::Bold);
+	float livesTextWidth = livesText->getLocalBounds().width;
+	livesText->setPosition(WINDOWSIZEX - livesTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height + livesText->getLocalBounds().height);
+
+	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, livesText->getPosition().y + livesText->getLocalBounds().height + 10));
 	resourcePanel->setFillColor(sf::Color(25, 25, 25, 200));
 	resourcePanel->setPosition(WINDOWSIZEX - resourceTextWidth, 0);
 
@@ -49,7 +58,13 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
 	guiObjects.push_back(timeText);
+	guiObjects.push_back(livesText);
 
+	lossText = new VortexText("YOU LOSE!", *gameEngine->loadFont("Fonts/arial.ttf"), 70);
+	lossText->setColor(sf::Color::Transparent);
+	lossText->setStyle(sf::Text::Bold);
+	lossText->setPosition(WINDOWSIZEX / 2 - lossText->getLocalBounds().width / 2, WINDOWSIZEY / 2 - lossText->getLocalBounds().height / 2);
+	guiObjects.push_back(lossText);
 	
 }
 
@@ -77,6 +92,14 @@ bool GameGuiController::mouseOverSomeButton(sf::View resetToView) {
 }
 
 void GameGuiController::update() {
+	if (playerLost) {
+		if (!addedLoserText) {
+			addedLoserText = true;
+			lossText->setColor(sf::Color::Red);
+		}
+		
+		return;
+	}
 
 	gameEngine->setMousePosView(gameView);
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
@@ -173,6 +196,9 @@ std::vector<SubController *> GameGuiController::getChildControllers() {
 }
 
 void GameGuiController::setPlayerResources(int newValue) {
+	if (playerLost) {
+		return;
+	}
 	playerResources = newValue;
 	resourceText->setString("Resources: " + std::to_string(playerResources));
 	float textWidth = resourceText->getLocalBounds().width;
@@ -183,6 +209,9 @@ void GameGuiController::setPlayerResources(int newValue) {
 }
 
 void GameGuiController::setPlayerIncome(int newValue) {
+	if (playerLost) {
+		return;
+	}
 	playerIncome = newValue;
 	incomeText->setString("Income: " + std::to_string(playerIncome));
 	float textWidth = incomeText->getLocalBounds().width;
@@ -190,9 +219,26 @@ void GameGuiController::setPlayerIncome(int newValue) {
 }
 
 void GameGuiController::setTimer(int newValue) {
+	if (playerLost) {
+		return;
+	}
 	timeText->setString("Time till income: " + std::to_string(newValue));
 	float textWidth = timeText->getLocalBounds().width;
 	timeText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height);
+}
+
+void GameGuiController::setPlayerLives(int newValue) {
+	if (playerLost) {
+		return;
+	}
+	numLives = newValue;
+	livesText->setString("Lives remaining: " + std::to_string(newValue));
+	float textWidth = timeText->getLocalBounds().width;
+	livesText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height + livesText->getLocalBounds().height);
+
+	if (numLives <= 0) {
+		playerLost = true;
+	}
 }
 
 int GameGuiController::getPlayerResources() {

@@ -100,8 +100,9 @@ void aStar::addNewAdjacentNodes(int nextIndex, deque<node*> * openNodes, deque<n
 
 		if (!outsideMap(xPos, yPos)){
 
-			if (!nodeAlreadyExplored(xPos, yPos, openNodes, closedNodes)
-				&& map[xPos][yPos]->getTileTypeID() == TileTypes::grass
+			if (!nodeAlreadyExplored(xPos, yPos, openNodes, closedNodes) && (map[xPos][yPos]->getTileTypeID() == TileTypes::grass 
+																		|| map[xPos][yPos]->getTileTypeID() == TileTypes::dirt
+																		|| map[xPos][yPos]->getTileTypeID() == TileTypes::cave)
 				/*&& map[xPos][yPos] != mapUnreachableChar*/){
 
 				float disFromStart = abs(xPos - startAndEnd.startX) + abs(yPos - startAndEnd.startY);
@@ -217,15 +218,6 @@ deque<sf::Vector2i> aStar::findPath(startEndStruct startAndEnd) {
 	}
 
 }
-
-
-
-
-
-
-
-
-
 
 
 void aStar::displayMap(deque< deque<char> > displayMap){

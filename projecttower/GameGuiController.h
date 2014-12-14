@@ -34,10 +34,12 @@ public:
 	void setPlayerResources(int newValue);
 	void setPlayerIncome(int newValue);
 	void setTimer(int newValue);
+	void setPlayerLives(int newValue);
 	int getPlayerResources();
 	
 	int bottomToolbarPosY;
 	std::vector<int> unitsToSpawn;
+	int numLives;
 
 private:
 	std::mutex guiMutex;
@@ -45,15 +47,20 @@ private:
 	VortexButtonRectangle * buildButton;
 	VortexButtonRectangle * deleteTowerButton;
 	VortexButtonRectangle * sendUnit1Button;
-	VortexButtonRectangle * sendUnit2Button;
 	VortexText* resourceText;
 	VortexText* incomeText;
 	VortexText* timeText;
+	VortexText* livesText;
+	VortexText* lossText;
 	sf::RectangleShape* resourcePanel;
 	std::vector<VortexButtonRectangle*> buttons;
 
 	int playerIncome;
 	int playerResources;
 	int msSinceLastIncome;
+	bool playerLost;
+	bool addedLoserText;
+	
+	
 };
 

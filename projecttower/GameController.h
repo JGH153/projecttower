@@ -74,6 +74,12 @@ private:
 	int viewWidth;
 	int viewHeight;
 
+	sf::Vector2i playerUnitSpawnPos;
+	sf::Vector2i playerUnitTargetPos;
+
+	bool playerLost;
+	bool groundTilesChanged;
+	bool towerRemoved;
 	bool building;
 	bool towerUnderMouse;
 	VortexSprite * towerBuildSprite;

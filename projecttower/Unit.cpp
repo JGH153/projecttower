@@ -10,6 +10,9 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 
 	offsetComponentsY = 0.f;
 
+	groundTilesChanged = false;
+	reachedGoal = false;
+	towerRemoved = false;
 }
 
 
@@ -99,16 +102,20 @@ bool Unit::isDead() {
 
 bool Unit::atCurrentWaypointTarget() {
 
-	float range = 10.f; //px?
+	float range = 1.f; //px?
 
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 
 	//std::cout << abs(currentWaypointTargetWorldCord.x - posX) << " | " << abs(currentWaypointTargetWorldCord.y - posY) << std::endl;
 
-	if (abs(currentWaypointTargetWorldCord.x - posX) < range / 2 && abs(currentWaypointTargetWorldCord.y - posY) < range / 2) {
-		//std::cout << "YESS\n";
+	if (abs(currentWaypointTargetWorldCord.x - posX) <= range && abs(currentWaypointTargetWorldCord.y - posY) <= range) {
 		return true;
 	}
+	/*
+	if (abs(currentWaypointTargetWorldCord.x - posX) * abs(currentWaypointTargetWorldCord.x - posX) + abs(currentWaypointTargetWorldCord.y - posY) * abs(currentWaypointTargetWorldCord.y - posY) <= range * range) {
+		//std::cout << "YESS\n";
+		return true;
+	}*/
 
 	return false;
 
@@ -116,11 +123,11 @@ bool Unit::atCurrentWaypointTarget() {
 
 bool Unit::atCurrentWaypointTargetX() {
 
-	float range = 10.f; //px?
+	float range = 1.f; //px?
 
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 
-	if (abs(currentWaypointTargetWorldCord.x - posX) < range / 2) {
+	if (abs(currentWaypointTargetWorldCord.x - posX) <= range) {
 		//std::cout << "YESS\n";
 		return true;
 	}
@@ -131,11 +138,11 @@ bool Unit::atCurrentWaypointTargetX() {
 
 bool Unit::atCurrentWaypointTargetY() {
 
-	float range = 10.f; //px?
+	float range = 1.f; //px?
 
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 
-	if (abs(currentWaypointTargetWorldCord.y - posY) < range / 2) {
+	if (abs(currentWaypointTargetWorldCord.y - posY) <= range) {
 		//std::cout << "YESS\n";
 		return true;
 	}
