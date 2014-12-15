@@ -19,11 +19,19 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight* 2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
 	startGameButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "New Game", gameEngine, 175);
 	
+	networkClientButton = new VortexButtonRectangle(WINDOWSIZEX - (buttonWidth * 1.5), WINDOWSIZEY - buttonHeight * 2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Client", gameEngine, 175);
+	networkServerButton = new VortexButtonRectangle(WINDOWSIZEX - (buttonWidth * 1.5), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Server", gameEngine, 175);
+
 	quitGameButton->setHoverImage("Graphics/graybutton.png");
 	startGameButton->setHoverImage("Graphics/graybutton.png");
 	
+	networkClientButton->setHoverImage("Graphics/graybutton.png");
+	networkServerButton->setHoverImage("Graphics/graybutton.png");
+
 	guiObjects.push_back(startGameButton);
 	guiObjects.push_back(quitGameButton);
+	guiObjects.push_back(networkClientButton);
+	guiObjects.push_back(networkServerButton);
 }
 
 
@@ -37,14 +45,17 @@ void MenuController::preloadAssets() {
 
 void MenuController::update() {
 
-	if (gameEngine->eventMouseReleasedLeft) {
-
-		if (startGameButton->isPressed && startGameButton->hovering) {
-			nextControllerID = GAME_CONTROLLER_ID;
-		}
-		else if (quitGameButton->isPressed && quitGameButton->hovering) {
-			gameEngine->closeApplication();
-		}
+	if (startGameButton->buttonClicked()) {
+		nextControllerID = GAME_CONTROLLER_ID;
+	}
+	else if (quitGameButton->buttonClicked()) {
+		gameEngine->closeApplication();
+	}
+	else if (networkClientButton->buttonClicked()) {
+		nextControllerID = NETWORK_GAME_CLIENT_ID;
+	}
+	else if (networkServerButton->buttonClicked()) {
+		nextControllerID = NETWORK_GAME_SERVER_ID;
 	}
 
 

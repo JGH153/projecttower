@@ -11,6 +11,8 @@
 #include "Vortex.h"
 #include "MenuController.h"
 #include "GameController.h"
+#include "NetworkGameClient.h"
+#include "NetworkGameServer.h"
 #include "SubController.h"
 #include "GlobalDefines.h"
 

@@ -5,10 +5,18 @@ ProgramController::ProgramController(Vortex * gameEngine, int controllerID) : Su
 
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
+	// Menu controller
 	subControllers.push_back(new MenuController(gameEngine, MENU_CONTROLLER_ID));
 	subControllers[subControllers.size() - 1]->setNextControllerID(MENU_CONTROLLER_ID);
+	// Singleplayer game controller
 	subControllers.push_back(new GameController(gameEngine, GAME_CONTROLLER_ID));
 	subControllers[subControllers.size() - 1]->setNextControllerID(GAME_CONTROLLER_ID);
+	// Network game client
+	subControllers.push_back(new NetworkGameClient(gameEngine, NETWORK_GAME_CLIENT_ID));
+	subControllers[subControllers.size() - 1]->setNextControllerID(NETWORK_GAME_CLIENT_ID);
+	// Network game server
+	subControllers.push_back(new NetworkGameServer(gameEngine, NETWORK_GAME_SERVER_ID));
+	subControllers[subControllers.size() - 1]->setNextControllerID(NETWORK_GAME_SERVER_ID);
 
 	activeSubController = MENU_CONTROLLER_ID;
 	//activeSubController = GAME_CONTROLLER_ID;

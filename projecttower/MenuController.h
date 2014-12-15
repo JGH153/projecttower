@@ -34,6 +34,8 @@ private:
 	std::vector<RenderObject *> guiObjects;
 	VortexButtonRectangle * startGameButton;
 	VortexButtonRectangle * quitGameButton;
+	VortexButtonRectangle * networkClientButton;
+	VortexButtonRectangle * networkServerButton;
 	VortexSprite * backgroundImage;
 
 };

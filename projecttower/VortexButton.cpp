@@ -29,7 +29,7 @@ int VortexButton::getHeight(){
 
 
 bool VortexButton::buttonClicked(){
-	if (gameEngine->eventMousePressedLeft) {
+	if (gameEngine->eventMouseReleasedLeft) {
 		
 	//if (gameEngine->eventMouseReleasedLeft){
 		//sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
