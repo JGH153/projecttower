@@ -51,8 +51,8 @@ std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
 bool Projectile::checkIfHitTarget() {
 	float radi = 25;
 
-	float diffX = abs(target->posX - posX);
-	float diffY = abs(target->posY + target->height / 2 - posY);
+	float diffX = abs((target->posX + target->width / 2) - posX);
+	float diffY = abs((target->posY + target->height / 2) - posY);
 
 	if (diffX * diffX + diffY * diffY < radi * radi) {
 		// If the projectile is close enough to unit, damage it

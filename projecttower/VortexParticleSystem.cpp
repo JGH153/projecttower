@@ -10,7 +10,7 @@ VortexParticleSystem::VortexParticleSystem(unsigned int count, float posX, float
 	this->spd = spd;
 
 	startAlpha = baseParticleColor.a;
-
+	
 	for (std::size_t i = 0; i < m_particles.size(); ++i){
 		resetParticle(i);
 		m_vertices[i].position = sf::Vector2f(posX, posY);
