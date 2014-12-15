@@ -370,13 +370,37 @@ void GameController::update() {
 		updateGhostBuildingSprite(mousePosView);
 	}
 
-	if (gameGuiController->showingTowerUpgrades) {
+	// Upgrade tower
+	if (gameGuiController->showingTowerUpgrades && selectedTower != nullptr) {
 		if (gameGuiController->upgradeToCannon->isPressed && gameGuiController->upgradeToCannon->hovering && gameGuiController->timer <= 0) {
 			if (gameGuiController->playerResources >= 10) {
 				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
 				gameGuiController->hideTowerUpgrades();
 				gameGuiController->upgradeToCannon->tooltipBackground->setFillColor(sf::Color::Transparent);
 				gameGuiController->upgradeToCannon->tooltipText->setColor(sf::Color::Transparent);
+
+
+				gameEngine->towerListMutex.lock();
+				for (int i = 0; i < towerList.size(); i++) {
+					if (towerList[i] == selectedTower) {
+						int xpos = selectedTower->getPos().x;
+						int ypos = selectedTower->getPos().y;
+
+						gameEngine->addRemovableObjectToList(towerList[i]);
+						towerList.erase(towerList.begin() + i);
+						
+						gameEngine->unitListMutex.lock();
+						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos, ypos));
+						selectedTower = newTower;
+						gameEngine->unitListMutex.unlock();
+
+						towerList.push_back(newTower);
+
+						break;
+					}
+				}
+				gameEngine->towerListMutex.unlock();
+
 			}
 		}
 	}
