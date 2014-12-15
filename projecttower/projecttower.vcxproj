@@ -76,6 +76,7 @@
     <ClCompile Include="aStar.cpp" />
     <ClCompile Include="BasicTower.cpp" />
     <ClCompile Include="BasicUnit.cpp" />
+    <ClCompile Include="CannonTower.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameGuiController.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="aStar.h" />
     <ClInclude Include="BasicTower.h" />
     <ClInclude Include="BasicUnit.h" />
+    <ClInclude Include="CannonTower.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameGuiController.h" />

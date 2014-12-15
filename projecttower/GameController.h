@@ -11,6 +11,7 @@
 #include "Vortex.h"
 
 #include "BasicTower.h"
+#include "CannonTower.h"
 #include "BasicUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
