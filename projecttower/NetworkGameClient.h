@@ -19,7 +19,9 @@ public:
 	void preloadAssets();
 private:
 	bool connectToServer(sf::IpAddress address, int socket);
-	void waitForPackets();
+	void threadReceivePackets();
+	void threadSendPackets();
+
 
 	sf::TcpSocket serverSocket;
 	Vortex* gameEngine;
@@ -34,7 +36,9 @@ private:
 	std::mutex receivedPacketMutex;
 
 	bool connectedToServer = false;
-	bool packetThreadOnline = false;
-	std::thread networkThread;
+	bool receivingThreadOnline = false;
+	bool sendingThreadOnline = false;
+	std::thread networkSendThread;
+	std::thread networkReceiveThread;
 };
 

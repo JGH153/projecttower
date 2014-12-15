@@ -23,20 +23,23 @@ public:
 
 private:
 	bool establishPlayerConnection();
-	void listenForPackets();
+	void threadReceivePackets();
+	void threadSendPackets();
 
 	Vortex* gameEngine;
 	int controllerID;
 	int socketNumber = 53000;
 	
-	bool playerConnected = false;
-	bool listenerThreadOnline = false;
-	
-	std::thread listenerThread;
 	std::mutex receivedMutex;
 	std::mutex sendMutex;
 	std::vector<sf::Packet> receivedPackets;
 	std::vector<sf::Packet> pendingSendPackets;
+
+	bool playerConnected = false;
+	bool receivingThreadOnline = false;
+	bool sendingThreadOnline = false;
+	std::thread networkSendThread;
+	std::thread networkReceiveThread;
 
 	//sf::TcpSocket localPlayer;
 	sf::TcpSocket otherPlayer;
