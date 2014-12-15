@@ -31,14 +31,16 @@ public:
 
 	bool buttonClicked();
 	bool mouseOver();
+	void setOpacity(int value);
 
 protected:	
 	
-
+	bool hidden;
 	double posX;
 	double posY;
 	int width;
 	int height;
+	VortexSprite * image;
 
 	Vortex * gameEngine;
 };

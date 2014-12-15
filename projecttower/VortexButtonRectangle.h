@@ -41,7 +41,7 @@ private:
 	std::string title;
 	VortexText text;
 	sf::Font font;
-	VortexSprite * image;
+	
 	sf::Texture * idleImage;
 	sf::Texture * hoverImage;
 	sf::Texture * pressedImage;

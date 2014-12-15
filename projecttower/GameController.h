@@ -82,6 +82,7 @@ private:
 	bool towerRemoved;
 	bool building;
 	bool towerUnderMouse;
+	
 	VortexSprite * towerBuildSprite;
 	Tower* selectedTower;
 	SelectionGizmo* selectionGizmo;

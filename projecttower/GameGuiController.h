@@ -40,6 +40,13 @@ public:
 	int bottomToolbarPosY;
 	std::vector<int> unitsToSpawn;
 	int numLives;
+	void showTowerUpgrades(sf::Vector2i towerPosition);
+	void hideTowerUpgrades();
+	bool showingTowerUpgrades;
+
+	VortexButtonRectangle * upgradeToCannon;
+	int playerResources;
+	int timer;
 
 private:
 	std::mutex guiMutex;
@@ -47,6 +54,7 @@ private:
 	VortexButtonRectangle * buildButton;
 	VortexButtonRectangle * deleteTowerButton;
 	VortexButtonRectangle * sendUnit1Button;
+	
 	VortexText* resourceText;
 	VortexText* incomeText;
 	VortexText* timeText;
@@ -56,10 +64,11 @@ private:
 	std::vector<VortexButtonRectangle*> buttons;
 
 	int playerIncome;
-	int playerResources;
+	
 	int msSinceLastIncome;
 	bool playerLost;
 	bool addedLoserText;
+	
 	
 	
 };

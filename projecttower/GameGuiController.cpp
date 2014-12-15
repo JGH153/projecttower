@@ -13,16 +13,23 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine);
 	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
+	
+	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0);
+	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
+	
 
 	building = true;
 	deleting = false;
 	playerLost = false;
 	addedLoserText = false;
 
+	showingTowerUpgrades = false;
+	timer = 400; // Upgrade button cannot be clicked before 200 ms has passed
+
 	playerResources = 50;
 	playerIncome = 10;
 	numLives = 15;
-	msSinceLastIncome = 30000;
+	msSinceLastIncome = 15000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);
@@ -55,10 +62,13 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(buildButton);
 	guiObjects.push_back(deleteTowerButton);
 	guiObjects.push_back(sendUnit1Button);
+	
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
 	guiObjects.push_back(timeText);
 	guiObjects.push_back(livesText);
+
+	guiObjects.push_back(upgradeToCannon);
 
 	lossText = new VortexText("YOU LOSE!", *gameEngine->loadFont("Fonts/arial.ttf"), 70);
 	lossText->setColor(sf::Color::Transparent);
@@ -101,27 +111,31 @@ void GameGuiController::update() {
 		return;
 	}
 
+	if (timer > 0) {
+		timer -= gameEngine->deltaTime.asMilliseconds();
+	}
+	
 	gameEngine->setMousePosView(gameView);
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 	msSinceLastIncome -= gameEngine->deltaTime.asMilliseconds();
 	if (msSinceLastIncome <= 0) {
-		msSinceLastIncome += 30000;
+		msSinceLastIncome += 15000;
 		setPlayerResources(playerResources + playerIncome);
 	}
 	setTimer(msSinceLastIncome / 1000);
 
 	if (gameEngine->eventMouseReleasedLeft) {
-
+		
 		if (buildButton->isPressed && buildButton->hovering) {
 			if (building) {
 				building = false;
-
 			}
 			else {
 				building = true;
 				deleting = false;
+				hideTowerUpgrades();
 			}
 		}
 		else if (deleteTowerButton->isPressed && deleteTowerButton->hovering) {
@@ -132,6 +146,7 @@ void GameGuiController::update() {
 			else {
 				deleting = true;
 				building = false;
+				hideTowerUpgrades();
 			}
 		}
 
@@ -140,8 +155,10 @@ void GameGuiController::update() {
 				setPlayerResources(playerResources - 10);
 				setPlayerIncome(playerIncome + 1);
 				unitsToSpawn.push_back(1);
+				hideTowerUpgrades();
 			}
 		}
+
 	}
 
 
@@ -243,4 +260,16 @@ void GameGuiController::setPlayerLives(int newValue) {
 
 int GameGuiController::getPlayerResources() {
 	return playerResources;
+}
+
+void GameGuiController::showTowerUpgrades(sf::Vector2i mousePosition) {
+	timer = 400;
+	upgradeToCannon->setPosition(mousePosition.x, mousePosition.y);
+	upgradeToCannon->setOpacity(255);
+	showingTowerUpgrades = true;
+}
+
+void GameGuiController::hideTowerUpgrades() {
+	showingTowerUpgrades = false;
+	upgradeToCannon->setOpacity(0);
 }

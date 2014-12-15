@@ -370,7 +370,14 @@ void GameController::update() {
 		updateGhostBuildingSprite(mousePosView);
 	}
 
-
+	if (gameGuiController->showingTowerUpgrades) {
+		if (gameGuiController->upgradeToCannon->isPressed && gameGuiController->upgradeToCannon->hovering && gameGuiController->timer <= 0) {
+			if (gameGuiController->playerResources >= 10) {
+				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
+				gameGuiController->hideTowerUpgrades();
+			}
+		}
+	}
 
 
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000) {
@@ -410,8 +417,8 @@ void GameController::update() {
 		}
 	}
 	
-	//if (gameEngine->eventMouseClickedLeft) {
-	if (gameEngine->eventMousePressedLeft) {
+	if (gameEngine->eventMouseClickedLeft) {
+	//if (gameEngine->eventMousePressedLeft) {
 		handlePlayerTowerAction();
 	}
 	
@@ -539,24 +546,58 @@ void GameController::handlePlayerTowerAction() {
 
 	//Not building, not deleting, and clicked on tower
 	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
-		for (int i = 0; i < towerList.size(); i++) {
-			sf::Vector2i towerGridPos(towerList[i]->posX / gridTileSize, towerList[i]->posY / gridTileSize);
-			if (towerGridPos.x == xpos && towerGridPos.y == ypos) {
-				selectedTower = towerList[i];
-				gameEngine->selectionSpriteMutex.lock();
-				selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
-				selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
-				selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
-				selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
-				gameEngine->selectionSpriteMutex.unlock();
-				break;
+		if (gameGuiController->showingTowerUpgrades && gameGuiController->upgradeToCannon->hovering) {
+			// Nomnomcookie
+		}
+		else {
+			for (int i = 0; i < towerList.size(); i++) {
+				sf::Vector2i towerGridPos(towerList[i]->posX / gridTileSize, towerList[i]->posY / gridTileSize);
+				if (towerGridPos.x == xpos && towerGridPos.y == ypos) {
+					if (selectedTower == towerList[i] && gameGuiController->showingTowerUpgrades) {
+						break;
+					}
+
+					selectedTower = towerList[i];
+					gameEngine->selectionSpriteMutex.lock();
+					selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
+					selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
+					selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
+					selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
+					gameEngine->selectionSpriteMutex.unlock();
+
+					gameGuiController->showingTowerUpgrades = true;
+					gameGuiController->showTowerUpgrades(mousePosWindow);
+					break;
+				}
 			}
 		}
-		// TODO HERE: DISPLAY TOWER UPGRADE OPTIONS
+		
+		
+		
+
 	}
 	//Not building, not deleting, and didnt click on tower - clear selection
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() != TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
-		selectedTower = nullptr;
+		// If upgrade tab is open
+		if (gameGuiController->showingTowerUpgrades) {
+			// If mouse is not over an upgrade button
+			if (!gameGuiController->upgradeToCannon->isPressed && !gameGuiController->upgradeToCannon->hovering) {
+				selectedTower = nullptr;
+				if (gameGuiController->showingTowerUpgrades) {
+					gameGuiController->showingTowerUpgrades = false;
+					gameGuiController->hideTowerUpgrades();
+				}
+			}
+		}
+		else {
+			selectedTower = nullptr;
+			if (gameGuiController->showingTowerUpgrades) {
+				gameGuiController->showingTowerUpgrades = false;
+				gameGuiController->hideTowerUpgrades();
+			}
+		}
+		
+		
 	}
 	//Building, and zone buildable
 	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
@@ -598,6 +639,13 @@ void GameController::handlePlayerTowerAction() {
 				towerList[i]->deleteProjectiles();
 				gameEngine->addRemovableObjectToList(towerList[i]);
 				
+				if (towerList[i] == selectedTower) {
+					selectedTower = nullptr;
+					if (gameGuiController->showingTowerUpgrades) {
+						gameGuiController->showingTowerUpgrades = false;
+						gameGuiController->hideTowerUpgrades();
+					}
+				}
 				towerList[i] = nullptr;
 				towerList.erase(towerList.begin() + i);
 				i--;

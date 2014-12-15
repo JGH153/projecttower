@@ -5,7 +5,7 @@ VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, s
 	width = w;
 	height = h;
 	isPressed = false;
-
+	hidden = false;
 	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
 	setIdleImage(imagePath);
 	hoverImage = nullptr;
@@ -26,7 +26,9 @@ VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, s
 VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity) : VortexButton(x, y, gameEngine) {
 	width = w;
 	height = h;
-	
+	if (opacity <= 0){
+		hidden = true;
+	}
 	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
 	setIdleImage(imagePath);
 	hoverImage = nullptr;
@@ -50,6 +52,13 @@ VortexButtonRectangle::~VortexButtonRectangle()
 }
 
 void VortexButtonRectangle::update(){
+	
+	if (hidden) {
+		hovering = false;
+		isPressed = false;
+		return;
+	}
+
 	if (hoverImage != nullptr){
 		if (mouseOver() && !hovering){
 			image->setTexture(*hoverImage);

@@ -29,7 +29,7 @@ int VortexButton::getHeight(){
 
 
 bool VortexButton::buttonClicked(){
-	if (gameEngine->eventMouseReleasedLeft) {
+	if (gameEngine->eventMousePressedLeft) {
 		
 	//if (gameEngine->eventMouseReleasedLeft){
 		//sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
@@ -44,4 +44,19 @@ bool VortexButton::mouseOver(){
 	//sf::Vector2f mouse = gameEngine->getMousePositionRelativeToSetView();
 	sf::Vector2i mouse = gameEngine->getMousePosition();
 	return hitPoint(mouse.x, mouse.y);
+}
+
+void VortexButton::setOpacity(int value) {
+	if (image != NULL) {
+		sf::Color imageColor = image->getColor();
+		imageColor.a = value;
+		image->setColor(imageColor);
+
+		if (value <= 0) {
+			hidden = true;
+		}
+		else {
+			hidden = false;
+		}
+	}
 }

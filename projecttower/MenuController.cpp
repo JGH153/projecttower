@@ -44,17 +44,16 @@ void MenuController::preloadAssets() {
 }
 
 void MenuController::update() {
-
-	if (startGameButton->buttonClicked()) {
+	if (startGameButton->isPressed && startGameButton->hovering) {
 		nextControllerID = GAME_CONTROLLER_ID;
 	}
-	else if (quitGameButton->buttonClicked()) {
+	else if (quitGameButton->isPressed && quitGameButton->hovering) {
 		gameEngine->closeApplication();
 	}
-	else if (networkClientButton->buttonClicked()) {
+	else if (networkClientButton->isPressed && networkClientButton->hovering) {
 		nextControllerID = NETWORK_GAME_CLIENT_ID;
 	}
-	else if (networkServerButton->buttonClicked()) {
+	else if (networkServerButton->isPressed && networkServerButton->hovering) {
 		nextControllerID = NETWORK_GAME_SERVER_ID;
 	}
 
