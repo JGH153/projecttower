@@ -11,67 +11,83 @@ NetworkGameClient::NetworkGameClient(Vortex * gameEngine, int controllerID) : Su
 
 NetworkGameClient::~NetworkGameClient()
 {
-	packetThreadOnline = false;
-	networkThread.join();
+	sendingThreadOnline = false;
+	receivingThreadOnline = false;
+	networkReceiveThread.join();
+	networkSendThread.join();
 }
 
 void NetworkGameClient::update(){
-	// If packe thread is not online, start it
-	if (!packetThreadOnline){
-		networkThread = std::thread(&NetworkGameClient::waitForPackets, this);
+	// If packet threads are not online, start them
+	if (!receivingThreadOnline){
+		networkReceiveThread = std::thread(&NetworkGameClient::threadReceivePackets, this);
 	}
 	// Otherwise proceed
 	else {
 		// Print if there are any packets received
 		if (!receivedPackets.empty()){
-			receivedPacketMutex.lock();
+
 			sf::Uint16 x;
 			std::string s;
 			double d;
 
-			receivedPackets.back() >> x >> s >> d;
-			receivedPackets.pop_back();
-			std::cout << "Client received: " << x << s << d << std::endl;
+			receivedPacketMutex.lock();
+			for (auto newPacket : receivedPackets){
+				newPacket >> x >> s >> d;
+				std::cout << "Client received: " << x << s << d << std::endl;
+			}
+			receivedPackets.clear();
 			receivedPacketMutex.unlock();
 		}
 		// Testing, just make a packet and send it
 		if (gameEngine->eventKeyPressed){
 			std::cout << "Gonna make a packet!" << std::endl;
-			std::cout << "Number of received packets pending: " << receivedPackets.size() << std::endl;
 			sf::Uint16 x = 10;
 			std::string s = "hello";
 			double d = 0.6;
 
 			sf::Packet packet;
-			packet << x << s << d;
+//			packet << x << s << d;
 			pendingPacketMutex.lock();
 			pendingSendPackets.push_back(packet);
+			pendingSendPackets.back() << x << s << d;
+			std::cout << "Number of sendable packets pending: " << pendingSendPackets.size() << std::endl;
 			pendingPacketMutex.unlock();
+
 		}
 		
 	}
 }
 
-void NetworkGameClient::waitForPackets() {
-	packetThreadOnline = true;
-	while (packetThreadOnline){
-		if (!connectedToServer){
-			connectedToServer = connectToServer("127.0.0.1", socketNumber);
+void NetworkGameClient::threadReceivePackets() {
+	if (!connectedToServer){
+		connectedToServer = connectToServer("127.0.0.1", socketNumber);
+		if (connectedToServer){
+			networkSendThread = std::thread(&NetworkGameClient::threadSendPackets, this);
 		}
+	}
+	receivingThreadOnline = true;
+	while (receivingThreadOnline && connectedToServer){
 		sf::Packet newPacket;
-		std::cout << "Waiting for packet" << std::endl;
 		if (serverSocket.receive(newPacket) == sf::Socket::Done){
 			std::cout << "Received a packet!" << std::endl;
 			receivedPacketMutex.lock();
 			receivedPackets.push_back(newPacket);
 			receivedPacketMutex.unlock();
 		}
+	}
+}
+
+void NetworkGameClient::threadSendPackets() {
+	sendingThreadOnline = true;
+	while (sendingThreadOnline && connectedToServer){
 		if (!pendingSendPackets.empty()){
 			std::cout << "Have packets to send!" << std::endl;
 			pendingPacketMutex.lock();
 			for (auto newPacket : pendingSendPackets) {
 				serverSocket.send(newPacket);
 			}
+			pendingSendPackets.clear();
 			pendingPacketMutex.unlock();
 		}
 	}

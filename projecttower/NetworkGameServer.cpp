@@ -11,16 +11,18 @@ NetworkGameServer::NetworkGameServer(Vortex * gameEngine, int controllerID) : Su
 
 NetworkGameServer::~NetworkGameServer()
 {
-	listenerThreadOnline = false;
-	listenerThread.join();
+	receivingThreadOnline = false;
+	sendingThreadOnline = false;
+	networkReceiveThread.join();
+	networkSendThread.join();
 	connectionListener.close();
 }
 
 
 void NetworkGameServer::update(){
-	if (!listenerThreadOnline){
+	if (!receivingThreadOnline){
 		std::cout << "Starting server" << std::endl;
-		listenerThread = std::thread(&NetworkGameServer::listenForPackets, this);
+		networkReceiveThread = std::thread(&NetworkGameServer::threadReceivePackets, this);
 	}
 	else {
 		// Echo
@@ -28,6 +30,7 @@ void NetworkGameServer::update(){
 			std::vector<sf::Packet> newPackets;
 			receivedMutex.lock();
 			newPackets = receivedPackets;
+			receivedPackets.clear();
 			receivedMutex.unlock();
 
 			sendMutex.lock();
@@ -56,20 +59,21 @@ bool NetworkGameServer::establishPlayerConnection(){
 }
 
 
-void NetworkGameServer::listenForPackets(){
-	std::cout << "Packet thread started" << std::endl;
-	listenerThreadOnline = true;
+void NetworkGameServer::threadReceivePackets(){
+	receivingThreadOnline = true;
 	if (connectionListener.listen(socketNumber) != sf::Socket::Done){
 		// Connection error
 		std::cout << "Socket connection listener could not establish the connection" << std::endl;
-		listenerThreadOnline = false;
+		receivingThreadOnline = false;
+	}
+	else {
+		networkSendThread = std::thread(&NetworkGameServer::threadSendPackets, this);
 	}
 
-	while (listenerThreadOnline){
+	while (receivingThreadOnline){
 		if (!playerConnected){
 			playerConnected = establishPlayerConnection();
 		}
-		std::cout << "Starting new round of listening.." << std::endl;
 		sf::Packet receivedPacket;
 		if (otherPlayer.receive(receivedPacket) == sf::Socket::Done){
 			std::cout << "Received a packet!" << std::endl;
@@ -77,16 +81,24 @@ void NetworkGameServer::listenForPackets(){
 			receivedPackets.push_back(receivedPacket);
 			receivedMutex.unlock();
 		}
+	}
+}
+
+void NetworkGameServer::threadSendPackets(){
+	sendingThreadOnline = true;
+	while (sendingThreadOnline){
 		if (!pendingSendPackets.empty()){
 			std::cout << "Have packets to send!" << std::endl;
 			sendMutex.lock();
 			for (auto newPacket : pendingSendPackets) {
 				otherPlayer.send(newPacket);
 			}
+			pendingSendPackets.clear();
 			sendMutex.unlock();
 		}
 	}
 }
+
 
 std::vector<std::vector<sf::Drawable *>> NetworkGameServer::getDynamicRenderData() {
 	return std::vector<std::vector<sf::Drawable *>>();
