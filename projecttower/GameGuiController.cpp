@@ -41,21 +41,25 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	incomeText->setColor(sf::Color::White);
 	incomeText->setStyle(sf::Text::Bold);
 	float incomeTextWidth = incomeText->getLocalBounds().width;
-	incomeText->setPosition(WINDOWSIZEX - incomeTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height);
+	incomeText->setPosition(WINDOWSIZEX - incomeTextWidth, resourceText->getPosition().y + resourceText->getLocalBounds().height + 10);
 
-	timeText = new VortexText("Time till income: " + std::to_string(msSinceLastIncome / 1000), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
-	timeText->setColor(sf::Color::White);
-	timeText->setStyle(sf::Text::Bold);
-	float timeTextWidth = timeText->getLocalBounds().width;
-	timeText->setPosition(WINDOWSIZEX - timeTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height);
+	
 
 	livesText = new VortexText("Lives remaining: " + std::to_string(numLives), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
 	livesText->setColor(sf::Color::White);
 	livesText->setStyle(sf::Text::Bold);
 	float livesTextWidth = livesText->getLocalBounds().width;
-	livesText->setPosition(WINDOWSIZEX - livesTextWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height + livesText->getLocalBounds().height);
+	livesText->setPosition(WINDOWSIZEX - livesTextWidth, incomeText->getPosition().y + incomeText->getLocalBounds().height + 5);
 
-	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, livesText->getPosition().y + livesText->getLocalBounds().height + 10));
+
+	timeText = new VortexText("Time till income: " + std::to_string(msSinceLastIncome / 1000), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
+	timeText->setColor(sf::Color::White);
+	timeText->setStyle(sf::Text::Bold);
+	float timeTextWidth = timeText->getLocalBounds().width;
+	timeText->setPosition(WINDOWSIZEX - timeTextWidth, livesText->getPosition().y + livesText->getLocalBounds().height + 5);
+
+
+	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
 	resourcePanel->setFillColor(sf::Color(25, 25, 25, 200));
 	resourcePanel->setPosition(WINDOWSIZEX - resourceTextWidth, 0);
 
@@ -239,7 +243,7 @@ void GameGuiController::setPlayerResources(int newValue) {
 	resourceText->setPosition(WINDOWSIZEX - textWidth, 0);
 
 	resourcePanel->setPosition(WINDOWSIZEX - textWidth, 0);
-	resourcePanel->setSize(sf::Vector2f(resourceText->getLocalBounds().width, livesText->getPosition().y + livesText->getLocalBounds().height + 10));
+	resourcePanel->setSize(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
 }
 
 void GameGuiController::setPlayerIncome(int newValue) {
@@ -249,7 +253,7 @@ void GameGuiController::setPlayerIncome(int newValue) {
 	playerIncome = newValue;
 	incomeText->setString("Income: " + std::to_string(playerIncome));
 	float textWidth = incomeText->getLocalBounds().width;
-	incomeText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height);
+	incomeText->setPosition(WINDOWSIZEX - textWidth, resourceText->getPosition().y + resourceText->getLocalBounds().height + 10);
 }
 
 void GameGuiController::setTimer(int newValue) {
@@ -258,7 +262,7 @@ void GameGuiController::setTimer(int newValue) {
 	}
 	timeText->setString("Time till income: " + std::to_string(newValue));
 	float textWidth = timeText->getLocalBounds().width;
-	timeText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height);
+	timeText->setPosition(WINDOWSIZEX - textWidth, livesText->getPosition().y + livesText->getLocalBounds().height + 5);
 }
 
 void GameGuiController::setPlayerLives(int newValue) {
@@ -268,7 +272,7 @@ void GameGuiController::setPlayerLives(int newValue) {
 	numLives = newValue;
 	livesText->setString("Lives remaining: " + std::to_string(newValue));
 	float textWidth = timeText->getLocalBounds().width;
-	livesText->setPosition(WINDOWSIZEX - textWidth, resourceText->getLocalBounds().height + incomeText->getLocalBounds().height + timeText->getLocalBounds().height + livesText->getLocalBounds().height);
+	livesText->setPosition(WINDOWSIZEX - textWidth, incomeText->getPosition().y + incomeText->getLocalBounds().height + 5);
 
 	if (numLives <= 0) {
 		playerLost = true;
