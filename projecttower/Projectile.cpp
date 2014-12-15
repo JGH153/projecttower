@@ -11,6 +11,26 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);
 
+	radius = 0;
+
+	updatePos();
+
+	zIndex = zIndexlayer::projectile;
+}
+
+Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList) : Entity(gameEngine, posX, posY) {
+	this->gameEngine = gameEngine;
+	this->speed = speed;
+	this->target = target;
+	this->projectileSprite = projectileSprite;
+	projectileSprite->setScale(0.45f, 0.45f);
+	this->damage = damage;
+	destroyProjectile = false;
+	hitParticleColor = sf::Color(222, 200, 150);
+
+	this->radius = radius;
+	this->enemyList = enemyList;
+
 	updatePos();
 
 	zIndex = zIndexlayer::projectile;
@@ -29,13 +49,23 @@ std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
 
 
 bool Projectile::checkIfHitTarget() {
-	float radius = 35;
+	float radi = 25;
 
 	float diffX = abs(target->posX - posX);
 	float diffY = abs(target->posY + target->height / 2 - posY);
 
-	if (diffX * diffX + diffY * diffY < radius * radius) {
+	if (diffX * diffX + diffY * diffY < radi * radi) {
+		// If the projectile is close enough to unit, damage it
 		target->damage(damage);
+		if (radius > 0) {
+			// If projectile is explosive, damage others within radius as well
+			for (auto currentUnit : *enemyList) {
+				if (abs(currentUnit->getPos().x - target->getPos().x) * abs(currentUnit->getPos().x - target->getPos().x) + abs(currentUnit->getPos().y - target->getPos().y) * abs(currentUnit->getPos().y - target->getPos().y) < radius * radius) {
+					currentUnit->damage(damage);
+				}
+			}
+		}
+		
 		return true;
 	}
 	return false;

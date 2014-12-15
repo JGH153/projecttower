@@ -11,5 +11,7 @@ public:
 	std::vector<sf::Drawable *> getRenderDrawable();
 
 	void killYourself();
+	int splashRadius;
+	
 };
 

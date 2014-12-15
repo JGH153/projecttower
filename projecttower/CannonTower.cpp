@@ -6,7 +6,7 @@ CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, i
 	range = 150;
 	reloadTimeMS = 1000;
 	projectileSpeed = 0.15f;
-
+	splashRadius = 50;
 	reloading = false;
 
 	this->gridTileSize = gridTileSize;
@@ -82,11 +82,9 @@ void CannonTower::update() {
 		if (currentTarget != nullptr) {
 
 			auto sprite = new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
-			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage);
+			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage, splashRadius, enemyList);
 
-			//gameEngine->towerProjectileMutex.lock();
 			projectiles.push_back(projectile);
-			//gameEngine->towerProjectileMutex.unlock();
 			reloading = true;
 			reloadTimer.restart();
 		}

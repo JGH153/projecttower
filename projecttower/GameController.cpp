@@ -532,7 +532,6 @@ void GameController::update() {
 		if (gameGuiController->unitsToSpawn.back() == 1) {
 			// Spawn level 1 unit
 			gameEngine->groundTileListMutex.lock();
-			//BasicUnit * spawnedUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
 			BasicUnit* spawnedUnit = new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
 			gameEngine->groundTileListMutex.unlock();
 
