@@ -375,6 +375,8 @@ void GameController::update() {
 			if (gameGuiController->playerResources >= 10) {
 				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
 				gameGuiController->hideTowerUpgrades();
+				gameGuiController->upgradeToCannon->tooltipBackground->setFillColor(sf::Color::Transparent);
+				gameGuiController->upgradeToCannon->tooltipText->setColor(sf::Color::Transparent);
 			}
 		}
 	}

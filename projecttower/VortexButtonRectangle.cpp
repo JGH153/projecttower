@@ -21,6 +21,8 @@ VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, s
 	text.setStyle(sf::Text::Bold);
 
 	setPosition(posX, posY);
+	tooltipText = nullptr;
+	tooltipBackground = nullptr;
 }
 
 VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity) : VortexButton(x, y, gameEngine) {
@@ -45,6 +47,42 @@ VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, s
 	text.setStyle(sf::Text::Bold);
 
 	setPosition(posX, posY);
+	tooltipText = nullptr;
+	tooltipBackground = nullptr;
+}
+
+VortexButtonRectangle::VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity, std::string tooltipText) : VortexButton(x, y, gameEngine) {
+	width = w;
+	height = h;
+	if (opacity <= 0){
+		hidden = true;
+	}
+	image = new VortexSprite(gameEngine->loadImageToSprite(imagePath));
+	setIdleImage(imagePath);
+	hoverImage = nullptr;
+	pressedImage = nullptr;
+	image->setColor(sf::Color(255, 255, 255, opacity));
+	image->setSize(width, height);
+
+	this->title = title;
+	font = *gameEngine->loadFont("Fonts/arial.ttf");
+	text.setFont(font);
+	text.setString(title);
+	text.setCharacterSize(28);
+	text.setColor(sf::Color::White);
+	text.setStyle(sf::Text::Bold);
+
+	setPosition(posX, posY);
+	tooltipBackground = nullptr;
+
+	this->tooltipText = new VortexText(tooltipText, *gameEngine->loadFont("Fonts/arial.ttf"), 20);
+	this->tooltipText->setColor(sf::Color::Transparent);
+	this->tooltipText->setStyle(sf::Text::Bold);
+	this->tooltipText->setPosition(0, 0);
+
+	tooltipBackground = new sf::RectangleShape(sf::Vector2f(this->tooltipText->getLocalBounds().width, this->tooltipText->getLocalBounds().height + 6));
+	tooltipBackground->setFillColor(sf::Color::Transparent);
+	tooltipBackground->setPosition(0, 0);
 }
 
 VortexButtonRectangle::~VortexButtonRectangle()
@@ -59,16 +97,29 @@ void VortexButtonRectangle::update(){
 		return;
 	}
 
-	if (hoverImage != nullptr){
-		if (mouseOver() && !hovering){
+	if (mouseOver() && !hovering){
+		if (hoverImage != nullptr){
 			image->setTexture(*hoverImage);
-			hovering = true;
 		}
-		else if (!mouseOver() && hovering){
-			image->setTexture(*idleImage);
-			hovering = false;
+		hovering = true;
+		if (this->tooltipText != nullptr) {
+			tooltipBackground->setFillColor(sf::Color(25, 25, 25, 200));
+			this->tooltipText->setColor(sf::Color::White);
 		}
 	}
+	else if (!mouseOver() && hovering){
+		if (hoverImage != nullptr){
+			image->setTexture(*idleImage);
+		}
+		
+		hovering = false;
+		if (this->tooltipText != nullptr) {
+			tooltipBackground->setFillColor(sf::Color::Transparent);
+			this->tooltipText->setColor(sf::Color::Transparent);
+		}
+	}
+
+	
 
 	if (gameEngine->eventMouseClickedLeft) {
 		if (buttonClicked() && !isPressed){
@@ -88,18 +139,34 @@ void VortexButtonRectangle::update(){
 		}
 	}
 
+	if (hovering && tooltipText != nullptr) {
+		tooltipText->setPosition(gameEngine->getMousePositionRelativeToWindow().x, gameEngine->getMousePositionRelativeToWindow().y);
+		tooltipBackground->setPosition(tooltipText->getPosition().x, tooltipText->getPosition().y);
+		
+	}
 	
 }
-
 
 std::vector<sf::Drawable *> VortexButtonRectangle::getRenderDrawable() {
 
 	std::vector<sf::Drawable *> drawData;
 	drawData.push_back(image);
 	drawData.push_back(&text);
+
 	return drawData;
+}
 
+std::vector<sf::Drawable *> VortexButtonRectangle::getTooltipDrawable() {
 
+	std::vector<sf::Drawable *> drawData;
+
+	if (tooltipText != nullptr) {
+
+		drawData.push_back(tooltipBackground);
+		drawData.push_back(tooltipText);
+	}
+
+	return drawData;
 }
 
 void VortexButtonRectangle::setIdleImage(sf::Texture * newImage){

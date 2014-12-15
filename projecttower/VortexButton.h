@@ -32,6 +32,9 @@ public:
 	bool buttonClicked();
 	bool mouseOver();
 	void setOpacity(int value);
+	
+	VortexText* tooltipText;
+	sf::RectangleShape* tooltipBackground;
 
 protected:	
 	
@@ -41,6 +44,8 @@ protected:
 	int width;
 	int height;
 	VortexSprite * image;
+
+	
 
 	Vortex * gameEngine;
 };

@@ -12,8 +12,10 @@ class VortexButtonRectangle : public VortexButton
 public:
 	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine);
 	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity);
+	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity, std::string tooltipText);
 	~VortexButtonRectangle();
 
+	
 	void setIdleImage(sf::Texture * newImage);
 	void setHoverImage(sf::Texture * newImage);
 	void setPressedImage(sf::Texture * newImage);
@@ -31,6 +33,7 @@ public:
 
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();
+	std::vector<sf::Drawable *> getTooltipDrawable();
 	bool isPressed;
 	bool hovering;
 

@@ -5,16 +5,16 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	int buttonSize = 64;
 	int buttonSpread = 1;
 	bottomToolbarPosY = WINDOWSIZEY - buttonSize;
-	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/diy-hammer-icon.png", "", gameEngine);
+	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/diy-hammer-icon.png", "", gameEngine, 255, "Basic tower: Cost 10");
 	buildButton->setHoverImage("Graphics/GUI/diy-hammer-hover-icon.png");
 
-	deleteTowerButton = new VortexButtonRectangle(buildButton->getPosition().x - buttonSize - buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine);
+	deleteTowerButton = new VortexButtonRectangle(buildButton->getPosition().x - buttonSize - buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine, 255, "Delete tower");
 	deleteTowerButton->setHoverImage("Graphics/GUI/delete-hover-icon.png");
 
-	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine);
+	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit: Cost 10\n +1 Income");
 	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
 	
-	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0);
+	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower: Cost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
 	
 
@@ -24,7 +24,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	addedLoserText = false;
 
 	showingTowerUpgrades = false;
-	timer = 400; // Upgrade button cannot be clicked before 200 ms has passed
+	timer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
 	playerResources = 50;
 	playerIncome = 10;
@@ -195,6 +195,23 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 			renderListSub.push_back(currentRenderObj);
 		}
 	}
+
+	// Render all tooltips on top
+	for (auto currentRenderObj : buildButton->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+	for (auto currentRenderObj : deleteTowerButton->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+	for (auto currentRenderObj : sendUnit1Button->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+	for (auto currentRenderObj : upgradeToCannon->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+
+	
+
 	guiMutex.unlock();
 
 	renderList.push_back(renderListSub);
