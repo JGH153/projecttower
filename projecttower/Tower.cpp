@@ -1,9 +1,9 @@
 #include "Tower.h"
 
 
-Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex) : Entity(gameEngine, posX, posY) {
+Tower::Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Entity(gameEngine, posX, posY) {
 
-	
+	this->particleList = particleList;
 	this->enemyList = enemyList;
 	this->mapGroundTileIndex = mapGroundTileIndex;
 

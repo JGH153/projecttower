@@ -7,26 +7,13 @@
 
 class Tower : public Entity {
 public:
-	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex);
+	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem*> * particleList);
 	~Tower();
-	//sf::Vector2i position;
-	//int damage;
-	//double speed;
-	//double range;
-	//Unit *target;
-	//VortexSprite sprite;
-	//sf::Time timeSinceLastAttack;
-	//sf::Clock stopwatch;
-
-	//bool canAttack();
-	//bool attack();
-	//virtual void update();
 
 	Unit * Tower::findTarget();
 	bool newTargetCloser(Unit *previousBest, Unit *newPotential);
 	bool targetWithinRange(Unit *testSubject);
 
-	//sf::Vector2f spritePos;
 	VortexSprite* getTowerSprite();
 
 	sf::Vector2i getMapGroundTileIndex();
@@ -60,6 +47,7 @@ protected:
 
 	VortexSprite *towerSprite;
 	std::vector<Unit *> * enemyList;
+	std::vector<VortexParticleSystem*> * particleList;
 	std::vector<Projectile*> projectiles;
 	
 };

@@ -1,7 +1,7 @@
 #include "CannonTower.h"
 
 
-CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex) {
+CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
 	damage = 5.f;
 	range = 150;
 	reloadTimeMS = 1000;
@@ -82,7 +82,7 @@ void CannonTower::update() {
 		if (currentTarget != nullptr) {
 
 			auto sprite = new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
-			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage, splashRadius, enemyList);
+			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage, splashRadius, enemyList, particleList);
 
 			projectiles.push_back(projectile);
 			reloading = true;

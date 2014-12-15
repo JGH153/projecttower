@@ -1,7 +1,7 @@
 #include "BasicTower.h"
 
 
-BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex) {
+BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
 
 	damage = 2.f;
 	range = 150;

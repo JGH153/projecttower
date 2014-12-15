@@ -9,6 +9,8 @@ VortexParticleSystem::VortexParticleSystem(unsigned int count, float posX, float
 	stopEmitting = false;
 	this->spd = spd;
 
+	startAlpha = baseParticleColor.a;
+
 	for (std::size_t i = 0; i < m_particles.size(); ++i){
 		resetParticle(i);
 		m_vertices[i].position = sf::Vector2f(posX, posY);
@@ -18,6 +20,7 @@ VortexParticleSystem::VortexParticleSystem(unsigned int count, float posX, float
 		m_vertices[i].color.r = baseParticleColor.r + ((rand() % 256) * 0.05) - ((rand() % 256) * 0.05);
 		m_vertices[i].color.g = baseParticleColor.g + ((rand() % 256) * 0.05) - ((rand() % 256) * 0.05);
 		m_vertices[i].color.b = baseParticleColor.b + ((rand() % 256) * 0.05) - ((rand() % 256) * 0.05);
+		m_vertices[i].color.a = baseParticleColor.a + ((rand() % 256) * 0.05) - ((rand() % 256) * 0.05);
 		if (m_vertices[i].color.r > 255) {
 			m_vertices[i].color.r = 255;
 		}
@@ -76,8 +79,8 @@ void VortexParticleSystem::update(sf::Time elapsed){
 		m_vertices[i].position += p.velocity * elapsed.asSeconds();
 
 		// update the alpha (transparency) of the particle according to its lifetime
-		float ratio = p.lifetime.asMilliseconds() / m_lifetime.asMilliseconds();
-		m_vertices[i].color.a = static_cast<sf::Uint8>(ratio * 255);
+		float ratio = (float)p.lifetime.asMilliseconds() / (float)m_lifetime.asMilliseconds();
+		m_vertices[i].color.a = static_cast<sf::Uint8>(ratio * startAlpha);
 
 		// Make the color become more dark the longer it lives
 		if (m_vertices[i].color.r - 5 >= 0) {

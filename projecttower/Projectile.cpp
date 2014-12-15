@@ -18,7 +18,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	zIndex = zIndexlayer::projectile;
 }
 
-Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList) : Entity(gameEngine, posX, posY) {
+Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList, std::vector<VortexParticleSystem *> * particleList) : Entity(gameEngine, posX, posY) {
 	this->gameEngine = gameEngine;
 	this->speed = speed;
 	this->target = target;
@@ -30,7 +30,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 
 	this->radius = radius;
 	this->enemyList = enemyList;
-
+	this->particleList = particleList;
 	updatePos();
 
 	zIndex = zIndexlayer::projectile;
@@ -56,9 +56,14 @@ bool Projectile::checkIfHitTarget() {
 
 	if (diffX * diffX + diffY * diffY < radi * radi) {
 		// If the projectile is close enough to unit, damage it
+		
 		target->damage(damage);
 		if (radius > 0) {
 			// If projectile is explosive, damage others within radius as well
+			gameEngine->particleListMutex.lock();
+			particleList->push_back(new VortexParticleSystem(160, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color(100, 100, 100, 150), sf::Quads, 200, 150));
+			gameEngine->particleListMutex.unlock();
+
 			for (auto currentUnit : *enemyList) {
 				if (abs(currentUnit->getPos().x - target->getPos().x) * abs(currentUnit->getPos().x - target->getPos().x) + abs(currentUnit->getPos().y - target->getPos().y) * abs(currentUnit->getPos().y - target->getPos().y) < radius * radius) {
 					currentUnit->damage(damage);

@@ -25,6 +25,7 @@ private:
 		sf::Time lifetime;
 	};
 	float spd;
+	int startAlpha;
 
 	sf::Clock timeAtStart;
 

@@ -390,7 +390,7 @@ void GameController::update() {
 						towerList.erase(towerList.begin() + i);
 						
 						gameEngine->unitListMutex.lock();
-						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos, ypos));
+						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
 						selectedTower = newTower;
 						gameEngine->unitListMutex.unlock();
 
@@ -629,7 +629,7 @@ void GameController::handlePlayerTowerAction() {
 		// Check if player has resources to build
 		if (gameGuiController->getPlayerResources() >= 10) {
 			gameEngine->unitListMutex.lock();
-			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos));
+			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
 			gameEngine->unitListMutex.unlock();
 
 			gameEngine->towerListMutex.lock();
