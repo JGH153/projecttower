@@ -89,6 +89,12 @@ VortexButtonRectangle::~VortexButtonRectangle()
 {
 }
 
+void VortexButtonRectangle::killYourself() {
+
+	delete this;
+
+}
+
 void VortexButtonRectangle::update(){
 	
 	if (hidden) {
@@ -140,8 +146,17 @@ void VortexButtonRectangle::update(){
 	}
 
 	if (hovering && tooltipText != nullptr) {
-		tooltipText->setPosition(gameEngine->getMousePositionRelativeToWindow().x, gameEngine->getMousePositionRelativeToWindow().y);
-		tooltipBackground->setPosition(tooltipText->getPosition().x, tooltipText->getPosition().y);
+
+		int tooltipPostX = gameEngine->getMousePositionRelativeToWindow().x;
+		int tooltipPostY = gameEngine->getMousePositionRelativeToWindow().y;
+
+		//prevent tooltip goint out of screen (currently only at bottom)
+		if (tooltipPostY + tooltipBackground->getLocalBounds().height > WINDOWSIZEY) {
+			tooltipPostY = WINDOWSIZEY - tooltipBackground->getLocalBounds().height;
+		}
+
+		tooltipText->setPosition(tooltipPostX, tooltipPostY);
+		tooltipBackground->setPosition(tooltipPostX, tooltipPostY);
 		
 	}
 	

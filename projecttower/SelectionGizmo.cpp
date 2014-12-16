@@ -16,6 +16,7 @@ SelectionGizmo::~SelectionGizmo() {
 }
 
 //Dont understand how we are supposed to use this function......
+//but you are using it right...
 std::vector<sf::Drawable*> SelectionGizmo::getRenderDrawable() {
 	std::vector<sf::Drawable *> returnable;
 	for (int i = 0; i < selectionSprites.size(); i++) {

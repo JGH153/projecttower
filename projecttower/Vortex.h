@@ -3,6 +3,7 @@
 #include <SFML\Window.hpp>
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
+#include <SFML/Network.hpp>
 #include <vector>
 #include <iostream>
 
@@ -16,6 +17,7 @@
 #include "VortexParticleSystem.h"
 #include "GlobalDefines.h"
 #include "GarbageCollector.h"
+#include "VortexNetwork.h"
 
 //#define uint unsigned int
 typedef unsigned int uint;
@@ -171,6 +173,12 @@ public:
 	
 
 	void print(std::string printText);
+
+
+	VortexNetwork * networkHandler;
+
+	sf::IpAddress localIpAdress;
+
 
 private:
 

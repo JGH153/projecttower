@@ -17,6 +17,9 @@ ProgramController::ProgramController(Vortex * gameEngine, int controllerID) : Su
 	// Network game server
 	subControllers.push_back(new NetworkGameServer(gameEngine, NETWORK_GAME_SERVER_ID));
 	subControllers[subControllers.size() - 1]->setNextControllerID(NETWORK_GAME_SERVER_ID);
+	// serverbrower controller
+	subControllers.push_back(new ServerbrowserController(gameEngine, SERVERBROWSER_CONTROLLER_ID));
+	subControllers[subControllers.size() - 1]->setNextControllerID(SERVERBROWSER_CONTROLLER_ID);
 
 	activeSubController = MENU_CONTROLLER_ID;
 	//activeSubController = GAME_CONTROLLER_ID;

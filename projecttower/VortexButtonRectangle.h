@@ -15,6 +15,8 @@ public:
 	VortexButtonRectangle(double x, double y, int w, int h, std::string imagePath, std::string title, Vortex * gameEngine, int opacity, std::string tooltipText);
 	~VortexButtonRectangle();
 
+	void killYourself();
+
 	
 	void setIdleImage(sf::Texture * newImage);
 	void setHoverImage(sf::Texture * newImage);
