@@ -90,9 +90,6 @@
     <ClCompile Include="GlobalDefines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BasicUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
@@ -116,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicTower.cpp">
-      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="aStar.cpp">
       <Filter>Source Files</Filter>
@@ -149,6 +143,15 @@
     </ClCompile>
     <ClCompile Include="ServerbrowserController.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowTower.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="IronmanUnit.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="BahamutUnit.cpp">
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +206,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="BasicUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SubController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
@@ -217,9 +217,6 @@
     </ClInclude>
     <ClInclude Include="MapTile.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicTower.h">
-      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\VortexGameEngine</Filter>
@@ -256,6 +253,15 @@
     </ClInclude>
     <ClInclude Include="ServerbrowserController.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IronmanUnit.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowTower.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BahamutUnit.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

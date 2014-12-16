@@ -1,7 +1,7 @@
-#include "BasicUnit.h"
+#include "IronmanUnit.h"
 
 
-BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
+IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
 
 	int randNum = rand() % 10;
 
@@ -55,7 +55,7 @@ BasicUnit::BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 }
 
 
-BasicUnit::~BasicUnit(){
+IronmanUnit::~IronmanUnit(){
 
 	for (auto current : moveAnimations) {
 		gameEngine->addRemovableObjectToList(current);
@@ -65,7 +65,7 @@ BasicUnit::~BasicUnit(){
 
 
 
-std::vector<sf::Drawable *> BasicUnit::getRenderDrawable() {
+std::vector<sf::Drawable *> IronmanUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
 	temp.push_back(healthBarBG);
 	temp.push_back(healthBarFG);
@@ -73,7 +73,7 @@ std::vector<sf::Drawable *> BasicUnit::getRenderDrawable() {
 	return temp;
 }
 
-void BasicUnit::findNewPath() {
+void IronmanUnit::findNewPath() {
 	atWaypointTarget = false;
 	int footPosX = posX + width / 2;
 	int footPosY = posY + height;
@@ -97,17 +97,19 @@ void BasicUnit::findNewPath() {
 }
 
 
-void BasicUnit::update() {
+void IronmanUnit::update() {
 
 	if (isDead() || reachedGoal) {
 		return;
 	}
 
 	if (pathToTarget.empty()) {
+		/*
 		int centerPosX = posX + width / 2;
 		int centerPosY = posY + height / 2;
+		*/
 
-		if (abs(centerPosX - endPosX) * abs(centerPosX - endPosX) + abs(centerPosY - endPosY) * abs(centerPosY - endPosY) <= 100 * 100) {
+		if (abs(posX - endPosX) * abs(posX - endPosX) + abs(posY - endPosY) * abs(posY - endPosY) <= 100 * 100) {
 			reachedGoal = true;
 			return;
 		}
@@ -222,7 +224,7 @@ void BasicUnit::update() {
 
 }
 
-void BasicUnit::killYourself() {
+void IronmanUnit::killYourself() {
 
 	delete this;
 

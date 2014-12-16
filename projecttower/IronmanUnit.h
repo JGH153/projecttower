@@ -1,9 +1,9 @@
 #pragma once
 #include "Unit.h"
-class BasicUnit : public Unit {
+class IronmanUnit : public Unit {
 public:
-	BasicUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY);
-	~BasicUnit();
+	IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY);
+	~IronmanUnit();
 
 	void update();
 	void render();

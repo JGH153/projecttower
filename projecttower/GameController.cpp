@@ -110,9 +110,9 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 void GameController::preloadAssets() {
 
-	std::vector<BasicUnit *> preloadUnitList;
+	std::vector<IronmanUnit *> preloadUnitList;
 	gameEngine->groundTileListMutex.lock();
-	preloadUnitList.push_back(new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
+	preloadUnitList.push_back(new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
 	gameEngine->groundTileListMutex.unlock();
 
 	for (auto currentUnit : preloadUnitList) {
@@ -420,8 +420,8 @@ void GameController::update() {
 
 		gameEngine->groundTileListMutex.lock();
 		
-		//BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
-		BasicUnit * testUnit = new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+		//IronmanUnit * testUnit = new IronmanUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
+		IronmanUnit * testUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
 		gameEngine->groundTileListMutex.unlock();
 
 		gameEngine->unitListMutex.lock();
@@ -542,7 +542,7 @@ void GameController::update() {
 		if (gameGuiController->unitsToSpawn.back() == 1) {
 			// Spawn level 1 unit
 			gameEngine->groundTileListMutex.lock();
-			BasicUnit* spawnedUnit = new BasicUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			IronmanUnit* spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
 			gameEngine->groundTileListMutex.unlock();
 
 			gameEngine->unitListMutex.lock();
@@ -644,7 +644,7 @@ void GameController::handlePlayerTowerAction() {
 		// Check if player has resources to build
 		if (gameGuiController->getPlayerResources() >= 10) {
 			gameEngine->unitListMutex.lock();
-			BasicTower * testTower = new BasicTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
+			ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
 			gameEngine->unitListMutex.unlock();
 
 			gameEngine->towerListMutex.lock();

@@ -74,8 +74,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aStar.cpp" />
-    <ClCompile Include="BasicTower.cpp" />
-    <ClCompile Include="BasicUnit.cpp" />
+    <ClCompile Include="BahamutUnit.cpp" />
+    <ClCompile Include="ArrowTower.cpp" />
+    <ClCompile Include="IronmanUnit.cpp" />
     <ClCompile Include="CannonTower.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameController.cpp" />
@@ -111,8 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aStar.h" />
-    <ClInclude Include="BasicTower.h" />
-    <ClInclude Include="BasicUnit.h" />
+    <ClInclude Include="BahamutUnit.h" />
+    <ClInclude Include="ArrowTower.h" />
+    <ClInclude Include="IronmanUnit.h" />
     <ClInclude Include="CannonTower.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameController.h" />

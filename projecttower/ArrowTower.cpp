@@ -1,7 +1,7 @@
-#include "BasicTower.h"
+#include "ArrowTower.h"
 
 
-BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
+ArrowTower::ArrowTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
 
 	damage = 2.f;
 	range = 150;
@@ -27,11 +27,11 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 }
 
 
-BasicTower::~BasicTower() {
+ArrowTower::~ArrowTower() {
 }
 
 
-std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
+std::vector<sf::Drawable *> ArrowTower::getRenderDrawable() {
 
 	//auto temp = towerSprite->getRenderDrawable();
 
@@ -48,7 +48,7 @@ std::vector<sf::Drawable *> BasicTower::getRenderDrawable() {
 
 
 
-void BasicTower::update() {
+void ArrowTower::update() {
 
 	//gameEngine->towerProjectileMutex.lock();
 
@@ -101,7 +101,7 @@ void BasicTower::update() {
 	}
 }
 
-void BasicTower::killYourself() {
+void ArrowTower::killYourself() {
 
 	delete this;
 
