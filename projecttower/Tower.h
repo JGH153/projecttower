@@ -22,6 +22,7 @@ public:
 	std::vector<sf::Drawable *> getProjectilesRenderDrawable();
 
 	void deleteProjectiles();
+	int towerId;
 
 protected:
 

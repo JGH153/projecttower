@@ -107,7 +107,7 @@ void BasicUnit::update() {
 		int centerPosX = posX + width / 2;
 		int centerPosY = posY + height / 2;
 
-		if (abs(centerPosX - endPosX) * abs(centerPosX - endPosX) + abs(centerPosY - endPosY) * abs(centerPosY - endPosY) <= 27 * 27) {
+		if (abs(centerPosX - endPosX) * abs(centerPosX - endPosX) + abs(centerPosY - endPosY) * abs(centerPosY - endPosY) <= 100 * 100) {
 			reachedGoal = true;
 			return;
 		}

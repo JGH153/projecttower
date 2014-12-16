@@ -37,10 +37,12 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	spawnDelayMS = 2000;
 
-
+	/*
 	playerUnitSpawnPos = sf::Vector2i(0, 13 * gridTileSize);
 	playerUnitTargetPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
-	
+	*/
+	playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
+	playerUnitTargetPos = sf::Vector2i(0, 13 * gridTileSize);
 	
 	groundTilesChanged = false;
 	playerLost = false;
@@ -390,8 +392,16 @@ void GameController::update() {
 						towerList.erase(towerList.begin() + i);
 						
 						gameEngine->unitListMutex.lock();
-						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
+						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos / gridTileSize, ypos / gridTileSize), &particleList);
 						selectedTower = newTower;
+						gameEngine->selectionSpriteMutex.lock();
+						selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
+						selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
+						selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
+						selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
+						gameEngine->selectionSpriteMutex.unlock();
+
+
 						gameEngine->unitListMutex.unlock();
 
 						towerList.push_back(newTower);
@@ -590,8 +600,13 @@ void GameController::handlePlayerTowerAction() {
 					selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
 					gameEngine->selectionSpriteMutex.unlock();
 
-					gameGuiController->showingTowerUpgrades = true;
-					gameGuiController->showTowerUpgrades(mousePosWindow);
+					// If selected tower is a basic tower show upgrade options
+					if (selectedTower->towerId == 1) {
+						gameGuiController->showingTowerUpgrades = true;
+						gameGuiController->showTowerUpgrades(mousePosWindow);
+					}
+					
+					
 					break;
 				}
 			}
@@ -649,7 +664,7 @@ void GameController::handlePlayerTowerAction() {
 	}
 	//Clicked on tower and is deleting
 	else if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {
-
+		
 		for (int i = 0; i < towerList.size(); i++) {
 
 			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);

@@ -22,6 +22,8 @@ BasicTower::BasicTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	height = gridTileSize + towerSpriteOffsetY;
 	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/NormalReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, width, height);
 	projectileSpritePath = "Graphics/Projectiles/Arrow.png";
+
+	towerId = 1;
 }
 
 

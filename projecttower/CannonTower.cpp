@@ -21,6 +21,8 @@ CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, i
 	height = gridTileSize + towerSpriteOffsetY;
 	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/CannonReducedCanvas.png", posX - towerSpriteOffsetX / 2, posY - towerSpriteOffsetY, width, height);
 	projectileSpritePath = "Graphics/Projectiles/cannonball.png";
+
+	towerId = 2;
 }
 
 
