@@ -416,7 +416,7 @@ void GameController::update() {
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
 
 		Unit* testUnit;
-		printf("%d\n", gameGuiController->currentLevel);
+
 		gameEngine->groundTileListMutex.lock();
 		switch (gameGuiController->currentLevel) {
 		case 1:
@@ -430,7 +430,7 @@ void GameController::update() {
 			break;
 		}
 		
-		//IronmanUnit * 
+
 		gameEngine->groundTileListMutex.unlock();
 
 		gameEngine->unitListMutex.lock();
@@ -548,21 +548,30 @@ void GameController::update() {
 	}
 
 	while (!gameGuiController->unitsToSpawn.empty()) {
-		if (gameGuiController->unitsToSpawn.back() == 1) {
-			// Spawn level 1 unit
-			gameEngine->groundTileListMutex.lock();
-			IronmanUnit* spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			gameEngine->groundTileListMutex.unlock();
+		Unit* spawnedUnit;
 
-			gameEngine->unitListMutex.lock();
-			unitList.push_back(spawnedUnit);
-			gameEngine->unitListMutex.unlock();
-		}
-		else {
-			printf("Error spawning unit\n");
-		}
+		gameEngine->groundTileListMutex.lock();
+		switch (gameGuiController->unitsToSpawn.back()) {
+		case 1:
+			spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			break;
 
+		case 2:
+			spawnedUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			break;
+
+		default:
+			spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			printf("Error spawning unit!!!!!\n");
+		}
+		gameEngine->groundTileListMutex.unlock();
 		gameGuiController->unitsToSpawn.pop_back();
+
+		gameEngine->unitListMutex.lock();
+		unitList.push_back(spawnedUnit);
+		gameEngine->unitListMutex.unlock();
+
+		
 	}
 
 	previousMousePos = mousePosWindow;

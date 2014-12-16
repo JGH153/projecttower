@@ -13,6 +13,9 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit\nCost 10\n +1 Income");
 	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
+
+	sendUnit2Button = new VortexButtonRectangle(sendUnit1Button->getPosition().x + sendUnit1Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/bahamut-button.png", "", gameEngine, 255, "Level 2 unit\nCost 19\n +2 Income");
+	sendUnit2Button->setHoverImage("Graphics/GUI/bahamut-hover-button.png");
 	
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
@@ -81,6 +84,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(buildButton);
 	guiObjects.push_back(deleteTowerButton);
 	guiObjects.push_back(sendUnit1Button);
+	guiObjects.push_back(sendUnit2Button);
 	
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
@@ -191,6 +195,15 @@ void GameGuiController::update() {
 			}
 		}
 
+		else if (sendUnit2Button->isPressed && sendUnit2Button->hovering) {
+			if (playerResources >= 19) {
+				setPlayerResources(playerResources - 19);
+				setPlayerIncome(playerIncome + 2);
+				unitsToSpawn.push_back(2);
+				hideTowerUpgrades();
+			}
+		}
+
 	}
 
 
@@ -239,6 +252,10 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 	for (auto currentRenderObj : sendUnit1Button->getTooltipDrawable()) {
 		renderListSub.push_back(currentRenderObj);
 	}
+	for (auto currentRenderObj : sendUnit2Button->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+
 	for (auto currentRenderObj : upgradeToCannon->getTooltipDrawable()) {
 		renderListSub.push_back(currentRenderObj);
 	}
