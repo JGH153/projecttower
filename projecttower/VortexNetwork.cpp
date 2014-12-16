@@ -6,18 +6,18 @@ VortexNetwork::VortexNetwork(unsigned short portNumGameParm, unsigned short port
 	portNumGame = portNumGameParm;
 	portNumBroadcast = portNumBroadcastParm;
 
-	auto udpBindStatus = udpSocket.bind(portNumGame);
 	//auto udpBindStatus = udpSocket.bind(portNumGame);
-	if (udpBindStatus != sf::Socket::Done) {
-		// error...
-		std::cout << "fatal error setup UDP(" << udpBindStatus << ")(" << sf::UdpSocket::MaxDatagramSize<<")" << std::endl;
-	}
+	////auto udpBindStatus = udpSocket.bind(portNumGame);
+	//if (udpBindStatus != sf::Socket::Done) {
+	//	// error...
+	//	std::cout << "fatal error setup UDP(" << udpBindStatus << ")(" << sf::UdpSocket::MaxDatagramSize<<")" << std::endl;
+	//}
 
 	
 
-	testUdpSend();
+	//testUdpSend();
 
-	testBroadcast();
+	//testBroadcast();
 
 
 	broadcastSearchThreadOnline = false;
@@ -120,6 +120,8 @@ void VortexNetwork::connectToServer(sf::IpAddress targetIP) {
 	}
 
 
+	std::cout << "Connect succcessfull" << std::endl;
+
 
 }
 
@@ -156,7 +158,7 @@ void VortexNetwork::serverAcceptClientThreadLoop() {
 		std::cout << "fatal error setup TCP" << std::endl;
 	}
 
-	tcpListener.setBlocking(false);
+	tcpListener.setBlocking(true);
 
 	serverAcceptThreadOnline = true;
 
@@ -290,7 +292,7 @@ void VortexNetwork::broadcastThreadLoop() {
 
 			//send my echo
 			sf::IpAddress recipient = sf::IpAddress::Broadcast;
-			if (udpSocketBroadcast.send(sendPacket, recipient, portNumBroadcast) != sf::Socket::Done) {
+			if (udpSocketBroadcast.send(sendPacket, recipient, udpSocketBroadcast.getLocalPort()) != sf::Socket::Done) {
 				std::cout << "Send error";
 			}
 
