@@ -32,15 +32,10 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	bgSprite = temp;
 	bgSprite.setPosition(0, 0);
 
-	//gridTileSize = ((float)gameEngine->getWindowSize().x / (float)GAMEMAPSIZEX);
 	gridTileSize = 25;
 
 	spawnDelayMS = 2000;
 
-	/*
-	playerUnitSpawnPos = sf::Vector2i(0, 13 * gridTileSize);
-	playerUnitTargetPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
-	*/
 	playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 	playerUnitTargetPos = sf::Vector2i(0, 13 * gridTileSize);
 	
@@ -105,6 +100,8 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	towerUnderMouse = false;
 	zoomEndPoint = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
 	selectionGizmo = new SelectionGizmo(gameEngine, 0, 0);
+
+	
 }
 
 
@@ -374,7 +371,7 @@ void GameController::update() {
 
 	// Upgrade tower
 	if (gameGuiController->showingTowerUpgrades && selectedTower != nullptr) {
-		if (gameGuiController->upgradeToCannon->isPressed && gameGuiController->upgradeToCannon->hovering && gameGuiController->timer <= 0) {
+		if (gameGuiController->upgradeToCannon->isPressed && gameGuiController->upgradeToCannon->hovering && gameGuiController->buildTimer <= 0) {
 			if (gameGuiController->playerResources >= 10) {
 				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
 				gameGuiController->hideTowerUpgrades();
@@ -416,12 +413,24 @@ void GameController::update() {
 	}
 
 
-	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000) {
+	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
 
+		Unit* testUnit;
+		printf("%d\n", gameGuiController->currentLevel);
 		gameEngine->groundTileListMutex.lock();
+		switch (gameGuiController->currentLevel) {
+		case 1:
+			testUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			break;
+		case 2:
+			testUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			break;
+		default:
+			testUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+			break;
+		}
 		
-		//IronmanUnit * testUnit = new IronmanUnit(gameEngine, &mapGroundTile, -100, (gameEngine->getWindowSize().y / 2));
-		IronmanUnit * testUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+		//IronmanUnit * 
 		gameEngine->groundTileListMutex.unlock();
 
 		gameEngine->unitListMutex.lock();

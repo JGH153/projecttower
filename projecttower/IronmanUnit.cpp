@@ -8,25 +8,13 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	if (randNum < 8){
-		//speed = 0.02f + gameEngine->getRandFloat(0.01f, 0.02f);
-		speed = 0.02f;
-		width = 32/2;
-		height = 48/2;
-		maxHealth = 30.f;
-		offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
+	speed = 0.02f;
+	width = 32 / 2;
+	height = 48 / 2;
+	maxHealth = 30.f;
+	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-		killReward = 1;
-	}else{
-		//speed = 0.04f + gameEngine->getRandFloat(0.01f, 0.08f);
-		speed = 0.04f;
-		width = 96/4;
-		height = 96/4;
-		maxHealth = 40.f;
-		offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
-
-		killReward = 2;
-	}
+	killReward = 1;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -36,12 +24,7 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		if (randNum < 8) {
-			tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", 32, 48, DIRECTIONS[i], 4);
-		}
-		else{
-			tempAni->asembleSpritesheetAnimation("Graphics/bahamut.png", 96, 96, DIRECTIONS[i], 4);
-		}
+		tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", 32, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}
@@ -57,9 +40,7 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 
 IronmanUnit::~IronmanUnit(){
 
-	for (auto current : moveAnimations) {
-		gameEngine->addRemovableObjectToList(current);
-	}
+	
 
 }
 

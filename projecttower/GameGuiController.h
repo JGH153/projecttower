@@ -43,10 +43,13 @@ public:
 	void showTowerUpgrades(sf::Vector2i towerPosition);
 	void hideTowerUpgrades();
 	bool showingTowerUpgrades;
+	void setCurrentLevel(int newLevel);
+	void setNextLevelTime(int newValue);
 
 	VortexButtonRectangle * upgradeToCannon;
 	int playerResources;
-	int timer;
+	int buildTimer;
+	int currentLevel;
 
 private:
 	std::mutex guiMutex;
@@ -60,12 +63,17 @@ private:
 	VortexText* timeText;
 	VortexText* livesText;
 	VortexText* lossText;
+	VortexText* levelText;
+	VortexText* levelTimerText;
+
 	sf::RectangleShape* resourcePanel;
+	sf::RectangleShape* levelPanel;
 	std::vector<VortexButtonRectangle*> buttons;
 
 	int playerIncome;
 	
 	int msSinceLastIncome;
+	int msToNextLevel;
 	bool playerLost;
 	bool addedLoserText;
 	

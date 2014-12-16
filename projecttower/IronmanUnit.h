@@ -6,7 +6,6 @@ public:
 	~IronmanUnit();
 
 	void update();
-	void render();
 	std::vector<sf::Drawable *> getRenderDrawable();
 	void findNewPath();
 
@@ -14,10 +13,6 @@ public:
 
 
 private:
-
-	std::vector<VortexAnimation *> moveAnimations;
-	int currentMoveAnimationIndex;
-
 
 };
 

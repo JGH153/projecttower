@@ -5,16 +5,16 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	int buttonSize = 64;
 	int buttonSpread = 1;
 	bottomToolbarPosY = WINDOWSIZEY - buttonSize;
-	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/diy-hammer-icon.png", "", gameEngine, 255, "Basic tower: Cost 10");
+	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/diy-hammer-icon.png", "", gameEngine, 255, "Arrow tower\nCost 10");
 	buildButton->setHoverImage("Graphics/GUI/diy-hammer-hover-icon.png");
 
 	deleteTowerButton = new VortexButtonRectangle(buildButton->getPosition().x - buttonSize - buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine, 255, "Delete tower");
 	deleteTowerButton->setHoverImage("Graphics/GUI/delete-hover-icon.png");
 
-	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit: Cost 10\n +1 Income");
+	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit\nCost 10\n +1 Income");
 	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
 	
-	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower: Cost 10");
+	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
 	
 
@@ -24,12 +24,13 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	addedLoserText = false;
 
 	showingTowerUpgrades = false;
-	timer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
+	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
 	playerResources = 50;
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
+	msToNextLevel = 10000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);
@@ -58,10 +59,24 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	float timeTextWidth = timeText->getLocalBounds().width;
 	timeText->setPosition(WINDOWSIZEX - timeTextWidth, livesText->getPosition().y + livesText->getLocalBounds().height + 5);
 
+	levelText = new VortexText("Level: " + std::to_string(currentLevel), *gameEngine->loadFont("Fonts/arial.ttf"), 23);
+	levelText->setColor(sf::Color::White);
+	levelText->setStyle(sf::Text::Bold);
+	levelText->setPosition(0, 0);
+
+	levelTimerText = new VortexText("Next level in: " + std::to_string(msToNextLevel / 1000), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
+	levelTimerText->setColor(sf::Color::White);
+	levelTimerText->setStyle(sf::Text::Bold);
+	levelTimerText->setPosition(0, levelText->getLocalBounds().height + 5);
+
 
 	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
 	resourcePanel->setFillColor(sf::Color(25, 25, 25, 200));
 	resourcePanel->setPosition(WINDOWSIZEX - resourceTextWidth, 0);
+
+	levelPanel = new sf::RectangleShape(sf::Vector2f(levelTimerText->getLocalBounds().width, levelTimerText->getPosition().y + levelTimerText->getLocalBounds().height + 10));
+	levelPanel->setFillColor(sf::Color(25, 25, 25, 200));
+	levelPanel->setPosition(0, 0);
 
 	guiObjects.push_back(buildButton);
 	guiObjects.push_back(deleteTowerButton);
@@ -72,6 +87,10 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(timeText);
 	guiObjects.push_back(livesText);
 
+	guiObjects.push_back(levelText);
+	guiObjects.push_back(levelTimerText);
+	
+
 	guiObjects.push_back(upgradeToCannon);
 
 	lossText = new VortexText("YOU LOSE!", *gameEngine->loadFont("Fonts/arial.ttf"), 70);
@@ -80,6 +99,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	lossText->setPosition(WINDOWSIZEX / 2 - lossText->getLocalBounds().width / 2, WINDOWSIZEY / 2 - lossText->getLocalBounds().height / 2);
 	guiObjects.push_back(lossText);
 	
+	currentLevel = 0;
 }
 
 void GameGuiController::preloadAssets() {
@@ -115,8 +135,8 @@ void GameGuiController::update() {
 		return;
 	}
 
-	if (timer > 0) {
-		timer -= gameEngine->deltaTime.asMilliseconds();
+	if (buildTimer > 0) {
+		buildTimer -= gameEngine->deltaTime.asMilliseconds();
 	}
 	
 	gameEngine->setMousePosView(gameView);
@@ -129,6 +149,14 @@ void GameGuiController::update() {
 		setPlayerResources(playerResources + playerIncome);
 	}
 	setTimer(msSinceLastIncome / 1000);
+
+	msToNextLevel -= gameEngine->deltaTime.asMilliseconds();
+	if (msToNextLevel <= 0) {
+		msToNextLevel += 45000;
+		currentLevel++;
+		setCurrentLevel(currentLevel);
+	}
+	setNextLevelTime(msToNextLevel / 1000);
 
 	if (gameEngine->eventMouseReleasedLeft) {
 		
@@ -193,6 +221,7 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 	guiMutex.lock();
 
 	renderListSub.push_back(resourcePanel);
+	renderListSub.push_back(levelPanel);
 	
 	for (auto currentRenderVector : guiObjects) {
 		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
@@ -284,7 +313,7 @@ int GameGuiController::getPlayerResources() {
 }
 
 void GameGuiController::showTowerUpgrades(sf::Vector2i mousePosition) {
-	timer = 400;
+	buildTimer = 400;
 	upgradeToCannon->setPosition(mousePosition.x, mousePosition.y);
 	upgradeToCannon->setOpacity(255);
 	showingTowerUpgrades = true;
@@ -293,4 +322,13 @@ void GameGuiController::showTowerUpgrades(sf::Vector2i mousePosition) {
 void GameGuiController::hideTowerUpgrades() {
 	showingTowerUpgrades = false;
 	upgradeToCannon->setOpacity(0);
+}
+
+void GameGuiController::setCurrentLevel(int newLevel) {
+	levelText->setString("Level: " + std::to_string(newLevel));
+}
+
+void GameGuiController::setNextLevelTime(int newValue) {
+	levelTimerText->setString("Next level in: " + std::to_string(newValue));
+	
 }
