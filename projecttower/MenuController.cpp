@@ -4,6 +4,8 @@
 MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
 	nextControllerID = MENU_CONTROLLER_ID;
 
+	doMultiplayer = false;
+
 	sf::Texture * texBackgroundImage = gameEngine->loadImageToTexture("Graphics/menuBackground.jpg");
 	backgroundImage = new VortexSprite(*texBackgroundImage);
 	backgroundImage->setPosition(0, 0);
@@ -16,22 +18,18 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 	int buttonHeight = 60;
 
 
-	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight* 2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
-	startGameButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "New Game", gameEngine, 175);
+	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight* 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
+	startMultiplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Multiplayer", gameEngine, 175);
+	startSingelplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), startMultiplayerGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Singelplayer", gameEngine, 175);
 	
-	networkClientButton = new VortexButtonRectangle(WINDOWSIZEX - (buttonWidth * 1.5), WINDOWSIZEY - buttonHeight * 2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Client", gameEngine, 175);
-	networkServerButton = new VortexButtonRectangle(WINDOWSIZEX - (buttonWidth * 1.5), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Server", gameEngine, 175);
 
 	quitGameButton->setHoverImage("Graphics/graybutton.png");
-	startGameButton->setHoverImage("Graphics/graybutton.png");
-	
-	networkClientButton->setHoverImage("Graphics/graybutton.png");
-	networkServerButton->setHoverImage("Graphics/graybutton.png");
+	startSingelplayerGameButton->setHoverImage("Graphics/graybutton.png");
+	startMultiplayerGameButton->setHoverImage("Graphics/graybutton.png");
 
-	guiObjects.push_back(startGameButton);
+	guiObjects.push_back(startSingelplayerGameButton);
 	guiObjects.push_back(quitGameButton);
-	guiObjects.push_back(networkClientButton);
-	guiObjects.push_back(networkServerButton);
+	guiObjects.push_back(startMultiplayerGameButton);
 }
 
 
@@ -44,17 +42,14 @@ void MenuController::preloadAssets() {
 }
 
 void MenuController::update() {
-	if (startGameButton->isPressed && startGameButton->hovering) {
+	if (startSingelplayerGameButton->isPressed && startSingelplayerGameButton->hovering) {
 		nextControllerID = GAME_CONTROLLER_ID;
 	}
 	else if (quitGameButton->isPressed && quitGameButton->hovering) {
 		gameEngine->closeApplication();
 	}
-	else if (networkClientButton->isPressed && networkClientButton->hovering) {
-		nextControllerID = NETWORK_GAME_CLIENT_ID;
-	}
-	else if (networkServerButton->isPressed && networkServerButton->hovering) {
-		nextControllerID = NETWORK_GAME_SERVER_ID;
+	else if (startMultiplayerGameButton->isPressed && startMultiplayerGameButton->hovering) {
+		nextControllerID = SERVERBROWSER_CONTROLLER_ID;
 	}
 
 

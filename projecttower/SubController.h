@@ -7,6 +7,7 @@
 #define GAME_CONTROLLER_ID 1
 #define NETWORK_GAME_CLIENT_ID 2
 #define NETWORK_GAME_SERVER_ID 3
+#define SERVERBROWSER_CONTROLLER_ID 4
 
 #include "Vortex.h"
 #include "RenderObject.h"

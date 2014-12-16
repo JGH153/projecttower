@@ -15,6 +15,7 @@
 #include "NetworkGameServer.h"
 #include "SubController.h"
 #include "GlobalDefines.h"
+#include "ServerbrowserController.h"
 
 class ProgramController : public SubController
 {

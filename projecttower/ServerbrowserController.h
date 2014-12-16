@@ -12,12 +12,14 @@
 #include "BasicUnit.h"
 #include "VortexButtonRectangle.h"
 #include "VortexConvexButton.h"
+#include "VortexText.h"
+#include "VortexNetwork.h"
 
-class MenuController : public SubController {
+class ServerbrowserController : public SubController {
 
 public:
-	MenuController(Vortex * gameEngine, int controllerID);
-	~MenuController();
+	ServerbrowserController(Vortex * gameEngine, int controllerID);
+	~ServerbrowserController();
 
 	void update();
 	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
@@ -33,9 +35,13 @@ private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
 	VortexButtonRectangle * startSingelplayerGameButton;
-	VortexButtonRectangle * startMultiplayerGameButton;
+	VortexButtonRectangle * startSearchButton;
 	VortexButtonRectangle * quitGameButton;
 	VortexSprite * backgroundImage;
+
+	VortexText * serverbrowserTittle;
+
+	bool startedBroadcastSearch;
 
 	bool doMultiplayer;
 

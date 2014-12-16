@@ -93,6 +93,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="SelectionGizmo.cpp" />
+    <ClCompile Include="ServerbrowserController.cpp" />
     <ClCompile Include="SubController.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="VortexButtonRectangle.cpp" />
     <ClCompile Include="VortexConvexButton.cpp" />
     <ClCompile Include="VortexLoader.cpp" />
+    <ClCompile Include="VortexNetwork.cpp" />
     <ClCompile Include="VortexParticleSystem.cpp" />
     <ClCompile Include="VortexSprite.cpp" />
     <ClCompile Include="VortexText.cpp" />
@@ -127,6 +129,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="SelectionGizmo.h" />
+    <ClInclude Include="ServerbrowserController.h" />
     <ClInclude Include="SubController.h" />
     <ClInclude Include="sVar.h" />
     <ClInclude Include="Tower.h" />
@@ -137,6 +140,7 @@
     <ClInclude Include="VortexButtonRectangle.h" />
     <ClInclude Include="VortexConvexButton.h" />
     <ClInclude Include="VortexLoader.h" />
+    <ClInclude Include="VortexNetwork.h" />
     <ClInclude Include="VortexParticleSystem.h" />
     <ClInclude Include="VortexSprite.h" />
     <ClInclude Include="VortexText.h" />

@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Controllers">
       <UniqueIdentifier>{2ba11136-5d57-4f1b-b4af-c748fe46e60b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\OLD">
+      <UniqueIdentifier>{ccf7809a-e043-4791-845a-d0c88921870e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OLD">
+      <UniqueIdentifier>{407f8b61-1a85-4971-826c-d839ffd0da90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vortex.cpp">
@@ -126,17 +132,23 @@
     <ClCompile Include="GarbageCollector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkGameClient.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkGameServer.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
     <ClCompile Include="CannonTower.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkGameServer.cpp">
+      <Filter>Source Files\OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkGameClient.cpp">
+      <Filter>Source Files\OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexNetwork.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerbrowserController.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,17 +239,23 @@
     <ClInclude Include="GarbageCollector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkGameClient.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkGameServer.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
     <ClInclude Include="CannonTower.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">
       <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkGameClient.h">
+      <Filter>Header Files\OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkGameServer.h">
+      <Filter>Header Files\OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexNetwork.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerbrowserController.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
