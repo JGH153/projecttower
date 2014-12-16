@@ -21,15 +21,17 @@ ServerbrowserController::ServerbrowserController(Vortex * gameEngine, int contro
 	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight * 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
 	startSearchButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Update serverbrowser", gameEngine, 175);
 	startServerButton = new VortexButtonRectangle((buttonWidth / 2), startSearchButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Start server", gameEngine, 175);
+	joinLocalhostButton = new VortexButtonRectangle((buttonWidth / 2), startServerButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Join Localhost", gameEngine, 175);
 
 	quitGameButton->setHoverImage("Graphics/graybutton.png");
 	startSearchButton->setHoverImage("Graphics/graybutton.png");
 	startServerButton->setHoverImage("Graphics/graybutton.png");
+	joinLocalhostButton->setHoverImage("Graphics/graybutton.png");
 
 	guiObjects.push_back(quitGameButton);
 	guiObjects.push_back(startSearchButton);
 	guiObjects.push_back(startServerButton);
-
+	guiObjects.push_back(joinLocalhostButton);
 
 
 	//this->title = title;
@@ -116,7 +118,24 @@ void ServerbrowserController::setupConnection(sf::IpAddress targetIP) {
 
 	}
 
-	gameEngine->networkHandler->connectToServer(targetIP);
+	if (gameEngine->networkHandler->connectToServer(targetIP)) {
+
+		gameEngine->networkHandler->stopBroadcastSearch();
+
+		sf::Packet sendPacket;
+		int ID = VortexNetwork::packetIdStartGame;
+
+		sendPacket << ID;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+		std::cout << "Pakke sendt start game by client\n";
+
+		nextControllerID = GAME_CONTROLLER_ID;
+
+		
+
+	}
 
 
 }
@@ -159,8 +178,68 @@ void ServerbrowserController::update() {
 			stopServer();
 			
 		}
+	} else if (gameEngine->eventMouseClickedLeft && joinLocalhostButton->hovering) {
+
+		if (gameEngine->networkHandler->connectedByTCP) {
+
+			sf::Packet sendPacket;
+			int ID = 5;
+			std::string mainData = "Jeg er en mus";
+
+			sendPacket << ID << mainData;
+
+			gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+			std::cout << "Pakke sendt\n";
+
+		} else {
+
+			setupConnection(sf::IpAddress::LocalHost);
+
+		}
+
 	}
 
+
+	
+	if (gameEngine->networkHandler->connectedByTCP) {
+
+		if (gameEngine->networkHandler->newPacketsReady) {
+
+			auto packets = gameEngine->networkHandler->getTcpPackets();
+
+			for each (auto packet in packets) {
+
+				int ID;
+				std::string mainData;
+
+				packet >> ID;
+				
+				if (ID != VortexNetwork::packetIdStartGame) {
+					packet >> mainData;
+
+					std::cout << "Pakke motatt: (" << ID << ") " << mainData << std::endl;
+
+				} else {
+
+					std::cout << "Pakke motatt: (" << ID << ") " << std::endl;
+					nextControllerID = GAME_CONTROLLER_ID;
+
+				}
+	
+
+
+
+
+
+				
+
+			}
+
+		}
+			
+
+	}
 
 
 

@@ -34,6 +34,7 @@ public:
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
+	VortexButtonRectangle * joinLocalhostButton;
 	VortexButtonRectangle * startServerButton;
 	VortexButtonRectangle * startSearchButton;
 	VortexButtonRectangle * quitGameButton;

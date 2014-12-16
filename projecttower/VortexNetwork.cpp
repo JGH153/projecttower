@@ -27,6 +27,16 @@ VortexNetwork::VortexNetwork(unsigned short portNumGameParm, unsigned short port
 
 	serverAcceptThreadOnline = false;
 
+	connectedByTCP = false;
+
+	runReceiveTcpThreadLoop = false;
+	receiveTcpThreadOnline = false;
+
+	runSendTcpThreadLoop = false;
+	sendTcpThreadOnline = false;
+
+	newPacketsReady = false;
+
 
 
 }
@@ -108,20 +118,146 @@ VortexNetwork::~VortexNetwork() {
 
 
 
-void VortexNetwork::connectToServer(sf::IpAddress targetIP) {
+
+
+void VortexNetwork::startTcpConnectionHandlerThreads() {
+
+	runSendTcpThreadLoop = true;
+	sendTcpThreadOnline = false;
+
+	runReceiveTcpThreadLoop = true;
+	receiveTcpThreadOnline = false;
+
+	sendThread = std::thread(&VortexNetwork::sendTcpThreadLoop, this);
+	receiveThread = std::thread(&VortexNetwork::receiveTcpThreadLoop, this);
+
+	connectedByTCP = true;
+
+}
+
+
+
+
+void VortexNetwork::sendTcpThreadLoop() {
+
+	sendTcpThreadOnline = true;
+	tcpConnection.setBlocking(true);
+
+	sf::Packet packet;
+
+	while (runSendTcpThreadLoop) {
+
+
+		pendingSendPacketMutex.lock();
+		if (!pendingSendPackets.empty()) {
+
+			packet = pendingSendPackets.back();
+			pendingSendPackets.pop_back();
+
+		} else {
+			//a bit of sleepi and restart while loop
+			pendingSendPacketMutex.unlock();
+			sf::sleep(sf::milliseconds(15));
+			continue;
+		}
+		pendingSendPacketMutex.unlock();
+
+		
+		sf::Socket::Status status = tcpConnection.send(packet);
+
+		if (status != sf::Socket::Done) {
+			std::cout << "ERROR: sendTcpThreadLoop status(" << status << ")" << std::endl;
+			std::cin.get();
+		}
+
+
+
+	}
+	sendTcpThreadOnline = false;
+
+
+}
+
+void VortexNetwork::receiveTcpThreadLoop() {
+
+	receiveTcpThreadOnline = true;
+	tcpConnection.setBlocking(true);
+
+	while (runReceiveTcpThreadLoop) {
+
+		sf::Packet packet;
+		sf::Socket::Status status = tcpConnection.receive(packet);
+
+		if (status != sf::Socket::Done) {
+			std::cout << "ERROR: receiveTcpThreadLoop status(" << status << ")" << std::endl;
+			std::cin.get();
+		}
+
+		receivedPacketMutex.lock();
+		receivedPackets.push_back(packet);
+		receivedPacketMutex.unlock();
+		newPacketsReady = true;
+
+	}
+
+	receiveTcpThreadOnline = false;
+
+}
+
+bool VortexNetwork::sendTcpPacket(sf::Packet packet) {
+
+	if (!connectedByTCP) {
+		std::cout << "ERROR: sendTcpPacket: !connectedByTCP" << std::endl;
+		return false;
+	}
+
+	pendingSendPacketMutex.lock();
+	pendingSendPackets.push_back(packet);
+	pendingSendPacketMutex.unlock();
+
+
+
+}
+std::vector<sf::Packet> VortexNetwork::getTcpPackets() {
+
+	receivedPacketMutex.lock();
+
+	auto retunList = receivedPackets;
+	receivedPackets.clear();
+	newPacketsReady = false;
+	receivedPacketMutex.unlock();
+
+	return retunList;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+bool VortexNetwork::connectToServer(sf::IpAddress targetIP) {
 
 	std::cout << "Attemting to connect to (" << targetIP.toString() << ")" << std::endl;
 
 	sf::Socket::Status status = tcpConnection.connect(targetIP, portNumGame);
 	if (status != sf::Socket::Done) {
-		std::cout << "ERROR: VUnable to connect to server: connectToServer(" << targetIP.toString()<<")" << std::endl;
+		std::cout << "ERROR: Unable to connect to server: connectToServer(" << targetIP.toString()<<")" << std::endl;
 		std::cin.get();
-		return;
+		return false;
 	}
 
 
 	std::cout << "Connect succcessfull" << std::endl;
 
+	startTcpConnectionHandlerThreads();
+
+	return true;
 
 }
 
@@ -183,7 +319,7 @@ void VortexNetwork::serverAcceptClientThreadLoop() {
 	tcpListener.close();
 
 	if (clientConnected)
-		std::cout << "HER MÅ CONNECT TRÅDER STARTAS!\n";
+		startTcpConnectionHandlerThreads();
 
 	serverAcceptThreadOnline = false;
 

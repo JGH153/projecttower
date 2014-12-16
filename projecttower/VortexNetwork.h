@@ -33,9 +33,19 @@ public:
 
 	void startOpenServerTCP();
 	void stopOpenServerTCP();
-	void connectToServer(sf::IpAddress targetIP);
+
+	//WARNING, this is a BLCOKING function
+	bool connectToServer(sf::IpAddress targetIP);
 
 	bool showMeAsServer;
+
+	bool connectedByTCP;
+
+	bool sendTcpPacket(sf::Packet packet);
+	bool newPacketsReady;
+	std::vector<sf::Packet> getTcpPackets();
+
+	static const int packetIdStartGame = 1775;
 
 private:
 
@@ -56,7 +66,7 @@ private:
 	std::vector<sf::Packet> receivedPackets;
 	std::vector<sf::Packet> pendingSendPackets;
 
-	std::mutex pendingPacketMutex;
+	std::mutex pendingSendPacketMutex;
 	std::mutex receivedPacketMutex;
 	std::mutex broadcastSearchMutex;
 	std::mutex connectingMutex;
@@ -77,6 +87,16 @@ private:
 
 
 	void serverAcceptClientThreadLoop();
+
+	void startTcpConnectionHandlerThreads();
+	void receiveTcpThreadLoop();
+	void sendTcpThreadLoop();
+
+	bool runReceiveTcpThreadLoop;
+	bool receiveTcpThreadOnline;
+
+	bool runSendTcpThreadLoop;
+	bool sendTcpThreadOnline;
 
 	
 
