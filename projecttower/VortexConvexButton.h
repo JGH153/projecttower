@@ -13,6 +13,9 @@ public:
 	VortexConvexButton(int x, int y, std::vector<sf::Vector2f> vertices, std::string imageSource, std::string title, Vortex * gameEngine);
 	~VortexConvexButton();
 
+	void killYourself();
+
+
 	void setPosition(sf::Vector2f newPosition);
 	void setPosition(double x, double y);
 
@@ -29,5 +32,6 @@ private:
 	VortexText text;
 	sf::Font font;
 	VortexSprite * image;
+
 
 };

@@ -55,6 +55,12 @@ VortexConvexButton::~VortexConvexButton()
 {
 }
 
+void VortexConvexButton::killYourself() {
+
+	delete this;
+
+}
+
 void VortexConvexButton::update(){
 	if (mouseOver()){
 		shape.setOutlineThickness(3.0f);

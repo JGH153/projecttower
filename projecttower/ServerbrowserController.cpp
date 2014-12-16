@@ -19,13 +19,16 @@ ServerbrowserController::ServerbrowserController(Vortex * gameEngine, int contro
 
 
 	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight * 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
-	startSearchButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Start Broadcast Search", gameEngine, 175);
+	startSearchButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Update serverbrowser", gameEngine, 175);
+	startServerButton = new VortexButtonRectangle((buttonWidth / 2), startSearchButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Start server", gameEngine, 175);
 
 	quitGameButton->setHoverImage("Graphics/graybutton.png");
 	startSearchButton->setHoverImage("Graphics/graybutton.png");
+	startServerButton->setHoverImage("Graphics/graybutton.png");
 
 	guiObjects.push_back(quitGameButton);
 	guiObjects.push_back(startSearchButton);
+	guiObjects.push_back(startServerButton);
 
 
 
@@ -48,6 +51,7 @@ ServerbrowserController::ServerbrowserController(Vortex * gameEngine, int contro
 	
 
 	startedBroadcastSearch = false;
+	lookingForClient = false;
 
 }
 
@@ -59,34 +63,137 @@ void ServerbrowserController::preloadAssets() {
 
 }
 
-void ServerbrowserController::update() {
 
-	auto ipList = gameEngine->networkHandler->getIncomingBroadcastIpList();
-	
-	if (quitGameButton->isPressed && quitGameButton->hovering) {
-		gameEngine->closeApplication();
-	} else if (startSearchButton->isPressed && startSearchButton->hovering && !startedBroadcastSearch) {
+void ServerbrowserController::updateServerbrowser() {
+
+
+
+	if (!startedBroadcastSearch) {
 		startedBroadcastSearch = true;
 		gameEngine->networkHandler->startBroadcastSearch();
 	}
 
 
-	
+	gameEngine->networkHandler->showMeAsServer = lookingForClient;
+
+
+	int buttonWidth = 180;
+	int buttonHeight = 60;
+
+
+
+	auto ipList = gameEngine->networkHandler->getIncomingBroadcastIpList();
+
+
+
+	for each (auto currentButton in broadcastConnectButtons) {
+		gameEngine->addRemovableObjectToList(currentButton);
+	}
+	broadcastConnectButtons.clear();
+
+
+	for (int i = 0; i < ipList.size(); i++) {
+		auto newButton = new VortexButtonRectangle(	(WINDOWSIZEX / 2) - (buttonWidth / 2), 
+													40 + ((buttonHeight+10)*i), 
+													buttonWidth, 
+													buttonHeight, 
+													"Graphics/blackbutton.png", 
+													ipList[i].toString(),
+													gameEngine, 
+													175);
+		newButton->setHoverImage("Graphics/graybutton.png");
+		newButton->setValue(ipList[i].toString());
+		broadcastConnectButtons.push_back(newButton);
+	}
+
+}
+
+void ServerbrowserController::setupConnection(sf::IpAddress targetIP) {
+
+	if (lookingForClient){
+
+		stopServer();
+
+	}
+
+	gameEngine->networkHandler->connectToServer(targetIP);
+
+
+}
+
+void ServerbrowserController::update() {
 
 
 	for (auto *current : guiObjects) {
 		current->update();
 	}
 
+	for (auto *current : broadcastConnectButtons) {
+		current->update();
+
+		if (gameEngine->eventMouseClickedLeft && current->hovering) {
+
+			setupConnection(current->getValue());
+			std::cout << "Button pressed for IP: " << current->getValue() << std::endl;
+
+		}
+
+	}
+
+	
+	if (gameEngine->eventMouseClickedLeft && quitGameButton->hovering) {
+
+		gameEngine->closeApplication();
+
+	} else if (gameEngine->eventMouseClickedLeft && startSearchButton->hovering) {
+
+		updateServerbrowser();	
+
+	} else if (gameEngine->eventMouseClickedLeft && startServerButton->hovering) {
+		if (!lookingForClient) {
+			
+			startServer();
+
+		} else {
+
+			stopServer();
+			
+		}
+	}
+
+
 
 
 }
+
+void ServerbrowserController::startServer() {
+
+	lookingForClient = true;
+	gameEngine->networkHandler->startOpenServerTCP();
+	updateServerbrowser(); 
+
+
+}
+
+void ServerbrowserController::stopServer() {
+
+	lookingForClient = false;
+	gameEngine->networkHandler->stopOpenServerTCP();
+
+}
+
+
 
 std::vector<std::vector<sf::Drawable *>> ServerbrowserController::getDynamicRenderData() {
 
 	std::vector<std::vector<sf::Drawable *>> renderList;
 	std::vector<sf::Drawable *> renderListSub;
 
+	for (auto *currentDrawableList : broadcastConnectButtons) {
+		for (auto current : currentDrawableList->getRenderDrawable()) {
+			renderListSub.push_back(current);
+		}
+	}
 
 
 	renderList.push_back(renderListSub);

@@ -12,8 +12,9 @@
 #include "VortexSprite.h"
 #include "GlobalDefines.h"
 #include "VortexText.h"
+#include "RemovableObject.h"
 
-class VortexButton : public RenderObject
+class VortexButton : public RenderObject, public RemovableObject
 {
 public:
 	VortexButton(double x, double y, Vortex * gameEngine);
@@ -36,7 +37,12 @@ public:
 	VortexText* tooltipText;
 	sf::RectangleShape* tooltipBackground;
 
+	void setValue(std::string value);
+	std::string getValue();
+
 protected:	
+
+	std::string buttonValue;
 	
 	bool hidden;
 	double posX;

@@ -12,6 +12,14 @@ VortexButton::~VortexButton(){
 }
 
 
+void VortexButton::setValue(std::string value) {
+	buttonValue = value;
+}
+std::string VortexButton::getValue() {
+	return buttonValue;
+}
+
+
 sf::Vector2f VortexButton::getPosition(){
 
 	return sf::Vector2f(posX, posY);

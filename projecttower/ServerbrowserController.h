@@ -34,7 +34,7 @@ public:
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
-	VortexButtonRectangle * startSingelplayerGameButton;
+	VortexButtonRectangle * startServerButton;
 	VortexButtonRectangle * startSearchButton;
 	VortexButtonRectangle * quitGameButton;
 	VortexSprite * backgroundImage;
@@ -44,6 +44,17 @@ private:
 	bool startedBroadcastSearch;
 
 	bool doMultiplayer;
+
+	std::vector<VortexButtonRectangle *> broadcastConnectButtons;
+
+	void updateServerbrowser();
+	void setupConnection(sf::IpAddress);
+
+	void startServer();
+	void stopServer();
+
+	bool lookingForClient;
+
 
 };
 
