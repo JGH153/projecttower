@@ -325,7 +325,7 @@ void GameController::updateGhostBuildingSprite(sf::Vector2f mousePosView) {
 		return;
 	}
 
-	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && !unitOnTile(xpos, ypos) && (gameGuiController->getPlayerResources() >= 10)) {
+	if (onMyMapSide(xpos, ypos) && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && !unitOnTile(xpos, ypos) && (gameGuiController->getPlayerResources() >= 10)) {
 		towerBuildSprite->setColor(ABLETOBUILD);
 	}
 	else {
@@ -375,11 +375,17 @@ void GameController::doGameControllerStatup() {
 			playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 			playerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
 
+			enemyPlayerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
+
 		} else {
 
 			playerID = 1;
 			playerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
 			playerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
+
+			enemyPlayerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
 
 		}
 
@@ -391,6 +397,174 @@ void GameController::doGameControllerStatup() {
 	}
 
 }
+
+void GameController::readNetworkPackets() {
+
+	
+
+	if (gameEngine->networkHandler->newPacketsReady) {
+
+		auto packets = gameEngine->networkHandler->getTcpPackets();
+
+		for each (auto packet in packets) {
+
+			sf::Int32 typeID;
+
+			packet >> typeID;
+
+			if (typeID == VortexNetwork::packetId_MainGameSpawnUnit) {
+
+				sf::Int32 unitID;
+				packet >> unitID;
+
+				std::cout << "spawning enemy unitID:(" << unitID << ")!!\n";
+
+				spawnNewUnit(unitID, false);
+
+
+
+			} else if (typeID == VortexNetwork::packetId_MainGameSpawnTower) {
+
+				sf::Int32 towerID;
+				
+
+				sf::Int32 gridX;
+				sf::Int32 gridY;
+
+				packet >> towerID >> gridX >> gridY;
+
+				std::cout << "spawning tower towerID:(" << towerID << ")!!\n";
+
+				spawnNewTower(towerID, gridX, gridY);
+
+
+
+			}
+
+
+		}
+
+	}
+
+
+	
+
+}
+
+
+void GameController::spawnNewUnit(int ID, bool toOponent) {
+
+	sf::Vector2i unitSpawnPosTemp;
+	sf::Vector2i unitTargetPosTemp;
+
+	if (toOponent) {
+
+		std::cout << "SPAWNER HOST FIENDE\n";
+		unitSpawnPosTemp = enemyPlayerUnitSpawnPos;
+		unitTargetPosTemp = enemyPlayerUnitTargetPos;
+
+	} else {
+
+		std::cout << "SPAWNER HOST MEG <3\n";
+		unitSpawnPosTemp = playerUnitSpawnPos;
+		unitTargetPosTemp = playerUnitTargetPos;
+
+	}
+
+
+	Unit* testUnit;
+
+	gameEngine->groundTileListMutex.lock();
+	switch (ID) {
+	case 0:
+		testUnit = new IronmanUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	case 1:
+		testUnit = new BahamutUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	default:
+		testUnit = new BahamutUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	}
+
+
+	gameEngine->groundTileListMutex.unlock();
+
+	gameEngine->unitListMutex.lock();
+
+	unitSpawnTimer.restart();
+
+	unitList.push_back(testUnit);
+
+	gameEngine->unitListMutex.unlock();
+
+}
+
+
+void GameController::spawnNewTower(int towerID, int gridX, int gridY) {
+
+	gameEngine->unitListMutex.lock();
+	ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
+	gameEngine->unitListMutex.unlock();
+
+	gameEngine->towerListMutex.lock();
+	towerList.push_back(testTower);
+	gameEngine->towerListMutex.unlock();
+
+	mapGroundTile[gridX][gridY]->changeTileType(TileTypes::tower);
+	towerBuildSprite->setColor(UNABLETOBUILD);
+
+	// Subtract building cost from resource
+	gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+
+	// Notify units to calculate new route if this tile was in their path
+	groundTilesChanged = true;
+
+
+}
+
+
+void GameController::sendSpawnUnitPacket(int unitID) {
+
+	if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+		sf::Packet sendPacket;
+		sf::Int32 typeID = VortexNetwork::packetId_MainGameSpawnUnit;
+		sf::Int32 sendUnitID = unitID;
+
+		sendPacket << typeID << sendUnitID;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+		std::cout << "New unit Pakke sendt\n";
+
+	}
+
+}
+
+
+void GameController::sendSpawnNewTowerPacket(int towerID, int gridX, int gridY) {
+	
+
+	if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+		sf::Packet sendPacket;
+		sf::Int32 typeID = VortexNetwork::packetId_MainGameSpawnTower;
+		sf::Int32 spawnTowerID = towerID;
+		sf::Int32 spawnTowerGridX = gridX;
+		sf::Int32 spawnTowerGridY = gridY;
+
+		sendPacket << typeID << spawnTowerID << spawnTowerGridX << spawnTowerGridY;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+		std::cout << "New tower Pakke sendt\n";
+
+	}
+
+
+}
+
 
 void GameController::update() {
 
@@ -405,6 +579,10 @@ void GameController::update() {
 		//run on first call to update
 		doGameControllerStatup();
 
+	}
+
+	if (gameEngine->networkHandler->connectedByTCP) {
+		readNetworkPackets();
 	}
 
 
@@ -458,34 +636,19 @@ void GameController::update() {
 		}
 	}
 
+	//REMOVE FALSE TO ACTIVATE
+	if (false && unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
 
-	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
+		std::cout << "spawning at fixed rate\n";
 
-		Unit* testUnit;
+		spawnNewUnit(gameGuiController->currentLevel - 1, false);
 
-		gameEngine->groundTileListMutex.lock();
-		switch (gameGuiController->currentLevel) {
-		case 1:
-			testUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			break;
-		case 2:
-			testUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			break;
-		default:
-			testUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			break;
+		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+			sendSpawnUnitPacket(gameGuiController->currentLevel - 1);
+
 		}
-		
 
-		gameEngine->groundTileListMutex.unlock();
-
-		gameEngine->unitListMutex.lock();
-
-		unitSpawnTimer.restart();
-
-		unitList.push_back(testUnit);
-
-		gameEngine->unitListMutex.unlock();
 
 	}
 
@@ -594,28 +757,42 @@ void GameController::update() {
 	}
 
 	while (!gameGuiController->unitsToSpawn.empty()) {
-		Unit* spawnedUnit;
 
-		gameEngine->groundTileListMutex.lock();
-		switch (gameGuiController->unitsToSpawn.back()) {
-		case 1:
-			spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			break;
+		std::cout << "spawning at userWill rate\n";
 
-		case 2:
-			spawnedUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			break;
+		int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
 
-		default:
-			spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-			printf("Error spawning unit!!!!!\n");
-		}
-		gameEngine->groundTileListMutex.unlock();
+		spawnNewUnit(unitToSpawnID, true);
 		gameGuiController->unitsToSpawn.pop_back();
 
-		gameEngine->unitListMutex.lock();
-		unitList.push_back(spawnedUnit);
-		gameEngine->unitListMutex.unlock();
+		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+			sendSpawnUnitPacket(unitToSpawnID);
+
+		}
+
+		//Unit* spawnedUnit;
+
+		//gameEngine->groundTileListMutex.lock();
+		//switch (gameGuiController->unitsToSpawn.back()) {
+		//case 1:
+		//	spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+		//	break;
+
+		//case 2:
+		//	spawnedUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+		//	break;
+
+		//default:
+		//	spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
+		//	printf("Error spawning unit!!!!!\n");
+		//}
+		//gameEngine->groundTileListMutex.unlock();
+		//gameGuiController->unitsToSpawn.pop_back();
+
+		//gameEngine->unitListMutex.lock();
+		//unitList.push_back(spawnedUnit);
+		//gameEngine->unitListMutex.unlock();
 
 		
 	}
@@ -623,6 +800,34 @@ void GameController::update() {
 	previousMousePos = mousePosWindow;
 	
 }
+
+
+
+bool GameController::onMyMapSide(int gridX, int gridY) {
+
+	if (playerID == 0) { //only left side:
+
+
+		if (gridX <= (playerUnitSpawnPos.x/gridTileSize)) {
+			//std::cout << "spiller 0 rett side: " << gridX << " / " << (playerUnitSpawnPos.x / gridTileSize) << " \n";
+			return true;
+		}
+
+	} else if (playerID == 1) { //only right side:
+
+		if (gridX >= (playerUnitSpawnPos.x / gridTileSize)) {
+			return true;
+		}
+
+	}
+
+	return false;
+
+
+}
+
+
+
 
 void GameController::handlePlayerTowerAction() {
 	if (playerLost) {
@@ -704,25 +909,29 @@ void GameController::handlePlayerTowerAction() {
 		
 	}
 	//Building, and zone buildable
-	else if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
+	else if (onMyMapSide(xpos, ypos) && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
 		// Check if player has resources to build
 		if (gameGuiController->getPlayerResources() >= 10) {
-			gameEngine->unitListMutex.lock();
-			ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
-			gameEngine->unitListMutex.unlock();
 
-			gameEngine->towerListMutex.lock();
-			towerList.push_back(testTower);
-			gameEngine->towerListMutex.unlock();
+			spawnNewTower(0, xpos, ypos);
+			sendSpawnNewTowerPacket(0, xpos, ypos);
 
-			mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
-			towerBuildSprite->setColor(UNABLETOBUILD);
+			//gameEngine->unitListMutex.lock();
+			//ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
+			//gameEngine->unitListMutex.unlock();
 
-			// Subtract building cost from resource
-			gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+			//gameEngine->towerListMutex.lock();
+			//towerList.push_back(testTower);
+			//gameEngine->towerListMutex.unlock();
 
-			// Notify units to calculate new route if this tile was in their path
-			groundTilesChanged = true;
+			//mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
+			//towerBuildSprite->setColor(UNABLETOBUILD);
+
+			//// Subtract building cost from resource
+			//gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+
+			//// Notify units to calculate new route if this tile was in their path
+			//groundTilesChanged = true;
 		}
 		
 	}

@@ -112,7 +112,7 @@ void Projectile::update() {
 	destroyProjectile = checkIfHitTarget();
 	
 
-	if (posX < 0 || posX > WINDOWSIZEX || posY < 0 || posX > WINDOWSIZEY) {
+	if (posX < 0 || posX > WINDOWSIZEX || posY < 0 || posY > WINDOWSIZEY) {
 		destroyProjectile = true;
 	}
 }

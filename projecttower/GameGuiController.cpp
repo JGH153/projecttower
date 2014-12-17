@@ -33,7 +33,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
-	msToNextLevel = 10000;
+	msToNextLevel = 2000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);

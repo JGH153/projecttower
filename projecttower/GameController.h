@@ -79,6 +79,9 @@ private:
 	sf::Vector2i playerUnitSpawnPos;
 	sf::Vector2i playerUnitTargetPos;
 
+	sf::Vector2i enemyPlayerUnitSpawnPos;
+	sf::Vector2i enemyPlayerUnitTargetPos;
+
 	bool playerLost;
 	bool groundTilesChanged;
 	bool towerRemoved;
@@ -109,11 +112,20 @@ private:
 
 	
 	void doGameControllerStatup();
-	
+	void readNetworkPackets();
+
 	bool gameControllerFistRunDone;
 
 	bool multiplayerMode;
 	int playerID; // 0 = left/server, 1 = right/client
+
+	void spawnNewUnit(int ID, bool toOponent);
+	void sendSpawnUnitPacket(int unitID);
+
+	void spawnNewTower(int towerID, int gridX, int gridY);// 0 = arrowTow
+	void sendSpawnNewTowerPacket(int towerID, int gridX, int gridY); // 0 = arrowTow
+
+	bool onMyMapSide(int gridX, int gridY);
 
 };
 

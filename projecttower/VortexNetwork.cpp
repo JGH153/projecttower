@@ -215,7 +215,7 @@ bool VortexNetwork::sendTcpPacket(sf::Packet packet) {
 	pendingSendPackets.push_back(packet);
 	pendingSendPacketMutex.unlock();
 
-
+	return true;
 
 }
 std::vector<sf::Packet> VortexNetwork::getTcpPackets() {

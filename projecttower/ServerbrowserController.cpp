@@ -123,7 +123,7 @@ void ServerbrowserController::setupConnection(sf::IpAddress targetIP) {
 		gameEngine->networkHandler->stopBroadcastSearch();
 
 		sf::Packet sendPacket;
-		int ID = VortexNetwork::packetId_StartGame;
+		sf::Int32 ID = VortexNetwork::packetId_StartGame;
 
 		sendPacket << ID;
 
@@ -210,7 +210,7 @@ void ServerbrowserController::update() {
 
 			for each (auto packet in packets) {
 
-				int ID;
+				sf::Int32 ID;
 				std::string mainData;
 
 				packet >> ID;
