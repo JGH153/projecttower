@@ -108,8 +108,12 @@ private:
 	std::vector<RenderObject *> renderObjectsVector;
 
 	
-
+	void doGameControllerStatup();
 	
+	bool gameControllerFistRunDone;
+
+	bool multiplayerMode;
+	int playerID; // 0 = left/server, 1 = right/client
 
 };
 

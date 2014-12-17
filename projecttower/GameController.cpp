@@ -101,6 +101,10 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	zoomEndPoint = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
 	selectionGizmo = new SelectionGizmo(gameEngine, 0, 0);
 
+
+	gameControllerFistRunDone = false;
+	multiplayerMode = false;
+	playerID = 0;
 	
 }
 
@@ -357,11 +361,53 @@ void GameController::lerpZoom(float t) {
 	}
 }
 
+void GameController::doGameControllerStatup() {
+
+	//is multiplayer
+	//std::cout << "1";
+	if (gameEngine->networkHandler->connectedByTCP) {
+
+		multiplayerMode = true;
+
+		if (gameEngine->networkHandler->iAmTheServer) {
+
+			playerID = 0;
+			playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
+			playerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
+
+		} else {
+
+			playerID = 1;
+			playerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
+			playerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
+
+		}
+
+
+	}else{
+		//is singelplayer
+
+
+	}
+
+}
+
 void GameController::update() {
 
 	gameEngine->setMousePosView(gameView);
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
+
+	if (!gameControllerFistRunDone) {
+
+		gameControllerFistRunDone = true;
+		//run on first call to update
+		doGameControllerStatup();
+
+	}
+
+
 
 	if (zooming) {
 		lerpTime += 1.0f * ((float)gameEngine->deltaTime.asMilliseconds() / 200);

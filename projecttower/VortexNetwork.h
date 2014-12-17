@@ -45,9 +45,15 @@ public:
 	bool newPacketsReady;
 	std::vector<sf::Packet> getTcpPackets();
 
-	static const int packetIdStartGame = 1775;
+	static const int packetId_StartGame = 1775;
+	static const int packetId_MainGameGeneral = 1442;
+
+	//only valid value afther "connectedByTCP" is true
+	bool iAmTheServer;
 
 private:
+
+	
 
 	bool runBroadcastThreadLoop;
 	bool broadcastSearchThreadOnline;

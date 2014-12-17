@@ -256,6 +256,7 @@ bool VortexNetwork::connectToServer(sf::IpAddress targetIP) {
 	std::cout << "Connect succcessfull" << std::endl;
 
 	startTcpConnectionHandlerThreads();
+	iAmTheServer = false;
 
 	return true;
 
@@ -318,8 +319,10 @@ void VortexNetwork::serverAcceptClientThreadLoop() {
 
 	tcpListener.close();
 
-	if (clientConnected)
+	if (clientConnected) {
 		startTcpConnectionHandlerThreads();
+		iAmTheServer = true;
+	}
 
 	serverAcceptThreadOnline = false;
 
