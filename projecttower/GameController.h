@@ -48,7 +48,8 @@ public:
 	//std::vector<RenderObject *> getRenderObjectList();
 
 	void preloadAssets();
-	
+	std::vector<std::vector<int>> makeNavigationMapFromTileMap(std::vector<std::vector<MapTile *>> map);
+	sf::Vector2i worldCoordinateToMapTileCoordinate(sf::Vector2i coord);
 private:
 
 	sf::Clock unitSpawnTimer;

@@ -18,6 +18,7 @@
 #include "GlobalDefines.h"
 #include "GarbageCollector.h"
 #include "VortexNetwork.h"
+#include "PathFinder.h"
 
 //#define uint unsigned int
 typedef unsigned int uint;
@@ -174,6 +175,7 @@ public:
 
 	void print(std::string printText);
 
+	PathFinder pathFinder;
 
 	VortexNetwork * networkHandler;
 
