@@ -1,7 +1,7 @@
 #include "CannonTower.h"
 
 
-CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
+CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
 	damage = 5.f;
 	range = 150;
 	reloadTimeMS = 1000;
@@ -9,6 +9,7 @@ CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, i
 	splashRadius = 50;
 	reloading = false;
 
+	this->effectsHandler = effectsHandler;
 	this->gridTileSize = gridTileSize;
 
 	sf::Texture * texImageTile;
@@ -44,8 +45,6 @@ std::vector<sf::Drawable *> CannonTower::getRenderDrawable() {
 
 void CannonTower::update() {
 
-	//gameEngine->towerProjectileMutex.lock();
-
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i]->destroyProjectile == true) {
 			gameEngine->addRemovableObjectToList(projectiles[i]);
@@ -60,7 +59,6 @@ void CannonTower::update() {
 		current->update();
 	}
 
-	//gameEngine->towerProjectileMutex.unlock();
 
 	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
 		reloading = false;
@@ -84,7 +82,7 @@ void CannonTower::update() {
 		if (currentTarget != nullptr) {
 
 			auto sprite = new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
-			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage, splashRadius, enemyList, particleList);
+			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage, splashRadius, enemyList, particleList, effectsHandler);
 
 			projectiles.push_back(projectile);
 			reloading = true;

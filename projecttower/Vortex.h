@@ -164,6 +164,7 @@ public:
 	std::mutex builderSpriteMutex;
 	std::mutex selectionSpriteMutex;
 	std::mutex particleListMutex;
+	std::mutex effectsMutex;
 
 	// add to garbageCollector
 	void addRemovableObjectToList(RemovableObject * object);

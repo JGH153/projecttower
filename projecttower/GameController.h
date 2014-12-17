@@ -20,6 +20,7 @@
 #include "MapTile.h"
 #include "SelectionGizmo.h"
 
+
 #include "GameGuiController.h"
 #include "GlobalDefines.h"
 
@@ -127,5 +128,5 @@ private:
 
 	bool onMyMapSide(int gridX, int gridY);
 
+	EffectsHandler* effectsHandler;
 };
-

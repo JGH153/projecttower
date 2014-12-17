@@ -106,6 +106,8 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	multiplayerMode = false;
 	playerID = 0;
 	
+	effectsHandler = new EffectsHandler(gameEngine);
+	
 }
 
 
@@ -115,6 +117,11 @@ void GameController::preloadAssets() {
 	gameEngine->groundTileListMutex.lock();
 	preloadUnitList.push_back(new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
 	gameEngine->groundTileListMutex.unlock();
+
+	VortexAnimation* explosionEffect = new VortexAnimation(0, 0, 93, 100, 14, gameEngine);
+	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 93, 100, 10, 4);
+
+	gameEngine->addRemovableObjectToList(explosionEffect);
 
 	for (auto currentUnit : preloadUnitList) {
 		gameEngine->addRemovableObjectToList(currentUnit);
@@ -252,15 +259,11 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	gameEngine->particleListMutex.unlock();
 
 
-
-	gameEngine->gameControllerProjectileMutex.lock();
-	//for (auto currentRenderVector : projectileList) {
-	//	auto tempVector = currentRenderVector->getRenderDrawable();
-	//	renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
-	//}
-	gameEngine->gameControllerProjectileMutex.unlock();
-
-
+	gameEngine->effectsMutex.lock();
+	for (auto currentDrawable : effectsHandler->getRenderDrawable()) {
+		renderList.push_back(currentDrawable);
+	}
+	gameEngine->effectsMutex.unlock();
 
 
 	gameEngine->builderSpriteMutex.lock();
@@ -456,7 +459,7 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 
 	sf::Vector2i unitSpawnPosTemp;
 	sf::Vector2i unitTargetPosTemp;
-
+	toOponent = false;
 	if (toOponent) {
 
 		std::cout << "SPAWNER HOST FIENDE\n";
@@ -585,6 +588,7 @@ void GameController::update() {
 		readNetworkPackets();
 	}
 
+	effectsHandler->update();
 
 
 	if (zooming) {
@@ -613,7 +617,7 @@ void GameController::update() {
 						towerList.erase(towerList.begin() + i);
 						
 						gameEngine->unitListMutex.lock();
-						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos / gridTileSize, ypos / gridTileSize), &particleList);
+						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos / gridTileSize, ypos / gridTileSize), &particleList, effectsHandler);
 						selectedTower = newTower;
 						gameEngine->selectionSpriteMutex.lock();
 						selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo

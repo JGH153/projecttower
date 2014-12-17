@@ -5,8 +5,8 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	int buttonSize = 64;
 	int buttonSpread = 1;
 	bottomToolbarPosY = WINDOWSIZEY - buttonSize;
-	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/diy-hammer-icon.png", "", gameEngine, 255, "Arrow tower\nCost 10");
-	buildButton->setHoverImage("Graphics/GUI/diy-hammer-hover-icon.png");
+	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/build-arrowtower.png", "", gameEngine, 255, "Arrow tower\nCost 10");
+	buildButton->setHoverImage("Graphics/GUI/build-arrowtower-hover.png");
 
 	deleteTowerButton = new VortexButtonRectangle(buildButton->getPosition().x - buttonSize - buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine, 255, "Delete tower");
 	deleteTowerButton->setHoverImage("Graphics/GUI/delete-hover-icon.png");
@@ -72,14 +72,22 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	levelTimerText->setStyle(sf::Text::Bold);
 	levelTimerText->setPosition(0, levelText->getLocalBounds().height + 5);
 
+	sf::Color panelColor(25, 25, 25, 200);
 
 	resourcePanel = new sf::RectangleShape(sf::Vector2f(resourceText->getLocalBounds().width, timeText->getPosition().y + timeText->getLocalBounds().height + 10));
-	resourcePanel->setFillColor(sf::Color(25, 25, 25, 200));
+	resourcePanel->setFillColor(panelColor);
 	resourcePanel->setPosition(WINDOWSIZEX - resourceTextWidth, 0);
 
-	levelPanel = new sf::RectangleShape(sf::Vector2f(levelTimerText->getLocalBounds().width, levelTimerText->getPosition().y + levelTimerText->getLocalBounds().height + 10));
-	levelPanel->setFillColor(sf::Color(25, 25, 25, 200));
+	levelPanel = new sf::RectangleShape(sf::Vector2f(levelTimerText->getLocalBounds().width + 20, levelTimerText->getPosition().y + levelTimerText->getLocalBounds().height + 10));
+	levelPanel->setFillColor(panelColor);
 	levelPanel->setPosition(0, 0);
+
+	sf::Color outlineColor(0, 0, 0, 200);
+
+	resourcePanel->setOutlineThickness(3);
+	resourcePanel->setOutlineColor(outlineColor);
+	levelPanel->setOutlineThickness(3);
+	levelPanel->setOutlineColor(outlineColor);
 
 	guiObjects.push_back(buildButton);
 	guiObjects.push_back(deleteTowerButton);

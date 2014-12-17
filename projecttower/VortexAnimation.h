@@ -20,10 +20,13 @@ public:
 	VortexAnimation(float x, float y, int width, int height, float fps, Vortex * gameEngine);
 	~VortexAnimation();
 
-	void VortexAnimation::addFrame(sf::Texture * tex);
+	void addFrame(sf::Texture * tex);
 	void addFrame(std::string path);
+	void addFrame(VortexSprite* sprite);
+
 	void assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum);
 	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes);
+	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY);
 
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();
@@ -37,8 +40,11 @@ public:
 	sf::Vector2f getPos();
 
 	VortexSprite *  getDrawData();
+	
 
 	void killYourself();
+	int currentFrame;
+	std::vector <VortexSprite> frames;
 
 private:
 
@@ -48,12 +54,12 @@ private:
 	int height;
 
 	float fps;
-	int currentFrame;
+	
 
 	Vortex * gameEngine;
 	
 	sf::Time lastRunFrameTime;
 
-	std::vector <VortexSprite> frames;
+	
 };
 

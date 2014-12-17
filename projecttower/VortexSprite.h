@@ -19,6 +19,7 @@ public:
 	VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY, double width, double height);
 	VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY);
 	VortexSprite(const sf::Texture &texture);
+	VortexSprite(sf::Texture* texture, float posX, float posY, double width, double height);
 	~VortexSprite();
 
 	void setSize(double w, double h);

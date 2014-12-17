@@ -50,6 +50,7 @@ protected:
 	std::vector<Unit *> * enemyList;
 	std::vector<VortexParticleSystem*> * particleList;
 	std::vector<Projectile*> projectiles;
+	EffectsHandler* effectsHandler;
 	
 };
 

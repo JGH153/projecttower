@@ -11,8 +11,9 @@
 #include "RemovableObject.h"
 
 #include "Vortex.h"
-#include "VortexSprite.h"
+//#include "VortexSprite.h"
 #include "VortexAnimation.h"
+#include "EffectsHandler.h"
 
 //#include "GameGuiController.h"
 

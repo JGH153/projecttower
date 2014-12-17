@@ -6,7 +6,7 @@ class Projectile : public Entity {
 
 public:
 	Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage);
-	Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList, std::vector<VortexParticleSystem *> * particleList);
+	Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler);
 	~Projectile();
 
 	void update();
@@ -24,6 +24,8 @@ private:
 	Vortex *gameEngine;
 	float damage;
 	float speed;
+
+	EffectsHandler* effectsHandler;
 	
 
 	void updatePos();

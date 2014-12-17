@@ -13,6 +13,7 @@ VortexAnimation::VortexAnimation(float x, float y, int width, int height, float 
 	currentFrame = 0;
 
 	this->gameEngine = gameEngine;
+	playedOneTime = false;
 
 }
 
@@ -28,7 +29,6 @@ void VortexAnimation::addFrame(sf::Texture * tex){
 
 	image.setPosition(posX, posY);
 	image.setSize(width, height);
-	//image.setColor(sf::Color(gameEngine->getRandInt(0, 255), gameEngine->getRandInt(0, 255), gameEngine->getRandInt(0, 255), 255));
 	frames.push_back(image);
 
 
@@ -42,6 +42,12 @@ void VortexAnimation::addFrame(std::string path){
 	image.setSize(width, height);
 	
 	frames.push_back(image);
+
+}
+
+void VortexAnimation::addFrame(VortexSprite* sprite) {
+
+	frames.push_back(*sprite);
 
 }
 
@@ -108,9 +114,6 @@ void VortexAnimation::assembleAnimation(std::string startPath, std::string filet
 //assuming spritesheet have the same moveDirections (S, W, E, N)
 void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes) {
 
-	//std::cout << orgWidth << " " << orgHeight << std::endl;
-	//std::cin.get();
-
 	int yPosSheet = getDirectionIndex(moveDirection);
 
 	for (int x = 0; x < numFrmes; x++){
@@ -119,9 +122,31 @@ void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth
 		addFrame(image);
 
 	}
-	//sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(0, 0, 32, 48));
-	//addFrame(image);
+}
 
+// Used for cannon ball explosion
+void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY) {
+	float randomRotateSpeed = gameEngine->getRandFloat(-0.5f, 0.5f);
+	float randomRotation = gameEngine->getRandFloat(0.f, 359.f);
+	sf::IntRect rect;
+
+	for (int y = 0; y < numFrmesY; y++) {
+
+		for (int x = 0; x < numFrmesX; x++) {
+			rect = sf::IntRect(orgWidth*x, orgHeight*y, orgWidth, orgHeight);
+
+			sf::Texture* texture = gameEngine->loadImageSubsetToTexture(path, rect);
+			VortexSprite* image = new VortexSprite(texture, posX + orgWidth / 2, posY + orgWidth / 2, orgWidth, orgHeight);
+
+			image->setOrigin(orgWidth / 2, orgHeight / 2);
+
+			randomRotation += randomRotateSpeed;
+			image->rotate(randomRotation);
+
+			addFrame(image);
+		}
+
+	}
 }
 
 

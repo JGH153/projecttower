@@ -45,6 +45,7 @@ void Unit::initUnit() {
 	healthBarFG = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarFG.gif", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
 	healthBarFrame = new VortexSprite(gameEngine, "Graphics/GUI/HealthBar/HealthBarFrame.png", healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight);
 
+
 }
 
 

@@ -27,7 +27,13 @@ VortexSprite::VortexSprite(Vortex * gameEngine, std::string path, float posX, fl
 }
 
 VortexSprite::VortexSprite(const sf::Texture &texture) : sf::Sprite(texture){
-	
+
+
+}
+
+VortexSprite::VortexSprite(sf::Texture* texture, float posX, float posY, double width, double height) : sf::Sprite(*texture){
+	setPosition(posX, posY);
+	setSize(width, height);
 
 }
 
