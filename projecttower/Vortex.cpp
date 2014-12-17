@@ -37,7 +37,7 @@ void Vortex::initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPa
 
 	randomNumberGenerator = std::default_random_engine(time(NULL));
 
-	pathFinder = PathFinder();
+	pathFinder = new PathFinder();
 
 	networkHandler = new VortexNetwork(54000, 54001);
 

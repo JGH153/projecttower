@@ -29,6 +29,7 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 
 	}
 
+
 	hitParticleColor = sf::Color(220, 20, 20);
 	
 
@@ -79,7 +80,27 @@ void IronmanUnit::findNewPath() {
 
 
 void IronmanUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
+	if (firstTimeRun){
+		sf::Vector2i positionInMapCoordinate = WorldPosToMapGroundTilePos(posX, posY);
+		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapCoordinate.x][positionInMapCoordinate.y];
+		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+		firstTimeRun = false;
+	}
+
+	if (atTileCentre()){
+		if (atTargetTile()){
+			reachedGoal = true;
+			return;
+		}
+		sf::Vector2i positionInMapTileSpace = WorldPosToMapGroundTilePos(posX, posY);
+		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
+		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+	}
+	/*
 	if (isDead() || reachedGoal) {
 		return;
 	}
@@ -88,7 +109,7 @@ void IronmanUnit::update() {
 		/*
 		int centerPosX = posX + width / 2;
 		int centerPosY = posY + height / 2;
-		*/
+		*//*
 
 		if (abs(posX - endPosX) * abs(posX - endPosX) + abs(posY - endPosY) * abs(posY - endPosY) <= 100 * 100) {
 			reachedGoal = true;
@@ -148,7 +169,7 @@ void IronmanUnit::update() {
 		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
 	}
 	
-
+	*/
 	
 	/*posX += moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds();
 	posY += moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds();*/

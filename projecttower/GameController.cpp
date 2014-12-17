@@ -83,7 +83,15 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	std::cout << mapGroundTile.size() << " " << mapGroundTile[0].size() << std::endl;
 
+
+
 	preloadAssets();
+
+	std::vector<std::vector<int>> navigationMap;
+	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
+
 
 	//set view size relative to org window size
 	viewRelativeSizeX = 1.0f;
@@ -398,6 +406,11 @@ void GameController::doGameControllerStatup() {
 
 
 	}
+	std::cout << gridTileSize << std::endl;
+	std::vector<std::vector<int>> navigationMap;
+	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
 
 }
 
@@ -707,6 +720,12 @@ void GameController::update() {
 	}
 	gameEngine->renderObjectsListMutex.unlock();
 
+	if (groundTilesChanged){
+		std::vector<std::vector<int>> navigationMap;
+		navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+		sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+		gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
+	}
 
 	gameEngine->unitListMutex.lock();
 	for (int i = 0; i < unitList.size(); i++) {
@@ -949,11 +968,7 @@ void GameController::handlePlayerTowerAction() {
 			spawnNewTower(0, xpos, ypos, false);
 			sendSpawnNewTowerPacket(0, xpos, ypos);
 
-			std::vector<std::vector<int>> navigationMap;
-			navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
-			sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
-			gameEngine->pathFinder.breadthFirstDirectionMap = gameEngine->pathFinder.makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
-
+			
 			//gameEngine->unitListMutex.lock();
 			//ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
 			//gameEngine->unitListMutex.unlock();

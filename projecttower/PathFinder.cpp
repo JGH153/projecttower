@@ -44,12 +44,11 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 	resultMap[goalPoint.x][goalPoint.y] = exitDirecion;
 
 	// Work through the queue
-	while (!nodesToExplore.empty()){
-		sf::Vector2i currentNode = nodesToExplore.back();
+	while (nodesToExplore.size() != 0){
+		sf::Vector2i currentNode = nodesToExplore.front();
 		nodesToExplore.pop();
 		// Check all possible surrounding nodes
 		for (auto direction : DIRECTIONS) {
-
 			sf::Vector2i expandNode = currentNode + direction;
 			if (expandNode.x < 0 || expandNode.x > width || expandNode.y < 0 || expandNode.y > height){
 				// Out of bounds
@@ -57,18 +56,34 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 			}
 			else {
 				// Within bounds, check type
-				if (map[expandNode.x][expandNode.y] == TileTypes::grass){
-					// Allowed to expand grass tiles, check if not already expanded
-					if (resultMap[expandNode.x][expandNode.y] != sf::Vector2i(0, 0)){
-						// Push new node to queue
-						nodesToExplore.push(expandNode);
+				int nodeType = map[expandNode.x][expandNode.y];
+				if (nodeType == TileTypes::grass || nodeType == TileTypes::dirt || nodeType == TileTypes::cave){
+					// Check if not already expanded
+					if (resultMap[expandNode.x][expandNode.y] == sf::Vector2i(0, 0)){						
 						// Result is the direction opposite of the one you took to get to this node
 						resultMap[expandNode.x][expandNode.y] = direction * -1;
+						// Push new node to queue
+						nodesToExplore.push(expandNode);
 					}
 				}
 			}
 		}
 	}
+	/*
+	for (int x = 0; x < width; x++) {
+		std::vector<sf::Vector2i> column;
+		for (int y = 0; y < height; y++) {
+//			std::cout << map[x][y];
+			if (resultMap[x][y] == sf::Vector2i(0, 0)){
+				std::cout << "0";
+			}
+			else {
+				std::cout << "1";
+			}
+		}
+		std::cout << std::endl;
+	}
+	*/
 	return resultMap;
 }
 

@@ -176,7 +176,7 @@ public:
 
 	void print(std::string printText);
 
-	PathFinder pathFinder;
+	PathFinder * pathFinder;
 
 	VortexNetwork * networkHandler;
 

@@ -45,6 +45,8 @@ protected:
 
 	std::vector<std::vector<MapTile *>> * mapGroundTiles;
 
+	bool atTileCentre();
+	bool atTargetTile();
 	bool atCurrentWaypointTarget();
 	bool atCurrentWaypointTargetX();
 	bool atCurrentWaypointTargetY();

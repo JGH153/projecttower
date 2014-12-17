@@ -100,6 +100,24 @@ bool Unit::isDead() {
 //
 //}
 
+bool Unit::atTileCentre(){
+	float range = 5.f; //px?
+	
+	sf::Vector2f distanceFromCenter = sf::Vector2f(fmod(posX, 25.f), fmod(posY, 25.f));
+	if (abs(distanceFromCenter.x) <= range && abs(distanceFromCenter.y) <= range){
+		return true;
+	}
+	return false;
+}
+bool Unit::atTargetTile(){
+	float range = 5.f; //px?
+
+	if (abs(posX - endPosX) <= range && abs(posY - endPosY) <= range){
+		return true;
+	}
+	return false;
+}
+
 bool Unit::atCurrentWaypointTarget() {
 
 	float range = 5.f; //px?
