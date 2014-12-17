@@ -87,6 +87,7 @@
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="NetworkGameClient.cpp" />
     <ClCompile Include="NetworkGameServer.cpp" />
+    <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Projectile.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="NetworkGameClient.h" />
     <ClInclude Include="NetworkGameServer.h" />
+    <ClInclude Include="PathFinder.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RemovableObject.h" />

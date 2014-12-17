@@ -920,6 +920,11 @@ void GameController::handlePlayerTowerAction() {
 			spawnNewTower(0, xpos, ypos);
 			sendSpawnNewTowerPacket(0, xpos, ypos);
 
+			std::vector<std::vector<int>> navigationMap;
+			navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+			sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+			gameEngine->pathFinder.breadthFirstDirectionMap = gameEngine->pathFinder.makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
+
 			//gameEngine->unitListMutex.lock();
 			//ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
 			//gameEngine->unitListMutex.unlock();
@@ -1106,4 +1111,25 @@ bool GameController::calculateZoom(bool zoomOut) {
 
 	lerpTime = 0.0f;
 	return true;
+}
+
+std::vector<std::vector<int>> GameController::makeNavigationMapFromTileMap(std::vector<std::vector<MapTile *>> map) {
+	std::vector<std::vector<int>> resultMap;
+	int width, height;
+	width = map.size();
+	height = map[0].size();
+
+	for (int x = 0; x < width; x++) {
+		std::vector<int> column;
+		for (int y = 0; y < height; y++) {
+			column.push_back(map[x][y]->getTileTypeID());
+		}
+		resultMap.push_back(column);
+	}
+	return resultMap;
+}
+
+sf::Vector2i GameController::worldCoordinateToMapTileCoordinate(sf::Vector2i coord) {
+	int tileSize = (int)gridTileSize;
+	return coord / tileSize;
 }
