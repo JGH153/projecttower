@@ -124,9 +124,9 @@ private:
 	int playerID; // 0 = left/server, 1 = right/client
 
 	void spawnNewUnit(int ID, bool toOponent);
-	void sendSpawnUnitPacket(int unitID);
+	void sendSpawnUnitPacket(int unitID, bool toOponent);
 
-	void spawnNewTower(int towerID, int gridX, int gridY);// 0 = arrowTow
+	void spawnNewTower(int towerID, int gridX, int gridY, bool buildCommandFromOtherPlayer);// 0 = arrowTow
 	void sendSpawnNewTowerPacket(int towerID, int gridX, int gridY); // 0 = arrowTow
 
 	bool onMyMapSide(int gridX, int gridY);

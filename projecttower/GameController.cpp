@@ -418,11 +418,15 @@ void GameController::readNetworkPackets() {
 			if (typeID == VortexNetwork::packetId_MainGameSpawnUnit) {
 
 				sf::Int32 unitID;
-				packet >> unitID;
+				sf::Int32 sendToOponent;
+				packet >> unitID >> sendToOponent;
 
-				std::cout << "spawning enemy unitID:(" << unitID << ")!!\n";
+				std::cout << "PACKET RECIVED FOR UNIT: unitID:(" << unitID << ") Side: (" << sendToOponent << ")!!\n";
 
-				spawnNewUnit(unitID, false);
+				if ((bool)sendToOponent == true)
+					spawnNewUnit(unitID, true);
+				else
+					spawnNewUnit(unitID, false);
 
 
 
@@ -436,9 +440,9 @@ void GameController::readNetworkPackets() {
 
 				packet >> towerID >> gridX >> gridY;
 
-				std::cout << "spawning tower towerID:(" << towerID << ")!!\n";
+				std::cout << "PACKET RECIVED FOR towerID:(" << towerID << ")!!\n";
 
-				spawnNewTower(towerID, gridX, gridY);
+				spawnNewTower(towerID, gridX, gridY, true);
 
 
 
@@ -462,13 +466,13 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 
 	if (toOponent) {
 
-		std::cout << "SPAWNER HOST FIENDE\n";
+		//std::cout << "SPAWNER HOST FIENDE\n";
 		unitSpawnPosTemp = enemyPlayerUnitSpawnPos;
 		unitTargetPosTemp = enemyPlayerUnitTargetPos;
 
 	} else {
 
-		std::cout << "SPAWNER HOST MEG <3\n";
+		//std::cout << "SPAWNER HOST MEG <3\n";
 		unitSpawnPosTemp = playerUnitSpawnPos;
 		unitTargetPosTemp = playerUnitTargetPos;
 
@@ -501,8 +505,6 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 
 	gameEngine->unitListMutex.lock();
 
-	unitSpawnTimer.restart();
-
 	unitList.push_back(testUnit);
 
 	gameEngine->unitListMutex.unlock();
@@ -510,7 +512,7 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 }
 
 
-void GameController::spawnNewTower(int towerID, int gridX, int gridY) {
+void GameController::spawnNewTower(int towerID, int gridX, int gridY, bool buildCommandFromOtherPlayer) {
 
 	gameEngine->unitListMutex.lock();
 	ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
@@ -523,8 +525,10 @@ void GameController::spawnNewTower(int towerID, int gridX, int gridY) {
 	mapGroundTile[gridX][gridY]->changeTileType(TileTypes::tower);
 	towerBuildSprite->setColor(UNABLETOBUILD);
 
-	// Subtract building cost from resource
-	gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+	if (!buildCommandFromOtherPlayer) {
+		// Subtract building cost from resource
+		gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
+	}
 
 	// Notify units to calculate new route if this tile was in their path
 	groundTilesChanged = true;
@@ -533,20 +537,26 @@ void GameController::spawnNewTower(int towerID, int gridX, int gridY) {
 }
 
 
-void GameController::sendSpawnUnitPacket(int unitID) {
+void GameController::sendSpawnUnitPacket(int unitID, bool toOponent) {
 
 	if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+		//your oponent != opponent to himself
+		toOponent = !toOponent;
 
 		sf::Packet sendPacket;
 		sf::Int32 typeID = VortexNetwork::packetId_MainGameSpawnUnit;
 		sf::Int32 sendUnitID = unitID;
+		sf::Int32 sendToOponent = toOponent;
 
-		sendPacket << typeID << sendUnitID;
+		sendPacket << typeID << sendUnitID << sendToOponent;
 
 		gameEngine->networkHandler->sendTcpPacket(sendPacket);
 
-		std::cout << "New unit Pakke sendt\n";
+		std::cout << "New unit Pakke sendt!?!\n";
 
+	} else {
+		std::cout << "NOPE\n";
 	}
 
 }
@@ -649,15 +659,18 @@ void GameController::update() {
 	//REMOVE FALSE TO ACTIVATE
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
 
-		std::cout << "spawning at fixed rate\n";
+		//std::cout << "spawning at fixed rate\n";
 
 		spawnNewUnit(gameGuiController->currentLevel - 1, false);
 
 		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
 
-			sendSpawnUnitPacket(gameGuiController->currentLevel - 1);
+			//send spawn on our side (on enemy game)
+			sendSpawnUnitPacket(gameGuiController->currentLevel - 1, false);
 
 		}
+
+		unitSpawnTimer.restart();
 
 
 	}
@@ -779,7 +792,8 @@ void GameController::update() {
 			spawnNewUnit(unitToSpawnID, true);
 			gameGuiController->unitsToSpawn.pop_back();
 
-			sendSpawnUnitPacket(unitToSpawnID);
+			//send spawn on ther side in their game
+			sendSpawnUnitPacket(unitToSpawnID, true);
 
 		} else {
 
@@ -932,7 +946,7 @@ void GameController::handlePlayerTowerAction() {
 		// Check if player has resources to build
 		if (gameGuiController->getPlayerResources() >= 10) {
 
-			spawnNewTower(0, xpos, ypos);
+			spawnNewTower(0, xpos, ypos, false);
 			sendSpawnNewTowerPacket(0, xpos, ypos);
 
 			std::vector<std::vector<int>> navigationMap;
