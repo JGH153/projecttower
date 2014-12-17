@@ -767,14 +767,23 @@ void GameController::update() {
 
 		std::cout << "spawning at userWill rate\n";
 
-		int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
-
-		spawnNewUnit(unitToSpawnID, true);
-		gameGuiController->unitsToSpawn.pop_back();
+		
 
 		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
 
+			int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
+
+			spawnNewUnit(unitToSpawnID, true);
+			gameGuiController->unitsToSpawn.pop_back();
+
 			sendSpawnUnitPacket(unitToSpawnID);
+
+		} else {
+
+			int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
+
+			spawnNewUnit(unitToSpawnID, false);
+			gameGuiController->unitsToSpawn.pop_back();
 
 		}
 
