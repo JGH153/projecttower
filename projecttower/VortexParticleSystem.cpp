@@ -16,6 +16,8 @@ VortexParticleSystem::VortexParticleSystem(unsigned int count, float posX, float
 		m_vertices[i].position = sf::Vector2f(posX, posY);
 		float percent = (float)i / (float)m_particles.size();
 		m_particles[i].lifetime = sf::milliseconds(((std::rand() % 2000) + 1000) * percent);
+		m_vertices[i].color = baseParticleColor;
+		/*
 		// Get some slight variation in particle color
 		m_vertices[i].color.r = baseParticleColor.r + ((rand() % 256) * 0.05) - ((rand() % 256) * 0.05);
 		m_vertices[i].color.g = baseParticleColor.g + ((rand() % 256) * 0.05) - ((rand() % 256) * 0.05);
@@ -41,6 +43,13 @@ VortexParticleSystem::VortexParticleSystem(unsigned int count, float posX, float
 		else if (m_vertices[i].color.b < 0) {
 			m_vertices[i].color.b = 0;
 		}
+
+		if (m_vertices[i].color.a > 255) {
+			m_vertices[i].color.a = 255;
+		}
+		else if (m_vertices[i].color.a < 0) {
+			m_vertices[i].color.a = 0;
+		} */
 	}
 	timeAtStart.restart();
 }

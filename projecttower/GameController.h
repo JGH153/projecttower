@@ -14,6 +14,7 @@
 #include "CannonTower.h"
 #include "IronmanUnit.h"
 #include "BahamutUnit.h"
+#include "RussianGirlUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
 #include "VortexButtonRectangle.h"

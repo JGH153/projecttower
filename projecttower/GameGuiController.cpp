@@ -16,6 +16,9 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit2Button = new VortexButtonRectangle(sendUnit1Button->getPosition().x + sendUnit1Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/bahamut-button.png", "", gameEngine, 255, "Level 2 unit\nCost 19\n +2 Income");
 	sendUnit2Button->setHoverImage("Graphics/GUI/bahamut-hover-button.png");
+
+	sendUnit3Button = new VortexButtonRectangle(sendUnit2Button->getPosition().x + sendUnit2Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/russiangirl-button.png", "", gameEngine, 255, "Level 3 unit\nCost 28\n +3 Income");
+	sendUnit3Button->setHoverImage("Graphics/GUI/russiangirl-hover-button.png");
 	
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
@@ -93,6 +96,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(deleteTowerButton);
 	guiObjects.push_back(sendUnit1Button);
 	guiObjects.push_back(sendUnit2Button);
+	guiObjects.push_back(sendUnit3Button);
 	
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
@@ -212,6 +216,15 @@ void GameGuiController::update() {
 			}
 		}
 
+		else if (sendUnit3Button->isPressed && sendUnit3Button->hovering) {
+			if (playerResources >= 28) {
+				setPlayerResources(playerResources - 28);
+				setPlayerIncome(playerIncome + 3);
+				unitsToSpawn.push_back(3);
+				hideTowerUpgrades();
+			}
+		}
+
 	}
 
 
@@ -261,6 +274,9 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 		renderListSub.push_back(currentRenderObj);
 	}
 	for (auto currentRenderObj : sendUnit2Button->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+	for (auto currentRenderObj : sendUnit3Button->getTooltipDrawable()) {
 		renderListSub.push_back(currentRenderObj);
 	}
 

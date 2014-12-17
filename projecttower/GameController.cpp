@@ -459,7 +459,7 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 
 	sf::Vector2i unitSpawnPosTemp;
 	sf::Vector2i unitTargetPosTemp;
-	toOponent = false;
+
 	if (toOponent) {
 
 		std::cout << "SPAWNER HOST FIENDE\n";
@@ -484,6 +484,9 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 		break;
 	case 1:
 		testUnit = new BahamutUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	case 2:
+		testUnit = new RussianGirlUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
 	default:
 		testUnit = new BahamutUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
@@ -641,7 +644,7 @@ void GameController::update() {
 	}
 
 	//REMOVE FALSE TO ACTIVATE
-	if (false && unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
+	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
 
 		std::cout << "spawning at fixed rate\n";
 

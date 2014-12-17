@@ -95,6 +95,7 @@
     <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="RussianGirlUnit.cpp" />
     <ClCompile Include="SelectionGizmo.cpp" />
     <ClCompile Include="ServerbrowserController.cpp" />
     <ClCompile Include="SubController.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="GarbageCollector.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderObject.h" />
+    <ClInclude Include="RussianGirlUnit.h" />
     <ClInclude Include="SelectionGizmo.h" />
     <ClInclude Include="ServerbrowserController.h" />
     <ClInclude Include="SubController.h" />

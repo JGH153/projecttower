@@ -62,11 +62,11 @@ bool Projectile::checkIfHitTarget() {
 		if (radius > 0) {
 			// If projectile is explosive, damage others within radius as well
 			effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
-			/*
+			
 			gameEngine->particleListMutex.lock();
-			particleList->push_back(new VortexParticleSystem(160, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color(100, 100, 100, 150), sf::Quads, 200, 150));
+			particleList->push_back(new VortexParticleSystem(1000, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color::White, sf::Points, 200, 120));
 			gameEngine->particleListMutex.unlock();
-			*/
+			
 
 			for (auto currentUnit : *enemyList) {
 				if (abs(currentUnit->getPos().x - target->getPos().x) * abs(currentUnit->getPos().x - target->getPos().x) + abs(currentUnit->getPos().y - target->getPos().y) * abs(currentUnit->getPos().y - target->getPos().y) < radius * radius) {
