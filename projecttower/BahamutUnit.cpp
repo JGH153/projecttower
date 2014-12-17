@@ -6,10 +6,10 @@ BahamutUnit::BahamutUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.04f;
+	speed = 0.03f;
 	width = 96 / 4;
 	height = 96 / 4;
-	maxHealth = 40.f;
+	maxHealth = 15.f;
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 2;

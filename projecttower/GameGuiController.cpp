@@ -2,7 +2,7 @@
 
 
 GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
-	int buttonSize = 64;
+	int buttonSize = 52;
 	int buttonSpread = 1;
 	bottomToolbarPosY = WINDOWSIZEY - buttonSize;
 	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/build-arrowtower.png", "", gameEngine, 255, "Arrow tower\nCost 10");
@@ -19,6 +19,9 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit3Button = new VortexButtonRectangle(sendUnit2Button->getPosition().x + sendUnit2Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/russiangirl-button.png", "", gameEngine, 255, "Level 3 unit\nCost 28\n +3 Income");
 	sendUnit3Button->setHoverImage("Graphics/GUI/russiangirl-hover-button.png");
+
+	sendUnit4Button = new VortexButtonRectangle(sendUnit3Button->getPosition().x + sendUnit3Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/sadako-button.png", "", gameEngine, 255, "Level 4 unit\nCost 37\n +4 Income");
+	sendUnit4Button->setHoverImage("Graphics/GUI/sadako-hover-button.png");
 	
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
@@ -32,7 +35,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	showingTowerUpgrades = false;
 	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
-	playerResources = 50;
+	playerResources = 20;
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
@@ -97,6 +100,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(sendUnit1Button);
 	guiObjects.push_back(sendUnit2Button);
 	guiObjects.push_back(sendUnit3Button);
+	guiObjects.push_back(sendUnit4Button);
 	
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
@@ -161,14 +165,14 @@ void GameGuiController::update() {
 
 	msSinceLastIncome -= gameEngine->deltaTime.asMilliseconds();
 	if (msSinceLastIncome <= 0) {
-		msSinceLastIncome += 15000;
+		msSinceLastIncome += 10000;
 		setPlayerResources(playerResources + playerIncome);
 	}
 	setTimer(msSinceLastIncome / 1000);
 
 	msToNextLevel -= gameEngine->deltaTime.asMilliseconds();
 	if (msToNextLevel <= 0) {
-		msToNextLevel += 45000;
+		msToNextLevel += 25000;
 		currentLevel++;
 		setCurrentLevel(currentLevel);
 	}
@@ -225,6 +229,15 @@ void GameGuiController::update() {
 			}
 		}
 
+		else if (sendUnit4Button->isPressed && sendUnit4Button->hovering) {
+			if (playerResources >= 37) {
+				setPlayerResources(playerResources - 37);
+				setPlayerIncome(playerIncome + 4);
+				unitsToSpawn.push_back(4);
+				hideTowerUpgrades();
+			}
+		}
+
 	}
 
 
@@ -277,6 +290,9 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 		renderListSub.push_back(currentRenderObj);
 	}
 	for (auto currentRenderObj : sendUnit3Button->getTooltipDrawable()) {
+		renderListSub.push_back(currentRenderObj);
+	}
+	for (auto currentRenderObj : sendUnit4Button->getTooltipDrawable()) {
 		renderListSub.push_back(currentRenderObj);
 	}
 
@@ -341,7 +357,7 @@ void GameGuiController::setPlayerLives(int newValue) {
 	}
 	numLives = newValue;
 	livesText->setString("Lives remaining: " + std::to_string(newValue));
-	float textWidth = timeText->getLocalBounds().width;
+	float textWidth = livesText->getLocalBounds().width;
 	livesText->setPosition(WINDOWSIZEX - textWidth, incomeText->getPosition().y + incomeText->getLocalBounds().height + 5);
 
 	if (numLives <= 0) {

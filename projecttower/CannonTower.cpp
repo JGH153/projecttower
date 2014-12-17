@@ -2,11 +2,11 @@
 
 
 CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
-	damage = 5.f;
+	damage = 3.1f;
 	range = 150;
-	reloadTimeMS = 1000;
-	projectileSpeed = 0.15f;
-	splashRadius = 50;
+	reloadTimeMS = 1100;
+	projectileSpeed = 0.2f;
+	splashRadius = 28;
 	reloading = false;
 
 	this->effectsHandler = effectsHandler;

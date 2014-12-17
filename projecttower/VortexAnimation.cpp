@@ -136,12 +136,14 @@ void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth
 			rect = sf::IntRect(orgWidth*x, orgHeight*y, orgWidth, orgHeight);
 
 			sf::Texture* texture = gameEngine->loadImageSubsetToTexture(path, rect);
-			VortexSprite* image = new VortexSprite(texture, posX + orgWidth / 2, posY + orgWidth / 2, orgWidth, orgHeight);
+			VortexSprite* image = new VortexSprite(texture, posX, posY, width, height);
+			sf::Color barelyTransparent(255, 255, 255, 230);
+			image->setColor(barelyTransparent);
 
-			image->setOrigin(orgWidth / 2, orgHeight / 2);
+			//image->setOrigin(width / 2, height / 2);
 
-			randomRotation += randomRotateSpeed;
-			image->rotate(randomRotation);
+			//randomRotation += randomRotateSpeed;
+			//image->rotate(randomRotation);
 
 			addFrame(image);
 		}
