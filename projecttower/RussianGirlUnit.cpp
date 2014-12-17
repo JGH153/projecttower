@@ -6,10 +6,10 @@ RussianGirlUnit::RussianGirlUnit(Vortex * gameEngine, std::vector<std::vector<Ma
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.06f;
+	speed = 0.04f;
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 60.f;
+	maxHealth = 25.f;
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 3;

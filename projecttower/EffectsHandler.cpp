@@ -36,7 +36,9 @@ void EffectsHandler::update() {
 }
 
 void EffectsHandler::showExplosion(int posX, int posY) {
-	VortexAnimation* explosionEffect = new VortexAnimation(posX - (93 / 2), posY - (100 / 2), 93, 100, 30, gameEngine);
+	int effectWidth = 93 / 2;
+	int effectHeight = 100 / 2;
+	VortexAnimation* explosionEffect = new VortexAnimation(posX - (effectWidth / 2), posY - (effectHeight / 2), effectWidth, effectHeight, 30, gameEngine);
 	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 93, 100, 10, 4);
 
 	gameEngine->effectsMutex.lock();

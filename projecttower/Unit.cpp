@@ -102,7 +102,7 @@ bool Unit::isDead() {
 
 bool Unit::atCurrentWaypointTarget() {
 
-	float range = 1.f; //px?
+	float range = 5.f; //px?
 
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 
@@ -123,7 +123,7 @@ bool Unit::atCurrentWaypointTarget() {
 
 bool Unit::atCurrentWaypointTargetX() {
 
-	float range = 1.f; //px?
+	float range = 5.f; //px?
 
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 
@@ -138,7 +138,7 @@ bool Unit::atCurrentWaypointTargetX() {
 
 bool Unit::atCurrentWaypointTargetY() {
 
-	float range = 1.f; //px?
+	float range = 5.f; //px?
 
 	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
 

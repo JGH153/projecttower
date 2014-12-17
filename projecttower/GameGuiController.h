@@ -59,6 +59,7 @@ private:
 	VortexButtonRectangle * sendUnit1Button;
 	VortexButtonRectangle * sendUnit2Button;
 	VortexButtonRectangle * sendUnit3Button;
+	VortexButtonRectangle * sendUnit4Button;
 	
 	VortexText* resourceText;
 	VortexText* incomeText;
