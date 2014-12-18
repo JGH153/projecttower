@@ -192,6 +192,18 @@
     <ClCompile Include="DraxUnit.cpp">
       <Filter>Source Files\GameObjects\Units</Filter>
     </ClCompile>
+    <ClCompile Include="IfritUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="HulkUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="ReaperUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -327,6 +339,18 @@
       <Filter>Header Files\GameObjects\Units</Filter>
     </ClInclude>
     <ClInclude Include="DraxUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="IfritUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="HulkUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="ReaperUnit.h">
       <Filter>Header Files\GameObjects\Units</Filter>
     </ClInclude>
   </ItemGroup>

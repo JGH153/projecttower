@@ -12,7 +12,7 @@ IndianaJonesUnit::IndianaJonesUnit(Vortex * gameEngine, std::vector<std::vector<
 	maxHealth = 48.f; //+12
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 5;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -40,13 +40,13 @@ IndianaJonesUnit::~IndianaJonesUnit() {
 
 std::vector<sf::Drawable *> IndianaJonesUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 void IndianaJonesUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
 	updateMovement();
 

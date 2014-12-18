@@ -2,16 +2,22 @@
 
 
 GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
-	int buttonSize = 52;
+	int buttonSize = 50;
 	int buttonSpread = 1;
+	int numToolbarButtons = 14;
+	int toolbarPanelWidth = numToolbarButtons * (buttonSize + buttonSpread);
+	int toolbarPanelPosX = WINDOWSIZEX / 2 - toolbarPanelWidth / 2;
 	bottomToolbarPosY = WINDOWSIZEY - buttonSize;
-	buildButton = new VortexButtonRectangle(WINDOWSIZEX / 2 - buttonSize, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/build-arrowtower.png", "", gameEngine, 255, "Arrow tower\nCost 10");
-	buildButton->setHoverImage("Graphics/GUI/build-arrowtower-hover.png");
 
-	deleteTowerButton = new VortexButtonRectangle(buildButton->getPosition().x - buttonSize - buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine, 255, "Delete tower");
+	deleteTowerButton = new VortexButtonRectangle(toolbarPanelPosX + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/delete-icon.png", "", gameEngine, 255, "Delete tower");
 	deleteTowerButton->setHoverImage("Graphics/GUI/delete-hover-icon.png");
 
-	sendUnit1Button = new VortexButtonRectangle(WINDOWSIZEX / 2 + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit\nCost 10\n +1 Income");
+
+	buildButton = new VortexButtonRectangle(deleteTowerButton->getPosition().x + deleteTowerButton->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/build-arrowtower.png", "", gameEngine, 255, "Arrow tower\nCost 10");
+	buildButton->setHoverImage("Graphics/GUI/build-arrowtower-hover.png");
+
+	
+	sendUnit1Button = new VortexButtonRectangle(buildButton->getPosition().x + buildButton->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit\nCost 10\n +1 Income");
 	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
 
 	sendUnit2Button = new VortexButtonRectangle(sendUnit1Button->getPosition().x + sendUnit1Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/bahamut-button.png", "", gameEngine, 255, "Level 2 unit\nCost 19\n +2 Income");
@@ -35,8 +41,17 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	sendUnit8Button = new VortexButtonRectangle(sendUnit7Button->getPosition().x + sendUnit7Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/starlord-button.png", "", gameEngine, 255, "Level 8 unit\nCost 73\n +8 Income");
 	sendUnit8Button->setHoverImage("Graphics/GUI/starlord-hover-button.png");
 
-	sendUnit9Button = new VortexButtonRectangle(sendUnit8Button->getPosition().x + sendUnit8Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/drax-button.png", "", gameEngine, 255, "Level 8 unit\nCost 82\n +9 Income");
+	sendUnit9Button = new VortexButtonRectangle(sendUnit8Button->getPosition().x + sendUnit8Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/drax-button.png", "", gameEngine, 255, "Level 9 unit\nCost 82\n +9 Income");
 	sendUnit9Button->setHoverImage("Graphics/GUI/drax-hover-button.png");
+
+	sendUnit10Button = new VortexButtonRectangle(sendUnit9Button->getPosition().x + sendUnit9Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ifrit-button.png", "", gameEngine, 255, "Level 10 unit\nCost 91\n +10 Income");
+	sendUnit10Button->setHoverImage("Graphics/GUI/ifrit-hover-button.png");
+
+	sendUnit11Button = new VortexButtonRectangle(sendUnit10Button->getPosition().x + sendUnit10Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/hulk-button.png", "", gameEngine, 255, "Level 11 unit\nCost 100\n +11 Income");
+	sendUnit11Button->setHoverImage("Graphics/GUI/hulk-hover-button.png");
+
+	sendUnit12Button = new VortexButtonRectangle(sendUnit11Button->getPosition().x + sendUnit11Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/death-button.png", "", gameEngine, 255, "Level 12 unit\nCost 109\n +12 Income");
+	sendUnit12Button->setHoverImage("Graphics/GUI/death-hover-button.png");
 	
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
@@ -53,9 +68,13 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buttons.push_back(sendUnit7Button);
 	buttons.push_back(sendUnit8Button);
 	buttons.push_back(sendUnit9Button);
+	buttons.push_back(sendUnit10Button);
+	buttons.push_back(sendUnit11Button);
+	buttons.push_back(sendUnit12Button);
+
 	
 
-	building = true;
+	building = false;
 	deleting = false;
 	playerLost = false;
 	addedLoserText = false;
@@ -64,7 +83,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
 	playerResources = 20;
-	playerResources = 2000;
+	//playerResources = 2000;
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
@@ -117,12 +136,18 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	levelPanel->setFillColor(panelColor);
 	levelPanel->setPosition(0, 0);
 
+	buttonPanel = new sf::RectangleShape(sf::Vector2f(toolbarPanelWidth, buttonSize + 5));
+	buttonPanel->setFillColor(sf::Color::White);
+	buttonPanel->setPosition(toolbarPanelPosX, bottomToolbarPosY);
+
 	sf::Color outlineColor(0, 0, 0, 200);
 
 	resourcePanel->setOutlineThickness(3);
 	resourcePanel->setOutlineColor(outlineColor);
 	levelPanel->setOutlineThickness(3);
 	levelPanel->setOutlineColor(outlineColor);
+	buttonPanel->setOutlineThickness(5);
+	buttonPanel->setOutlineColor(sf::Color(50, 50, 50, 150));
 
 	for (auto button : buttons) {
 		guiObjects.push_back(button);
@@ -336,6 +361,30 @@ void GameGuiController::update() {
 				hideTowerUpgrades();
 			}
 		}
+		else if (sendUnit10Button->isPressed && sendUnit10Button->hovering) {
+			if (playerResources >= 91) {
+				setPlayerResources(playerResources - 91);
+				setPlayerIncome(playerIncome + 10);
+				unitsToSpawn.push_back(10);
+				hideTowerUpgrades();
+			}
+		}
+		else if (sendUnit11Button->isPressed && sendUnit11Button->hovering) {
+			if (playerResources >= 100) {
+				setPlayerResources(playerResources - 100);
+				setPlayerIncome(playerIncome + 11);
+				unitsToSpawn.push_back(11);
+				hideTowerUpgrades();
+			}
+		}
+		else if (sendUnit12Button->isPressed && sendUnit12Button->hovering) {
+			if (playerResources >= 109) {
+				setPlayerResources(playerResources - 109);
+				setPlayerIncome(playerIncome + 12);
+				unitsToSpawn.push_back(12);
+				hideTowerUpgrades();
+			}
+		}
 
 	}
 
@@ -368,6 +417,7 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 
 	renderListSub.push_back(resourcePanel);
 	renderListSub.push_back(levelPanel);
+	renderListSub.push_back(buttonPanel);
 	
 	for (auto currentRenderVector : guiObjects) {
 		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {

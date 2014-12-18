@@ -40,14 +40,14 @@ RussianGirlUnit::~RussianGirlUnit() {
 
 std::vector<sf::Drawable *> RussianGirlUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 
 void RussianGirlUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
 	updateMovement();
 

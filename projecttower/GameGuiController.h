@@ -69,6 +69,9 @@ private:
 	VortexButtonRectangle * sendUnit7Button;
 	VortexButtonRectangle * sendUnit8Button;
 	VortexButtonRectangle * sendUnit9Button;
+	VortexButtonRectangle * sendUnit10Button;
+	VortexButtonRectangle * sendUnit11Button;
+	VortexButtonRectangle * sendUnit12Button;
 	
 	VortexText* resourceText;
 	VortexText* incomeText;
@@ -85,6 +88,7 @@ private:
 
 	sf::RectangleShape* resourcePanel;
 	sf::RectangleShape* levelPanel;
+	sf::RectangleShape* buttonPanel;
 	std::vector<VortexButtonRectangle*> buttons;
 
 	int playerIncome;

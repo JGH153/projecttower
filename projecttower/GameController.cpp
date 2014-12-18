@@ -268,6 +268,17 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	std::vector<sf::Drawable *> renderProjectileList;
 
+	gameEngine->unitListMutex.lock();
+	for (auto currentRenderVector : unitList) {
+
+		auto tempVector = currentRenderVector->getRenderDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
+	}
+	gameEngine->unitListMutex.unlock();
+
+
 	//gameEngine->towerProjectileMutex.lock();
 	for (auto currentRenderVector : towerList) {
 
@@ -284,16 +295,7 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	//gameEngine->towerProjectileMutex.unlock();
 	gameEngine->towerListMutex.unlock();
 
-
-	gameEngine->unitListMutex.lock();
-	for (auto currentRenderVector : unitList) {
-
-		auto tempVector = currentRenderVector->getRenderDrawable();
-
-		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
-
-	}
-	gameEngine->unitListMutex.unlock();
+	
 
 	gameEngine->particleListMutex.lock();
 	for (sf::Drawable* current : particleList) {
@@ -307,6 +309,17 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		renderList.push_back(currentDrawable);
 	}
 	gameEngine->effectsMutex.unlock();
+
+	// Unit health bars
+	gameEngine->unitListMutex.lock();
+	for (auto currentRenderVector : unitList) {
+
+		auto tempVector = currentRenderVector->getHealthbarDrawable();
+
+		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+
+	}
+	gameEngine->unitListMutex.unlock();
 
 
 	gameEngine->builderSpriteMutex.lock();
@@ -635,8 +648,17 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 	case 8:
 		testUnit = new DraxUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
+	case 9:
+		testUnit = new IfritUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	case 10:
+		testUnit = new HulkUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	case 11:
+		testUnit = new DeathUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
 	default:
-		testUnit = new DraxUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		testUnit = new ReaperUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y, gameGuiController->currentLevel);
 		break;
 	}
 

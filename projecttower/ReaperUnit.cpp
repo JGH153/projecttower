@@ -1,18 +1,18 @@
-#include "SadakoUnit.h"
+#include "ReaperUnit.h"
 
-
-SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
+// Last unit. For sudden death, to end game
+ReaperUnit::ReaperUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY, int currentLevel) : Unit(gameEngine, mapGroundTiles, posX, posY) {
 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.035f;
-	width = 32 / 2;
+	speed = 0.07f + currentLevel * 0.002;
+	width = 50 / 2;
 	height = 48 / 2;
-	maxHealth = 36.f; //+11
+	maxHealth = currentLevel * 15;
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 13;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -22,7 +22,7 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/Units/sadako.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/reaper.png", 50, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}
@@ -34,16 +34,16 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 }
 
 
-SadakoUnit::~SadakoUnit() {
+ReaperUnit::~ReaperUnit() {
 
 }
 
-std::vector<sf::Drawable *> SadakoUnit::getRenderDrawable() {
+std::vector<sf::Drawable *> ReaperUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
 	return temp;
 }
 
-void SadakoUnit::update() {
+void ReaperUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
 	}
@@ -74,8 +74,9 @@ void SadakoUnit::update() {
 
 }
 
-void SadakoUnit::killYourself() {
+void ReaperUnit::killYourself() {
 
 	delete this;
 
 }
+

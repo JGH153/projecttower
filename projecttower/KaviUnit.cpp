@@ -12,7 +12,7 @@ KaviUnit::KaviUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 	maxHealth = 75.f; //+14
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 7;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -40,13 +40,13 @@ KaviUnit::~KaviUnit() {
 
 std::vector<sf::Drawable *> KaviUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 void KaviUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
 	updateMovement();
 

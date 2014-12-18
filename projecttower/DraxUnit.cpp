@@ -9,10 +9,10 @@ DraxUnit::DraxUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 	speed = 0.06f;
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 106.f; //+1+
+	maxHealth = 106.f; //+16
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 9;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -40,13 +40,13 @@ DraxUnit::~DraxUnit() {
 
 std::vector<sf::Drawable *> DraxUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 void DraxUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
 	updateMovement();
 

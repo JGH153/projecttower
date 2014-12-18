@@ -12,7 +12,7 @@ StarlordUnit::StarlordUnit(Vortex * gameEngine, std::vector<std::vector<MapTile 
 	maxHealth = 90.f; //+15
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 8;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -40,13 +40,13 @@ StarlordUnit::~StarlordUnit() {
 
 std::vector<sf::Drawable *> StarlordUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 void StarlordUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
 	updateMovement();
 

@@ -16,6 +16,7 @@ public:
 
 	void damage(float damage);
 	bool isDead();
+	std::vector<sf::Drawable *> getHealthbarDrawable();
 
 	void initUnit();
 	sf::Color hitParticleColor;

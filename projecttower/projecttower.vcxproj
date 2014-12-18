@@ -77,8 +77,11 @@
     <ClCompile Include="BahamutUnit.cpp" />
     <ClCompile Include="ArrowTower.cpp" />
     <ClCompile Include="ChineseUnit.cpp" />
+    <ClCompile Include="DeathUnit.cpp" />
     <ClCompile Include="DraxUnit.cpp" />
     <ClCompile Include="EffectsHandler.cpp" />
+    <ClCompile Include="HulkUnit.cpp" />
+    <ClCompile Include="IfritUnit.cpp" />
     <ClCompile Include="IndianaJonesUnit.cpp" />
     <ClCompile Include="IronmanUnit.cpp" />
     <ClCompile Include="CannonTower.cpp" />
@@ -95,6 +98,7 @@
     <ClCompile Include="ProgramController.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ReaperUnit.cpp" />
     <ClCompile Include="RemovableObject.cpp" />
     <ClCompile Include="GarbageCollector.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -124,8 +128,11 @@
     <ClInclude Include="BahamutUnit.h" />
     <ClInclude Include="ArrowTower.h" />
     <ClInclude Include="ChineseUnit.h" />
+    <ClInclude Include="DeathUnit.h" />
     <ClInclude Include="DraxUnit.h" />
     <ClInclude Include="EffectsHandler.h" />
+    <ClInclude Include="HulkUnit.h" />
+    <ClInclude Include="IfritUnit.h" />
     <ClInclude Include="IndianaJonesUnit.h" />
     <ClInclude Include="IronmanUnit.h" />
     <ClInclude Include="CannonTower.h" />
@@ -141,6 +148,7 @@
     <ClInclude Include="PathFinder.h" />
     <ClInclude Include="ProgramController.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ReaperUnit.h" />
     <ClInclude Include="RemovableObject.h" />
     <ClInclude Include="GarbageCollector.h" />
     <ClInclude Include="Renderer.h" />

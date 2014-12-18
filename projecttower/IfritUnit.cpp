@@ -1,18 +1,18 @@
-#include "SadakoUnit.h"
+#include "IfritUnit.h"
 
 
-SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
+IfritUnit::IfritUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.035f;
-	width = 32 / 2;
+	speed = 0.065f;
+	width = 48 / 2;
 	height = 48 / 2;
-	maxHealth = 36.f; //+11
+	maxHealth = 123.f; //+17
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 10;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -22,7 +22,7 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/Units/sadako.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/ifrit.png", 80, 80, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}
@@ -34,16 +34,16 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 }
 
 
-SadakoUnit::~SadakoUnit() {
+IfritUnit::~IfritUnit() {
 
 }
 
-std::vector<sf::Drawable *> SadakoUnit::getRenderDrawable() {
+std::vector<sf::Drawable *> IfritUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
 	return temp;
 }
 
-void SadakoUnit::update() {
+void IfritUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
 	}
@@ -74,7 +74,7 @@ void SadakoUnit::update() {
 
 }
 
-void SadakoUnit::killYourself() {
+void IfritUnit::killYourself() {
 
 	delete this;
 

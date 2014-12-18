@@ -49,14 +49,14 @@ IronmanUnit::~IronmanUnit(){
 
 std::vector<sf::Drawable *> IronmanUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 
 void IronmanUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 	updateMovement();
 
 	/*	OLD MOVEMENT CODE, for reference, i guess?

@@ -46,7 +46,12 @@ std::vector<sf::Drawable *> BahamutUnit::getRenderDrawable() {
 	return temp;
 }
 
+
+
 void BahamutUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 	
 	updateMovement();
 

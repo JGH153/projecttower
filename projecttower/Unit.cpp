@@ -161,3 +161,11 @@ void Unit::moveHealthBar(sf::Vector2f offset) {
 	healthBarFG->move(offset);
 	healthBarFrame->move(offset);
 }
+
+std::vector<sf::Drawable *> Unit::getHealthbarDrawable() {
+	std::vector<sf::Drawable*> temp;
+	temp.push_back(healthBarBG);
+	temp.push_back(healthBarFG);
+	temp.push_back(healthBarFrame);
+	return temp;
+}

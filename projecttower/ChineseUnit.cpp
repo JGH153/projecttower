@@ -12,7 +12,7 @@ ChineseUnit::ChineseUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	maxHealth = 61.f; //+13
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 6;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
@@ -40,13 +40,13 @@ ChineseUnit::~ChineseUnit() {
 
 std::vector<sf::Drawable *> ChineseUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
-	temp.push_back(healthBarBG);
-	temp.push_back(healthBarFG);
-	temp.push_back(healthBarFrame);
 	return temp;
 }
 
 void ChineseUnit::update() {
+	if (isDead() || reachedGoal){
+		return;
+	}
 
 	updateMovement();
 
