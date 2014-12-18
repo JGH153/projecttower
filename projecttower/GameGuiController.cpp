@@ -118,8 +118,32 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	lossText->setStyle(sf::Text::Bold);
 	lossText->setPosition(WINDOWSIZEX / 2 - lossText->getLocalBounds().width / 2, WINDOWSIZEY / 2 - lossText->getLocalBounds().height / 2);
 	guiObjects.push_back(lossText);
+
+	winText = new VortexText("YOU WIN!", *gameEngine->loadFont("Fonts/arial.ttf"), 70);
+	winText->setColor(sf::Color::Transparent);
+	winText->setStyle(sf::Text::Bold);
+	winText->setPosition(WINDOWSIZEX / 2 - winText->getLocalBounds().width / 2, WINDOWSIZEY / 2 - lossText->getLocalBounds().height / 2);
+	guiObjects.push_back(winText);
 	
 	currentLevel = 0;
+
+
+	sideTextMe = new VortexText("Your Side", *gameEngine->loadFont("Fonts/arial.ttf"), 30);
+	sideTextMe->setColor(sf::Color::Blue);
+	sideTextMe->setStyle(sf::Text::Bold);
+
+	sideTextOponent = new VortexText("Opponent Side", *gameEngine->loadFont("Fonts/arial.ttf"), 30);
+	sideTextOponent->setColor(sf::Color::Red);
+	sideTextOponent->setStyle(sf::Text::Bold);
+
+
+
+	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+	//guiObjects.push_back(sideTextMe);
+
+
+	playerWon = false;
+
 }
 
 void GameGuiController::preloadAssets() {
@@ -129,6 +153,52 @@ void GameGuiController::preloadAssets() {
 
 GameGuiController::~GameGuiController() {
 }
+
+
+void GameGuiController::addPlayersSideTexts() {
+
+	if (gameEngine->networkHandler->connectedByTCP) {
+
+		
+
+
+		if (gameEngine->networkHandler->iAmTheServer) {
+
+			
+			sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+			sideTextOponent->setPosition((float)WINDOWSIZEX / 1.5f - sideTextMe->getLocalBounds().width / 2, 50);
+			
+
+
+		} else {
+
+			sideTextOponent->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+			sideTextMe->setPosition((float)WINDOWSIZEX / 1.5f - sideTextMe->getLocalBounds().width / 2, 50);
+
+		}
+
+
+		guiObjects.push_back(sideTextMe);
+		guiObjects.push_back(sideTextOponent);
+
+		
+
+
+	} else {
+
+		sideTextMe->setPosition(WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+		guiObjects.push_back(sideTextMe);
+
+
+	}
+
+
+	updateStaticRenderData = true;
+
+
+
+}
+
 
 bool GameGuiController::mouseOverSomeButton(sf::View resetToView) {
 	bool overSomeButton = false;
@@ -152,6 +222,15 @@ void GameGuiController::update() {
 			lossText->setColor(sf::Color::Red);
 		}
 		
+		return;
+	}
+
+	if (playerWon) {
+		if (!addedWinText) {
+			addedWinText = true;
+			winText->setColor(sf::Color::Green);
+		}
+
 		return;
 	}
 
@@ -320,7 +399,7 @@ std::vector<SubController *> GameGuiController::getChildControllers() {
 }
 
 void GameGuiController::setPlayerResources(int newValue) {
-	if (playerLost) {
+	if (playerLost || playerWon) {
 		return;
 	}
 	playerResources = newValue;
@@ -333,7 +412,7 @@ void GameGuiController::setPlayerResources(int newValue) {
 }
 
 void GameGuiController::setPlayerIncome(int newValue) {
-	if (playerLost) {
+	if (playerLost || playerWon) {
 		return;
 	}
 	playerIncome = newValue;
@@ -343,7 +422,7 @@ void GameGuiController::setPlayerIncome(int newValue) {
 }
 
 void GameGuiController::setTimer(int newValue) {
-	if (playerLost) {
+	if (playerLost || playerWon) {
 		return;
 	}
 	timeText->setString("Time till income: " + std::to_string(newValue));
@@ -352,7 +431,7 @@ void GameGuiController::setTimer(int newValue) {
 }
 
 void GameGuiController::setPlayerLives(int newValue) {
-	if (playerLost) {
+	if (playerLost || playerWon) {
 		return;
 	}
 	numLives = newValue;
@@ -362,7 +441,30 @@ void GameGuiController::setPlayerLives(int newValue) {
 
 	if (numLives <= 0) {
 		playerLost = true;
+		sendPlayerLossPacket();
 	}
+}
+
+void GameGuiController::sendPlayerLossPacket() {
+
+
+	if (gameEngine->networkHandler->connectedByTCP) {
+
+		sf::Packet sendPacket;
+		sf::Int32 typeID = VortexNetwork::packetId_MainGameLoss;
+
+		sendPacket << typeID;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+		std::cout << "Loss Pakke sendt!\n";
+
+	} else {
+		std::cout << "JEG ER IKKE PA MP\n";
+	}
+
+	
+
 }
 
 int GameGuiController::getPlayerResources() {

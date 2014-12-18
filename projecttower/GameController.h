@@ -133,4 +133,10 @@ private:
 	bool onMyMapSide(int gridX, int gridY);
 
 	EffectsHandler* effectsHandler;
+
+	bool unitOnMyPlayfield(int unitListIndex);
+
+	void deleteTower(int gridX, int gridY);
+	void sendDeleteTowerPacket(int gridX, int gridY);
+
 };

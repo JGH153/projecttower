@@ -85,13 +85,13 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 		for (int y = 0; y < height; y++) {
 //			std::cout << map[x][y];
 			if (resultMap[x][y] == sf::Vector2i(0, 0)){
-				std::cout << "0";
+				//std::cout << "0";
 			}
 			else {
-				std::cout << "1";
+				//std::cout << "1";
 			}
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 	
 	return resultMap;

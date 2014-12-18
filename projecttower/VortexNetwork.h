@@ -49,6 +49,9 @@ public:
 	static const sf::Int32  packetId_MainGameGeneral =		10000;
 	static const sf::Int32  packetId_MainGameSpawnUnit =	10010;
 	static const sf::Int32  packetId_MainGameSpawnTower =	10020;
+	static const sf::Int32  packetId_MainGameUpgradeTower = 10030;
+	static const sf::Int32  packetId_MainGameDeleteTower =	10040;
+	static const sf::Int32  packetId_MainGameLoss =			10050;
 
 	//only valid value afther "connectedByTCP" is true
 	bool iAmTheServer;

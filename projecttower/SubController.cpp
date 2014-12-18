@@ -35,6 +35,21 @@ SubController * SubController::getCurrentRenderController() {
 
 }
 
+bool SubController::requestingUpdateStaticRenderData() {
+
+	if (updateStaticRenderData)
+		return true;
+
+	for (auto currentController : childControllers) {
+		if (currentController->updateStaticRenderData) {
+			return true;
+		}
+	}
+
+	return false;
+
+}
+
 /*
 controllerFlag SubController::getNextControllerSequence()
 {

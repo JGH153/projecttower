@@ -145,6 +145,8 @@ void VortexNetwork::sendTcpThreadLoop() {
 
 	sf::Packet packet;
 
+	std::cout << "Send Tcp Thread Online\n";
+
 	while (runSendTcpThreadLoop) {
 
 
@@ -182,6 +184,8 @@ void VortexNetwork::receiveTcpThreadLoop() {
 
 	receiveTcpThreadOnline = true;
 	tcpConnection.setBlocking(true);
+
+	std::cout << "Receive Tcp Thread Online\n";
 
 	while (runReceiveTcpThreadLoop) {
 

@@ -407,7 +407,10 @@ void GameController::doGameControllerStatup() {
 
 	}
 	
+	
+	gameGuiController->addPlayersSideTexts();
 	recalculateNavigationMaps();
+
 }
 
 void GameController::readNetworkPackets() {
@@ -430,7 +433,7 @@ void GameController::readNetworkPackets() {
 				sf::Int32 sendToOponent;
 				packet >> unitID >> sendToOponent;
 
-				std::cout << "PACKET RECIVED FOR UNIT: unitID:(" << unitID << ") Side: (" << sendToOponent << ")!!\n";
+				//std::cout << "PACKET RECIVED FOR UNIT: unitID:(" << unitID << ") Side: (" << sendToOponent << ")!!\n";
 
 				if ((bool)sendToOponent == true)
 					spawnNewUnit(unitID, true);
@@ -449,9 +452,29 @@ void GameController::readNetworkPackets() {
 
 				packet >> towerID >> gridX >> gridY;
 
-				std::cout << "PACKET RECIVED FOR towerID:(" << towerID << ")!!\n";
+				//std::cout << "PACKET RECIVED FOR towerID:(" << towerID << ")!!\n";
 
 				spawnNewTower(towerID, gridX, gridY, true);
+
+
+
+			} else if (typeID == VortexNetwork::packetId_MainGameLoss) {
+				//Other player losses, i win!
+				gameGuiController->playerWon = true;
+
+
+
+			} else if (typeID == VortexNetwork::packetId_MainGameDeleteTower) {
+
+
+				sf::Int32 gridX;
+				sf::Int32 gridY;
+
+				packet >> gridX >> gridY;
+
+				//std::cout << "PACKET RECIVED FOR towerID:(" << towerID << ")!!\n";
+
+				deleteTower(gridX, gridY);
 
 
 
@@ -561,10 +584,10 @@ void GameController::sendSpawnUnitPacket(int unitID, bool toOponent) {
 
 		gameEngine->networkHandler->sendTcpPacket(sendPacket);
 
-		std::cout << "New unit Pakke sendt!?!\n";
+		//std::cout << "New unit Pakke sendt!?!\n";
 
 	} else {
-		std::cout << "NOPE\n";
+		//std::cout << "NOPE\n";
 	}
 
 }
@@ -585,9 +608,61 @@ void GameController::sendSpawnNewTowerPacket(int towerID, int gridX, int gridY) 
 
 		gameEngine->networkHandler->sendTcpPacket(sendPacket);
 
-		std::cout << "New tower Pakke sendt\n";
+		//std::cout << "New tower Pakke sendt\n";
 
 	}
+
+
+}
+
+
+void GameController::sendDeleteTowerPacket(int gridX, int gridY) {
+
+
+	if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+		sf::Packet sendPacket;
+		sf::Int32 typeID = VortexNetwork::packetId_MainGameDeleteTower;
+		sf::Int32 delTowerGridX = gridX;
+		sf::Int32 delTowerGridY = gridY;
+
+		sendPacket << typeID << delTowerGridX << delTowerGridY;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+		std::cout << "del tower Pakke sendt\n";
+
+	}
+
+
+}
+
+
+bool GameController::unitOnMyPlayfield(int unitListIndex) {
+
+	//meh, all is mine in SP
+	if (!multiplayerMode) {
+		return true;
+	} else {
+
+		if (gameEngine->networkHandler->iAmTheServer) {
+			//server on left side
+			if (unitList[unitListIndex]->getPos().x < WINDOWSIZEX / 2) {
+				return true;
+			}
+
+		} else {
+
+			if (unitList[unitListIndex]->getPos().x > WINDOWSIZEX / 2) {
+				return true;
+			}
+
+		}
+
+
+	}
+
+	return false;
 
 
 }
@@ -740,8 +815,11 @@ void GameController::update() {
 		else if (unitList[i]->reachedGoal) {
 			// Remove life
 			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, sf::Color(100, 100, 100, 255), sf::Quads, 200, 30));
-			gameGuiController->setPlayerLives(gameGuiController->numLives - 1);
-			if (gameGuiController->numLives == 0) {
+
+			if (unitOnMyPlayfield(i)){
+				gameGuiController->setPlayerLives(gameGuiController->numLives - 1);
+			}
+			if (gameGuiController->numLives == 0 ) {
 				playerLost = true;
 			}
 
@@ -789,7 +867,7 @@ void GameController::update() {
 
 	while (!gameGuiController->unitsToSpawn.empty()) {
 
-		std::cout << "spawning at userWill rate\n";
+		//std::cout << "spawning at userWill rate\n";
 
 		
 
@@ -868,6 +946,43 @@ bool GameController::onMyMapSide(int gridX, int gridY) {
 }
 
 
+void GameController::deleteTower(int gridX, int gridY) {
+
+	gameEngine->towerListMutex.lock();
+
+	for (int i = 0; i < towerList.size(); i++) {
+
+		if (towerList[i]->getMapGroundTileIndex().x == gridX
+			&&	towerList[i]->getMapGroundTileIndex().y == gridY){
+
+			mapGroundTile[gridX][gridY]->changeTileType(TileTypes::grass);
+
+			towerList[i]->deleteProjectiles();
+			gameEngine->addRemovableObjectToList(towerList[i]);
+
+			if (towerList[i] == selectedTower) {
+				selectedTower = nullptr;
+				if (gameGuiController->showingTowerUpgrades) {
+					gameGuiController->showingTowerUpgrades = false;
+					gameGuiController->hideTowerUpgrades();
+				}
+			}
+			towerList[i] = nullptr;
+			towerList.erase(towerList.begin() + i);
+			i--;
+
+			towerRemoved = true;
+			groundTilesChanged = true;
+
+		}
+
+	}
+
+	gameEngine->towerListMutex.unlock();
+
+
+
+}
 
 
 void GameController::handlePlayerTowerAction() {
@@ -984,12 +1099,16 @@ void GameController::handlePlayerTowerAction() {
 
 			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);
 
-			gameEngine->towerListMutex.lock();
+			//gameEngine->towerListMutex.lock();
 			
 			if (towerList[i]->getMapGroundTileIndex().x == mouseGridPos.x
 				&&	towerList[i]->getMapGroundTileIndex().y == mouseGridPos.y) {
 
-				mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
+				deleteTower(mouseGridPos.x, mouseGridPos.y);
+				sendDeleteTowerPacket(mouseGridPos.x, mouseGridPos.y);
+
+
+				/*mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
 				
 				towerList[i]->deleteProjectiles();
 				gameEngine->addRemovableObjectToList(towerList[i]);
@@ -1006,10 +1125,10 @@ void GameController::handlePlayerTowerAction() {
 				i--;
 
 				towerRemoved = true;
-				groundTilesChanged = true;
+				groundTilesChanged = true;*/
 			}
 			
-			gameEngine->towerListMutex.unlock();
+			//gameEngine->towerListMutex.unlock();
 			
 		}
 

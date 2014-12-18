@@ -51,6 +51,10 @@ public:
 	int buildTimer;
 	int currentLevel;
 
+	bool playerWon;
+
+	void addPlayersSideTexts();
+
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
@@ -66,8 +70,14 @@ private:
 	VortexText* timeText;
 	VortexText* livesText;
 	VortexText* lossText;
+	VortexText* winText;
 	VortexText* levelText;
 	VortexText* levelTimerText;
+
+	VortexText * sideTextMe;
+	VortexText * sideTextOponent;
+
+
 
 	sf::RectangleShape* resourcePanel;
 	sf::RectangleShape* levelPanel;
@@ -79,6 +89,9 @@ private:
 	int msToNextLevel;
 	bool playerLost;
 	bool addedLoserText;
+	bool addedWinText;
+
+	void sendPlayerLossPacket() ;
 	
 	
 	

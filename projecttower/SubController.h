@@ -44,6 +44,7 @@ public:
 	virtual void preloadAssets() = 0;
 
 	bool updateStaticRenderData;
+	bool requestingUpdateStaticRenderData();
 
 	SubController * getCurrentRenderController();
 };

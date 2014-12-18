@@ -49,8 +49,11 @@ void Renderer::handleStaticBackground() {
 
 	}
 
-	if (!mainControllerPointer->updateStaticRenderData)
+	//if no update
+	if (!mainControllerPointer->requestingUpdateStaticRenderData())
 		return;
+
+	//std::cout << "oppdaterer static\n";
 
 
 	staticRenderList.clear();
