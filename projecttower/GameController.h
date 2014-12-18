@@ -17,6 +17,7 @@
 #include "RussianGirlUnit.h"
 #include "SadakoUnit.h"
 #include "IndianaJonesUnit.h"
+#include "ChineseUnit.h"
 #include "SubController.h"
 #include "VortexConvexButton.h"
 #include "VortexButtonRectangle.h"

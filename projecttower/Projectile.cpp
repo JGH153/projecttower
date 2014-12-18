@@ -50,12 +50,12 @@ std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
 
 
 bool Projectile::checkIfHitTarget() {
-	float radi = 20;
+	float hitboxRadius = 25;
 
-	float diffX = abs((target->posX) - posX);
-	float diffY = abs((target->posY) - posY);
+	float diffX = abs((target->posX + target->getSize().x / 2) - posX);
+	float diffY = abs((target->posY + target->getSize().y / 2) - posY);
 
-	if (diffX * diffX + diffY * diffY <= radi * radi) {
+	if (diffX * diffX + diffY * diffY <= hitboxRadius * hitboxRadius) {
 		// If the projectile is close enough to unit, damage it
 		
 		target->damage(damage);
@@ -88,8 +88,7 @@ bool Projectile::checkIfHitTarget() {
 }
 
 void Projectile::updatePos() {
-
-	sf::Vector2f velocity(target->posX - posX, target->posY - posY);
+	sf::Vector2f velocity(target->posX + target->getSize().x / 2 - posX, target->posY + target->getSize().y / 2 - posY);
 	float cardVelocity = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	velocity.x /= cardVelocity;
 	velocity.y /= cardVelocity;
@@ -99,7 +98,7 @@ void Projectile::updatePos() {
 	posY = posY + velocity.y * speed * gameEngine->deltaTime.asMilliseconds();
 
 	projectileSprite->setPosition(posX, posY);
-	float angle = atan2(target->posY - posY, target->posX - posX);
+	float angle = atan2(target->posY + target->getSize().y / 2 - posY, target->posX + target->getSize().x / 2 - posX);
 	projectileSprite->setRotation(angle * 180 / 3.14159);
 }
 

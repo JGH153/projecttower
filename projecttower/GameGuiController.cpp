@@ -25,6 +25,9 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit5Button = new VortexButtonRectangle(sendUnit4Button->getPosition().x + sendUnit4Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/indiana-button.png", "", gameEngine, 255, "Level 5 unit\nCost 46\n +5 Income");
 	sendUnit5Button->setHoverImage("Graphics/GUI/indiana-hover-button.png");
+
+	sendUnit6Button = new VortexButtonRectangle(sendUnit5Button->getPosition().x + sendUnit5Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/chinese-button.png", "", gameEngine, 255, "Level 5 unit\nCost 55\n +6 Income");
+	sendUnit6Button->setHoverImage("Graphics/GUI/chinese-hover-button.png");
 	
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
@@ -37,6 +40,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buttons.push_back(sendUnit3Button);
 	buttons.push_back(sendUnit4Button);
 	buttons.push_back(sendUnit5Button);
+	buttons.push_back(sendUnit6Button);
 	
 
 	building = true;
@@ -284,6 +288,14 @@ void GameGuiController::update() {
 				setPlayerResources(playerResources - 46);
 				setPlayerIncome(playerIncome + 5);
 				unitsToSpawn.push_back(5);
+				hideTowerUpgrades();
+			}
+		}
+		else if (sendUnit6Button->isPressed && sendUnit6Button->hovering) {
+			if (playerResources >= 55) {
+				setPlayerResources(playerResources - 55);
+				setPlayerIncome(playerIncome + 6);
+				unitsToSpawn.push_back(6);
 				hideTowerUpgrades();
 			}
 		}

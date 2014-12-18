@@ -623,8 +623,11 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 	case 4:
 		testUnit = new IndianaJonesUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
+	case 5:
+		testUnit = new ChineseUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
 	default:
-		testUnit = new IndianaJonesUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		testUnit = new ChineseUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
 	}
 
