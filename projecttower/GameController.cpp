@@ -115,6 +115,28 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	playerID = 0;
 	
 	effectsHandler = new EffectsHandler(gameEngine);
+
+
+
+
+
+
+	sideTextMe = new VortexText("Your Side", *gameEngine->loadFont("Fonts/arial.ttf"), 30);
+	sideTextMe->setColor(sf::Color::Blue);
+	sideTextMe->setStyle(sf::Text::Bold);
+
+	sideTextOponent = new VortexText("Opponent Side", *gameEngine->loadFont("Fonts/arial.ttf"), 30);
+	sideTextOponent->setColor(sf::Color::Red);
+	sideTextOponent->setStyle(sf::Text::Bold);
+
+
+
+	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+	//guiObjects.push_back(sideTextMe);
+
+
+
+
 	
 }
 
@@ -204,7 +226,20 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 	gameEngine->groundTileListMutex.unlock();
 
+
+
+
+	for (auto currentRenderVector : guiObjects) {
+		for (auto currentRenderObj : currentRenderVector->getRenderDrawable()) {
+			renderList.push_back(currentRenderObj);
+		}
+	}
+
+
+
 	renderSuperList.push_back(renderList);
+
+
 
 	return renderSuperList;
 }
@@ -408,10 +443,54 @@ void GameController::doGameControllerStatup() {
 	}
 	
 	
-	gameGuiController->addPlayersSideTexts();
+	addPlayersSideTexts();
 	recalculateNavigationMaps();
 
 }
+
+void GameController::addPlayersSideTexts() {
+
+
+	if (gameEngine->networkHandler->connectedByTCP) {
+
+
+
+
+		if (gameEngine->networkHandler->iAmTheServer) {
+
+
+			sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+			sideTextOponent->setPosition((float)WINDOWSIZEX / 1.5f - sideTextMe->getLocalBounds().width / 2, 50);
+
+
+
+		} else {
+
+			sideTextOponent->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+			sideTextMe->setPosition((float)WINDOWSIZEX / 1.5f - sideTextMe->getLocalBounds().width / 2, 50);
+
+		}
+
+		guiObjects.push_back(sideTextMe);
+		guiObjects.push_back(sideTextOponent);
+
+
+
+
+	} else {
+
+		sideTextMe->setPosition(WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
+		guiObjects.push_back(sideTextMe);
+
+
+	}
+
+
+	updateStaticRenderData = true;
+
+
+}
+
 
 void GameController::readNetworkPackets() {
 
@@ -475,6 +554,20 @@ void GameController::readNetworkPackets() {
 				//std::cout << "PACKET RECIVED FOR towerID:(" << towerID << ")!!\n";
 
 				deleteTower(gridX, gridY);
+
+
+			} else if (typeID == VortexNetwork::packetId_MainGameUpgradeTower) {
+
+				sf::Int32 towerID;
+
+				sf::Int32 gridX;
+				sf::Int32 gridY;
+
+				packet >> towerID >> gridX >> gridY;
+
+				//std::cout << "PACKET RECIVED FOR towerID:(" << towerID << ")!!\n";
+
+				upgradeTower(towerID, gridX, gridY);
 
 
 
@@ -638,6 +731,29 @@ void GameController::sendDeleteTowerPacket(int gridX, int gridY) {
 }
 
 
+void GameController::sendUpgradeTowerPacket(int towerID, int gridX, int gridY) {
+
+
+	if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+		sf::Packet sendPacket;
+		sf::Int32 typeID = VortexNetwork::packetId_MainGameUpgradeTower;
+		sf::Int32 upgradeTowerID = towerID;
+		sf::Int32 upgradeTowerGridX = gridX;
+		sf::Int32 upgradeTowerGridY = gridY;
+
+		sendPacket << typeID << upgradeTowerID << upgradeTowerGridX << upgradeTowerGridY;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+		std::cout << "tower upgrade Pakke sendt\n";
+
+	}
+
+
+}
+
+
 bool GameController::unitOnMyPlayfield(int unitListIndex) {
 
 	//meh, all is mine in SP
@@ -706,18 +822,21 @@ void GameController::update() {
 				gameGuiController->upgradeToCannon->tooltipText->setColor(sf::Color::Transparent);
 
 
-				gameEngine->towerListMutex.lock();
+				//gameEngine->towerListMutex.lock();
 				for (int i = 0; i < towerList.size(); i++) {
 					if (towerList[i] == selectedTower) {
 						int xpos = selectedTower->getPos().x;
 						int ypos = selectedTower->getPos().y;
 
+						upgradeTower(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
+						sendUpgradeTowerPacket(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
+/*
 						gameEngine->addRemovableObjectToList(towerList[i]);
 						towerList.erase(towerList.begin() + i);
 						
 						gameEngine->unitListMutex.lock();
-						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos / gridTileSize, ypos / gridTileSize), &particleList, effectsHandler);
-						selectedTower = newTower;
+						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos / gridTileSize, ypos / gridTileSize), &particleList, effectsHandler);*/
+						selectedTower = towerList[i];
 						gameEngine->selectionSpriteMutex.lock();
 						selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
 						selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
@@ -726,14 +845,14 @@ void GameController::update() {
 						gameEngine->selectionSpriteMutex.unlock();
 
 
-						gameEngine->unitListMutex.unlock();
+						//gameEngine->unitListMutex.unlock();
 
-						towerList.push_back(newTower);
+						
 
 						break;
 					}
 				}
-				gameEngine->towerListMutex.unlock();
+				//gameEngine->towerListMutex.unlock();
 
 			}
 		}
@@ -801,7 +920,10 @@ void GameController::update() {
 		}
 		unitList[i]->update();
 		if (unitList[i]->isDead()) {
-			gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() + unitList[i]->killReward);
+
+			if (unitOnMyPlayfield(i)) {
+				gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() + unitList[i]->killReward);
+			}
 
 			gameEngine->addRemovableObjectToList(unitList[i]);
 			gameEngine->particleListMutex.lock();
@@ -980,6 +1102,36 @@ void GameController::deleteTower(int gridX, int gridY) {
 
 	gameEngine->towerListMutex.unlock();
 
+
+
+}
+
+void GameController::upgradeTower(int newTowerID, int gridX, int gridY) {
+
+
+	gameEngine->towerListMutex.lock();
+
+	for (int i = 0; i < towerList.size(); i++) {
+
+		if (towerList[i]->getMapGroundTileIndex().x == gridX
+			&&	towerList[i]->getMapGroundTileIndex().y == gridY) {
+
+			gameEngine->unitListMutex.lock();
+
+			gameEngine->addRemovableObjectToList(towerList[i]);
+			towerList.erase(towerList.begin() + i);
+
+			CannonTower* newTower = new CannonTower(gameEngine, &unitList, gridX*gridTileSize, gridY*gridTileSize, gridTileSize, sf::Vector2i((gridX*gridTileSize) / gridTileSize, (gridY*gridTileSize) / gridTileSize), &particleList, effectsHandler);
+
+			towerList.push_back(newTower);
+
+			gameEngine->unitListMutex.unlock();
+
+		}
+
+	}
+
+	gameEngine->towerListMutex.unlock();
 
 
 }

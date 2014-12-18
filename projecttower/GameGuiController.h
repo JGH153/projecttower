@@ -74,8 +74,7 @@ private:
 	VortexText* levelText;
 	VortexText* levelTimerText;
 
-	VortexText * sideTextMe;
-	VortexText * sideTextOponent;
+	
 
 
 

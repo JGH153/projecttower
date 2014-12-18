@@ -139,4 +139,14 @@ private:
 	void deleteTower(int gridX, int gridY);
 	void sendDeleteTowerPacket(int gridX, int gridY);
 
+
+	void upgradeTower(int newTowerID, int gridX, int gridY); // 1 = canon
+	void sendUpgradeTowerPacket(int towerID, int gridX, int gridY);
+
+	std::vector<RenderObject *> guiObjects;
+	VortexText * sideTextMe;
+	VortexText * sideTextOponent;
+	void addPlayersSideTexts();
+
+
 };

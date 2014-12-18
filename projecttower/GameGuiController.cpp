@@ -128,18 +128,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	currentLevel = 0;
 
 
-	sideTextMe = new VortexText("Your Side", *gameEngine->loadFont("Fonts/arial.ttf"), 30);
-	sideTextMe->setColor(sf::Color::Blue);
-	sideTextMe->setStyle(sf::Text::Bold);
-
-	sideTextOponent = new VortexText("Opponent Side", *gameEngine->loadFont("Fonts/arial.ttf"), 30);
-	sideTextOponent->setColor(sf::Color::Red);
-	sideTextOponent->setStyle(sf::Text::Bold);
-
-
-
-	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
-	//guiObjects.push_back(sideTextMe);
+	
 
 
 	playerWon = false;
@@ -157,43 +146,7 @@ GameGuiController::~GameGuiController() {
 
 void GameGuiController::addPlayersSideTexts() {
 
-	if (gameEngine->networkHandler->connectedByTCP) {
-
-		
-
-
-		if (gameEngine->networkHandler->iAmTheServer) {
-
-			
-			sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
-			sideTextOponent->setPosition((float)WINDOWSIZEX / 1.5f - sideTextMe->getLocalBounds().width / 2, 50);
-			
-
-
-		} else {
-
-			sideTextOponent->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
-			sideTextMe->setPosition((float)WINDOWSIZEX / 1.5f - sideTextMe->getLocalBounds().width / 2, 50);
-
-		}
-
-
-		guiObjects.push_back(sideTextMe);
-		guiObjects.push_back(sideTextOponent);
-
-		
-
-
-	} else {
-
-		sideTextMe->setPosition(WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
-		guiObjects.push_back(sideTextMe);
-
-
-	}
-
-
-	updateStaticRenderData = true;
+	
 
 
 
