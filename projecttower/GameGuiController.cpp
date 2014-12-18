@@ -22,9 +22,21 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit4Button = new VortexButtonRectangle(sendUnit3Button->getPosition().x + sendUnit3Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/sadako-button.png", "", gameEngine, 255, "Level 4 unit\nCost 37\n +4 Income");
 	sendUnit4Button->setHoverImage("Graphics/GUI/sadako-hover-button.png");
+
+	sendUnit5Button = new VortexButtonRectangle(sendUnit4Button->getPosition().x + sendUnit4Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/indiana-button.png", "", gameEngine, 255, "Level 5 unit\nCost 46\n +5 Income");
+	sendUnit5Button->setHoverImage("Graphics/GUI/indiana-hover-button.png");
 	
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
+
+	buttons.push_back(upgradeToCannon);
+	buttons.push_back(buildButton);
+	buttons.push_back(deleteTowerButton);
+	buttons.push_back(sendUnit1Button);
+	buttons.push_back(sendUnit2Button);
+	buttons.push_back(sendUnit3Button);
+	buttons.push_back(sendUnit4Button);
+	buttons.push_back(sendUnit5Button);
 	
 
 	building = true;
@@ -95,12 +107,10 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	levelPanel->setOutlineThickness(3);
 	levelPanel->setOutlineColor(outlineColor);
 
-	guiObjects.push_back(buildButton);
-	guiObjects.push_back(deleteTowerButton);
-	guiObjects.push_back(sendUnit1Button);
-	guiObjects.push_back(sendUnit2Button);
-	guiObjects.push_back(sendUnit3Button);
-	guiObjects.push_back(sendUnit4Button);
+	for (auto button : buttons) {
+		guiObjects.push_back(button);
+	}
+
 	
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
@@ -269,6 +279,14 @@ void GameGuiController::update() {
 				hideTowerUpgrades();
 			}
 		}
+		else if (sendUnit5Button->isPressed && sendUnit5Button->hovering) {
+			if (playerResources >= 46) {
+				setPlayerResources(playerResources - 46);
+				setPlayerIncome(playerIncome + 5);
+				unitsToSpawn.push_back(5);
+				hideTowerUpgrades();
+			}
+		}
 
 	}
 
@@ -309,6 +327,12 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 	}
 
 	// Render all tooltips on top
+	for (auto currentButton : buttons) {
+		for (auto currentRenderObj : currentButton->getTooltipDrawable()) {
+			renderListSub.push_back(currentRenderObj);
+		}
+	}
+	/*
 	for (auto currentRenderObj : buildButton->getTooltipDrawable()) {
 		renderListSub.push_back(currentRenderObj);
 	}
@@ -331,7 +355,7 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 	for (auto currentRenderObj : upgradeToCannon->getTooltipDrawable()) {
 		renderListSub.push_back(currentRenderObj);
 	}
-
+	*/
 	
 
 	guiMutex.unlock();

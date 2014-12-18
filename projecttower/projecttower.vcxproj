@@ -77,6 +77,7 @@
     <ClCompile Include="BahamutUnit.cpp" />
     <ClCompile Include="ArrowTower.cpp" />
     <ClCompile Include="EffectsHandler.cpp" />
+    <ClCompile Include="IndianaJonesUnit.cpp" />
     <ClCompile Include="IronmanUnit.cpp" />
     <ClCompile Include="CannonTower.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="BahamutUnit.h" />
     <ClInclude Include="ArrowTower.h" />
     <ClInclude Include="EffectsHandler.h" />
+    <ClInclude Include="IndianaJonesUnit.h" />
     <ClInclude Include="IronmanUnit.h" />
     <ClInclude Include="CannonTower.h" />
     <ClInclude Include="Entity.h" />

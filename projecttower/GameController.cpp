@@ -620,8 +620,11 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 	case 3:
 		testUnit = new SadakoUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
+	case 4:
+		testUnit = new IndianaJonesUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
 	default:
-		testUnit = new SadakoUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		testUnit = new IndianaJonesUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
 	}
 

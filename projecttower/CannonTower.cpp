@@ -2,7 +2,7 @@
 
 
 CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
-	damage = 3.1f;
+	damage = 2.5f;
 	range = 150;
 	reloadTimeMS = 1100;
 	projectileSpeed = 0.2f;

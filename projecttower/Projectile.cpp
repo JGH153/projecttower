@@ -64,7 +64,7 @@ bool Projectile::checkIfHitTarget() {
 			effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
 			
 			gameEngine->particleListMutex.lock();
-			particleList->push_back(new VortexParticleSystem(1000, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color::White, sf::Points, 200, 120));
+			particleList->push_back(new VortexParticleSystem(1000, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color::Green, sf::Points, 200, 120));
 			gameEngine->particleListMutex.unlock();
 			
 
@@ -77,7 +77,6 @@ bool Projectile::checkIfHitTarget() {
 				if (xdist * xdist + ydist * ydist <= radius * radius) {
 					// If the unit is within the splash raidus, do damage relative to the distance from explosion
 					float percentDistanceFromCenter = 1 - (xdist * xdist + ydist * ydist) / (radius * radius);
-					printf("Doing %f percent dmg\n", percentDistanceFromCenter);
 					currentUnit->damage(damage * percentDistanceFromCenter);
 				}
 			}
