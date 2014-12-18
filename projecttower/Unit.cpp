@@ -68,8 +68,25 @@ void Unit::updateMovement(){
 
 void Unit::updateDirection(){
 	sf::Vector2i positionInMapTileSpace = WorldPosToMapGroundTilePos(posX, posY);
-	moveDirection = gameEngine->pathFinder->navigationMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
+	auto newDirection = gameEngine->pathFinder->navigationMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
+	if (newDirection == sf::Vector2i(0, 0)){
+		steppedOnBadTile = true;
+	}
+	else {
+		steppedOnBadTile = false;
+	}
+	if (steppedOnBadTile){
+		if (!directionFlipped){
+			moveDirection *= -1;
+			directionFlipped = true;
+		}
+	}
+	else{
+		moveDirection = newDirection;
+		directionFlipped = false;
+	}
 	currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+	
 }
 
 bool Unit::hitPoint(sf::Vector2f point) {

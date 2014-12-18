@@ -29,6 +29,8 @@ public:
 protected:
 
 	bool firstTimeRun = true;
+	bool steppedOnBadTile = false;
+	bool directionFlipped = false;
 
 	void updateMovement();
 	void updateDirection();
