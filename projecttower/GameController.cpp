@@ -386,13 +386,13 @@ void GameController::doGameControllerStatup() {
 			playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 			playerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
 
-			enemyPlayerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitSpawnPos = sf::Vector2i(27 * gridTileSize, 13 * gridTileSize);
 			enemyPlayerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
 
 		} else {
 
 			playerID = 1;
-			playerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
+			playerUnitSpawnPos = sf::Vector2i(27 * gridTileSize, 13 * gridTileSize);
 			playerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
 
 			enemyPlayerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
@@ -406,12 +406,8 @@ void GameController::doGameControllerStatup() {
 
 
 	}
-	std::cout << gridTileSize << std::endl;
-	std::vector<std::vector<int>> navigationMap;
-	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
-	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
-	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
-
+	
+	recalculateNavigationMaps();
 }
 
 void GameController::readNetworkPackets() {
@@ -512,7 +508,6 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 		testUnit = new SadakoUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
 	}
-
 
 	gameEngine->groundTileListMutex.unlock();
 
@@ -721,10 +716,7 @@ void GameController::update() {
 	gameEngine->renderObjectsListMutex.unlock();
 
 	if (groundTilesChanged){
-		std::vector<std::vector<int>> navigationMap;
-		navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
-		sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
-		gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
+		recalculateNavigationMaps();
 	}
 
 	gameEngine->unitListMutex.lock();
@@ -1174,4 +1166,12 @@ std::vector<std::vector<int>> GameController::makeNavigationMapFromTileMap(std::
 sf::Vector2i GameController::worldCoordinateToMapTileCoordinate(sf::Vector2i coord) {
 	int tileSize = (int)gridTileSize;
 	return coord / tileSize;
+}
+
+void GameController::recalculateNavigationMaps(){
+	std::vector<std::vector<int>> navigationMap;
+	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+	sf::Vector2i playerTargetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+	sf::Vector2i enemyTargetInMapCoord = worldCoordinateToMapTileCoordinate(enemyPlayerUnitTargetPos);
+	gameEngine->pathFinder->navigationMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, playerTargetInMapCoord, enemyTargetInMapCoord);
 }

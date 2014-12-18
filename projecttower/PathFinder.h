@@ -9,10 +9,11 @@ class PathFinder
 public:
 	PathFinder();
 	~PathFinder();
-	std::vector<std::vector<sf::Vector2i>> makeBreadthFirstDirectionMap(std::vector<std::vector<int>> map, sf::Vector2i goalPoint, sf::Vector2i exitDirection);
+	std::vector<std::vector<sf::Vector2i>> makeBreadthFirstDirectionMap(std::vector<std::vector<int>> map, sf::Vector2i playerGoalPoint, sf::Vector2i opponentGoalPoint);
 	//std::vector<std::vector<sf::Vector2i>> makeBreadthFirstDirectionMap(std::vector<std::vector<MapTile *>> map, sf::Vector2i goalPoint, sf::Vector2i exitDirection);
 
-	std::vector<std::vector<sf::Vector2i>> breadthFirstDirectionMap;
+	std::vector<std::vector<sf::Vector2i>> navigationMap;
+
 private:
 	//std::vector<std::vector<int>> translateMapFromTilesToInt(std::vector<std::vector<MapTile *>> map);
 };

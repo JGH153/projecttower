@@ -22,7 +22,7 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 }
 */
 // Working backwards from the goalPoint, expand every tile on the map and mark a direction on it pointing to where it was expanded from
-std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(std::vector<std::vector<int>> map, sf::Vector2i goalPoint, sf::Vector2i exitDirecion) {
+std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(std::vector<std::vector<int>> map, sf::Vector2i playerGoalPoint, sf::Vector2i opponentGoalPoint) {
 	std::vector<std::vector<sf::Vector2i>> resultMap;
 
 	int width, height;
@@ -30,7 +30,11 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 	height = map[0].size();
 	std::queue<sf::Vector2i> nodesToExplore;
 
-	nodesToExplore.push(goalPoint);
+	bool bothSidesExplored = false;
+	bool mySideDone = false;
+
+	nodesToExplore.push(playerGoalPoint);
+
 
 	// Fill resultmap with 0,0 vectors (invalid directions)
 	for (int x = 0; x < width; x++) {
@@ -40,36 +44,42 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 		}
 		resultMap.push_back(column);
 	}
-
-	resultMap[goalPoint.x][goalPoint.y] = exitDirecion;
-
 	// Work through the queue
-	while (nodesToExplore.size() != 0){
-		sf::Vector2i currentNode = nodesToExplore.front();
-		nodesToExplore.pop();
-		// Check all possible surrounding nodes
-		for (auto direction : DIRECTIONS) {
-			sf::Vector2i expandNode = currentNode + direction;
-			if (expandNode.x < 0 || expandNode.x >= width || expandNode.y < 0 || expandNode.y >= height){
-				// Out of bounds
-				continue;
-			}
-			else {
-				// Within bounds, check type
-				int nodeType = map[expandNode.x][expandNode.y];
-				if (nodeType == TileTypes::grass || nodeType == TileTypes::dirt || nodeType == TileTypes::cave){
-					// Check if not already expanded
-					if (resultMap[expandNode.x][expandNode.y] == sf::Vector2i(0, 0)){						
-						// Result is the direction opposite of the one you took to get to this node
-						resultMap[expandNode.x][expandNode.y] = direction * -1;
-						// Push new node to queue
-						nodesToExplore.push(expandNode);
+	do{
+		while (nodesToExplore.size() != 0){
+			sf::Vector2i currentNode = nodesToExplore.front();
+			nodesToExplore.pop();
+			// Check all possible surrounding nodes
+			for (auto direction : DIRECTIONS) {
+				sf::Vector2i expandNode = currentNode + direction;
+				if (expandNode.x < 0 || expandNode.x >= width || expandNode.y < 0 || expandNode.y >= height){
+					// Out of bounds
+					continue;
+				}
+				else {
+					// Within bounds, check type
+					int nodeType = map[expandNode.x][expandNode.y];
+					if (nodeType == TileTypes::grass || nodeType == TileTypes::dirt || nodeType == TileTypes::cave){
+						// Check if not already expanded
+						if (resultMap[expandNode.x][expandNode.y] == sf::Vector2i(0, 0)){
+							// Result is the direction opposite of the one you took to get to this node
+							resultMap[expandNode.x][expandNode.y] = direction * -1;
+							// Push new node to queue
+							nodesToExplore.push(expandNode);
+						}
 					}
 				}
 			}
 		}
-	}
-	/*
+		if (!mySideDone){
+			nodesToExplore.push(opponentGoalPoint);
+			mySideDone = true;
+		}
+		else {
+			bothSidesExplored = true;
+		}
+	} while (!bothSidesExplored);
+	
 	for (int x = 0; x < width; x++) {
 		std::vector<sf::Vector2i> column;
 		for (int y = 0; y < height; y++) {
@@ -83,7 +93,7 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 		}
 		std::cout << std::endl;
 	}
-	*/
+	
 	return resultMap;
 }
 

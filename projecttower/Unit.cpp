@@ -53,9 +53,7 @@ void Unit::updateMovement(){
 	}
 
 	if (firstTimeRun){
-		sf::Vector2i positionInMapCoordinate = WorldPosToMapGroundTilePos(posX, posY);
-		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapCoordinate.x][positionInMapCoordinate.y];
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+		updateDirection();
 		firstTimeRun = false;
 	}
 
@@ -64,10 +62,14 @@ void Unit::updateMovement(){
 			reachedGoal = true;
 			return;
 		}
-		sf::Vector2i positionInMapTileSpace = WorldPosToMapGroundTilePos(posX, posY);
-		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+		updateDirection();
 	}
+}
+
+void Unit::updateDirection(){
+	sf::Vector2i positionInMapTileSpace = WorldPosToMapGroundTilePos(posX, posY);
+	moveDirection = gameEngine->pathFinder->navigationMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
+	currentMoveAnimationIndex = getDirectionIndex(moveDirection);
 }
 
 bool Unit::hitPoint(sf::Vector2f point) {

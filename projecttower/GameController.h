@@ -53,6 +53,7 @@ public:
 	void preloadAssets();
 	std::vector<std::vector<int>> makeNavigationMapFromTileMap(std::vector<std::vector<MapTile *>> map);
 	sf::Vector2i worldCoordinateToMapTileCoordinate(sf::Vector2i coord);
+	void recalculateNavigationMaps();
 private:
 
 	sf::Clock unitSpawnTimer;

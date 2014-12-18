@@ -30,6 +30,7 @@ protected:
 	bool firstTimeRun = true;
 
 	void updateMovement();
+	void updateDirection();
 	
 	float currentHealth;
 	float maxHealth;
