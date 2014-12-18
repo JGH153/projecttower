@@ -50,7 +50,7 @@ std::vector<std::vector<sf::Vector2i>> PathFinder::makeBreadthFirstDirectionMap(
 		// Check all possible surrounding nodes
 		for (auto direction : DIRECTIONS) {
 			sf::Vector2i expandNode = currentNode + direction;
-			if (expandNode.x < 0 || expandNode.x > width || expandNode.y < 0 || expandNode.y > height){
+			if (expandNode.x < 0 || expandNode.x >= width || expandNode.y < 0 || expandNode.y >= height){
 				// Out of bounds
 				continue;
 			}
