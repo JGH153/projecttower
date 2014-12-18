@@ -6,10 +6,10 @@ BahamutUnit::BahamutUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.03f;
+	speed = 0.025f;
 	width = 96 / 4;
 	height = 96 / 4;
-	maxHealth = 15.f;
+	maxHealth = 15.f; //+9
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 2;
@@ -22,7 +22,7 @@ BahamutUnit::BahamutUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/bahamut.png", 96, 96, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/bahamut.png", 96, 96, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}

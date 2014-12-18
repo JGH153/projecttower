@@ -626,8 +626,17 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 	case 5:
 		testUnit = new ChineseUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
+	case 6:
+		testUnit = new KaviUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	case 7:
+		testUnit = new StarlordUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
+	case 8:
+		testUnit = new DraxUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		break;
 	default:
-		testUnit = new ChineseUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
+		testUnit = new DraxUnit(gameEngine, &mapGroundTile, unitSpawnPosTemp.x, unitSpawnPosTemp.y, unitTargetPosTemp.x, unitTargetPosTemp.y);
 		break;
 	}
 

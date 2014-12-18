@@ -24,7 +24,7 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/ironman.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/ironman.png", 32, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}

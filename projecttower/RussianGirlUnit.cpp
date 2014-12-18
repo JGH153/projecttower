@@ -6,10 +6,10 @@ RussianGirlUnit::RussianGirlUnit(Vortex * gameEngine, std::vector<std::vector<Ma
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.04f;
+	speed = 0.03f;
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 25.f;
+	maxHealth = 25.f; //+10
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 3;
@@ -22,7 +22,7 @@ RussianGirlUnit::RussianGirlUnit(Vortex * gameEngine, std::vector<std::vector<Ma
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/russiangirl.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/russiangirl.png", 32, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}

@@ -43,6 +43,18 @@
     <Filter Include="Source Files\OLD">
       <UniqueIdentifier>{407f8b61-1a85-4971-826c-d839ffd0da90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObjects\Units">
+      <UniqueIdentifier>{e2aa936c-41ff-46d0-ab01-8aeb1551b34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Units">
+      <UniqueIdentifier>{620109f6-e16d-4889-9457-1778ebfee404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Towers">
+      <UniqueIdentifier>{e0679b32-ce3a-43ae-82a4-6db16bfa58c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Towers">
+      <UniqueIdentifier>{ce3cc32c-2562-4116-a4aa-a4deaac7822f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vortex.cpp">
@@ -74,12 +86,6 @@
     </ClCompile>
     <ClCompile Include="ProgramController.cpp">
       <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tower.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Unit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameGuiController.cpp">
       <Filter>Source Files\Controllers</Filter>
@@ -126,9 +132,6 @@
     <ClCompile Include="GarbageCollector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CannonTower.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
@@ -144,32 +147,50 @@
     <ClCompile Include="ServerbrowserController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArrowTower.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="IronmanUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="BahamutUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="EffectsHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PathFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RussianGirlUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="SadakoUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="IndianaJonesUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="BahamutUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
     </ClCompile>
     <ClCompile Include="ChineseUnit.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="IndianaJonesUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="IronmanUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="KaviUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="RussianGirlUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="SadakoUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowTower.cpp">
+      <Filter>Source Files\GameObjects\Towers</Filter>
+    </ClCompile>
+    <ClCompile Include="CannonTower.cpp">
+      <Filter>Source Files\GameObjects\Towers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Source Files\GameObjects\Towers</Filter>
+    </ClCompile>
+    <ClCompile Include="StarlordUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="DraxUnit.cpp">
+      <Filter>Source Files\GameObjects\Units</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +218,6 @@
     <ClInclude Include="ProgramController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Tower.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="VortexSprite.h">
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
@@ -211,9 +229,6 @@
     </ClInclude>
     <ClInclude Include="sVar.h">
       <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Unit.h">
-      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GlobalDefines.h">
       <Filter>Header Files</Filter>
@@ -254,9 +269,6 @@
     <ClInclude Include="GarbageCollector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CannonTower.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Projectile.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
@@ -272,32 +284,50 @@
     <ClInclude Include="ServerbrowserController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IronmanUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrowTower.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="BahamutUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="EffectsHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PathFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RussianGirlUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="SadakoUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="IndianaJonesUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
+    <ClInclude Include="BahamutUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
     </ClInclude>
     <ClInclude Include="ChineseUnit.h">
-      <Filter>Header Files\GameObjects</Filter>
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="IndianaJonesUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="IronmanUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="KaviUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="RussianGirlUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="SadakoUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowTower.h">
+      <Filter>Header Files\GameObjects\Towers</Filter>
+    </ClInclude>
+    <ClInclude Include="CannonTower.h">
+      <Filter>Header Files\GameObjects\Towers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Header Files\GameObjects\Towers</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="StarlordUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="DraxUnit.h">
+      <Filter>Header Files\GameObjects\Units</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

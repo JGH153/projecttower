@@ -20,7 +20,7 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 
 	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight* 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
 	startMultiplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Multiplayer", gameEngine, 175);
-	startSingelplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), startMultiplayerGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Singelplayer", gameEngine, 175);
+	startSingelplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), startMultiplayerGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Singleplayer", gameEngine, 175);
 	
 
 	quitGameButton->setHoverImage("Graphics/graybutton.png");

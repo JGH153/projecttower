@@ -1,15 +1,15 @@
-#include "ChineseUnit.h"
+#include "StarlordUnit.h"
 
 
-ChineseUnit::ChineseUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
+StarlordUnit::StarlordUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundTiles, int posX, int posY, int endPosX, int endPosY) : Unit(gameEngine, mapGroundTiles, posX, posY) {
 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.045f;
+	speed = 0.055f;
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 61.f; //+13
+	maxHealth = 90.f; //+15
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 4;
@@ -22,7 +22,7 @@ ChineseUnit::ChineseUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/Units/chinese.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/starlord.png", 32, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}
@@ -34,11 +34,11 @@ ChineseUnit::ChineseUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 }
 
 
-ChineseUnit::~ChineseUnit() {
+StarlordUnit::~StarlordUnit() {
 
 }
 
-std::vector<sf::Drawable *> ChineseUnit::getRenderDrawable() {
+std::vector<sf::Drawable *> StarlordUnit::getRenderDrawable() {
 	std::vector<sf::Drawable*> temp = moveAnimations[currentMoveAnimationIndex]->getRenderDrawable();
 	temp.push_back(healthBarBG);
 	temp.push_back(healthBarFG);
@@ -46,7 +46,7 @@ std::vector<sf::Drawable *> ChineseUnit::getRenderDrawable() {
 	return temp;
 }
 
-void ChineseUnit::update() {
+void StarlordUnit::update() {
 
 	updateMovement();
 
@@ -74,7 +74,7 @@ void ChineseUnit::update() {
 
 }
 
-void ChineseUnit::killYourself() {
+void StarlordUnit::killYourself() {
 
 	delete this;
 

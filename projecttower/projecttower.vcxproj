@@ -77,6 +77,7 @@
     <ClCompile Include="BahamutUnit.cpp" />
     <ClCompile Include="ArrowTower.cpp" />
     <ClCompile Include="ChineseUnit.cpp" />
+    <ClCompile Include="DraxUnit.cpp" />
     <ClCompile Include="EffectsHandler.cpp" />
     <ClCompile Include="IndianaJonesUnit.cpp" />
     <ClCompile Include="IronmanUnit.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameGuiController.cpp" />
     <ClCompile Include="GlobalDefines.cpp" />
+    <ClCompile Include="KaviUnit.cpp" />
     <ClCompile Include="MapTile.cpp" />
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="NetworkGameClient.cpp" />
@@ -101,6 +103,7 @@
     <ClCompile Include="SadakoUnit.cpp" />
     <ClCompile Include="SelectionGizmo.cpp" />
     <ClCompile Include="ServerbrowserController.cpp" />
+    <ClCompile Include="StarlordUnit.cpp" />
     <ClCompile Include="SubController.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
@@ -121,6 +124,7 @@
     <ClInclude Include="BahamutUnit.h" />
     <ClInclude Include="ArrowTower.h" />
     <ClInclude Include="ChineseUnit.h" />
+    <ClInclude Include="DraxUnit.h" />
     <ClInclude Include="EffectsHandler.h" />
     <ClInclude Include="IndianaJonesUnit.h" />
     <ClInclude Include="IronmanUnit.h" />
@@ -129,6 +133,7 @@
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameGuiController.h" />
     <ClInclude Include="GlobalDefines.h" />
+    <ClInclude Include="KaviUnit.h" />
     <ClInclude Include="MapTile.h" />
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="NetworkGameClient.h" />
@@ -144,6 +149,7 @@
     <ClInclude Include="SadakoUnit.h" />
     <ClInclude Include="SelectionGizmo.h" />
     <ClInclude Include="ServerbrowserController.h" />
+    <ClInclude Include="StarlordUnit.h" />
     <ClInclude Include="SubController.h" />
     <ClInclude Include="sVar.h" />
     <ClInclude Include="Tower.h" />

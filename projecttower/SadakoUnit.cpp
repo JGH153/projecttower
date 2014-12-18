@@ -6,10 +6,10 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.05f;
+	speed = 0.035f;
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 36.f;
+	maxHealth = 36.f; //+11
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 4;
@@ -22,7 +22,7 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/sadako.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/sadako.png", 32, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}

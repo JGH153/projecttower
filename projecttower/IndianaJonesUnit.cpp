@@ -6,10 +6,10 @@ IndianaJonesUnit::IndianaJonesUnit(Vortex * gameEngine, std::vector<std::vector<
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.06f;
+	speed = 0.04f;
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 48.f;
+	maxHealth = 48.f; //+12
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
 	killReward = 4;
@@ -22,7 +22,7 @@ IndianaJonesUnit::IndianaJonesUnit(Vortex * gameEngine, std::vector<std::vector<
 	for (int i = 0; i < DIRECTIONS.size(); i++){
 
 		VortexAnimation * tempAni = new VortexAnimation(posX, posY, width, height, 13, gameEngine);
-		tempAni->asembleSpritesheetAnimation("Graphics/indianajones.png", 32, 48, DIRECTIONS[i], 4);
+		tempAni->asembleSpritesheetAnimation("Graphics/Units/indianajones.png", 32, 48, DIRECTIONS[i], 4);
 		moveAnimations.push_back(tempAni);
 
 	}
