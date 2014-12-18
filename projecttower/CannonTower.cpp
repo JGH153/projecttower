@@ -6,7 +6,7 @@ CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, i
 	range = 150;
 	reloadTimeMS = 1100;
 	projectileSpeed = 0.2f;
-	splashRadius = 28;
+	splashRadius = 33;
 	reloading = false;
 
 	this->effectsHandler = effectsHandler;

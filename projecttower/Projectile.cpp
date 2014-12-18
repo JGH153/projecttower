@@ -55,7 +55,7 @@ bool Projectile::checkIfHitTarget() {
 	float diffX = abs((target->posX) - posX);
 	float diffY = abs((target->posY) - posY);
 
-	if (diffX * diffX + diffY * diffY < radi * radi) {
+	if (diffX * diffX + diffY * diffY <= radi * radi) {
 		// If the projectile is close enough to unit, damage it
 		
 		target->damage(damage);
@@ -69,8 +69,16 @@ bool Projectile::checkIfHitTarget() {
 			
 
 			for (auto currentUnit : *enemyList) {
-				if (abs(currentUnit->getPos().x - target->getPos().x) * abs(currentUnit->getPos().x - target->getPos().x) + abs(currentUnit->getPos().y - target->getPos().y) * abs(currentUnit->getPos().y - target->getPos().y) < radius * radius) {
-					currentUnit->damage(damage);
+				if (currentUnit == target) {
+					continue;
+				}
+				float xdist = abs(currentUnit->getPos().x - target->getPos().x);
+				float ydist = abs(currentUnit->getPos().y - target->getPos().y);
+				if (xdist * xdist + ydist * ydist <= radius * radius) {
+					// If the unit is within the splash raidus, do damage relative to the distance from explosion
+					float percentDistanceFromCenter = 1 - (xdist * xdist + ydist * ydist) / (radius * radius);
+					printf("Doing %f percent dmg\n", percentDistanceFromCenter);
+					currentUnit->damage(damage * percentDistanceFromCenter);
 				}
 			}
 		}
