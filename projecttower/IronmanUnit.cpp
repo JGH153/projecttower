@@ -55,52 +55,11 @@ std::vector<sf::Drawable *> IronmanUnit::getRenderDrawable() {
 	return temp;
 }
 
-void IronmanUnit::findNewPath() {
-	atWaypointTarget = false;
-	int footPosX = posX + width / 2;
-	int footPosY = posY + height;
-
-	aStar aStarPath = aStar(*mapGroundTiles);
-	//startEndStruct startStop = startEndStruct(4, 13, 21, 13);
-	startEndStruct startStop = startEndStruct(footPosX / 25, footPosY / 25, endPosX / 25, endPosY / 25);
-	pathToTarget = aStarPath.findPath(startStop);
-
-	if (pathToTarget.size() > 0) {
-
-		currentWaypointTarget = pathToTarget[pathToTarget.size() - 1];
-		pathToTarget.pop_back();
-
-	}
-	else {
-
-		//std::cout << "No Path \n";
-
-	}
-}
-
 
 void IronmanUnit::update() {
-	if (isDead() || reachedGoal){
-		return;
-	}
+	updateMovement();
 
-	if (firstTimeRun){
-		sf::Vector2i positionInMapCoordinate = WorldPosToMapGroundTilePos(posX, posY);
-		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapCoordinate.x][positionInMapCoordinate.y];
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
-		firstTimeRun = false;
-	}
-
-	if (atTileCentre()){
-		if (atTargetTile()){
-			reachedGoal = true;
-			return;
-		}
-		sf::Vector2i positionInMapTileSpace = WorldPosToMapGroundTilePos(posX, posY);
-		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
-	}
-	/*
+	/*	OLD MOVEMENT CODE, for reference, i guess?
 	if (isDead() || reachedGoal) {
 		return;
 	}

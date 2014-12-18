@@ -27,11 +27,9 @@ public:
 
 protected:
 
-	deque<sf::Vector2i> pathToTarget;
+	bool firstTimeRun = true;
 
-	bool atWaypointTarget;
-	sf::Vector2i currentWaypointTarget;
-
+	void updateMovement();
 	
 	float currentHealth;
 	float maxHealth;
@@ -47,10 +45,7 @@ protected:
 
 	bool atTileCentre();
 	bool atTargetTile();
-	bool atCurrentWaypointTarget();
-	bool atCurrentWaypointTargetX();
-	bool atCurrentWaypointTargetY();
-
+	
 	sf::Vector2f mapGroundTilePosToWorldPos(int x, int y);
 	sf::Vector2i WorldPosToMapGroundTilePos(double x, double y);
 

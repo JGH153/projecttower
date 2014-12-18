@@ -46,93 +46,9 @@ std::vector<sf::Drawable *> BahamutUnit::getRenderDrawable() {
 	return temp;
 }
 
-void BahamutUnit::findNewPath() {
-	atWaypointTarget = false;
-	int footPosX = posX + width / 2;
-	int footPosY = posY + height;
-
-	aStar aStarPath = aStar(*mapGroundTiles);
-	startEndStruct startStop = startEndStruct(footPosX / 25, footPosY / 25, endPosX / 25, endPosY / 25);
-	pathToTarget = aStarPath.findPath(startStop);
-
-	if (pathToTarget.size() > 0) {
-
-		currentWaypointTarget = pathToTarget[pathToTarget.size() - 1];
-		pathToTarget.pop_back();
-
-	}
-	else {
-
-		//std::cout << "No Path \n";
-
-	}
-}
-
-
 void BahamutUnit::update() {
-
-	if (isDead() || reachedGoal) {
-		return;
-	}
-
-	if (pathToTarget.empty()) {
-
-		if (abs(posX - endPosX) * abs(posX - endPosX) + abs(posY - endPosY) * abs(posY - endPosY) <= 100 * 100) {
-			reachedGoal = true;
-			return;
-		}
-
-		findNewPath();
-	}
-
-	if (!pathToTarget.empty()) {
-		if (groundTilesChanged) {
-			if (mapGroundTiles->at(currentWaypointTarget.x).at(currentWaypointTarget.y)->getTileTypeID() == TileTypes::tower) {
-				findNewPath();
-			}
-			else {
-				for (auto pathPoint : pathToTarget) {
-					if (mapGroundTiles->at(pathPoint.x).at(pathPoint.y)->getTileTypeID() == TileTypes::tower) {
-						findNewPath();
-						break;
-					}
-				}
-			}
-		}
-
-		if (towerRemoved) {
-			findNewPath();
-		}
-	}
-
-	if (atCurrentWaypointTarget() && pathToTarget.size() > 0) {
-
-		currentWaypointTarget = pathToTarget[pathToTarget.size() - 1];
-		pathToTarget.pop_back();
-
-	}
-
-
-	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
-
-
-	if (posX < currentWaypointTargetWorldCord.x && !atCurrentWaypointTargetX()) {
-		moveDirection = DIR_EAST;
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
-		//std::cout << "JUPP " << currentWaypointTargetWorldCord.x << " \n";
-	}
-	else if (posX > currentWaypointTargetWorldCord.x && !atCurrentWaypointTargetX()) {
-		moveDirection = DIR_WEST;
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
-	}
-	else if (posY < currentWaypointTargetWorldCord.y  && !atCurrentWaypointTargetY()) {
-		moveDirection = DIR_SOUTH;
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
-	}
-	else if (posY > currentWaypointTargetWorldCord.y  && !atCurrentWaypointTargetY()) {
-		moveDirection = DIR_NORTH;
-		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
-	}
+	
+	updateMovement();
 
 	sf::Vector2f offset(moveDirection.x * speed * gameEngine->deltaTime.asMilliseconds(), (moveDirection.y * speed * gameEngine->deltaTime.asMilliseconds()));
 

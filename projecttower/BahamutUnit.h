@@ -7,7 +7,7 @@ public:
 
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();
-	void findNewPath();
+
 
 	void killYourself();
 };

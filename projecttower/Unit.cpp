@@ -30,8 +30,7 @@ Unit::~Unit()
 
 void Unit::initUnit() {
 
-	atWaypointTarget = true;
-
+	
 	this->currentHealth = maxHealth;
 
 	int scaleFactorX = 12;
@@ -48,6 +47,28 @@ void Unit::initUnit() {
 
 }
 
+void Unit::updateMovement(){
+	if (isDead() || reachedGoal){
+		return;
+	}
+
+	if (firstTimeRun){
+		sf::Vector2i positionInMapCoordinate = WorldPosToMapGroundTilePos(posX, posY);
+		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapCoordinate.x][positionInMapCoordinate.y];
+		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+		firstTimeRun = false;
+	}
+
+	if (atTileCentre()){
+		if (atTargetTile()){
+			reachedGoal = true;
+			return;
+		}
+		sf::Vector2i positionInMapTileSpace = WorldPosToMapGroundTilePos(posX, posY);
+		moveDirection = gameEngine->pathFinder->breadthFirstDirectionMap[positionInMapTileSpace.x][positionInMapTileSpace.y];
+		currentMoveAnimationIndex = getDirectionIndex(moveDirection);
+	}
+}
 
 bool Unit::hitPoint(sf::Vector2f point) {
 	return hitPoint(point.x, point.y);
@@ -118,56 +139,6 @@ bool Unit::atTargetTile(){
 	return false;
 }
 
-bool Unit::atCurrentWaypointTarget() {
-
-	float range = 5.f; //px?
-
-	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
-
-	//std::cout << abs(currentWaypointTargetWorldCord.x - posX) << " | " << abs(currentWaypointTargetWorldCord.y - posY) << std::endl;
-
-	if (abs(currentWaypointTargetWorldCord.x - posX) <= range && abs(currentWaypointTargetWorldCord.y - posY) <= range) {
-		return true;
-	}
-	/*
-	if (abs(currentWaypointTargetWorldCord.x - posX) * abs(currentWaypointTargetWorldCord.x - posX) + abs(currentWaypointTargetWorldCord.y - posY) * abs(currentWaypointTargetWorldCord.y - posY) <= range * range) {
-		//std::cout << "YESS\n";
-		return true;
-	}*/
-
-	return false;
-
-}
-
-bool Unit::atCurrentWaypointTargetX() {
-
-	float range = 5.f; //px?
-
-	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
-
-	if (abs(currentWaypointTargetWorldCord.x - posX) <= range) {
-		//std::cout << "YESS\n";
-		return true;
-	}
-
-	return false;
-
-}
-
-bool Unit::atCurrentWaypointTargetY() {
-
-	float range = 5.f; //px?
-
-	auto currentWaypointTargetWorldCord = mapGroundTilePosToWorldPos(currentWaypointTarget.x, currentWaypointTarget.y);
-
-	if (abs(currentWaypointTargetWorldCord.y - posY) <= range) {
-		//std::cout << "YESS\n";
-		return true;
-	}
-
-	return false;
-
-}
 
 sf::Vector2f Unit::mapGroundTilePosToWorldPos(int x, int y) {
 	int gridTileSize = 25;

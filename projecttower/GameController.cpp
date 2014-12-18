@@ -87,10 +87,10 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	preloadAssets();
 
-	std::vector<std::vector<int>> navigationMap;
-	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
-	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
-	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
+//	std::vector<std::vector<int>> navigationMap;
+//	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+//	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+//	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
 
 
 	//set view size relative to org window size
@@ -729,9 +729,6 @@ void GameController::update() {
 
 	gameEngine->unitListMutex.lock();
 	for (int i = 0; i < unitList.size(); i++) {
-		if (groundTilesChanged) {
-			unitList[i]->groundTilesChanged = true;
-		}
 		if (towerRemoved) {
 			unitList[i]->towerRemoved = true;
 		}
@@ -1017,6 +1014,7 @@ void GameController::handlePlayerTowerAction() {
 				i--;
 
 				towerRemoved = true;
+				groundTilesChanged = true;
 			}
 			
 			gameEngine->towerListMutex.unlock();
