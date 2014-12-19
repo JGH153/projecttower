@@ -11,10 +11,10 @@ KaviUnit::KaviUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 75.f; //+14
+	maxHealth = 89.f; //+19
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 7;
+	killReward = 4;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

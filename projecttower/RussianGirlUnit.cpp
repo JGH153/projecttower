@@ -11,10 +11,10 @@ RussianGirlUnit::RussianGirlUnit(Vortex * gameEngine, std::vector<std::vector<Ma
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 25.f; //+10
+	maxHealth = 26.f; //+11
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 3;
+	killReward = 2;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

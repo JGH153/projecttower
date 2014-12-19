@@ -11,10 +11,10 @@ IfritUnit::IfritUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 
 	width = 48 / 2;
 	height = 48 / 2;
-	maxHealth = 123.f; //+17
+	maxHealth = 158.f; //+25
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 10;
+	killReward = 5;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

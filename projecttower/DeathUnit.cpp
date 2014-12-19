@@ -11,10 +11,10 @@ DeathUnit::DeathUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 150.f; //+19
+	maxHealth = 214.f; //+29
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 12;
+	killReward = 6;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

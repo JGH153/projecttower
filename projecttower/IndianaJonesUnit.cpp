@@ -11,10 +11,10 @@ IndianaJonesUnit::IndianaJonesUnit(Vortex * gameEngine, std::vector<std::vector<
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 48.f; //+12
+	maxHealth = 53.f; //+15
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 5;
+	killReward = 3;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

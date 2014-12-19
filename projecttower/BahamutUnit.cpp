@@ -14,7 +14,7 @@ BahamutUnit::BahamutUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	maxHealth = 15.f; //+9
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 2;
+	killReward = 1;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

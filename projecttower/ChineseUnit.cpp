@@ -11,10 +11,10 @@ ChineseUnit::ChineseUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 61.f; //+13
+	maxHealth = 70.f; //+17 
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 6;
+	killReward = 3;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

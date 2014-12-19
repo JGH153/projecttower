@@ -11,10 +11,10 @@ SadakoUnit::SadakoUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 36.f; //+11
+	maxHealth = 38.f; //+13
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 4;
+	killReward = 2;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

@@ -11,10 +11,10 @@ HulkUnit::HulkUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 141.f; //+18
+	maxHealth = 185.f; //+27
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 11;
+	killReward = 6;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];

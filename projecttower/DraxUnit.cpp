@@ -11,10 +11,10 @@ DraxUnit::DraxUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 
 	width = 32 / 2;
 	height = 48 / 2;
-	maxHealth = 106.f; //+16
+	maxHealth = 133.f; //+23
 	offsetComponentsY = 15 + gameEngine->getRandInt(-5, 5);
 
-	killReward = 9;
+	killReward = 5;
 
 
 	moveDirection = DIRECTIONS[rand() % 4];
