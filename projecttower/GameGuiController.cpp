@@ -94,7 +94,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
-	msToNextLevel = 2000;
+	msToNextLevel = 5000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);
@@ -536,7 +536,7 @@ int GameGuiController::getPlayerResources() {
 
 void GameGuiController::showTowerUpgrades(sf::Vector2i mousePosition) {
 	buildTimer = 400;
-	upgradeToCannon->setPosition(mousePosition.x, mousePosition.y);
+	upgradeToCannon->setPosition(mousePosition.x + 5, mousePosition.y);
 	upgradeToCannon->setOpacity(255);
 
 	upgradeToFreeze->setPosition(upgradeToCannon->getPosition().x + upgradeToCannon->getWidth() + 1, upgradeToCannon->getPosition().y);
