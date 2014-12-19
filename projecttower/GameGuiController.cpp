@@ -53,10 +53,17 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	sendUnit12Button = new VortexButtonRectangle(sendUnit11Button->getPosition().x + sendUnit11Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/death-button.png", "", gameEngine, 255, "Level 12 unit\nCost 109\n +12 Income");
 	sendUnit12Button->setHoverImage("Graphics/GUI/death-hover-button.png");
 	
+
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
 
+	upgradeToFreeze = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToFreeze.png", "", gameEngine, 0, "Freeze tower\nCost 10");
+	upgradeToFreeze->setHoverImage("Graphics/GUI/UpgradeToFreeze-hover.png");
+
 	buttons.push_back(upgradeToCannon);
+	buttons.push_back(upgradeToFreeze);
+
+
 	buttons.push_back(buildButton);
 	buttons.push_back(deleteTowerButton);
 	buttons.push_back(sendUnit1Button);
@@ -83,7 +90,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
 	playerResources = 20;
-	playerResources = 2000;
+	//playerResources = 2000;
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
@@ -163,7 +170,8 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	guiObjects.push_back(levelTimerText);
 	
 
-	guiObjects.push_back(upgradeToCannon);
+	//guiObjects.push_back(upgradeToCannon);
+	//guiObjects.push_back(upgradeToFreeze);
 
 	lossText = new VortexText("YOU LOSE!", *gameEngine->loadFont("Fonts/arial.ttf"), 70);
 	lossText->setColor(sf::Color::Transparent);
@@ -210,8 +218,11 @@ bool GameGuiController::mouseOverSomeButton(sf::View resetToView) {
 
 	gameEngine->setMousePosView(gameView);
 
-	if (buildButton->mouseOver()) {
-		overSomeButton = true;
+	for (auto button : buttons) {
+		if (button->mouseOver()) {
+			overSomeButton = true;
+			break;
+		}
 	}
 
 	gameEngine->setMousePosView(resetToView);
@@ -431,30 +442,6 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 			renderListSub.push_back(currentRenderObj);
 		}
 	}
-	/*
-	for (auto currentRenderObj : buildButton->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-	for (auto currentRenderObj : deleteTowerButton->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-	for (auto currentRenderObj : sendUnit1Button->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-	for (auto currentRenderObj : sendUnit2Button->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-	for (auto currentRenderObj : sendUnit3Button->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-	for (auto currentRenderObj : sendUnit4Button->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-
-	for (auto currentRenderObj : upgradeToCannon->getTooltipDrawable()) {
-		renderListSub.push_back(currentRenderObj);
-	}
-	*/
 	
 
 	guiMutex.unlock();
@@ -551,12 +538,23 @@ void GameGuiController::showTowerUpgrades(sf::Vector2i mousePosition) {
 	buildTimer = 400;
 	upgradeToCannon->setPosition(mousePosition.x, mousePosition.y);
 	upgradeToCannon->setOpacity(255);
+
+	upgradeToFreeze->setPosition(upgradeToCannon->getPosition().x + upgradeToCannon->getWidth() + 1, upgradeToCannon->getPosition().y);
+	upgradeToFreeze->setOpacity(255);
+
+
 	showingTowerUpgrades = true;
 }
 
 void GameGuiController::hideTowerUpgrades() {
 	showingTowerUpgrades = false;
 	upgradeToCannon->setOpacity(0);
+	upgradeToCannon->tooltipBackground->setFillColor(sf::Color::Transparent);
+	upgradeToCannon->tooltipText->setColor(sf::Color::Transparent);
+
+	upgradeToFreeze->setOpacity(0);
+	upgradeToFreeze->tooltipBackground->setFillColor(sf::Color::Transparent);
+	upgradeToFreeze->tooltipText->setColor(sf::Color::Transparent);
 }
 
 void GameGuiController::setCurrentLevel(int newLevel) {

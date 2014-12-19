@@ -7,7 +7,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	this->speed = speed;
 	this->target = target;
 	this->projectileSprite = projectileSprite;
-	projectileSprite->setScale(0.45f, 0.45f);
+	this->projectileSprite->setScale(0.45f, 0.45f);
 	this->damage = damage;
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);
@@ -27,7 +27,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	this->speed = speed;
 	this->target = target;
 	this->projectileSprite = projectileSprite;
-	projectileSprite->setScale(0.40f, 0.40f);
+	this->projectileSprite->setScale(0.40f, 0.40f);
 	this->damage = damage;
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);
@@ -48,6 +48,28 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexAnimation* 
 	this->speed = speed;
 	this->target = target;
 	this->projectileSprites = projectileSprites;
+	
+	this->damage = damage;
+	destroyProjectile = false;
+	hitParticleColor = sf::Color(222, 200, 150);
+	this->slowPercentage = slowPercentage;
+
+	this->radius = radius;
+	this->enemyList = enemyList;
+	this->particleList = particleList;
+	this->effectsHandler = effectsHandler;
+	updatePos();
+
+	zIndex = zIndexlayer::projectile;
+}
+
+Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite* projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler, int slowPercentage) : Entity(gameEngine, posX, posY) {
+	animatedProjectile = false;
+	this->gameEngine = gameEngine;
+	this->speed = speed;
+	this->target = target;
+	this->projectileSprite = projectileSprite;
+	this->projectileSprite->setScale(0.40f, 0.40f);
 	this->damage = damage;
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);

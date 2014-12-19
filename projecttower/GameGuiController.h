@@ -47,6 +47,7 @@ public:
 	void setNextLevelTime(int newValue);
 
 	VortexButtonRectangle * upgradeToCannon;
+	VortexButtonRectangle * upgradeToFreeze;
 	int playerResources;
 	int buildTimer;
 	int currentLevel;

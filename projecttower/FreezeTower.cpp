@@ -23,7 +23,8 @@ FreezeTower::FreezeTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, i
 	width = gridTileSize;
 	height = gridTileSize + towerSpriteOffsetY;
 	towerSprite = new VortexSprite(gameEngine, "Graphics/Towers/FreezeReducedCanvas.png", posX - towerSpriteOffsetX, posY - towerSpriteOffsetY, width + 2, height);
-	projectileSpritePath = "Graphics/Projectiles/manyeffects_sheet.png";
+	//projectileSpritePath = "Graphics/Projectiles/manyeffects_sheet.png";
+	projectileSpritePath = "Graphics/Projectiles/frostbolt.png";
 
 	towerId = 3;
 }
@@ -85,10 +86,12 @@ void FreezeTower::update() {
 		// If it has a viable target by now, attack it
 		if (currentTarget != nullptr) {
 
-			VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64/2, 64/2, 14, gameEngine);
-			snowballProjectileEffect->asembleSpritesheetAnimation(projectileSpritePath, 512, 0, 64, 64, 8, 6);
+			//VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64/2, 64/2, 14, gameEngine);
+			//snowballProjectileEffect->asembleSpritesheetAnimation(projectileSpritePath, 512, 0, 64, 64, 8, 6);
 
-			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, snowballProjectileEffect, currentTarget, projectileSpeed, damage, splashRadius, enemyList, particleList, effectsHandler, 50);
+			auto sprite = new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
+
+			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage, splashRadius, enemyList, particleList, effectsHandler, 50);
 
 			projectiles.push_back(projectile);
 			reloading = true;

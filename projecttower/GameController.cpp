@@ -688,7 +688,7 @@ void GameController::spawnNewTower(int towerID, int gridX, int gridY, bool build
 
 	gameEngine->unitListMutex.lock();
 	gameEngine->particleListMutex.lock();
-	FreezeTower* testTower = new FreezeTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList, effectsHandler);
+	ArrowTower* testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
 
 	gameEngine->particleListMutex.unlock();
 	gameEngine->unitListMutex.unlock();
@@ -865,12 +865,13 @@ void GameController::update() {
 
 	// Upgrade tower
 	if (gameGuiController->showingTowerUpgrades && selectedTower != nullptr) {
+		
+		// Upgrade to cannon tower
 		if (gameGuiController->upgradeToCannon->isPressed && gameGuiController->upgradeToCannon->hovering && gameGuiController->buildTimer <= 0) {
+
 			if (gameGuiController->playerResources >= 10) {
 				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
 				gameGuiController->hideTowerUpgrades();
-				gameGuiController->upgradeToCannon->tooltipBackground->setFillColor(sf::Color::Transparent);
-				gameGuiController->upgradeToCannon->tooltipText->setColor(sf::Color::Transparent);
 
 
 				gameEngine->towerListMutex.lock();
@@ -889,6 +890,35 @@ void GameController::update() {
 				gameEngine->towerListMutex.unlock();
 
 			}
+
+
+		}
+
+		// Upgrade to freeze tower
+		else if (gameGuiController->upgradeToFreeze->isPressed && gameGuiController->upgradeToFreeze->hovering && gameGuiController->buildTimer <= 0) {
+
+			if (gameGuiController->playerResources >= 10) {
+				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
+				gameGuiController->hideTowerUpgrades();
+
+
+				gameEngine->towerListMutex.lock();
+				for (int i = 0; i < towerList.size(); i++) {
+					if (towerList[i] == selectedTower) {
+						int xpos = selectedTower->getPos().x;
+						int ypos = selectedTower->getPos().y;
+
+						upgradeTower(2, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
+						sendUpgradeTowerPacket(2, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
+
+
+						break;
+					}
+				}
+				gameEngine->towerListMutex.unlock();
+
+			}
+
 		}
 	}
 
@@ -1155,7 +1185,18 @@ void GameController::upgradeTower(int newTowerID, int gridX, int gridY) {
 			gameEngine->addRemovableObjectToList(towerList[i]);
 			towerList.erase(towerList.begin() + i);
 
-			CannonTower* newTower = new CannonTower(gameEngine, &unitList, gridX*gridTileSize, gridY*gridTileSize, gridTileSize, sf::Vector2i((gridX*gridTileSize) / gridTileSize, (gridY*gridTileSize) / gridTileSize), &particleList, effectsHandler);
+			Tower* newTower;
+
+			if (newTowerID == 1) {
+				newTower = new CannonTower(gameEngine, &unitList, gridX*gridTileSize, gridY*gridTileSize, gridTileSize, sf::Vector2i((gridX*gridTileSize) / gridTileSize, (gridY*gridTileSize) / gridTileSize), &particleList, effectsHandler);
+			}
+			else if (newTowerID == 2) {
+				newTower = new FreezeTower(gameEngine, &unitList, gridX*gridTileSize, gridY*gridTileSize, gridTileSize, sf::Vector2i((gridX*gridTileSize) / gridTileSize, (gridY*gridTileSize) / gridTileSize), &particleList, effectsHandler);
+			}
+			else {
+				printf("Super failure upgrading tower");
+				return;
+			}
 
 			towerList.push_back(newTower);
 
@@ -1200,7 +1241,7 @@ void GameController::handlePlayerTowerAction() {
 
 	//Not building, not deleting, and clicked on tower
 	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
-		if (gameGuiController->showingTowerUpgrades && gameGuiController->upgradeToCannon->hovering) {
+		if (gameGuiController->showingTowerUpgrades && (gameGuiController->upgradeToCannon->hovering ||  gameGuiController->upgradeToFreeze->hovering)) {
 			// Nomnomcookie
 		}
 		else {
@@ -1240,7 +1281,7 @@ void GameController::handlePlayerTowerAction() {
 		// If upgrade tab is open
 		if (gameGuiController->showingTowerUpgrades) {
 			// If mouse is not over an upgrade button
-			if (!gameGuiController->upgradeToCannon->isPressed && !gameGuiController->upgradeToCannon->hovering) {
+			if (!gameGuiController->upgradeToCannon->isPressed && !gameGuiController->upgradeToCannon->hovering && !gameGuiController->upgradeToFreeze->isPressed && !gameGuiController->upgradeToFreeze->hovering) {
 				selectedTower = nullptr;
 				if (gameGuiController->showingTowerUpgrades) {
 					gameGuiController->showingTowerUpgrades = false;

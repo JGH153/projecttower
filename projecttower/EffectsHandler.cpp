@@ -51,8 +51,8 @@ void EffectsHandler::showExplosion(int posX, int posY) {
 }
 
 void EffectsHandler::showFreezingExplosion(int posX, int posY) {
-	int effectWidth = 200 / 2;
-	int effectHeight = 200 / 2;
+	int effectWidth = 160 / 2;
+	int effectHeight = 160 / 2;
 
 	VortexAnimation* snowballExplosionEffect = new VortexAnimation(posX - (effectWidth / 2), posY - (effectHeight / 2), effectWidth, effectHeight, 30, gameEngine);
 	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
