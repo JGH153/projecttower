@@ -445,14 +445,14 @@ void GameController::doGameControllerStatup() {
 			playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 			playerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
 
-			enemyPlayerUnitSpawnPos = sf::Vector2i(27 * gridTileSize, 13 * gridTileSize);
-			enemyPlayerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitTargetPos = sf::Vector2i(48 * gridTileSize, 13 * gridTileSize);
 
 		} else {
 
 			playerID = 1;
-			playerUnitSpawnPos = sf::Vector2i(27 * gridTileSize, 13 * gridTileSize);
-			playerUnitTargetPos = sf::Vector2i(47 * gridTileSize, 13 * gridTileSize);
+			playerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
+			playerUnitTargetPos = sf::Vector2i(48 * gridTileSize, 13 * gridTileSize);
 
 			enemyPlayerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 			enemyPlayerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
