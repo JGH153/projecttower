@@ -676,7 +676,9 @@ void GameController::spawnNewUnit(int ID, bool toOponent) {
 void GameController::spawnNewTower(int towerID, int gridX, int gridY, bool buildCommandFromOtherPlayer) {
 
 	gameEngine->unitListMutex.lock();
+	gameEngine->particleListMutex.lock();
 	ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
+	gameEngine->particleListMutex.unlock();
 	gameEngine->unitListMutex.unlock();
 
 	gameEngine->towerListMutex.lock();
@@ -859,7 +861,7 @@ void GameController::update() {
 				gameGuiController->upgradeToCannon->tooltipText->setColor(sf::Color::Transparent);
 
 
-				//gameEngine->towerListMutex.lock();
+				gameEngine->towerListMutex.lock();
 				for (int i = 0; i < towerList.size(); i++) {
 					if (towerList[i] == selectedTower) {
 						int xpos = selectedTower->getPos().x;
@@ -867,29 +869,12 @@ void GameController::update() {
 
 						upgradeTower(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
 						sendUpgradeTowerPacket(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
-/*
-						gameEngine->addRemovableObjectToList(towerList[i]);
-						towerList.erase(towerList.begin() + i);
-						
-						gameEngine->unitListMutex.lock();
-						CannonTower* newTower = new CannonTower(gameEngine, &unitList, xpos, ypos, gridTileSize, sf::Vector2i(xpos / gridTileSize, ypos / gridTileSize), &particleList, effectsHandler);*/
-						selectedTower = towerList[i];
-						gameEngine->selectionSpriteMutex.lock();
-						selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
-						selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
-						selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
-						selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
-						gameEngine->selectionSpriteMutex.unlock();
 
-
-						//gameEngine->unitListMutex.unlock();
-
-						
 
 						break;
 					}
 				}
-				//gameEngine->towerListMutex.unlock();
+				gameEngine->towerListMutex.unlock();
 
 			}
 		}
@@ -1146,7 +1131,7 @@ void GameController::deleteTower(int gridX, int gridY) {
 void GameController::upgradeTower(int newTowerID, int gridX, int gridY) {
 
 
-	gameEngine->towerListMutex.lock();
+	//gameEngine->towerListMutex.lock();
 
 	for (int i = 0; i < towerList.size(); i++) {
 
@@ -1162,13 +1147,21 @@ void GameController::upgradeTower(int newTowerID, int gridX, int gridY) {
 
 			towerList.push_back(newTower);
 
+			selectedTower = newTower;
+			gameEngine->selectionSpriteMutex.lock();
+			selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
+			selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
+			selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
+			selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
+			gameEngine->selectionSpriteMutex.unlock();
+
 			gameEngine->unitListMutex.unlock();
 
 		}
 
 	}
 
-	gameEngine->towerListMutex.unlock();
+	//gameEngine->towerListMutex.unlock();
 
 
 }
@@ -1257,6 +1250,17 @@ void GameController::handlePlayerTowerAction() {
 	else if (onMyMapSide(xpos, ypos) && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
 		// Check if player has resources to build
 		if (gameGuiController->getPlayerResources() >= 10) {
+
+			// Check that there still is a valid path after tower is built
+			mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
+			aStar pathFinder(mapGroundTile);
+			startEndStruct startEndStructIsTheMostPointlessVariableTypeEverMadeInTheExsistenceOfMankind(playerUnitSpawnPos.x / gridTileSize, playerUnitSpawnPos.y / gridTileSize, playerUnitTargetPos.x / gridTileSize, playerUnitTargetPos.y / gridTileSize);
+
+			if (pathFinder.findPath(startEndStructIsTheMostPointlessVariableTypeEverMadeInTheExsistenceOfMankind).empty()) {
+				towerBuildSprite->setColor(UNABLETOBUILD);
+				mapGroundTile[xpos][ypos]->changeTileType(TileTypes::grass);
+				return;
+			}
 
 			spawnNewTower(0, xpos, ypos, false);
 			sendSpawnNewTowerPacket(0, xpos, ypos);

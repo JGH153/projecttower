@@ -83,7 +83,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
 	playerResources = 20;
-	//playerResources = 2000;
+	playerResources = 2000;
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
