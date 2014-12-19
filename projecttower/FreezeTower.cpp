@@ -1,16 +1,17 @@
 #include "FreezeTower.h"
 
 
-FreezeTower::FreezeTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
+FreezeTower::FreezeTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
 
 	damage = 1.f;
 	range = 75;
 	reloadTimeMS = 2000;
-	projectileSpeed = 0.2f;
-	splashRadius = 50;
+	projectileSpeed = 0.1f;
+	splashRadius = 40;
 
 	reloading = false;
 
+	this->effectsHandler = effectsHandler;
 	this->gridTileSize = gridTileSize;
 
 	sf::Texture * texImageTile;

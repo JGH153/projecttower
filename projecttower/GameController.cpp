@@ -156,13 +156,13 @@ void GameController::preloadAssets() {
 	VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64, 64, 14, gameEngine);
 	snowballProjectileEffect->asembleSpritesheetAnimation("Graphics/Projectiles/manyeffects_sheet.png", 512, 0, 64, 64, 8, 6);
 
-	//VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
-	//snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
+	VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
+	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
 
 
 	gameEngine->addRemovableObjectToList(explosionEffect);
 	gameEngine->addRemovableObjectToList(snowballProjectileEffect);
-	//gameEngine->addRemovableObjectToList(snowballExplosionEffect);
+	gameEngine->addRemovableObjectToList(snowballExplosionEffect);
 
 	for (auto currentUnit : preloadUnitList) {
 		gameEngine->addRemovableObjectToList(currentUnit);
@@ -688,8 +688,7 @@ void GameController::spawnNewTower(int towerID, int gridX, int gridY, bool build
 
 	gameEngine->unitListMutex.lock();
 	gameEngine->particleListMutex.lock();
-	//ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
-	FreezeTower* testTower = new FreezeTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
+	FreezeTower* testTower = new FreezeTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList, effectsHandler);
 
 	gameEngine->particleListMutex.unlock();
 	gameEngine->unitListMutex.unlock();

@@ -11,6 +11,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	this->damage = damage;
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);
+	this->effectsHandler = NULL;
 
 	slowPercentage = 0;
 	radius = 0;
@@ -79,24 +80,25 @@ std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
 bool Projectile::checkIfHitTarget() {
 	float hitboxRadius = 25;
 
-	float diffX = abs((target->posX + target->getSize().x / 2) - posX + width / 2);
-	float diffY = abs((target->posY + target->getSize().y / 2) - posY + height / 2);
+	float diffX = abs((target->posX + target->getSize().x / 2) - posX);
+	float diffY = abs((target->posY + target->getSize().y / 2) - posY);
 
 	if (diffX * diffX + diffY * diffY <= hitboxRadius * hitboxRadius) {
 		// If the projectile is close enough to unit, damage it
 		
 		target->damage(damage);
 		if (radius > 0) {
+			if (effectsHandler != NULL) {
+				if (slowPercentage == 0) {
+					effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
+				}
+				else {
+					// Show freeze explosion and slow unit
+					effectsHandler->showFreezingExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
+					target->slowUnit(slowPercentage, 2000);
+				}
+			}
 			
-			if (slowPercentage == 0) {
-				effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
-			}
-			else {
-				// Show freeze explosion and slow unit
-				effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
-				//effectsHandler->showFreezingExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
-				target->slowUnit(slowPercentage, 2000);
-			}
 
 			// If projectile has an area of effect, affect/damage others within radius as well
 			
@@ -130,7 +132,7 @@ bool Projectile::checkIfHitTarget() {
 }
 
 void Projectile::updatePos() {
-	sf::Vector2f velocity(target->posX + target->getSize().x / 2 - posX + width / 2, target->posY + target->getSize().y / 2 - posY + height / 2);
+	sf::Vector2f velocity(target->posX + target->getSize().x / 2 - posX, target->posY + target->getSize().y / 2 - posY);
 	float cardVelocity = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	velocity.x /= cardVelocity;
 	velocity.y /= cardVelocity;
@@ -145,7 +147,7 @@ void Projectile::updatePos() {
 	}
 
 	projectileSprite->setPosition(posX, posY);
-	float angle = atan2(target->posY + target->getSize().y / 2 - posY + height / 2, target->posX + target->getSize().x / 2 - posX + width / 2);
+	float angle = atan2(target->posY + target->getSize().y / 2 - posY, target->posX + target->getSize().x / 2 - posX);
 	projectileSprite->setRotation(angle * 180 / 3.14159);
 }
 

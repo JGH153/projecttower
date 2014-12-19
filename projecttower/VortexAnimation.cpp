@@ -135,8 +135,8 @@ void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth
 
 			sf::Texture* texture = gameEngine->loadImageSubsetToTexture(path, rect);
 			VortexSprite* image = new VortexSprite(texture, posX, posY, width, height);
-			//sf::Color barelyTransparent(255, 255, 255, 230);
-			//image->setColor(barelyTransparent);
+			sf::Color barelyTransparent(255, 255, 255, 200);
+			image->setColor(barelyTransparent);
 
 
 			addFrame(image);
