@@ -6,7 +6,9 @@ IfritUnit::IfritUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.065f;
+	maxspeed = 0.065f;
+	speed = maxspeed;
+
 	width = 48 / 2;
 	height = 48 / 2;
 	maxHealth = 123.f; //+17
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> IfritUnit::getRenderDrawable() {
 void IfritUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();

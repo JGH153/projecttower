@@ -6,7 +6,9 @@ ChineseUnit::ChineseUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.045f;
+	maxspeed = 0.045f;
+	speed = maxspeed;
+
 	width = 32 / 2;
 	height = 48 / 2;
 	maxHealth = 61.f; //+13
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> ChineseUnit::getRenderDrawable() {
 void ChineseUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();

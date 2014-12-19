@@ -25,6 +25,7 @@ public:
 	bool reachedGoal;
 	bool groundTilesChanged;
 	bool towerRemoved;
+	void slowUnit(int slowPercentage, int slowtime);
 
 protected:
 
@@ -39,11 +40,14 @@ protected:
 	float maxHealth;
 	sf::Vector2i moveDirection;
 	float speed;
+	float maxspeed;
+
+	bool slowed;
 
 	int endPosX;
 	int endPosY;
 	
-	
+	int slowtimer;
 
 	std::vector<std::vector<MapTile *>> * mapGroundTiles;
 

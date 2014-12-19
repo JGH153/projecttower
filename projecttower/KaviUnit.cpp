@@ -6,7 +6,9 @@ KaviUnit::KaviUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.05f;
+	maxspeed = 0.05f;
+	speed = maxspeed;
+
 	width = 32 / 2;
 	height = 48 / 2;
 	maxHealth = 75.f; //+14
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> KaviUnit::getRenderDrawable() {
 void KaviUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();

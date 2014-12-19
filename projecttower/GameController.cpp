@@ -151,7 +151,18 @@ void GameController::preloadAssets() {
 	VortexAnimation* explosionEffect = new VortexAnimation(0, 0, 93, 100, 14, gameEngine);
 	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 93, 100, 10, 4);
 
+
+	
+	VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64, 64, 14, gameEngine);
+	snowballProjectileEffect->asembleSpritesheetAnimation("Graphics/Projectiles/manyeffects_sheet.png", 512, 0, 64, 64, 8, 6);
+
+	//VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
+	//snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
+
+
 	gameEngine->addRemovableObjectToList(explosionEffect);
+	gameEngine->addRemovableObjectToList(snowballProjectileEffect);
+	//gameEngine->addRemovableObjectToList(snowballExplosionEffect);
 
 	for (auto currentUnit : preloadUnitList) {
 		gameEngine->addRemovableObjectToList(currentUnit);
@@ -677,7 +688,9 @@ void GameController::spawnNewTower(int towerID, int gridX, int gridY, bool build
 
 	gameEngine->unitListMutex.lock();
 	gameEngine->particleListMutex.lock();
-	ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
+	//ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
+	FreezeTower* testTower = new FreezeTower(gameEngine, &unitList, gridX * gridTileSize, gridY * gridTileSize, gridTileSize, sf::Vector2i(gridX, gridY), &particleList);
+
 	gameEngine->particleListMutex.unlock();
 	gameEngine->unitListMutex.unlock();
 
@@ -1264,24 +1277,6 @@ void GameController::handlePlayerTowerAction() {
 
 			spawnNewTower(0, xpos, ypos, false);
 			sendSpawnNewTowerPacket(0, xpos, ypos);
-
-			
-			//gameEngine->unitListMutex.lock();
-			//ArrowTower * testTower = new ArrowTower(gameEngine, &unitList, xpos * gridTileSize, ypos * gridTileSize, gridTileSize, sf::Vector2i(xpos, ypos), &particleList);
-			//gameEngine->unitListMutex.unlock();
-
-			//gameEngine->towerListMutex.lock();
-			//towerList.push_back(testTower);
-			//gameEngine->towerListMutex.unlock();
-
-			//mapGroundTile[xpos][ypos]->changeTileType(TileTypes::tower);
-			//towerBuildSprite->setColor(UNABLETOBUILD);
-
-			//// Subtract building cost from resource
-			//gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() - 10);
-
-			//// Notify units to calculate new route if this tile was in their path
-			//groundTilesChanged = true;
 		}
 		
 	}
@@ -1292,7 +1287,6 @@ void GameController::handlePlayerTowerAction() {
 
 			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);
 
-			//gameEngine->towerListMutex.lock();
 			
 			if (towerList[i]->getMapGroundTileIndex().x == mouseGridPos.x
 				&&	towerList[i]->getMapGroundTileIndex().y == mouseGridPos.y) {
@@ -1300,28 +1294,8 @@ void GameController::handlePlayerTowerAction() {
 				deleteTower(mouseGridPos.x, mouseGridPos.y);
 				sendDeleteTowerPacket(mouseGridPos.x, mouseGridPos.y);
 
-
-				/*mapGroundTile[mouseGridPos.x][mouseGridPos.y]->changeTileType(TileTypes::grass);
-				
-				towerList[i]->deleteProjectiles();
-				gameEngine->addRemovableObjectToList(towerList[i]);
-				
-				if (towerList[i] == selectedTower) {
-					selectedTower = nullptr;
-					if (gameGuiController->showingTowerUpgrades) {
-						gameGuiController->showingTowerUpgrades = false;
-						gameGuiController->hideTowerUpgrades();
-					}
-				}
-				towerList[i] = nullptr;
-				towerList.erase(towerList.begin() + i);
-				i--;
-
-				towerRemoved = true;
-				groundTilesChanged = true;*/
 			}
 			
-			//gameEngine->towerListMutex.unlock();
 			
 		}
 

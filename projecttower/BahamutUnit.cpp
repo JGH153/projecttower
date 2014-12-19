@@ -6,7 +6,9 @@ BahamutUnit::BahamutUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.025f;
+	maxspeed = 0.025f;
+	speed = maxspeed;
+
 	width = 96 / 4;
 	height = 96 / 4;
 	maxHealth = 15.f; //+9
@@ -51,6 +53,14 @@ std::vector<sf::Drawable *> BahamutUnit::getRenderDrawable() {
 void BahamutUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 	
 	updateMovement();

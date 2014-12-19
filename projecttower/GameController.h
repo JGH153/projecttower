@@ -12,6 +12,7 @@
 
 #include "ArrowTower.h"
 #include "CannonTower.h"
+#include "FreezeTower.h"
 #include "IronmanUnit.h"
 #include "BahamutUnit.h"
 #include "RussianGirlUnit.h"

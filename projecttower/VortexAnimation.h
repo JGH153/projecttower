@@ -27,6 +27,8 @@ public:
 	void assembleAnimation(std::string startPath, std::string filetype, int startNum, int endNum);
 	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes);
 	void asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY);
+	void asembleSpritesheetAnimation(std::string path, int offsetX, int offsetY, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY);
+	
 
 	void update();
 	std::vector<sf::Drawable *> getRenderDrawable();

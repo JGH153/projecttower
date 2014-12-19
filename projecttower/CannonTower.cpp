@@ -5,7 +5,7 @@ CannonTower::CannonTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, i
 	damage = 2.5f;
 	range = 150;
 	reloadTimeMS = 1100;
-	projectileSpeed = 0.2f;
+	projectileSpeed = 0.15f;
 	splashRadius = 33;
 	reloading = false;
 
@@ -64,17 +64,18 @@ void CannonTower::update() {
 		reloading = false;
 	}
 
-	// If tower has a previous target, check if that target is still within range
-	if (currentTarget != nullptr) {
-		if (!targetWithinRange(currentTarget) || currentTarget->isDead()) {
-			currentTarget = nullptr;
-		}
-	}
+	
 
-
+	// If it is time to attack
 	if (!reloading) {
-		// If tower has no target, find one
+		// If tower has a previous target, check if that target is still within range
+		if (currentTarget != nullptr) {
+			if (!targetWithinRange(currentTarget) || currentTarget->isDead()) {
+				currentTarget = nullptr;
+			}
+		}
 
+		// If tower has no target, find one
 		if (currentTarget == nullptr) {
 			currentTarget = findTarget();
 		}

@@ -38,12 +38,27 @@ void EffectsHandler::update() {
 void EffectsHandler::showExplosion(int posX, int posY) {
 	int effectWidth = 93 / 2;
 	int effectHeight = 100 / 2;
+	/*
 	VortexAnimation* explosionEffect = new VortexAnimation(posX - (effectWidth / 2), posY - (effectHeight / 2), effectWidth, effectHeight, 30, gameEngine);
 	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 93, 100, 10, 4);
 
 	gameEngine->effectsMutex.lock();
 	currentEffects.push_back(explosionEffect);
 	gameEngine->effectsMutex.unlock();
+	*/
+}
+
+void EffectsHandler::showFreezingExplosion(int posX, int posY) {
+	int effectWidth = 100 / 2;
+	int effectHeight = 100 / 2;
+
+	//VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
+	//snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
+
+
+	//gameEngine->effectsMutex.lock();
+	//currentEffects.push_back(snowballExplosionEffect);
+	//gameEngine->effectsMutex.unlock();
 }
 
 std::vector<sf::Drawable *> EffectsHandler::getRenderDrawable() {

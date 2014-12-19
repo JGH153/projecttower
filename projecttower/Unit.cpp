@@ -13,6 +13,9 @@ Unit::Unit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * mapGroundT
 	groundTilesChanged = false;
 	reachedGoal = false;
 	towerRemoved = false;
+
+	slowtimer = 0;
+	slowed = false;
 }
 
 
@@ -122,6 +125,16 @@ bool Unit::isDead() {
 
 	return false;
 
+}
+
+void Unit::slowUnit(int slowPercentage, int slowtime) {
+	if (slowtime > slowtimer) {
+		slowtimer = slowtime;
+	}
+	if (!slowed) {
+		slowed = true;
+		speed = speed * (float)(100 - slowPercentage) / 100.f;
+	}
 }
 
 //bool Unit::takeDamageAndCheckIfDead(int damage) {

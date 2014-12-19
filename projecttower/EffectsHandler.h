@@ -9,6 +9,7 @@ public:
 
 	void update();
 	void showExplosion(int posX, int posY);
+	void showFreezingExplosion(int posX, int posY);
 	std::vector<sf::Drawable*> getRenderDrawable();
 
 private:

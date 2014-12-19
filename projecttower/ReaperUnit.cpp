@@ -6,7 +6,9 @@ ReaperUnit::ReaperUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.07f + currentLevel * 0.002;
+	maxspeed = 0.07f + currentLevel * 0.002;
+	speed = maxspeed;
+
 	width = 50 / 2;
 	height = 48 / 2;
 	maxHealth = currentLevel * 15;
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> ReaperUnit::getRenderDrawable() {
 void ReaperUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();

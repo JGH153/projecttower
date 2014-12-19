@@ -33,13 +33,6 @@ ArrowTower::~ArrowTower() {
 
 std::vector<sf::Drawable *> ArrowTower::getRenderDrawable() {
 
-	//auto temp = towerSprite->getRenderDrawable();
-
-	/*for (auto currentProjectile : projectiles) {
-		auto arrows = currentProjectile->getRenderDrawable();
-
-		temp.insert(temp.end(), arrows.begin(), arrows.end());
-	}*/
 	auto returnList =  towerSprite->getRenderDrawable();
 
 	return returnList;
@@ -50,7 +43,6 @@ std::vector<sf::Drawable *> ArrowTower::getRenderDrawable() {
 
 void ArrowTower::update() {
 
-	//gameEngine->towerProjectileMutex.lock();
 
 	for (int i = 0; i < projectiles.size(); i++) {
 		if (projectiles[i]->destroyProjectile == true) {
@@ -66,23 +58,23 @@ void ArrowTower::update() {
 		current->update();
 	}
 
-	//gameEngine->towerProjectileMutex.unlock();
-
 	if (reloadTimer.getElapsedTime().asMilliseconds() > reloadTimeMS) {
 		reloading = false;
 	}
 
-	// If tower has a previous target, check if that target is still within range
-	if (currentTarget != nullptr) {
-		if (!targetWithinRange(currentTarget) || currentTarget->isDead()) {
-			currentTarget = nullptr;
-		}
-	}
-
 	
+
+	// If it is time to attack
 	if (!reloading) {
+
+		// If tower has a previous target, check if that target is still within range
+		if (currentTarget != nullptr) {
+			if (!targetWithinRange(currentTarget) || currentTarget->isDead()) {
+				currentTarget = nullptr;
+			}
+		}
+
 		// If tower has no target, find one
-		
 		if (currentTarget == nullptr) {
 			currentTarget = findTarget();
 		}
@@ -92,9 +84,7 @@ void ArrowTower::update() {
 			auto sprite =  new VortexSprite(gameEngine, projectileSpritePath, posX + width / 2, posY - towerSpriteOffsetY);
 			auto projectile = new Projectile(gameEngine, posX + towerSprite->getSize().x / 2, posY, sprite, currentTarget, projectileSpeed, damage);
 			
-			//gameEngine->towerProjectileMutex.lock();
 			projectiles.push_back(projectile);
-			//gameEngine->towerProjectileMutex.unlock();
 			reloading = true;
 			reloadTimer.restart();
 		}

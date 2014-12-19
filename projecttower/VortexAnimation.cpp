@@ -126,8 +126,6 @@ void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth
 
 // Used for cannon ball explosion
 void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY) {
-	float randomRotateSpeed = gameEngine->getRandFloat(-0.5f, 0.5f);
-	float randomRotation = gameEngine->getRandFloat(0.f, 359.f);
 	sf::IntRect rect;
 
 	for (int y = 0; y < numFrmesY; y++) {
@@ -137,13 +135,30 @@ void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth
 
 			sf::Texture* texture = gameEngine->loadImageSubsetToTexture(path, rect);
 			VortexSprite* image = new VortexSprite(texture, posX, posY, width, height);
-			sf::Color barelyTransparent(255, 255, 255, 230);
-			image->setColor(barelyTransparent);
+			//sf::Color barelyTransparent(255, 255, 255, 230);
+			//image->setColor(barelyTransparent);
 
-			//image->setOrigin(width / 2, height / 2);
 
-			//randomRotation += randomRotateSpeed;
-			//image->rotate(randomRotation);
+			addFrame(image);
+		}
+
+	}
+}
+
+// Used for freeze tower projectile
+void VortexAnimation::asembleSpritesheetAnimation(std::string path, int offsetX, int offsetY, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY) {
+
+	sf::IntRect rect;
+
+	for (int y = 0; y < numFrmesY; y++) {
+
+		for (int x = 0; x < numFrmesX; x++) {
+			rect = sf::IntRect(orgWidth*x + offsetX, orgHeight*y + offsetY, orgWidth, orgHeight);
+
+			sf::Texture* texture = gameEngine->loadImageSubsetToTexture(path, rect);
+			VortexSprite* image = new VortexSprite(texture, posX, posY, width, height);
+			
+
 
 			addFrame(image);
 		}

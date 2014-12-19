@@ -2,6 +2,7 @@
 
 
 Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage) : Entity(gameEngine, posX, posY) {
+	animatedProjectile = false;
 	this->gameEngine = gameEngine;
 	this->speed = speed;
 	this->target = target;
@@ -11,6 +12,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);
 
+	slowPercentage = 0;
 	radius = 0;
 
 	updatePos();
@@ -19,6 +21,7 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 }
 
 Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *projectileSprite, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler) : Entity(gameEngine, posX, posY) {
+	animatedProjectile = false;
 	this->gameEngine = gameEngine;
 	this->speed = speed;
 	this->target = target;
@@ -27,6 +30,27 @@ Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexSprite *pro
 	this->damage = damage;
 	destroyProjectile = false;
 	hitParticleColor = sf::Color(222, 200, 150);
+	slowPercentage = 0;
+
+	this->radius = radius;
+	this->enemyList = enemyList;
+	this->particleList = particleList;
+	this->effectsHandler = effectsHandler;
+	updatePos();
+
+	zIndex = zIndexlayer::projectile;
+}
+
+Projectile::Projectile(Vortex *gameEngine, int posX, int posY, VortexAnimation* projectileSprites, Unit *target, float speed, float damage, int radius, std::vector<Unit *> * enemyList, std::vector<VortexParticleSystem *> * particleList, EffectsHandler* effectsHandler, int slowPercentage) : Entity(gameEngine, posX, posY) {
+	animatedProjectile = true;
+	this->gameEngine = gameEngine;
+	this->speed = speed;
+	this->target = target;
+	this->projectileSprites = projectileSprites;
+	this->damage = damage;
+	destroyProjectile = false;
+	hitParticleColor = sf::Color(222, 200, 150);
+	this->slowPercentage = slowPercentage;
 
 	this->radius = radius;
 	this->enemyList = enemyList;
@@ -45,6 +69,9 @@ Projectile::~Projectile() {
 }
 
 std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
+	if (animatedProjectile) {
+		return projectileSprites->getRenderDrawable();
+	}
 	return projectileSprite->getRenderDrawable();
 }
 
@@ -52,19 +79,29 @@ std::vector<sf::Drawable*> Projectile::getRenderDrawable() {
 bool Projectile::checkIfHitTarget() {
 	float hitboxRadius = 25;
 
-	float diffX = abs((target->posX + target->getSize().x / 2) - posX);
-	float diffY = abs((target->posY + target->getSize().y / 2) - posY);
+	float diffX = abs((target->posX + target->getSize().x / 2) - posX + width / 2);
+	float diffY = abs((target->posY + target->getSize().y / 2) - posY + height / 2);
 
 	if (diffX * diffX + diffY * diffY <= hitboxRadius * hitboxRadius) {
 		// If the projectile is close enough to unit, damage it
 		
 		target->damage(damage);
 		if (radius > 0) {
-			// If projectile is explosive, damage others within radius as well
-			effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
+			
+			if (slowPercentage == 0) {
+				effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
+			}
+			else {
+				// Show freeze explosion and slow unit
+				effectsHandler->showExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
+				//effectsHandler->showFreezingExplosion(target->posX + target->width / 2, target->posY + target->height / 2);
+				target->slowUnit(slowPercentage, 2000);
+			}
+
+			// If projectile has an area of effect, affect/damage others within radius as well
 			
 			gameEngine->particleListMutex.lock();
-			particleList->push_back(new VortexParticleSystem(1000, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color::Green, sf::Points, 200, 120));
+			particleList->push_back(new VortexParticleSystem(1000, target->getPos().x + target->getSize().x / 2, target->getPos().y + target->getSize().y / 2, sf::Color::Green, sf::Points, 200, 100));
 			gameEngine->particleListMutex.unlock();
 			
 
@@ -78,6 +115,11 @@ bool Projectile::checkIfHitTarget() {
 					// If the unit is within the splash raidus, do damage relative to the distance from explosion
 					float percentDistanceFromCenter = 1 - (xdist * xdist + ydist * ydist) / (radius * radius);
 					currentUnit->damage(damage * percentDistanceFromCenter);
+
+					if (slowPercentage != 0) {
+						// Slow unit
+						currentUnit->slowUnit(slowPercentage, 2000);
+					}
 				}
 			}
 		}
@@ -88,7 +130,7 @@ bool Projectile::checkIfHitTarget() {
 }
 
 void Projectile::updatePos() {
-	sf::Vector2f velocity(target->posX + target->getSize().x / 2 - posX, target->posY + target->getSize().y / 2 - posY);
+	sf::Vector2f velocity(target->posX + target->getSize().x / 2 - posX + width / 2, target->posY + target->getSize().y / 2 - posY + height / 2);
 	float cardVelocity = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	velocity.x /= cardVelocity;
 	velocity.y /= cardVelocity;
@@ -97,8 +139,13 @@ void Projectile::updatePos() {
 	posX = posX + velocity.x * speed * gameEngine->deltaTime.asMilliseconds();
 	posY = posY + velocity.y * speed * gameEngine->deltaTime.asMilliseconds();
 
+	if (animatedProjectile) {
+		projectileSprites->setPos(posX, posY);
+		return;
+	}
+
 	projectileSprite->setPosition(posX, posY);
-	float angle = atan2(target->posY + target->getSize().y / 2 - posY, target->posX + target->getSize().x / 2 - posX);
+	float angle = atan2(target->posY + target->getSize().y / 2 - posY + height / 2, target->posX + target->getSize().x / 2 - posX + width / 2);
 	projectileSprite->setRotation(angle * 180 / 3.14159);
 }
 

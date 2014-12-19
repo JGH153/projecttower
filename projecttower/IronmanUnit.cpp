@@ -8,7 +8,9 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.02f;
+	maxspeed = 0.02f;
+	speed = maxspeed;
+
 	width = 32 / 2;
 	height = 48 / 2;
 	maxHealth = 6.f;
@@ -57,6 +59,16 @@ void IronmanUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
 	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
+	}
+
 	updateMovement();
 
 	/*	OLD MOVEMENT CODE, for reference, i guess?

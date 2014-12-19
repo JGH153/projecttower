@@ -6,7 +6,9 @@ StarlordUnit::StarlordUnit(Vortex * gameEngine, std::vector<std::vector<MapTile 
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.055f;
+	maxspeed = 0.055f;
+	speed = maxspeed;
+
 	width = 32 / 2;
 	height = 48 / 2;
 	maxHealth = 90.f; //+15
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> StarlordUnit::getRenderDrawable() {
 void StarlordUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();

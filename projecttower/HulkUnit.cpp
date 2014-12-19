@@ -6,7 +6,9 @@ HulkUnit::HulkUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>> * ma
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.07f;
+	maxspeed = 0.07f;
+	speed = maxspeed;
+
 	width = 32 / 2;
 	height = 48 / 2;
 	maxHealth = 141.f; //+18
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> HulkUnit::getRenderDrawable() {
 void HulkUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();

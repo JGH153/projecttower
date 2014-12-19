@@ -204,6 +204,9 @@
     <ClCompile Include="ReaperUnit.cpp">
       <Filter>Source Files\GameObjects\Units</Filter>
     </ClCompile>
+    <ClCompile Include="FreezeTower.cpp">
+      <Filter>Source Files\GameObjects\Towers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="ReaperUnit.h">
       <Filter>Header Files\GameObjects\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="FreezeTower.h">
+      <Filter>Header Files\GameObjects\Towers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

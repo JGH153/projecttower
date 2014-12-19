@@ -6,7 +6,9 @@ IndianaJonesUnit::IndianaJonesUnit(Vortex * gameEngine, std::vector<std::vector<
 	this->endPosX = endPosX;
 	this->endPosY = endPosY;
 
-	speed = 0.04f;
+	maxspeed = 0.04f;
+	speed = maxspeed;
+
 	width = 32 / 2;
 	height = 48 / 2;
 	maxHealth = 48.f; //+12
@@ -46,6 +48,15 @@ std::vector<sf::Drawable *> IndianaJonesUnit::getRenderDrawable() {
 void IndianaJonesUnit::update() {
 	if (isDead() || reachedGoal){
 		return;
+	}
+
+	if (slowtimer > 0) {
+		slowtimer -= gameEngine->deltaTime.asMilliseconds();
+
+		if (slowtimer <= 0) {
+			speed = maxspeed;
+			slowed = false;
+		}
 	}
 
 	updateMovement();
