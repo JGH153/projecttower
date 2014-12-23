@@ -6,6 +6,13 @@ VortexSprite::VortexSprite() : sf::Sprite(){
 
 }
 
+VortexSprite::VortexSprite(const sf::Texture &texture, sf::IntRect spriteRec, sf::IntRect texRec) : sf::Sprite(texture, texRec) {
+
+	setPosition(spriteRec.left, spriteRec.top);
+	setSize(spriteRec.width, spriteRec.height);
+
+}
+
 VortexSprite::VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY, double width, double height) : sf::Sprite() {
 
 	setTexture(*gameEngine->loadImageToTexture(path));

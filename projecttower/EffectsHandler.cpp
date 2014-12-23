@@ -42,7 +42,7 @@ void EffectsHandler::showExplosion(int posX, int posY) {
 
 	
 	VortexAnimation* explosionEffect = new VortexAnimation(posX - (effectWidth / 2), posY - (effectHeight / 2), effectWidth, effectHeight, 30, gameEngine);
-	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 93, 100, 10, 4);
+	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 0, 0, 93, 100, 10, 4);
 
 	gameEngine->effectsMutex.lock();
 	currentEffects.push_back(explosionEffect);
@@ -55,7 +55,7 @@ void EffectsHandler::showFreezingExplosion(int posX, int posY) {
 	int effectHeight = 160 / 2;
 
 	VortexAnimation* snowballExplosionEffect = new VortexAnimation(posX - (effectWidth / 2), posY - (effectHeight / 2), effectWidth, effectHeight, 30, gameEngine);
-	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
+	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 0, 0, 100, 100, 5, 4);
 
 
 	gameEngine->effectsMutex.lock();

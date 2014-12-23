@@ -37,6 +37,8 @@ private:
 	VortexButtonRectangle * quitGameButton;
 	VortexSprite * backgroundImage;
 
+	VortexSprite * testSprite;
+
 	bool doMultiplayer;
 
 };

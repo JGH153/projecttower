@@ -149,7 +149,7 @@ void GameController::preloadAssets() {
 	gameEngine->groundTileListMutex.unlock();
 
 	VortexAnimation* explosionEffect = new VortexAnimation(0, 0, 93, 100, 14, gameEngine);
-	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 93, 100, 10, 4);
+	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 0, 0, 93, 100, 10, 4);
 
 
 	
@@ -157,7 +157,7 @@ void GameController::preloadAssets() {
 	snowballProjectileEffect->asembleSpritesheetAnimation("Graphics/Projectiles/manyeffects_sheet.png", 512, 0, 64, 64, 8, 6);
 
 	VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
-	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 100, 100, 5, 4);
+	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 0, 0, 100, 100, 5, 4);
 
 
 	gameEngine->addRemovableObjectToList(explosionEffect);

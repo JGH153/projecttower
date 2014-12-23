@@ -16,6 +16,7 @@ class Vortex;
 class VortexSprite : public sf::Sprite, public RenderObject, public RemovableObject {
 public:
 	VortexSprite();
+	VortexSprite(const sf::Texture &, sf::IntRect spriteRec, sf::IntRect texRec);
 	VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY, double width, double height);
 	VortexSprite(Vortex * gameEngine, std::string path, float posX, float posY);
 	VortexSprite(const sf::Texture &texture);
