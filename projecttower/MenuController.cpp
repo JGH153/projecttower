@@ -31,11 +31,6 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 	guiObjects.push_back(quitGameButton);
 	guiObjects.push_back(startMultiplayerGameButton);
 
-	//sf::Texture * testTex = gameEngine->loadImageToTexture("Graphics/Projectiles/manyeffects_sheet.png");
-	//testSprite = new VortexSprite(*testTex, sf::IntRect(0, 0, 100, 100), sf::IntRect(0, 0, 100, 100));
-	////testSprite = new VortexSprite(gameEngine, "Graphics/Projectiles/manyeffects_sheet.png", 10, 10);
-
-	//guiObjects.push_back(testSprite);
 
 }
 

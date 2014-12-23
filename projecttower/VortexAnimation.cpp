@@ -118,78 +118,21 @@ void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth
 
 	sf::Texture * tempTex = gameEngine->loadImageToTexture(path);
 
-	//int frameWidth = (orgWidth / (numFrames));
-	//int frameHeight = (orgHeight / 4);
-
 	sf::IntRect spriteSize(posX, posY, width, height);
 
 	for (int x = 0; x < numFrames; x++) {
 
 		addFrame(new VortexSprite(*tempTex, spriteSize, sf::IntRect(orgWidth*x, orgHeight*yPosSheet, orgWidth, orgHeight)));
-		//addFrame(new VortexSprite(*tempTex, sf::IntRect(0, 0, 2, 2), sf::IntRect(orgWidth*x, orgHeight*yPosSheet, orgWidth, orgHeight)));
+
 
 	}
 }
 
-
-
-////assuming spritesheet have the same moveDirections (S, W, E, N)
-//void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, sf::Vector2i moveDirection, int numFrmes) {
-//
-//	int yPosSheet = getDirectionIndex(moveDirection);
-//
-//	sf::Texture * image = gameEngine->loadImageToTexture(path);
-//
-//	for (int x = 0; x < numFrmes; x++) {
-//
-//		sf::Texture * image = gameEngine->loadImageSubsetToTexture(path, sf::IntRect(orgWidth*x, orgHeight*yPosSheet, orgWidth, orgHeight));
-//		addFrame(image);
-//
-//	}
-//}
-
-
-
-
-
-
-// Used for cannon ball explosion
-//void VortexAnimation::asembleSpritesheetAnimation(std::string path, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY) {
-//	//return;
-//
-//
-//	sf::Texture * tempTex = gameEngine->loadImageToTexture(path);
-//
-//	//int frameWidth = (orgWidth / (numFrames));
-//	//int frameHeight = (orgHeight / 4);
-//
-//	sf::IntRect spriteSize(posX, posY, width, height);
-//
-//	sf::Color barelyTransparent(255, 255, 255, 200);
-//
-//	for (int y = 0; y < numFrmesY; y++) {
-//
-//		for (int x = 0; x < numFrmesX; x++) {
-//
-//			VortexSprite * spriteTemp = new VortexSprite(*tempTex, spriteSize, sf::IntRect(orgWidth*x, orgHeight*y, orgWidth, orgHeight));
-//
-//			spriteTemp->setColor(barelyTransparent);
-//
-//			addFrame(spriteTemp);
-//
-//		}
-//
-//	}
-//}
-
-// Used for freeze tower projectile
+//for normal image maps
 void VortexAnimation::asembleSpritesheetAnimation(std::string path, int offsetX, int offsetY, int orgWidth, int orgHeight, int numFrmesX, int numFrmesY, sf::Color appendColor) {
 	
 
 	sf::Texture * tempTex = gameEngine->loadImageToTexture(path);
-
-	//int frameWidth = (orgWidth / (numFrames));
-	//int frameHeight = (orgHeight / 4);
 
 	sf::IntRect spriteSize(posX, posY, width, height);
 
@@ -215,7 +158,6 @@ void VortexAnimation::setPos(float x, float y){
 	posX = x;
 	posY = y;
 
-	//std::cout << posX;
 
 	for (VortexSprite &currentFrame : frames){
 
