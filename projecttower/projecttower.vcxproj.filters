@@ -141,9 +141,6 @@
     <ClCompile Include="NetworkGameClient.cpp">
       <Filter>Source Files\OLD</Filter>
     </ClCompile>
-    <ClCompile Include="VortexNetwork.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EffectsHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -209,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="LoadingController.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexNetwork.cpp">
+      <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +296,6 @@
     <ClInclude Include="NetworkGameServer.h">
       <Filter>Header Files\OLD</Filter>
     </ClInclude>
-    <ClInclude Include="VortexNetwork.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EffectsHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -364,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="LoadingController.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexNetwork.h">
+      <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

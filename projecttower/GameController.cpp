@@ -120,7 +120,7 @@ void GameController::loadAssets() {
 
 	}
 
-	std::cout << mapGroundTile.size() << " " << mapGroundTile[0].size() << std::endl;
+	//std::cout << mapGroundTile.size() << " " << mapGroundTile[0].size() << std::endl;
 
 
 
@@ -174,6 +174,9 @@ void GameController::loadAssets() {
 	//guiObjects.push_back(sideTextMe);
 
 
+	gameGuiController->initController();
+	gameGuiController->loadAssets();
+
 
 
 }
@@ -212,6 +215,8 @@ struct zIndexSort {
 
 std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 	
+	//std::cout << "GAMECON STATIC\n";
+
 	std::vector<std::vector<sf::Drawable *>> renderSuperList;
 	std::vector<sf::Drawable *> renderList;
 
@@ -264,6 +269,8 @@ std::vector<std::vector<sf::Drawable *>> GameController::getStaticRenderData() {
 
 std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() {
 	
+	//std::cout << "GAMECON DYNAMIC\n";
+
 	std::vector<std::vector<sf::Drawable *>> renderSuperList;
 
 	std::vector<sf::Drawable *> renderList;
@@ -843,6 +850,8 @@ bool GameController::unitOnMyPlayfield(int unitListIndex) {
 
 
 void GameController::update() {
+
+	//std::cout << "GAMECON UPDATE\n";
 
 	gameEngine->setMousePosView(gameView);
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();

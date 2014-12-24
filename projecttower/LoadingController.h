@@ -30,6 +30,9 @@ public:
 	void initController();
 	void loadAssets();
 
+	void setTotalToLoad(int total);
+	void setNewProgress(int numDone);
+
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
@@ -37,6 +40,11 @@ private:
 	VortexSprite * backgroundImage;
 
 	VortexText * loadingText;
+
+	int totalLoading;
+	int numLoadingDone;
+
+	
 
 
 

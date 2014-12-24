@@ -8,6 +8,9 @@
 #include <string>
 #include <sstream>
 
+#include <thread>         // std::thread
+#include <mutex> // std::mutex
+
 #include "Vortex.h"
 
 #include "MenuController.h"
@@ -42,6 +45,12 @@ private:
 
 	int getIndexOfController(int controllerID);
 	void setNewActiveController(int controllerID);
+
+	bool statedLoadingAssetsThread;
+
+	std::thread assetsLoadingThread;
+
+	LoadingController * loadingController;
 
 
 };

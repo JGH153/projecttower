@@ -25,6 +25,11 @@ LoadingController::LoadingController(Vortex * gameEngine, int controllerID) : Su
 
 	guiObjects.push_back(loadingText);
 
+
+	int totalLoading = 0;
+	int numLoadingDone = 0;
+
+
 }
 
 
@@ -32,11 +37,11 @@ LoadingController::~LoadingController() {
 }
 
 void LoadingController::initController() {
-
+	std::cout << "NOPE IN LoadingController::initController\n";
 }
 
 void LoadingController::loadAssets() {
-
+	std::cout << "NOPE IN LoadingController::loadAssets\n";
 }
 
 void LoadingController::update() {
@@ -47,6 +52,29 @@ void LoadingController::update() {
 	}
 
 
+
+}
+
+
+void LoadingController::setTotalToLoad(int total) {
+
+	totalLoading = total;
+
+}
+void LoadingController::setNewProgress(int numDone) {
+
+	//std::cout << "New progress is " << numDone << std::endl;
+
+	guiMutex.lock();
+
+	numLoadingDone = numDone;
+
+	std::string newText = "Loading " + std::to_string(numLoadingDone) + "/" + std::to_string(totalLoading);
+	loadingText->setString(newText);
+
+	updateStaticRenderData = true;
+
+	guiMutex.unlock();
 
 }
 

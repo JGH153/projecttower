@@ -3,14 +3,16 @@
 
 ProgramController::ProgramController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
 
-	
-	
-	
+	statedLoadingAssetsThread = false;
+
 
 	initController();
 	
+	loadingController->setTotalToLoad(subControllers.size());
 
 	setNewActiveController(LOADING_CONTROLLER_ID);
+
+	
 	
 
 }
@@ -31,7 +33,8 @@ void ProgramController::initController() {
 	// Strict order! Or the IDs will be pointless
 	// Refer to the IDs defined in SubController.h
 	//LoadingController
-	subControllers.push_back(new LoadingController(gameEngine, LOADING_CONTROLLER_ID));
+	loadingController = new LoadingController(gameEngine, LOADING_CONTROLLER_ID);
+	subControllers.push_back(loadingController);
 	subControllers[subControllers.size() - 1]->setNextControllerID(LOADING_CONTROLLER_ID);
 	// Menu controller
 	subControllers.push_back(new MenuController(gameEngine, MENU_CONTROLLER_ID));
@@ -58,15 +61,18 @@ void ProgramController::initController() {
 
 void ProgramController::loadAssets() {
 
-	std::cout << "LOADING CONTROLLERS ASSETS\n";
+	std::cout << "Assets Loading Thread Online\n";
 
 	for (int i = 0; i < subControllers.size(); i++) {
 
 		subControllers[i]->loadAssets();
+		loadingController->setNewProgress(i + 1);
 
 	}
 
 	setNewActiveController(MENU_CONTROLLER_ID);
+
+	std::cout << "Assets Loading Thread DONE\n";
 
 	controllerAssetsLoaded = true;
 
@@ -118,8 +124,10 @@ void ProgramController::update(){
 	subControllers[getIndexOfController(activeSubController)]->setNextControllerID(activeSubController);
 	currentRenderController = subControllers[getIndexOfController(activeSubController)];
 
-	if (!controllerAssetsLoaded) {
-		loadAssets();
+	if (!controllerAssetsLoaded && !statedLoadingAssetsThread) {
+		statedLoadingAssetsThread = true;
+		//loadAssets();
+		assetsLoadingThread = thread(&ProgramController::loadAssets, this);
 	}
 
 }
