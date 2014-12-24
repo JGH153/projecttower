@@ -6,6 +6,23 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 
 	doMultiplayer = false;
 
+	
+
+
+}
+
+
+MenuController::~MenuController()
+{
+}
+
+void MenuController::initController() {
+
+}
+
+void MenuController::loadAssets() {
+
+
 	sf::Texture * texBackgroundImage = gameEngine->loadImageToTexture("Graphics/menuBackground.jpg");
 	backgroundImage = new VortexSprite(*texBackgroundImage);
 	backgroundImage->setPosition(0, 0);
@@ -18,10 +35,10 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 	int buttonHeight = 60;
 
 
-	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight* 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
+	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight * 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
 	startMultiplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Multiplayer", gameEngine, 175);
 	startSingelplayerGameButton = new VortexButtonRectangle((buttonWidth / 2), startMultiplayerGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Singleplayer", gameEngine, 175);
-	
+
 
 	quitGameButton->setHoverImage("Graphics/graybutton.png");
 	startSingelplayerGameButton->setHoverImage("Graphics/graybutton.png");
@@ -31,15 +48,6 @@ MenuController::MenuController(Vortex * gameEngine, int controllerID) : SubContr
 	guiObjects.push_back(quitGameButton);
 	guiObjects.push_back(startMultiplayerGameButton);
 
-
-}
-
-
-MenuController::~MenuController()
-{
-}
-
-void MenuController::preloadAssets() {
 
 }
 

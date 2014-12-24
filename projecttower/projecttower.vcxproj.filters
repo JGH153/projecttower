@@ -144,9 +144,6 @@
     <ClCompile Include="VortexNetwork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerbrowserController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EffectsHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -206,6 +203,12 @@
     </ClCompile>
     <ClCompile Include="FreezeTower.cpp">
       <Filter>Source Files\GameObjects\Towers</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerbrowserController.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingController.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +299,6 @@
     <ClInclude Include="VortexNetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerbrowserController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EffectsHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -358,6 +358,12 @@
     </ClInclude>
     <ClInclude Include="FreezeTower.h">
       <Filter>Header Files\GameObjects\Towers</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerbrowserController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingController.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

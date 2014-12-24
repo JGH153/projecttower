@@ -167,6 +167,10 @@ public:
 	std::mutex particleListMutex;
 	std::mutex effectsMutex;
 
+
+
+	std::mutex assetsLoadMutex;
+
 	// add to garbageCollector
 	void addRemovableObjectToList(RemovableObject * object);
 	void handleGarbageCollector();

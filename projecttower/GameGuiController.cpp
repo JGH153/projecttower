@@ -2,6 +2,25 @@
 
 
 GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : SubController(gameEngine, controllerID) {
+
+	
+	currentLevel = 0;
+
+
+	
+
+
+	playerWon = false;
+
+}
+
+void GameGuiController::initController() {
+
+}
+
+void GameGuiController::loadAssets() {
+
+
 	int buttonSize = 50;
 	int buttonSpread = 1;
 	int numToolbarButtons = 14;
@@ -16,7 +35,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buildButton = new VortexButtonRectangle(deleteTowerButton->getPosition().x + deleteTowerButton->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/build-arrowtower.png", "", gameEngine, 255, "Arrow tower\nCost 10");
 	buildButton->setHoverImage("Graphics/GUI/build-arrowtower-hover.png");
 
-	
+
 	sendUnit1Button = new VortexButtonRectangle(buildButton->getPosition().x + buildButton->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/ironman-button.png", "", gameEngine, 255, "Level 1 unit\nCost 10\n +1 Income");
 	sendUnit1Button->setHoverImage("Graphics/GUI/ironman-hover-button.png");
 
@@ -52,7 +71,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	sendUnit12Button = new VortexButtonRectangle(sendUnit11Button->getPosition().x + sendUnit11Button->getWidth() + buttonSpread, bottomToolbarPosY, buttonSize, buttonSize, "Graphics/GUI/death-button.png", "", gameEngine, 255, "Level 12 unit\nCost 109\n +12 Income");
 	sendUnit12Button->setHoverImage("Graphics/GUI/death-hover-button.png");
-	
+
 
 	upgradeToCannon = new VortexButtonRectangle(0, 0, buttonSize / 1.7f, buttonSize / 1.7f, "Graphics/GUI/UpgradeToCannon.png", "", gameEngine, 0, "Cannon tower\nCost 10");
 	upgradeToCannon->setHoverImage("Graphics/GUI/UpgradeToCannon-hover.png");
@@ -79,7 +98,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	buttons.push_back(sendUnit11Button);
 	buttons.push_back(sendUnit12Button);
 
-	
+
 
 	building = false;
 	deleting = false;
@@ -108,7 +127,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	float incomeTextWidth = incomeText->getLocalBounds().width;
 	incomeText->setPosition(WINDOWSIZEX - incomeTextWidth, resourceText->getPosition().y + resourceText->getLocalBounds().height + 10);
 
-	
+
 
 	livesText = new VortexText("Lives remaining: " + std::to_string(numLives), *gameEngine->loadFont("Fonts/arial.ttf"), 17);
 	livesText->setColor(sf::Color::White);
@@ -160,7 +179,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 		guiObjects.push_back(button);
 	}
 
-	
+
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
 	guiObjects.push_back(timeText);
@@ -168,7 +187,7 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 
 	guiObjects.push_back(levelText);
 	guiObjects.push_back(levelTimerText);
-	
+
 
 	//guiObjects.push_back(upgradeToCannon);
 	//guiObjects.push_back(upgradeToFreeze);
@@ -184,21 +203,11 @@ GameGuiController::GameGuiController(Vortex * gameEngine, int controllerID) : Su
 	winText->setStyle(sf::Text::Bold);
 	winText->setPosition(WINDOWSIZEX / 2 - winText->getLocalBounds().width / 2, WINDOWSIZEY / 2 - lossText->getLocalBounds().height / 2);
 	guiObjects.push_back(winText);
-	
-	currentLevel = 0;
 
 
-	
 
-
-	playerWon = false;
 
 }
-
-void GameGuiController::preloadAssets() {
-
-}
-
 
 GameGuiController::~GameGuiController() {
 }

@@ -91,6 +91,7 @@
     <ClCompile Include="GameGuiController.cpp" />
     <ClCompile Include="GlobalDefines.cpp" />
     <ClCompile Include="KaviUnit.cpp" />
+    <ClCompile Include="LoadingController.cpp" />
     <ClCompile Include="MapTile.cpp" />
     <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="NetworkGameClient.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="GameGuiController.h" />
     <ClInclude Include="GlobalDefines.h" />
     <ClInclude Include="KaviUnit.h" />
+    <ClInclude Include="LoadingController.h" />
     <ClInclude Include="MapTile.h" />
     <ClInclude Include="MenuController.h" />
     <ClInclude Include="NetworkGameClient.h" />

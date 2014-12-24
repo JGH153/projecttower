@@ -3,10 +3,9 @@
 #include <vector>
 #include <iostream>
 
-#define MENU_CONTROLLER_ID 0
-#define GAME_CONTROLLER_ID 1
-#define NETWORK_GAME_CLIENT_ID 2
-#define NETWORK_GAME_SERVER_ID 3
+#define LOADING_CONTROLLER_ID 1
+#define MENU_CONTROLLER_ID 2
+#define GAME_CONTROLLER_ID 3
 #define SERVERBROWSER_CONTROLLER_ID 4
 
 #include "Vortex.h"
@@ -19,6 +18,7 @@ class SubController{
 protected:
 	Vortex * gameEngine;
 	int nextControllerID;
+	int myControllerID;
 
 	sf::View gameView;
 
@@ -40,11 +40,19 @@ public:
 	//virtual std::vector<RenderObject *> getRenderObjectList() = 0;
 	int getNextControllerID();
 	void setNextControllerID(int ID);
+	int getMyControllerID();
 
-	virtual void preloadAssets() = 0;
+	
 
 	bool updateStaticRenderData;
 	bool requestingUpdateStaticRenderData();
+
+	bool controllerInitialized;
+	bool controllerAssetsLoaded;
+	//void startController();
+	//both of these functions needs to be called before the first call to update(), and they need tto be called in order:
+	virtual void initController() = 0;
+	virtual void loadAssets() = 0;
 
 	SubController * getCurrentRenderController();
 };

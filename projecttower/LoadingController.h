@@ -8,24 +8,23 @@
 #include <sstream>
 
 #include "Vortex.h"
+#include "VortexText.h"
 #include "SubController.h"
 #include "IronmanUnit.h"
 #include "VortexButtonRectangle.h"
 #include "VortexConvexButton.h"
 
-class MenuController : public SubController {
+class LoadingController : public SubController {
 
 public:
-	MenuController(Vortex * gameEngine, int controllerID);
-	~MenuController();
+	LoadingController(Vortex * gameEngine, int controllerID);
+	~LoadingController();
 
 	void update();
 	std::vector<std::vector<sf::Drawable *>> getDynamicRenderData();
 	std::vector<std::vector<sf::Drawable *>> getStaticRenderData();
 	sf::View getView();
 	std::vector<SubController *> getChildControllers();
-
-	//std::vector<RenderObject *> getRenderObjectList();
 
 
 	void initController();
@@ -34,14 +33,14 @@ public:
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
-	VortexButtonRectangle * startSingelplayerGameButton;
-	VortexButtonRectangle * startMultiplayerGameButton;
-	VortexButtonRectangle * quitGameButton;
+	
 	VortexSprite * backgroundImage;
 
-	VortexSprite * testSprite;
+	VortexText * loadingText;
 
-	bool doMultiplayer;
+
 
 };
+
+
 

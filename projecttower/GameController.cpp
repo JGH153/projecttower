@@ -6,6 +6,48 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gameGuiController = new GameGuiController(gameEngine, 1);
 	childControllers.push_back(gameGuiController);
 
+	
+
+
+
+
+	
+}
+
+
+void GameController::initController() {
+
+}
+
+void GameController::loadAssets() {
+
+	//std::vector<IronmanUnit *> preloadUnitList;
+	//gameEngine->groundTileListMutex.lock();
+	//preloadUnitList.push_back(new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
+	//gameEngine->groundTileListMutex.unlock();
+
+	//VortexAnimation* explosionEffect = new VortexAnimation(0, 0, 93, 100, 14, gameEngine);
+	//explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 0, 0, 93, 100, 10, 4);
+
+
+	//
+	//VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64, 64, 14, gameEngine);
+	//snowballProjectileEffect->asembleSpritesheetAnimation("Graphics/Projectiles/manyeffects_sheet.png", 512, 0, 64, 64, 8, 6);
+
+	//VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
+	//snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 0, 0, 100, 100, 5, 4);
+
+
+	//gameEngine->addRemovableObjectToList(explosionEffect);
+	//gameEngine->addRemovableObjectToList(snowballProjectileEffect);
+	//gameEngine->addRemovableObjectToList(snowballExplosionEffect);
+
+	//for (auto currentUnit : preloadUnitList) {
+	//	gameEngine->addRemovableObjectToList(currentUnit);
+	//}
+	//preloadUnitList.clear();
+
+
 	float forestTileSize = 50;
 
 	for (int x = 0; x < (gameEngine->getWindowSize().x / forestTileSize); x++) {
@@ -38,12 +80,12 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 	playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
 	playerUnitTargetPos = sf::Vector2i(0, 13 * gridTileSize);
-	
+
 	groundTilesChanged = false;
 	playerLost = false;
 	towerRemoved = false;
-		
-		
+
+
 	for (int x = 0; x < GAMEMAPSIZEX; x++) {
 
 		std::vector<MapTile *> tempVec;
@@ -54,22 +96,19 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 			if (x == (GAMEMAPSIZEX / 2)) {
 				ID = TileTypes::wall;
-			}
-			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) - 1 || y == (GAMEMAPSIZEY / 2) + 1)) {
+			} else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) - 1 || y == (GAMEMAPSIZEY / 2) + 1)) {
 				ID = TileTypes::wall;
-			}
-			else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) || y == (GAMEMAPSIZEY / 2))) {
+			} else if ((x == (GAMEMAPSIZEX / 2) - 1 || x == (GAMEMAPSIZEX / 2) + 1) && (y == (GAMEMAPSIZEY / 2) || y == (GAMEMAPSIZEY / 2))) {
 				ID = TileTypes::cave;
-			}
-			else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)) || ((x == GAMEMAPSIZEX / 2 - 2) || (x == GAMEMAPSIZEX / 2 + 2) || (x <= GAMEMAPSIZEX / 10) || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10) - 1)) && (y == GAMEMAPSIZEY / 2))) {
+			} else if ((x <= (GAMEMAPSIZEX / 10) - 1 || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10)) || ((x == GAMEMAPSIZEX / 2 - 2) || (x == GAMEMAPSIZEX / 2 + 2) || (x <= GAMEMAPSIZEX / 10) || x >= (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10) - 1)) && (y == GAMEMAPSIZEY / 2))) {
 				ID = TileTypes::dirt;
-			}else {
+			} else {
 				ID = TileTypes::grass;
 			}
 			if ((x == (GAMEMAPSIZEX / 10) - 1 || x == (GAMEMAPSIZEX - (GAMEMAPSIZEX / 10))) && y != GAMEMAPSIZEY / 2) {
 				ID = TileTypes::wall;
 			}
-			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY) - (GAMEMAPSIZEY / 6)) {
+			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY)-(GAMEMAPSIZEY / 6)) {
 				ID = TileTypes::water;
 			}
 
@@ -85,12 +124,12 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 
 
-	preloadAssets();
+	//loadAssets();
 
-//	std::vector<std::vector<int>> navigationMap;
-//	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
-//	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
-//	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
+	//	std::vector<std::vector<int>> navigationMap;
+	//	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
+	//	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
+	//	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
 
 
 	//set view size relative to org window size
@@ -113,7 +152,7 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	gameControllerFistRunDone = false;
 	multiplayerMode = false;
 	playerID = 0;
-	
+
 	effectsHandler = new EffectsHandler(gameEngine);
 
 
@@ -136,38 +175,6 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 
 
 
-
-	
-}
-
-
-void GameController::preloadAssets() {
-
-	std::vector<IronmanUnit *> preloadUnitList;
-	gameEngine->groundTileListMutex.lock();
-	preloadUnitList.push_back(new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
-	gameEngine->groundTileListMutex.unlock();
-
-	VortexAnimation* explosionEffect = new VortexAnimation(0, 0, 93, 100, 14, gameEngine);
-	explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 0, 0, 93, 100, 10, 4);
-
-
-	
-	VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64, 64, 14, gameEngine);
-	snowballProjectileEffect->asembleSpritesheetAnimation("Graphics/Projectiles/manyeffects_sheet.png", 512, 0, 64, 64, 8, 6);
-
-	VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
-	snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 0, 0, 100, 100, 5, 4);
-
-
-	gameEngine->addRemovableObjectToList(explosionEffect);
-	gameEngine->addRemovableObjectToList(snowballProjectileEffect);
-	gameEngine->addRemovableObjectToList(snowballExplosionEffect);
-
-	for (auto currentUnit : preloadUnitList) {
-		gameEngine->addRemovableObjectToList(currentUnit);
-	}
-	preloadUnitList.clear();
 
 }
 

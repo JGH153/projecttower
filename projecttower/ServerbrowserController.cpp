@@ -6,6 +6,27 @@ ServerbrowserController::ServerbrowserController(Vortex * gameEngine, int contro
 
 	doMultiplayer = false;
 
+
+
+
+	
+
+	startedBroadcastSearch = false;
+	lookingForClient = false;
+
+}
+
+
+ServerbrowserController::~ServerbrowserController() {
+}
+
+void ServerbrowserController::initController() {
+
+}
+
+void ServerbrowserController::loadAssets() {
+
+
 	sf::Texture * texBackgroundImage = gameEngine->loadImageToTexture("Graphics/menuBackground.jpg");
 	backgroundImage = new VortexSprite(*texBackgroundImage);
 	backgroundImage->setPosition(0, 0);
@@ -46,22 +67,8 @@ ServerbrowserController::ServerbrowserController(Vortex * gameEngine, int contro
 
 	serverbrowserTittle = new VortexText(tittleText, *gameEngine->getDefaultFont(), 28);
 	serverbrowserTittle->setPosition(sf::Vector2f(20.f, 20.f));
-	
+
 	guiObjects.push_back(serverbrowserTittle);
-
-
-	
-
-	startedBroadcastSearch = false;
-	lookingForClient = false;
-
-}
-
-
-ServerbrowserController::~ServerbrowserController() {
-}
-
-void ServerbrowserController::preloadAssets() {
 
 }
 

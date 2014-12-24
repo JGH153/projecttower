@@ -6,8 +6,11 @@ SubController::SubController(Vortex * gameEngine, int controllerID) {
 	this->gameEngine = gameEngine;
 	currentRenderController = this;
 	updateStaticRenderData = true;
+	controllerInitialized = false;
+	controllerAssetsLoaded = false;
 
 	nextControllerID = controllerID;
+	myControllerID = controllerID;
 
 }
 
@@ -20,6 +23,13 @@ void SubController::update()
 {
 
 }
+
+int SubController::getMyControllerID() {
+
+	return myControllerID;
+
+}
+
 
 int SubController::getNextControllerID(){
 	return nextControllerID;
@@ -49,6 +59,17 @@ bool SubController::requestingUpdateStaticRenderData() {
 	return false;
 
 }
+
+//void SubController::startController() {
+//
+//	if (!controllerInitialized) {
+//
+//		initController();
+//		loadAssets();
+//
+//	}
+//
+//}
 
 /*
 controllerFlag SubController::getNextControllerSequence()

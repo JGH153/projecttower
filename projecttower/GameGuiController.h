@@ -30,7 +30,9 @@ public:
 
 	bool mouseOverSomeButton(sf::View resetToView);
 
-	void preloadAssets();
+	void initController();
+	void loadAssets();
+
 	void setPlayerResources(int newValue);
 	void setPlayerIncome(int newValue);
 	void setTimer(int newValue);

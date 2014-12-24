@@ -60,7 +60,9 @@ public:
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
-	void preloadAssets();
+	void initController();
+	void loadAssets();
+
 	std::vector<std::vector<int>> makeNavigationMapFromTileMap(std::vector<std::vector<MapTile *>> map);
 	sf::Vector2i worldCoordinateToMapTileCoordinate(sf::Vector2i coord);
 	void recalculateNavigationMaps();

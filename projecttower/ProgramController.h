@@ -9,6 +9,7 @@
 #include <sstream>
 
 #include "Vortex.h"
+
 #include "MenuController.h"
 #include "GameController.h"
 #include "NetworkGameClient.h"
@@ -16,6 +17,7 @@
 #include "SubController.h"
 #include "GlobalDefines.h"
 #include "ServerbrowserController.h"
+#include "LoadingController.h"
 
 class ProgramController : public SubController
 {
@@ -29,13 +31,17 @@ public:
 	sf::View getView();
 	std::vector<SubController *> getChildControllers();
 
-	void preloadAssets();
+	void initController();
+	void loadAssets();
 
 
 private:
-	Vortex * gameEngine;
+	
 	std::vector<SubController*> subControllers;
 	int activeSubController;
+
+	int getIndexOfController(int controllerID);
+	void setNewActiveController(int controllerID);
 
 
 };
