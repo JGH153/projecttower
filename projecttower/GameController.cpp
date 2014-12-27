@@ -899,6 +899,13 @@ void GameController::update() {
 						upgradeTower(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
 						sendUpgradeTowerPacket(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
 
+						selectedTower = towerList[i];
+						gameEngine->selectionSpriteMutex.lock();
+						selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
+						selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
+						selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
+						selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
+						gameEngine->selectionSpriteMutex.unlock();
 
 						break;
 					}
@@ -1216,13 +1223,7 @@ void GameController::upgradeTower(int newTowerID, int gridX, int gridY) {
 
 			towerList.push_back(newTower);
 
-			selectedTower = newTower;
-			gameEngine->selectionSpriteMutex.lock();
-			selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
-			selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
-			selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
-			selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
-			gameEngine->selectionSpriteMutex.unlock();
+			
 
 			gameEngine->unitListMutex.unlock();
 
