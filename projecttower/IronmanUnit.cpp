@@ -9,6 +9,7 @@ IronmanUnit::IronmanUnit(Vortex * gameEngine, std::vector<std::vector<MapTile *>
 	this->endPosY = endPosY;
 
 	maxspeed = 0.02f;
+	maxspeed = 0.05f;
 	speed = maxspeed;
 
 	width = 32 / 2;

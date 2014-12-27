@@ -14,6 +14,7 @@
 #include <random> //std::default_random_engine and std::uniform_real_distribution
 
 #include "VortexSprite.h"
+#include "VortexSound.h"
 #include "VortexParticleSystem.h"
 #include "GlobalDefines.h"
 #include "GarbageCollector.h"
@@ -24,6 +25,7 @@
 typedef unsigned int uint;
 
 class VortexSprite;
+class VortexSound;
 
 
 struct texElement{
@@ -72,6 +74,7 @@ public:
 	sf::Texture * loadImageSubsetToTexture(std::string path, sf::IntRect rec);
 
 	sf::SoundBuffer * loadSound(std::string path);
+	void preloadSound(std::string path);
 	sf::Music * openMusic(std::string path);
 	sf::Font * loadFont(std::string path);
 

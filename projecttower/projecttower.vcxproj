@@ -121,6 +121,7 @@
     <ClCompile Include="VortexLoader.cpp" />
     <ClCompile Include="VortexNetwork.cpp" />
     <ClCompile Include="VortexParticleSystem.cpp" />
+    <ClCompile Include="VortexSound.cpp" />
     <ClCompile Include="VortexSprite.cpp" />
     <ClCompile Include="VortexText.cpp" />
     <ClCompile Include="VortexUseExample.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="VortexLoader.h" />
     <ClInclude Include="VortexNetwork.h" />
     <ClInclude Include="VortexParticleSystem.h" />
+    <ClInclude Include="VortexSound.h" />
     <ClInclude Include="VortexSprite.h" />
     <ClInclude Include="VortexText.h" />
     <ClInclude Include="VortexUseExample.h" />

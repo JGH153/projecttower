@@ -100,6 +100,23 @@ void GameGuiController::loadAssets() {
 
 
 
+
+	powerButtonBomb = new VortexButtonRectangle(buttonSpread, 
+												WINDOWSIZEY - buttonSize, 
+												buttonSize, 
+												buttonSize, 
+												"Graphics/Powers/Bomb/cannonball_button_normal.png", 
+												"", 
+												gameEngine, 
+												255, 
+												"Start an Explotion");
+
+	powerButtonBomb->setHoverImage("Graphics/Powers/Bomb/cannonball_button_hower.png");
+
+	buttons.push_back(powerButtonBomb);
+
+
+
 	building = false;
 	deleting = false;
 	playerLost = false;
@@ -113,7 +130,7 @@ void GameGuiController::loadAssets() {
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
-	msToNextLevel = 5000;
+	msToNextLevel = 2000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);

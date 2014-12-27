@@ -5,6 +5,8 @@
 #include "Entity.h"
 #include "Projectile.h"
 
+
+
 class Tower : public Entity {
 public:
 	Tower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem*> * particleList);

@@ -16,6 +16,8 @@ public:
 
 private:
 
+
+	VortexSound fireSound;
 	
 
 };

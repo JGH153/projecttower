@@ -88,6 +88,9 @@ private:
 	
 
 
+	VortexButtonRectangle * powerButtonBomb;
+
+
 
 	sf::RectangleShape* resourcePanel;
 	sf::RectangleShape* levelPanel;

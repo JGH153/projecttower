@@ -21,6 +21,9 @@ void GameController::initController() {
 
 void GameController::loadAssets() {
 
+	//preloading sounds
+	gameEngine->preloadSound("Sound/sound1.wav");
+
 	//std::vector<IronmanUnit *> preloadUnitList;
 	//gameEngine->groundTileListMutex.lock();
 	//preloadUnitList.push_back(new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
@@ -75,11 +78,16 @@ void GameController::loadAssets() {
 	bgSprite.setPosition(0, 0);
 
 	gridTileSize = 25;
+	gridTileSize = GAME_GRID_TILE_SIZE;
+
+	//bug in pathfinding of it is not a int (no deimal)
+	//gridTileSize = (float)WINDOWSIZEX / (float)GAMEMAPSIZEX;
+	//gridTileSize = (int)(WINDOWSIZEX / GAMEMAPSIZEX);
 
 	spawnDelayMS = 2000;
 
 	playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
-	playerUnitTargetPos = sf::Vector2i(0, 13 * gridTileSize);
+	playerUnitTargetPos = sf::Vector2i(4 * gridTileSize, 13 * gridTileSize);
 
 	groundTilesChanged = false;
 	playerLost = false;
@@ -110,6 +118,10 @@ void GameController::loadAssets() {
 			}
 			if (y < (GAMEMAPSIZEY / 6) || y >= (GAMEMAPSIZEY)-(GAMEMAPSIZEY / 6)) {
 				ID = TileTypes::water;
+				//ID = TileTypes::dirt;
+			}
+			if ((y == (GAMEMAPSIZEY / 6) || y == (GAMEMAPSIZEY)-(GAMEMAPSIZEY / 6))) {
+				ID = TileTypes::wall;
 			}
 
 			tempVec.push_back(new MapTile(gameEngine, ID, x * gridTileSize, y * gridTileSize, gridTileSize, gridTileSize));
@@ -457,19 +469,19 @@ void GameController::doGameControllerStatup() {
 
 			playerID = 0;
 			playerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
-			playerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
+			playerUnitTargetPos = sf::Vector2i(4 * gridTileSize, 13 * gridTileSize);
 
 			enemyPlayerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
-			enemyPlayerUnitTargetPos = sf::Vector2i(48 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitTargetPos = sf::Vector2i(44 * gridTileSize, 13 * gridTileSize);
 
 		} else {
 
 			playerID = 1;
 			playerUnitSpawnPos = sf::Vector2i(25 * gridTileSize, 13 * gridTileSize);
-			playerUnitTargetPos = sf::Vector2i(48 * gridTileSize, 13 * gridTileSize);
+			playerUnitTargetPos = sf::Vector2i(44 * gridTileSize, 13 * gridTileSize);
 
 			enemyPlayerUnitSpawnPos = sf::Vector2i(23 * gridTileSize, 13 * gridTileSize);
-			enemyPlayerUnitTargetPos = sf::Vector2i(0 * gridTileSize, 13 * gridTileSize);
+			enemyPlayerUnitTargetPos = sf::Vector2i(4 * gridTileSize, 13 * gridTileSize);
 
 		}
 
@@ -1026,8 +1038,12 @@ void GameController::update() {
 			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, sf::Color(100, 100, 100, 255), sf::Quads, 200, 30));
 
 			if (unitOnMyPlayfield(i)){
+				//std::cout << "Hos MEG\n";
 				gameGuiController->setPlayerLives(gameGuiController->numLives - 1);
+			} else {
+				//std::cout << "Hos DEG";
 			}
+
 			if (gameGuiController->numLives == 0 ) {
 				playerLost = true;
 			}

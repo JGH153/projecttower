@@ -14,6 +14,7 @@
 //#include "VortexSprite.h"
 #include "VortexAnimation.h"
 #include "EffectsHandler.h"
+#include "VortexSound.h"
 
 //#include "GameGuiController.h"
 

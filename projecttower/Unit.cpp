@@ -156,7 +156,7 @@ void Unit::slowUnit(int slowPercentage, int slowtime) {
 bool Unit::atTileCentre(){
 	float range = 5.f; //px?
 	
-	sf::Vector2f distanceFromCenter = sf::Vector2f(fmod(posX, 25.f), fmod(posY, 25.f));
+	sf::Vector2f distanceFromCenter = sf::Vector2f(fmod(posX, (float)GAME_GRID_TILE_SIZE), fmod(posY, (float)GAME_GRID_TILE_SIZE));
 	if (abs(distanceFromCenter.x) <= range && abs(distanceFromCenter.y) <= range){
 		return true;
 	}
@@ -173,14 +173,14 @@ bool Unit::atTargetTile(){
 
 
 sf::Vector2f Unit::mapGroundTilePosToWorldPos(int x, int y) {
-	int gridTileSize = 25;
+	int gridTileSize = GAME_GRID_TILE_SIZE;
 	return sf::Vector2f(x*gridTileSize, y*gridTileSize);
 
 
 }
 
 sf::Vector2i Unit::WorldPosToMapGroundTilePos(double x, double y) {
-	double gridTileSize = 25.0;
+	double gridTileSize = GAME_GRID_TILE_SIZE;
 	return sf::Vector2i(x/gridTileSize, y/gridTileSize);
 
 }

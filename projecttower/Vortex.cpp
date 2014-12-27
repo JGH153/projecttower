@@ -176,9 +176,17 @@ sf::SoundBuffer * Vortex::loadSound(std::string path){
 			exit(0);
 		}
 
+		sounds.push_back(new soundElement(path, sound));
+
 	}
 
 	return sound;
+
+}
+
+void Vortex::preloadSound(std::string path) {
+
+	loadSound(path);
 
 }
 

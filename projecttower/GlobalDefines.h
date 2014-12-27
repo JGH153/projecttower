@@ -82,6 +82,8 @@ const int WINDOWSIZEY = 720;
 const int GAMEMAPSIZEX = 49; 
 const int GAMEMAPSIZEY = 27;
 
+const int GAME_GRID_TILE_SIZE = (int)(WINDOWSIZEX / GAMEMAPSIZEX);
+
 const int MAXFPS = 60;
 
 const sf::Color UNABLETOBUILD(150, 0, 0, 200);
@@ -99,6 +101,7 @@ enum {
 class VortexSprite;
 class VortexText;
 
+//not in use? 
 struct RenderData {
 
 	int dataType; //0 = none, 1 = sprite, 2 = text

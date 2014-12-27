@@ -24,6 +24,12 @@ ArrowTower::ArrowTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int
 	projectileSpritePath = "Graphics/Projectiles/Arrow.png";
 
 	towerId = 1;
+
+
+
+	fireSound = VortexSound(gameEngine, "Sound/sound1.wav");
+	fireSound.setVolume(8.f);
+
 }
 
 
@@ -87,6 +93,12 @@ void ArrowTower::update() {
 			projectiles.push_back(projectile);
 			reloading = true;
 			reloadTimer.restart();
+
+			
+			fireSound.play();
+
+			//std::cout << "playing sound?";
+
 		}
 	}
 }

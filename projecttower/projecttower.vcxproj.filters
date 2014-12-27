@@ -210,6 +210,9 @@
     <ClCompile Include="VortexNetwork.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
+    <ClCompile Include="VortexSound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="VortexNetwork.h">
       <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexSound.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
