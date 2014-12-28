@@ -112,8 +112,9 @@ void GameGuiController::loadAssets() {
 												"Start an Explotion");
 
 	powerButtonBomb->setHoverImage("Graphics/Powers/Bomb/cannonball_button_hower.png");
+	powerButtonBomb->setValueInt(0); //id of power
 
-	buttons.push_back(powerButtonBomb);
+	buttonsPowers.push_back(powerButtonBomb);
 
 
 
@@ -121,6 +122,7 @@ void GameGuiController::loadAssets() {
 	deleting = false;
 	playerLost = false;
 	addedLoserText = false;
+	usingPower = false;
 
 	showingTowerUpgrades = false;
 	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
@@ -195,7 +197,9 @@ void GameGuiController::loadAssets() {
 	for (auto button : buttons) {
 		guiObjects.push_back(button);
 	}
-
+	for (auto button : buttonsPowers) {
+		guiObjects.push_back(button);
+	}
 
 	guiObjects.push_back(resourceText);
 	guiObjects.push_back(incomeText);
@@ -302,25 +306,33 @@ void GameGuiController::update() {
 	if (gameEngine->eventMouseReleasedLeft) {
 		
 		if (buildButton->isPressed && buildButton->hovering) {
+
 			if (building) {
 				building = false;
 			}
 			else {
 				building = true;
 				deleting = false;
+				usingPower = false;
 				hideTowerUpgrades();
 			}
+
+
 		}
 		else if (deleteTowerButton->isPressed && deleteTowerButton->hovering) {
+
 			if (deleting) {
 				deleting = false;
 
 			}
 			else {
 				deleting = true;
+				usingPower = false;
 				building = false;
 				hideTowerUpgrades();
 			}
+
+
 		}
 
 		else if (sendUnit1Button->isPressed && sendUnit1Button->hovering) {
@@ -427,10 +439,38 @@ void GameGuiController::update() {
 
 
 
+
+	doUpdatePowerButtons();
+
+
+
 	for (auto *current : guiObjects) {
 		current->update();
 	}
 }
+
+
+void GameGuiController::doUpdatePowerButtons() {
+
+	if (gameEngine->eventMouseClickedLeft && powerButtonBomb->hovering) {
+
+		if (usingPower) {
+			usingPower = false;
+		} else {
+
+			deleting = false;
+			building = false;
+			hideTowerUpgrades();
+
+			usingPower = true;
+			powerID = 1;
+
+		}
+
+	}
+
+}
+
 
 std::vector<std::vector<sf::Drawable *>> GameGuiController::getDynamicRenderData() {
 
@@ -468,6 +508,8 @@ std::vector<std::vector<sf::Drawable *>> GameGuiController::getStaticRenderData(
 			renderListSub.push_back(currentRenderObj);
 		}
 	}
+
+	
 	
 
 	guiMutex.unlock();

@@ -25,6 +25,8 @@ public:
 
 	bool building;
 	bool deleting;
+	bool usingPower;
+	int powerID;
 
 	//std::vector<RenderObject *> getRenderObjectList();
 
@@ -96,6 +98,7 @@ private:
 	sf::RectangleShape* levelPanel;
 	sf::RectangleShape* buttonPanel;
 	std::vector<VortexButtonRectangle*> buttons;
+	std::vector<VortexButtonRectangle*> buttonsPowers;
 
 	int playerIncome;
 	
@@ -106,6 +109,7 @@ private:
 	bool addedWinText;
 
 	void sendPlayerLossPacket() ;
+	void doUpdatePowerButtons();
 	
 	
 	

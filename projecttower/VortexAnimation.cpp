@@ -9,6 +9,7 @@ VortexAnimation::VortexAnimation(float x, float y, int width, int height, float 
 	this->height = height;
 
 	this->fps = fps;
+	this->fpsMS = sf::milliseconds(1000 / fps);
 
 	currentFrame = 0;
 
@@ -61,25 +62,23 @@ std::vector<sf::Drawable *> VortexAnimation::getRenderDrawable() {
 
 void VortexAnimation::update(){
 
-	sf::Time currentTime = gameEngine->getTimeFromProgramStart();
 
-	//std::cout << "SIZE: " << frames.size();
-	
+	accumulatedTime += animationUpdateClock.restart();
 
-	if (lastRunFrameTime.asMilliseconds() + (1000 / fps) < currentTime.asMilliseconds()){
+	while (accumulatedTime > fpsMS) {
 
-		lastRunFrameTime = currentTime;
+		accumulatedTime -= fpsMS;
 
 		//have to check first before currentFrame++ beacause if we use the normal approach it is possilbe for the renderer to render before 'out of frames' check is ran
-		if (currentFrame+1 >= frames.size()) {
+		if (currentFrame + 1 >= frames.size()) {
 			currentFrame = 0;
 			playedOneTime = true;
 		} else {
 			currentFrame++;
 		}
 
-		
 	}
+
 	
 }
 

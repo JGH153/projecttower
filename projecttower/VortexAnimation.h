@@ -55,11 +55,14 @@ private:
 	int height;
 
 	float fps;
+	sf::Time fpsMS;
 	
 
 	Vortex * gameEngine;
-	
-	sf::Time lastRunFrameTime;
+
+
+	sf::Clock animationUpdateClock;
+	sf::Time accumulatedTime;
 
 	
 };

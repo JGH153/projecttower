@@ -186,6 +186,11 @@ void GameController::loadAssets() {
 	//guiObjects.push_back(sideTextMe);
 
 
+	testPower = new VortexAnimation(0, 0, 256, 256, 120.f, gameEngine);
+	testPower->asembleSpritesheetAnimation("Graphics/Powers/Bomb/explotionAnimation.png", 0, 0, 256, 256, 49, 1);
+
+
+
 	gameGuiController->initController();
 	gameGuiController->loadAssets();
 
@@ -372,6 +377,13 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 		}
 	}
 	gameEngine->selectionSpriteMutex.unlock();
+
+
+	for each (auto cuttent in testPower->getRenderDrawable()) {
+		renderList.push_back(cuttent);
+	}
+	
+
 
 	renderSuperList.push_back(renderList);
 
@@ -869,6 +881,8 @@ void GameController::update() {
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
+
+	testPower->update();
 
 	if (!gameControllerFistRunDone) {
 

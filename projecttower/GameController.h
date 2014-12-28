@@ -162,4 +162,7 @@ private:
 	void addPlayersSideTexts();
 
 
+	VortexAnimation * testPower;
+
+
 };

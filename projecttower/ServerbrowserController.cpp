@@ -111,7 +111,7 @@ void ServerbrowserController::updateServerbrowser() {
 													gameEngine, 
 													175);
 		newButton->setHoverImage("Graphics/graybutton.png");
-		newButton->setValue(ipList[i].toString());
+		newButton->setValueString(ipList[i].toString());
 		broadcastConnectButtons.push_back(newButton);
 	}
 
@@ -160,8 +160,8 @@ void ServerbrowserController::update() {
 
 		if (gameEngine->eventMouseClickedLeft && current->hovering) {
 
-			setupConnection(current->getValue());
-			std::cout << "Button pressed for IP: " << current->getValue() << std::endl;
+			setupConnection(current->getValueString());
+			std::cout << "Button pressed for IP: " << current->getValueString() << std::endl;
 
 		}
 

@@ -12,11 +12,18 @@ VortexButton::~VortexButton(){
 }
 
 
-void VortexButton::setValue(std::string value) {
-	buttonValue = value;
+void VortexButton::setValueString(std::string value) {
+	buttonStringValue = value;
 }
-std::string VortexButton::getValue() {
-	return buttonValue;
+std::string VortexButton::getValueString() {
+	return buttonStringValue;
+}
+
+void VortexButton::setValueInt(int value) {
+	buttonIntValue = value;
+}
+int VortexButton::getValueInt() {
+	return buttonIntValue;
 }
 
 

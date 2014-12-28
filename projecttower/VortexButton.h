@@ -37,12 +37,16 @@ public:
 	VortexText* tooltipText;
 	sf::RectangleShape* tooltipBackground;
 
-	void setValue(std::string value);
-	std::string getValue();
+	void setValueString(std::string value);
+	std::string getValueString();
+
+	void setValueInt(int value);
+	int getValueInt();
 
 protected:	
 
-	std::string buttonValue;
+	std::string buttonStringValue;
+	int buttonIntValue;
 	
 	bool hidden;
 	double posX;

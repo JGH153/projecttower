@@ -54,5 +54,8 @@ protected:
 	std::vector<Projectile*> projectiles;
 	EffectsHandler* effectsHandler;
 	
+	VortexSound fireSound;
+
+
 };
 
