@@ -128,11 +128,11 @@ void GameGuiController::loadAssets() {
 	buildTimer = 400; // Upgrade button cannot be clicked before 400 ms has passed since it first appeared
 
 	playerResources = 20;
-	//playerResources = 2000;
+	playerResources = 2000;
 	playerIncome = 10;
 	numLives = 15;
 	msSinceLastIncome = 15000;
-	msToNextLevel = 2000;
+	msToNextLevel = 3000;
 
 	resourceText = new VortexText("Resources: " + std::to_string(playerResources), *gameEngine->loadFont("Fonts/arial.ttf"), 34);
 	resourceText->setColor(sf::Color::White);

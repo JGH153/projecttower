@@ -4,6 +4,7 @@
 ArrowTower::ArrowTower(Vortex * gameEngine, std::vector<Unit *> * enemyList, int posX, int posY, double gridTileSize, sf::Vector2i mapGroundTileIndex, std::vector<VortexParticleSystem *> * particleList) : Tower(gameEngine, enemyList, posX, posY, mapGroundTileIndex, particleList) {
 
 	damage = 2.f;
+	damage = 8.f;
 	range = 100;
 	reloadTimeMS = 1000;
 	projectileSpeed = 0.3f;

@@ -925,13 +925,14 @@ void GameController::update() {
 						upgradeTower(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
 						sendUpgradeTowerPacket(1, towerList[i]->getMapGroundTileIndex().x, towerList[i]->getMapGroundTileIndex().y);
 
-						selectedTower = towerList[i];
-						gameEngine->selectionSpriteMutex.lock();
-						selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
-						selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
-						selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
-						selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
-						gameEngine->selectionSpriteMutex.unlock();
+						selectedTower = nullptr;
+						//selectedTower = towerList[i];
+						//gameEngine->selectionSpriteMutex.lock();
+						//selectionGizmo->selectionSprites[0]->setPosition(selectedTower->getTowerSprite()->getPosition()); //NW gizmo
+						//selectionGizmo->selectionSprites[1]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y); //NE gizmo
+						//selectionGizmo->selectionSprites[2]->setPosition(selectedTower->getTowerSprite()->getPosition().x + selectedTower->width, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SE gizmo
+						//selectionGizmo->selectionSprites[3]->setPosition(selectedTower->getTowerSprite()->getPosition().x, selectedTower->getTowerSprite()->getPosition().y + selectedTower->height); //SW gizmo
+						//gameEngine->selectionSpriteMutex.unlock();
 
 						break;
 					}
@@ -971,12 +972,22 @@ void GameController::update() {
 		}
 	}
 
+	////testing
+	//if (gameGuiController->currentLevel > 1) {
+	//	spawnDelayMS = 0;
+	//}
+
 	//REMOVE FALSE TO ACTIVATE
 	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
 
 		//std::cout << "spawning at fixed rate\n";
 
 		spawnNewUnit(gameGuiController->currentLevel - 1, false);
+
+		////testng
+		//if (gameGuiController->currentLevel > 1) {
+		//	spawnNewUnit(gameGuiController->currentLevel - 2, false);
+		//}
 
 		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
 
