@@ -116,6 +116,8 @@ void ProgramController::setNewActiveController(int controllerID) {
 
 	activeSubController = controllerID;
 	currentRenderController = subControllers[getIndexOfController(activeSubController)];
+	subControllers[getIndexOfController(activeSubController)]->setNextControllerID(activeSubController);
+	subControllers[getIndexOfController(activeSubController)]->updateStaticRenderData = true;
 
 }
 
@@ -145,18 +147,19 @@ std::vector<std::vector<sf::Drawable *>> ProgramController::getDynamicRenderData
 // Run the current subController and if it has decided that nother subcontroller should be running, run that one instead and set the active controller id both here and in the running controller
 void ProgramController::update(){
 
-	
+	//look for change of controller
+	if (subControllers[getIndexOfController(activeSubController)]->getNextControllerID() != subControllers[getIndexOfController(activeSubController)]->getMyControllerID()) {
 
-	//std::cout << "Starting active sub controller update - " << activeSubController << std::endl;
+		//std::cout << "changing\n";
+		setNewActiveController(subControllers[getIndexOfController(activeSubController)]->getNextControllerID());
+		//std::cout << "new ID: " << subControllers[getIndexOfController(activeSubController)] << std::endl;
+
+	}
+
+	//call update on current
 	subControllers[getIndexOfController(activeSubController)]->update();
 
-	//std::cout << "Getting new active controller" << std::endl;
-	activeSubController = subControllers[getIndexOfController(activeSubController)]->getNextControllerID();
-
-	//std::cout << "Something something darkside" << std::endl;
-	subControllers[getIndexOfController(activeSubController)]->setNextControllerID(activeSubController);
-	currentRenderController = subControllers[getIndexOfController(activeSubController)];
-
+	//first time code
 	if (!controllerAssetsLoaded && !statedLoadingAssetsThread) {
 		statedLoadingAssetsThread = true;
 		//loadAssets();

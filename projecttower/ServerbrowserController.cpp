@@ -39,17 +39,17 @@ void ServerbrowserController::loadAssets() {
 	int buttonHeight = 60;
 
 
-	quitGameButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight * 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Quit", gameEngine, 175);
-	startSearchButton = new VortexButtonRectangle((buttonWidth / 2), quitGameButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Update serverbrowser", gameEngine, 175);
+	returnToMenuButton = new VortexButtonRectangle((buttonWidth / 2), WINDOWSIZEY - buttonHeight * 3, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Back", gameEngine, 175);
+	startSearchButton = new VortexButtonRectangle((buttonWidth / 2), returnToMenuButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Update serverbrowser", gameEngine, 175);
 	startServerButton = new VortexButtonRectangle((buttonWidth / 2), startSearchButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Start server", gameEngine, 175);
 	joinLocalhostButton = new VortexButtonRectangle((buttonWidth / 2), startServerButton->getPosition().y - buttonHeight * 1.2, buttonWidth, buttonHeight, "Graphics/blackbutton.png", "Join Localhost", gameEngine, 175);
 
-	quitGameButton->setHoverImage("Graphics/graybutton.png");
+	returnToMenuButton->setHoverImage("Graphics/graybutton.png");
 	startSearchButton->setHoverImage("Graphics/graybutton.png");
 	startServerButton->setHoverImage("Graphics/graybutton.png");
 	joinLocalhostButton->setHoverImage("Graphics/graybutton.png");
 
-	guiObjects.push_back(quitGameButton);
+	guiObjects.push_back(returnToMenuButton);
 	guiObjects.push_back(startSearchButton);
 	guiObjects.push_back(startServerButton);
 	guiObjects.push_back(joinLocalhostButton);
@@ -168,9 +168,10 @@ void ServerbrowserController::update() {
 	}
 
 	
-	if (gameEngine->eventMouseClickedLeft && quitGameButton->hovering) {
+	if (gameEngine->eventMouseClickedLeft && returnToMenuButton->hovering) {
 
-		gameEngine->closeApplication();
+//		gameEngine->closeApplication();
+		nextControllerID = MENU_CONTROLLER_ID;
 
 	} else if (gameEngine->eventMouseClickedLeft && startSearchButton->hovering) {
 

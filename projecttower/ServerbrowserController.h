@@ -38,7 +38,7 @@ private:
 	VortexButtonRectangle * joinLocalhostButton;
 	VortexButtonRectangle * startServerButton;
 	VortexButtonRectangle * startSearchButton;
-	VortexButtonRectangle * quitGameButton;
+	VortexButtonRectangle * returnToMenuButton;
 	VortexSprite * backgroundImage;
 
 	VortexText * serverbrowserTittle;
