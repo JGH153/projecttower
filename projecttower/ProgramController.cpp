@@ -61,20 +61,53 @@ void ProgramController::initController() {
 
 void ProgramController::loadAssets() {
 
+}
+
+void ProgramController::loadSubControllerAssets(bool usingSubThreads) {
+
 	std::cout << "Assets Loading Thread Online\n";
 
-	for (int i = 0; i < subControllers.size(); i++) {
+	//twice as slow using this...
+	if (usingSubThreads){
 
-		subControllers[i]->loadAssets();
-		loadingController->setNewProgress(i + 1);
+		std::vector<std::thread> loadingThreads;
+
+		for (int i = 0; i < subControllers.size(); i++) {
+
+			loadingThreads.push_back(thread(&ProgramController::loadSpecificController, this, i));
+
+		}
+
+		for (int i = 0; i < subControllers.size(); i++) {
+
+			loadingThreads[i].join();
+
+		}
+
+	} else {
+
+		for (int i = 0; i < subControllers.size(); i++) {
+			subControllers[i]->loadAssets();
+			loadingController->setOneDone();
+		}
 
 	}
+
 
 	setNewActiveController(MENU_CONTROLLER_ID);
 
 	std::cout << "Assets Loading Thread DONE\n";
 
 	controllerAssetsLoaded = true;
+
+}
+
+
+void ProgramController::loadSpecificController(int index) {
+
+	std::cout << "Loading for index " << index << "\n";
+	subControllers[index]->loadAssets();
+	loadingController->setOneDone();
 
 }
 
@@ -127,7 +160,7 @@ void ProgramController::update(){
 	if (!controllerAssetsLoaded && !statedLoadingAssetsThread) {
 		statedLoadingAssetsThread = true;
 		//loadAssets();
-		assetsLoadingThread = thread(&ProgramController::loadAssets, this);
+		assetsLoadingHandlingThread = thread(&ProgramController::loadSubControllerAssets, this, false);
 	}
 
 }

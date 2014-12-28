@@ -37,11 +37,11 @@ LoadingController::~LoadingController() {
 }
 
 void LoadingController::initController() {
-	std::cout << "NOPE IN LoadingController::initController\n";
+	//std::cout << "NOPE IN LoadingController::initController\n";
 }
 
 void LoadingController::loadAssets() {
-	std::cout << "NOPE IN LoadingController::loadAssets\n";
+	//std::cout << "NOPE IN LoadingController::loadAssets\n";
 }
 
 void LoadingController::update() {
@@ -61,13 +61,17 @@ void LoadingController::setTotalToLoad(int total) {
 	totalLoading = total;
 
 }
-void LoadingController::setNewProgress(int numDone) {
+void LoadingController::setOneDone() {
 
 	//std::cout << "New progress is " << numDone << std::endl;
 
 	guiMutex.lock();
 
-	numLoadingDone = numDone;
+	if (numLoadingDone < totalLoading) {
+		numLoadingDone++;
+	} else {
+		std::cout << "Too many loading done in LoadingController::setOneDone" << std::endl;
+	}
 
 	std::string newText = "Loading " + std::to_string(numLoadingDone) + "/" + std::to_string(totalLoading);
 	loadingText->setString(newText);

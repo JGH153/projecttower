@@ -62,6 +62,9 @@ public:
 	Vortex();
 	~Vortex();
 
+	int numCallsLoadImageToTexture;
+	int numTexturesLoadedFromFile;
+
 	void initVortex(sf::RenderWindow * mainWindow, std::string defaultFontPath);
 
 
@@ -172,7 +175,9 @@ public:
 
 
 
-	std::mutex assetsLoadMutex;
+	std::mutex textureLoadMutex;
+	std::mutex soundLoadMutex;
+	std::mutex fontLoadMutex;
 
 	// add to garbageCollector
 	void addRemovableObjectToList(RemovableObject * object);

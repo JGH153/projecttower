@@ -36,19 +36,21 @@ public:
 
 	void initController();
 	void loadAssets();
+	void loadSubControllerAssets(bool usingSubThreads);
 
 
 private:
 	
 	std::vector<SubController*> subControllers;
 	int activeSubController;
+	void loadSpecificController(int index);
 
 	int getIndexOfController(int controllerID);
 	void setNewActiveController(int controllerID);
 
 	bool statedLoadingAssetsThread;
 
-	std::thread assetsLoadingThread;
+	std::thread assetsLoadingHandlingThread;
 
 	LoadingController * loadingController;
 

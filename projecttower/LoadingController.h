@@ -31,7 +31,7 @@ public:
 	void loadAssets();
 
 	void setTotalToLoad(int total);
-	void setNewProgress(int numDone);
+	void setOneDone();
 
 private:
 	std::mutex guiMutex;

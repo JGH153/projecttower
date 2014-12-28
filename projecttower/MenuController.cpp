@@ -52,6 +52,10 @@ void MenuController::loadAssets() {
 }
 
 void MenuController::update() {
+
+	//std::cout << "numCallsLoadImageToTexture: " << gameEngine->numCallsLoadImageToTexture << " numTexturesLoadedFromFile: " << gameEngine->numTexturesLoadedFromFile  << std::endl;
+
+
 	if (startSingelplayerGameButton->isPressed && startSingelplayerGameButton->hovering) {
 		nextControllerID = GAME_CONTROLLER_ID;
 	}

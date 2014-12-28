@@ -204,14 +204,14 @@
     <ClCompile Include="ServerbrowserController.cpp">
       <Filter>Source Files\Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VortexNetwork.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
     <ClCompile Include="VortexSound.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\VortexGameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingController.cpp">
+      <Filter>Source Files\Controllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,14 +362,14 @@
     <ClInclude Include="ServerbrowserController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="LoadingController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VortexNetwork.h">
       <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
+    <ClInclude Include="LoadingController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
     <ClInclude Include="VortexSound.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\VortexGameEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

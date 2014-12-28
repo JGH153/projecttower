@@ -5,6 +5,8 @@ Vortex::Vortex(){
 
 	running = true;
 	garbageCollectorThreadOnline = false;
+	numCallsLoadImageToTexture = 0;
+	numTexturesLoadedFromFile = 0;
 
 }
 
@@ -110,13 +112,17 @@ VortexSprite Vortex::loadImageToSprite(std::string path){
 
 sf::Texture * Vortex::loadImageToTexture(std::string path){
 
-	std::lock_guard<std::mutex> assetsGuard(assetsLoadMutex);
+	std::lock_guard<std::mutex> assetsGuard(textureLoadMutex);
+
+	numCallsLoadImageToTexture++;
 
 	sf::Texture * image;
 
 	image = checkForCopyOfTex(path, sf::IntRect(0,0,0,0));
 
 	if (image == nullptr){
+
+		numTexturesLoadedFromFile++;
 
 		image = new sf::Texture;
 		if (!image->loadFromFile(path)){
@@ -135,7 +141,7 @@ sf::Texture * Vortex::loadImageToTexture(std::string path){
 
 sf::Texture * Vortex::loadImageSubsetToTexture(std::string path, sf::IntRect rec){
 
-	std::lock_guard<std::mutex> assetsGuard(assetsLoadMutex);
+	std::lock_guard<std::mutex> assetsGuard(textureLoadMutex);
 
 	sf::Texture * image;
 
@@ -160,7 +166,7 @@ sf::Texture * Vortex::loadImageSubsetToTexture(std::string path, sf::IntRect rec
 
 sf::SoundBuffer * Vortex::loadSound(std::string path){
 
-	std::lock_guard<std::mutex> assetsGuard(assetsLoadMutex);
+	std::lock_guard<std::mutex> assetsGuard(soundLoadMutex);
 
 	sf::SoundBuffer * sound;
 
@@ -211,7 +217,7 @@ sf::Music * openMusic(std::string path){
 
 sf::Font * Vortex::loadFont(std::string path){
 
-	std::lock_guard<std::mutex> assetsGuard(assetsLoadMutex);
+	std::lock_guard<std::mutex> assetsGuard(fontLoadMutex);
 
 	sf::Font * font;
 
