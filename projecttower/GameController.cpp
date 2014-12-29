@@ -193,7 +193,8 @@ void GameController::loadAssets() {
 
 	testPower = new VortexAnimation(0, 0, 256, 256, 120.f, gameEngine);
 	testPower->asembleSpritesheetAnimation("Graphics/Powers/Bomb/explotionAnimation.png", 0, 0, 256, 256, 49, 1);
-
+	testPower->setLoop(false);
+	testPower->stop();
 
 
 
@@ -511,6 +512,7 @@ void GameController::doGameControllerStatup() {
 
 	}
 	
+	//in general (SP and MP)
 	gameSong->play();
 	addPlayersSideTexts();
 	recalculateNavigationMaps();
@@ -889,7 +891,7 @@ void GameController::update() {
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 
-	testPower->update();
+	
 
 	if (!gameControllerFistRunDone) {
 
@@ -905,6 +907,7 @@ void GameController::update() {
 
 	effectsHandler->update();
 
+	handlePowers();
 
 	if (zooming) {
 		lerpTime += 1.0f * ((float)gameEngine->deltaTime.asMilliseconds() / 200);
@@ -1111,7 +1114,7 @@ void GameController::update() {
 		particleList[i]->update(gameEngine->deltaTime);
 		if (particleList[i]->stopEmitting == true) {
 			gameEngine->addRemovableObjectToList(particleList[i]);
-			particleList[i] == nullptr;
+			particleList[i] = nullptr;
 			particleList.erase(particleList.begin() + i);
 		}
 	}
@@ -1174,8 +1177,31 @@ void GameController::update() {
 	}
 
 	previousMousePos = mousePosWindow;
-	
+
+
 }
+
+
+
+void GameController::handlePowers() {
+
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
+	if (gameGuiController->usingPower && !gameGuiController->overAnyGuiButtons() && gameEngine->eventMouseClickedLeft) {
+
+		testPower->setPos(mousePosView.x - (testPower->getSize().x / 2), mousePosView.y - (testPower->getSize().y / 2));
+		testPower->restart();
+		testPower->play();
+
+	}
+
+	testPower->update();
+	//testPower
+
+}
+
+
 
 
 

@@ -58,7 +58,9 @@ public:
 
 	bool playerWon;
 
-	void addPlayersSideTexts();
+	//void addPlayersSideTexts();
+
+	bool overAnyGuiButtons();
 
 private:
 	std::mutex guiMutex;

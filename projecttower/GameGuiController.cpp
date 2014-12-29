@@ -234,11 +234,27 @@ GameGuiController::~GameGuiController() {
 }
 
 
-void GameGuiController::addPlayersSideTexts() {
+//void GameGuiController::addPlayersSideTexts() {
+//
+//	
+//
+//
+//
+//}
 
-	
 
+bool GameGuiController::overAnyGuiButtons() {
 
+	for (auto button : buttons) {
+		if (button->hovering)
+			return true;
+	}
+	for (auto button : buttonsPowers) {
+		if (button->hovering)
+			return true;
+	}
+
+	return false;
 
 }
 

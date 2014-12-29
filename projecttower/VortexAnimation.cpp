@@ -16,12 +16,51 @@ VortexAnimation::VortexAnimation(float x, float y, int width, int height, float 
 	this->gameEngine = gameEngine;
 	playedOneTime = false;
 
+	looping = true;
+	loopDone = false;
+
 }
 
 
 VortexAnimation::~VortexAnimation(){
 
 }
+
+void VortexAnimation::setLoop(bool value) {
+
+	looping = value;
+
+}
+
+bool VortexAnimation::getLoop() {
+
+	return looping;
+
+}
+
+void VortexAnimation::play() {
+
+	loopDone = false;
+	animationUpdateClock.restart();
+
+}
+
+void VortexAnimation::stop() {
+
+	looping = false;
+	loopDone = true;;
+
+}
+
+
+void VortexAnimation::restart() {
+
+	currentFrame = 0;
+	animationUpdateClock.restart();
+
+}
+
+
 
 
 void VortexAnimation::addFrame(sf::Texture * tex){
@@ -56,12 +95,21 @@ void VortexAnimation::addFrame(VortexSprite* sprite) {
 
 std::vector<sf::Drawable *> VortexAnimation::getRenderDrawable() {
 
+	if (!looping && loopDone) {
+		std::vector<sf::Drawable *> returnVec;
+		return returnVec;
+	}
+
 	return frames[currentFrame].getRenderDrawable();
 
 }
 
 void VortexAnimation::update(){
 
+	//skip framechange if done
+	if (!looping && loopDone) {
+		return;
+	}
 
 	accumulatedTime += animationUpdateClock.restart();
 
@@ -72,7 +120,9 @@ void VortexAnimation::update(){
 		//have to check first before currentFrame++ beacause if we use the normal approach it is possilbe for the renderer to render before 'out of frames' check is ran
 		if (currentFrame + 1 >= frames.size()) {
 			currentFrame = 0;
+
 			playedOneTime = true;
+			loopDone = true;
 		} else {
 			currentFrame++;
 		}
@@ -164,6 +214,26 @@ void VortexAnimation::setPos(float x, float y){
 
 	}
 
+
+}
+
+void VortexAnimation::setPos(sf::Vector2f pos) {
+
+	posX = pos.x;
+	posY = pos.y;
+
+
+	for (VortexSprite &currentFrame : frames) {
+
+		currentFrame.setPosition(posX, posY);
+
+	}
+
+}
+
+sf::Vector2f VortexAnimation::getSize() {
+
+	return sf::Vector2f(width, height);
 
 }
 

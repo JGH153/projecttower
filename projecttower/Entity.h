@@ -29,6 +29,7 @@ public:
 	
 
 	void setPos(float posX, float posY);
+	void setPos(sf::Vector2f pos);
 	void setSize(int width, int height);
 	
 	

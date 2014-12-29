@@ -33,6 +33,15 @@ void Entity::setPos(float posX, float posY) {
 
 }
 
+void Entity::setPos(sf::Vector2f pos) {
+
+	this->posX = pos.x;
+	this->posY = pos.y;
+
+}
+
+
+
 void Entity::setSize(int width, int height){
 
 	this->width = width;

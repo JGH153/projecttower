@@ -164,6 +164,7 @@ private:
 	void addPlayersSideTexts();
 
 
+	void handlePowers();
 	VortexAnimation * testPower;
 
 	VortexMusic * gameSong;

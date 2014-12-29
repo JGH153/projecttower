@@ -37,7 +37,9 @@ public:
 	bool playedOneTime;
 
 	void setPos(float x, float y);
+	void setPos(sf::Vector2f pos);
 	void setSize(int width, int height);
+	sf::Vector2f getSize();
 	sf::Vector2f getPos();
 
 	VortexSprite *  getDrawData();
@@ -46,6 +48,15 @@ public:
 	void killYourself();
 	int currentFrame;
 	std::vector <VortexSprite> frames;
+
+	
+	void setLoop(bool value); 
+	bool getLoop();
+
+
+	void play();
+	void stop();
+	void restart();
 
 private:
 
@@ -56,6 +67,9 @@ private:
 
 	float fps;
 	sf::Time fpsMS;
+
+	bool looping;
+	bool loopDone; //only in use if looping = true;
 	
 
 	Vortex * gameEngine;
