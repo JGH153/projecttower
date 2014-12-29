@@ -12,6 +12,8 @@
 #include "IronmanUnit.h"
 #include "VortexButtonRectangle.h"
 #include "VortexConvexButton.h"
+#include "VortexMusic.h"
+
 
 class MenuController : public SubController {
 
@@ -42,6 +44,8 @@ private:
 	VortexSprite * testSprite;
 
 	bool doMultiplayer;
+
+	VortexMusic * menuSong;
 
 };
 

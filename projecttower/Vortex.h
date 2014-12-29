@@ -15,6 +15,7 @@
 
 #include "VortexSprite.h"
 #include "VortexSound.h"
+#include "VortexMusic.h"
 #include "VortexParticleSystem.h"
 #include "GlobalDefines.h"
 #include "GarbageCollector.h"
@@ -26,6 +27,7 @@ typedef unsigned int uint;
 
 class VortexSprite;
 class VortexSound;
+class VortexMusic;
 
 
 struct texElement{
@@ -79,6 +81,7 @@ public:
 	sf::SoundBuffer * loadSound(std::string path);
 	void preloadSound(std::string path);
 	sf::Music * openMusic(std::string path);
+	void openMusicByPath(VortexMusic & musicObject, std::string path);
 	sf::Font * loadFont(std::string path);
 
 	sf::Texture checkForBackupImage(std::string path);

@@ -119,6 +119,7 @@
     <ClCompile Include="VortexButtonRectangle.cpp" />
     <ClCompile Include="VortexConvexButton.cpp" />
     <ClCompile Include="VortexLoader.cpp" />
+    <ClCompile Include="VortexMusic.cpp" />
     <ClCompile Include="VortexNetwork.cpp" />
     <ClCompile Include="VortexParticleSystem.cpp" />
     <ClCompile Include="VortexSound.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="VortexButtonRectangle.h" />
     <ClInclude Include="VortexConvexButton.h" />
     <ClInclude Include="VortexLoader.h" />
+    <ClInclude Include="VortexMusic.h" />
     <ClInclude Include="VortexNetwork.h" />
     <ClInclude Include="VortexParticleSystem.h" />
     <ClInclude Include="VortexSound.h" />

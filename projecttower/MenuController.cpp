@@ -49,20 +49,29 @@ void MenuController::loadAssets() {
 	guiObjects.push_back(startMultiplayerGameButton);
 
 
+	menuSong = new VortexMusic(gameEngine, "Sound/elevatorSong.wav");
+	menuSong->setLoop(true);
+	menuSong->play();
+
+
 }
 
 void MenuController::update() {
+
+
 
 	//std::cout << "numCallsLoadImageToTexture: " << gameEngine->numCallsLoadImageToTexture << " numTexturesLoadedFromFile: " << gameEngine->numTexturesLoadedFromFile  << std::endl;
 
 	if (gameEngine->eventMouseClickedLeft && startSingelplayerGameButton->hovering) {
 		nextControllerID = GAME_CONTROLLER_ID;
+		menuSong->stop();
 	}
 	else if (gameEngine->eventMouseClickedLeft && quitGameButton->hovering) {
 		gameEngine->closeApplication();
 	}
 	else if (gameEngine->eventMouseClickedLeft && startMultiplayerGameButton->hovering) {
 		nextControllerID = SERVERBROWSER_CONTROLLER_ID;
+		menuSong->stop();
 	}
 
 

@@ -182,12 +182,19 @@ void GameController::loadAssets() {
 
 
 
+	gameSong = new VortexMusic(gameEngine, "Sound/unitedWeStand.wav");
+	gameSong->setLoop(true);
+	
+
+
 	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
 	//guiObjects.push_back(sideTextMe);
 
 
 	testPower = new VortexAnimation(0, 0, 256, 256, 120.f, gameEngine);
 	testPower->asembleSpritesheetAnimation("Graphics/Powers/Bomb/explotionAnimation.png", 0, 0, 256, 256, 49, 1);
+
+
 
 
 
@@ -504,7 +511,7 @@ void GameController::doGameControllerStatup() {
 
 	}
 	
-	
+	gameSong->play();
 	addPlayersSideTexts();
 	recalculateNavigationMaps();
 

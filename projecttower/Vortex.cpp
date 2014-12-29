@@ -196,8 +196,8 @@ void Vortex::preloadSound(std::string path) {
 
 }
 
-//NOT WORKING!!!!
-sf::Music * openMusic(std::string path){
+//Do NOT USE, Not WORKING!!!!
+sf::Music * Vortex::openMusic(std::string path) {
 
 
 	//no factory pattern, streaming form disk/SSD
@@ -211,6 +211,17 @@ sf::Music * openMusic(std::string path){
 	}
 
 	return music;
+
+}
+
+void Vortex::openMusicByPath(VortexMusic & musicObject, std::string path) {
+
+	if (!musicObject.openFromFile(path)) {
+		// error... return default
+		std::cout << "Unable to load Music: " << path << std::endl;
+		std::cin.get();
+		exit(0);
+	}
 
 }
 

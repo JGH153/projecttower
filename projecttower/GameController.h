@@ -9,6 +9,10 @@
 #include <mutex> // std::mutex
 
 #include "Vortex.h"
+#include "VortexMusic.h"
+#include "SubController.h"
+#include "VortexConvexButton.h"
+#include "VortexButtonRectangle.h"
 
 #include "ArrowTower.h"
 #include "CannonTower.h"
@@ -26,9 +30,7 @@
 #include "HulkUnit.h"
 #include "DeathUnit.h"
 #include "ReaperUnit.h"
-#include "SubController.h"
-#include "VortexConvexButton.h"
-#include "VortexButtonRectangle.h"
+
 #include "MapTile.h"
 #include "SelectionGizmo.h"
 
@@ -163,6 +165,8 @@ private:
 
 
 	VortexAnimation * testPower;
+
+	VortexMusic * gameSong;
 
 
 };
