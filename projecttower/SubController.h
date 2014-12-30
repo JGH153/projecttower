@@ -53,6 +53,11 @@ public:
 	//both of these functions needs to be called before the first call to update(), and they need tto be called in order:
 	virtual void initController() = 0;
 	virtual void loadAssets() = 0;
+	
+	//controller is replaced by another (but NOT detroyed), "looses focus"
+	virtual void onStop() = 0;
+	//controller gets focus, called each time before first update
+	virtual void onStart() = 0;
 
 	SubController * getCurrentRenderController();
 };

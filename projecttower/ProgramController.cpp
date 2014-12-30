@@ -63,6 +63,18 @@ void ProgramController::loadAssets() {
 
 }
 
+void ProgramController::onStop() {
+
+
+
+}
+
+void ProgramController::onStart() {
+
+
+
+}
+
 void ProgramController::loadSubControllerAssets(bool usingSubThreads) {
 
 	std::cout << "Assets Loading Thread Online\n";
@@ -151,7 +163,9 @@ void ProgramController::update(){
 	if (subControllers[getIndexOfController(activeSubController)]->getNextControllerID() != subControllers[getIndexOfController(activeSubController)]->getMyControllerID()) {
 
 		//std::cout << "changing\n";
+		subControllers[getIndexOfController(activeSubController)]->onStop();
 		setNewActiveController(subControllers[getIndexOfController(activeSubController)]->getNextControllerID());
+		subControllers[getIndexOfController(activeSubController)]->onStart();
 		//std::cout << "new ID: " << subControllers[getIndexOfController(activeSubController)] << std::endl;
 
 	}

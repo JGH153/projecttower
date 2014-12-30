@@ -147,6 +147,18 @@ void ServerbrowserController::setupConnection(sf::IpAddress targetIP) {
 
 }
 
+void ServerbrowserController::onStop() {
+
+
+
+}
+
+void ServerbrowserController::onStart() {
+
+
+
+}
+
 void ServerbrowserController::update() {
 
 	gameEngine->setMousePosView(gameView);

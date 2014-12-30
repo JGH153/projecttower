@@ -44,6 +44,18 @@ void LoadingController::loadAssets() {
 	//std::cout << "NOPE IN LoadingController::loadAssets\n";
 }
 
+void LoadingController::onStop() {
+
+
+
+}
+
+void LoadingController::onStart() {
+
+
+
+}
+
 void LoadingController::update() {
 
 

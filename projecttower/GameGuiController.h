@@ -32,8 +32,14 @@ public:
 
 	bool mouseOverSomeButton(sf::View resetToView);
 
+	//init values
 	void initController();
+	//load your assets
 	void loadAssets();
+
+	
+	void onStop();
+	void onStart();
 
 	void setPlayerResources(int newValue);
 	void setPlayerIncome(int newValue);

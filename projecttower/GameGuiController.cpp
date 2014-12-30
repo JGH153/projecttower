@@ -230,6 +230,19 @@ void GameGuiController::loadAssets() {
 
 }
 
+
+void GameGuiController::onStop() {
+
+
+
+}
+
+void GameGuiController::onStart() {
+
+
+
+}
+
 GameGuiController::~GameGuiController() {
 }
 

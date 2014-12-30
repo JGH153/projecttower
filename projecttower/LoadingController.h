@@ -30,6 +30,9 @@ public:
 	void initController();
 	void loadAssets();
 
+	void onStop();
+	void onStart();
+
 	void setTotalToLoad(int total);
 	void setOneDone();
 

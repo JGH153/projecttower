@@ -51,8 +51,24 @@ void MenuController::loadAssets() {
 
 	menuSong = new VortexMusic(gameEngine, "Sound/elevatorSong.wav");
 	menuSong->setLoop(true);
+	menuSong->setVolume(40.f);
 	menuSong->play();
 
+
+}
+
+
+void MenuController::onStop() {
+
+	menuSong->stop();
+	pauseTimeMenuMusic = menuSong->getPlayingOffset();
+
+}
+
+void MenuController::onStart() {
+
+	menuSong->play();
+	menuSong->setPlayingOffset(pauseTimeMenuMusic);
 
 }
 
@@ -64,7 +80,7 @@ void MenuController::update() {
 
 	if (gameEngine->eventMouseClickedLeft && startSingelplayerGameButton->hovering) {
 		nextControllerID = GAME_CONTROLLER_ID;
-		menuSong->stop();
+		
 	}
 	else if (gameEngine->eventMouseClickedLeft && quitGameButton->hovering) {
 		gameEngine->closeApplication();

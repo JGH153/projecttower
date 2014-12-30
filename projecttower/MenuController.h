@@ -33,7 +33,13 @@ public:
 	void initController();
 	void loadAssets();
 
+	void onStop();
+	void onStart();
+
 private:
+
+	sf::Time pauseTimeMenuMusic;
+
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;
 	VortexButtonRectangle * startSingelplayerGameButton;

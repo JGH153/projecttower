@@ -184,7 +184,7 @@ void GameController::loadAssets() {
 
 	gameSong = new VortexMusic(gameEngine, "Sound/unitedWeStand.wav");
 	gameSong->setLoop(true);
-	
+	gameSong->setVolume(40.f);
 
 
 	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
@@ -201,6 +201,19 @@ void GameController::loadAssets() {
 
 	gameGuiController->initController();
 	gameGuiController->loadAssets();
+
+
+
+}
+
+
+void GameController::onStop() {
+
+
+
+}
+
+void GameController::onStart() {
 
 
 

@@ -32,6 +32,9 @@ public:
 	void initController();
 	void loadAssets();
 
+	void onStop();
+	void onStart();
+
 private:
 	std::mutex guiMutex;
 	std::vector<RenderObject *> guiObjects;

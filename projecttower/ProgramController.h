@@ -38,6 +38,8 @@ public:
 	void loadAssets();
 	void loadSubControllerAssets(bool usingSubThreads);
 
+	void onStop();
+	void onStart();
 
 private:
 	
@@ -53,6 +55,9 @@ private:
 	std::thread assetsLoadingHandlingThread;
 
 	LoadingController * loadingController;
+
+
+	
 
 
 };
