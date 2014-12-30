@@ -197,8 +197,21 @@ public:
 
 	sf::IpAddress localIpAdress;
 
+	void setNewGameMusic(std::string path);
+
+	//resumes at last time if pauseGameMusic was called last previously
+	void playGameMusic();
+	void pauseGameMusic();
+	void stopGameMusic();
+
 
 private:
+
+	//one mastersong t a time
+	VortexMusic * gameMusic;
+	std::string gameMusicPath;
+	sf::Time pauseTimeGameMusic;
+	bool gameMusicPaused;
 
 	std::mutex printMutex;
 	std::vector<std::string> pristList;

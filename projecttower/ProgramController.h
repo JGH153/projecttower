@@ -42,6 +42,8 @@ public:
 	void onStart();
 
 private:
+
+	std::mutex controllerMutex;
 	
 	std::vector<SubController*> subControllers;
 	int activeSubController;

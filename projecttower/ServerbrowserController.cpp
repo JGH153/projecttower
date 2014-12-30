@@ -149,13 +149,14 @@ void ServerbrowserController::setupConnection(sf::IpAddress targetIP) {
 
 void ServerbrowserController::onStop() {
 
-
+	gameEngine->pauseGameMusic();
 
 }
 
 void ServerbrowserController::onStart() {
 
-
+	gameEngine->setNewGameMusic("Sound/elevatorSong.wav");
+	gameEngine->playGameMusic();
 
 }
 

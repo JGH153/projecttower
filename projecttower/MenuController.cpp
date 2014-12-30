@@ -49,10 +49,12 @@ void MenuController::loadAssets() {
 	guiObjects.push_back(startMultiplayerGameButton);
 
 
-	menuSong = new VortexMusic(gameEngine, "Sound/elevatorSong.wav");
+	/*menuSong = new VortexMusic(gameEngine, "Sound/elevatorSong.wav");
 	menuSong->setLoop(true);
-	menuSong->setVolume(40.f);
-	menuSong->play();
+	menuSong->setVolume(40.f);*/
+
+	
+
 
 
 }
@@ -60,15 +62,20 @@ void MenuController::loadAssets() {
 
 void MenuController::onStop() {
 
-	menuSong->stop();
-	pauseTimeMenuMusic = menuSong->getPlayingOffset();
+	//menuSong->stop();
+	//pauseTimeMenuMusic = menuSong->getPlayingOffset();
+	gameEngine->pauseGameMusic();
 
 }
 
 void MenuController::onStart() {
 
-	menuSong->play();
-	menuSong->setPlayingOffset(pauseTimeMenuMusic);
+	gameEngine->setNewGameMusic("Sound/elevatorSong.wav");
+	gameEngine->playGameMusic();
+
+	/*menuSong->play();
+	menuSong->setPlayingOffset(pauseTimeMenuMusic);*/
+	
 
 }
 
@@ -87,7 +94,7 @@ void MenuController::update() {
 	}
 	else if (gameEngine->eventMouseClickedLeft && startMultiplayerGameButton->hovering) {
 		nextControllerID = SERVERBROWSER_CONTROLLER_ID;
-		menuSong->stop();
+		//menuSong->stop();
 	}
 
 

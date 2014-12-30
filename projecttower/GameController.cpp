@@ -182,9 +182,9 @@ void GameController::loadAssets() {
 
 
 
-	gameSong = new VortexMusic(gameEngine, "Sound/unitedWeStand.wav");
-	gameSong->setLoop(true);
-	gameSong->setVolume(40.f);
+	//gameSong = new VortexMusic(gameEngine, "Sound/unitedWeStand.wav");
+	//gameSong->setLoop(true);
+	//gameSong->setVolume(40.f);
 
 
 	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
@@ -209,13 +209,14 @@ void GameController::loadAssets() {
 
 void GameController::onStop() {
 
-
+	gameEngine->pauseGameMusic();
 
 }
 
 void GameController::onStart() {
 
-
+	gameEngine->setNewGameMusic("Sound/unitedWeStand.wav");
+	gameEngine->playGameMusic();
 
 }
 
@@ -526,7 +527,6 @@ void GameController::doGameControllerStatup() {
 	}
 	
 	//in general (SP and MP)
-	gameSong->play();
 	addPlayersSideTexts();
 	recalculateNavigationMaps();
 

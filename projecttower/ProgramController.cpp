@@ -10,6 +10,7 @@ ProgramController::ProgramController(Vortex * gameEngine, int controllerID) : Su
 	
 	loadingController->setTotalToLoad(subControllers.size());
 
+	activeSubController = -1;
 	setNewActiveController(LOADING_CONTROLLER_ID);
 
 	
@@ -106,8 +107,9 @@ void ProgramController::loadSubControllerAssets(bool usingSubThreads) {
 	}
 
 
+	controllerMutex.lock();
 	setNewActiveController(MENU_CONTROLLER_ID);
-
+	controllerMutex.unlock();
 	std::cout << "Assets Loading Thread DONE\n";
 
 	controllerAssetsLoaded = true;
@@ -126,10 +128,17 @@ void ProgramController::loadSpecificController(int index) {
 
 void ProgramController::setNewActiveController(int controllerID) {
 
+	//it's -1 on first run
+	if (activeSubController >= 0) {
+		subControllers[getIndexOfController(activeSubController)]->onStop();
+	}
+
 	activeSubController = controllerID;
 	currentRenderController = subControllers[getIndexOfController(activeSubController)];
 	subControllers[getIndexOfController(activeSubController)]->setNextControllerID(activeSubController);
 	subControllers[getIndexOfController(activeSubController)]->updateStaticRenderData = true;
+
+	subControllers[getIndexOfController(activeSubController)]->onStart();
 
 }
 
@@ -159,13 +168,15 @@ std::vector<std::vector<sf::Drawable *>> ProgramController::getDynamicRenderData
 // Run the current subController and if it has decided that nother subcontroller should be running, run that one instead and set the active controller id both here and in the running controller
 void ProgramController::update(){
 
+	std::lock_guard<std::mutex> lock(controllerMutex);
+
 	//look for change of controller
 	if (subControllers[getIndexOfController(activeSubController)]->getNextControllerID() != subControllers[getIndexOfController(activeSubController)]->getMyControllerID()) {
 
 		//std::cout << "changing\n";
-		subControllers[getIndexOfController(activeSubController)]->onStop();
+		
 		setNewActiveController(subControllers[getIndexOfController(activeSubController)]->getNextControllerID());
-		subControllers[getIndexOfController(activeSubController)]->onStart();
+		
 		//std::cout << "new ID: " << subControllers[getIndexOfController(activeSubController)] << std::endl;
 
 	}

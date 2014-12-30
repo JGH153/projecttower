@@ -8,6 +8,10 @@ Vortex::Vortex(){
 	numCallsLoadImageToTexture = 0;
 	numTexturesLoadedFromFile = 0;
 
+	gameMusicPath = "";
+	gameMusicPaused = false;
+	gameMusic = nullptr;
+
 }
 
 
@@ -675,5 +679,63 @@ void Vortex::print(std::string printText) {
 	std::lock_guard<std::mutex> lock(printMutex);
 
 	pristList.push_back(printText);
+
+}
+
+
+
+void Vortex::setNewGameMusic(std::string path) {
+
+	//no change if the same
+	if (gameMusicPath == path)
+		return;
+
+	stopGameMusic();
+
+	if (gameMusic != nullptr)
+		delete gameMusic;
+
+	gameMusic = new VortexMusic(this, path);
+	gameMusicPath = path;
+
+	gameMusic->setLoop(true);
+	gameMusic->setVolume(40.f);
+
+
+}
+
+//resumes at last time if pauseGameMusic was called last previously
+void Vortex::playGameMusic() {
+
+	if (gameMusic == nullptr)
+		return;
+
+	gameMusic->play();
+
+	if (gameMusicPaused) {
+		gameMusic->setPlayingOffset(pauseTimeGameMusic);
+	}
+
+
+
+}
+void Vortex::pauseGameMusic() {
+
+	if (gameMusic == nullptr)
+		return;
+
+	pauseTimeGameMusic = gameMusic->getPlayingOffset();
+	gameMusicPaused = true;
+	gameMusic->stop();
+
+}
+void Vortex::stopGameMusic() {
+
+	if (gameMusic == nullptr)
+		return;
+
+	gameMusicPaused = false;
+	pauseTimeGameMusic = sf::milliseconds(0);
+	gameMusic->stop();
 
 }
