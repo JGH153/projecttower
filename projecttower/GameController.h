@@ -31,6 +31,11 @@
 #include "DeathUnit.h"
 #include "ReaperUnit.h"
 
+#include "GamePower.h"
+#include "ExplosionPower.h"
+
+
+
 #include "MapTile.h"
 #include "SelectionGizmo.h"
 
@@ -168,9 +173,8 @@ private:
 
 
 	void handlePowers();
-	VortexAnimation * testPower;
 
-	VortexSound explosionPowerSound;
+	std::vector<GamePower *> activePowers;
 
 	//VortexMusic * gameSong;
 

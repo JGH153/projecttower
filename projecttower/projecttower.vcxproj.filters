@@ -55,6 +55,12 @@
     <Filter Include="Source Files\GameObjects\Towers">
       <UniqueIdentifier>{ce3cc32c-2562-4116-a4aa-a4deaac7822f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObjects\Powers">
+      <UniqueIdentifier>{8132418b-5205-47ec-847f-6701f95da26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Powers">
+      <UniqueIdentifier>{30b3813d-0ab1-48fd-8fb2-1708a1224141}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vortex.cpp">
@@ -216,6 +222,12 @@
     <ClCompile Include="VortexMusic.cpp">
       <Filter>Source Files\VortexGameEngine</Filter>
     </ClCompile>
+    <ClCompile Include="GamePower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex.h">
@@ -376,6 +388,12 @@
     </ClInclude>
     <ClInclude Include="VortexMusic.h">
       <Filter>Header Files\VortexGameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionPower.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

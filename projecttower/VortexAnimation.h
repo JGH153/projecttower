@@ -69,7 +69,7 @@ private:
 	sf::Time fpsMS;
 
 	bool looping;
-	bool loopDone; //only in use if looping = true;
+	bool loopDone; //only in use if looping = false?
 	
 
 	Vortex * gameEngine;

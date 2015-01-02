@@ -80,7 +80,9 @@
     <ClCompile Include="DeathUnit.cpp" />
     <ClCompile Include="DraxUnit.cpp" />
     <ClCompile Include="EffectsHandler.cpp" />
+    <ClCompile Include="ExplosionPower.cpp" />
     <ClCompile Include="FreezeTower.cpp" />
+    <ClCompile Include="GamePower.cpp" />
     <ClCompile Include="HulkUnit.cpp" />
     <ClCompile Include="IfritUnit.cpp" />
     <ClCompile Include="IndianaJonesUnit.cpp" />
@@ -135,7 +137,9 @@
     <ClInclude Include="DeathUnit.h" />
     <ClInclude Include="DraxUnit.h" />
     <ClInclude Include="EffectsHandler.h" />
+    <ClInclude Include="ExplosionPower.h" />
     <ClInclude Include="FreezeTower.h" />
+    <ClInclude Include="GamePower.h" />
     <ClInclude Include="HulkUnit.h" />
     <ClInclude Include="IfritUnit.h" />
     <ClInclude Include="IndianaJonesUnit.h" />

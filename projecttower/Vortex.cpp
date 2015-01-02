@@ -167,6 +167,12 @@ sf::Texture * Vortex::loadImageSubsetToTexture(std::string path, sf::IntRect rec
 
 }
 
+void Vortex::preloadTexture(std::string path) {
+
+	loadImageToTexture(path);
+
+}
+
 
 sf::SoundBuffer * Vortex::loadSound(std::string path){
 

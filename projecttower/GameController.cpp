@@ -191,20 +191,15 @@ void GameController::loadAssets() {
 	//guiObjects.push_back(sideTextMe);
 
 
-	testPower = new VortexAnimation(0, 0, 256, 256, 80.f, gameEngine);
-	testPower->asembleSpritesheetAnimation("Graphics/Powers/Bomb/explotionAnimation.png", 0, 0, 256, 256, 49, 1);
-	testPower->setLoop(false);
-	testPower->stop();
 
-
+	//preloading power assets
+	gameEngine->preloadTexture("Graphics/Powers/Bomb/explotionAnimation.png");
+	gameEngine->preloadSound("Sound/Powers/explosion.wav");
 
 
 	gameGuiController->initController();
 	gameGuiController->loadAssets();
 
-
-	explosionPowerSound = VortexSound(gameEngine, "Sound/Powers/explosion.wav");
-	explosionPowerSound.setVolume(40.f);
 
 
 }
@@ -404,9 +399,17 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 	gameEngine->selectionSpriteMutex.unlock();
 
 
-	for each (auto cuttent in testPower->getRenderDrawable()) {
-		renderList.push_back(cuttent);
+	gameEngine->powersMutex.lock();
+
+	for each (auto currentPower in activePowers) {
+
+		for each (auto current in currentPower->getRenderDrawable()) {
+			renderList.push_back(current);
+		}
+
 	}
+
+	gameEngine->powersMutex.unlock();
 	
 
 
@@ -1201,42 +1204,50 @@ void GameController::update() {
 
 void GameController::handlePowers() {
 
+	
+
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 	if (gameGuiController->usingPower && !gameGuiController->overAnyGuiButtons() && gameEngine->eventMouseClickedLeft) {
 
-		testPower->setPos(mousePosView.x - (testPower->getSize().x / 2), mousePosView.y - (testPower->getSize().y / 2));
-		testPower->restart();
-		testPower->play();
-
 		firePower(mousePosView.x, mousePosView.y, 0);
 
 	}
 
-	testPower->update();
-	//testPower
+	for (int i = 0; i < activePowers.size(); i++) {
+
+		activePowers[i]->update();
+
+		//remove when done;
+		if (activePowers[i]->isDone()) {
+
+			gameEngine->powersMutex.lock();
+
+			gameEngine->addRemovableObjectToList(activePowers[i]);
+			activePowers[i] = nullptr;
+			activePowers.erase(activePowers.begin() + i);
+			i--;
+
+			gameEngine->powersMutex.unlock();
+
+		}
+
+	}
+
+
+
 
 }
 
 void GameController::firePower(float posX, float posY, int powerID) {
 
-	float damage = 120.f;
 
-	std::cout << "im firing my lazer!\n";
-
-	explosionPowerSound.play();
-
-
-	std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
-
-	for (int i = 0; i < unitList.size(); i++) {
-		if (targetWithinRange(posX, posY, 100, unitList[i]) && !unitList[i]->isDead()) {
-			
-			unitList[i]->damage(damage);
-
-		}
+	if (powerID == 0 || powerID != 0) { //change lather
+		ExplosionPower * newExpPower = new ExplosionPower(gameEngine, &unitList, posX, posY);
+		activePowers.push_back(newExpPower);
 	}
+
 	
 
 }

@@ -48,7 +48,7 @@ void VortexAnimation::play() {
 void VortexAnimation::stop() {
 
 	looping = false;
-	loopDone = true;;
+	loopDone = true;
 
 }
 

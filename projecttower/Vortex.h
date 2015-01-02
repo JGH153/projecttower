@@ -75,6 +75,7 @@ public:
 
 	VortexSprite loadImageToSprite(std::string path);
 	sf::Texture * loadImageToTexture(std::string path);
+	void preloadTexture(std::string path);
 
 	sf::Texture * loadImageSubsetToTexture(std::string path, sf::IntRect rec);
 
@@ -175,6 +176,7 @@ public:
 	std::mutex selectionSpriteMutex;
 	std::mutex particleListMutex;
 	std::mutex effectsMutex;
+	std::mutex powersMutex;
 
 
 
