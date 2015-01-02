@@ -170,7 +170,13 @@ private:
 	void handlePowers();
 	VortexAnimation * testPower;
 
-	VortexMusic * gameSong;
+	VortexSound explosionPowerSound;
+
+	//VortexMusic * gameSong;
+
+
+	void firePower(float posX, float posY, int powerID);
+	bool targetWithinRange(float posX, float posY, float range, Unit *testSubject);
 
 
 };

@@ -191,7 +191,7 @@ void GameController::loadAssets() {
 	//guiObjects.push_back(sideTextMe);
 
 
-	testPower = new VortexAnimation(0, 0, 256, 256, 120.f, gameEngine);
+	testPower = new VortexAnimation(0, 0, 256, 256, 80.f, gameEngine);
 	testPower->asembleSpritesheetAnimation("Graphics/Powers/Bomb/explotionAnimation.png", 0, 0, 256, 256, 49, 1);
 	testPower->setLoop(false);
 	testPower->stop();
@@ -202,6 +202,9 @@ void GameController::loadAssets() {
 	gameGuiController->initController();
 	gameGuiController->loadAssets();
 
+
+	explosionPowerSound = VortexSound(gameEngine, "Sound/Powers/explosion.wav");
+	explosionPowerSound.setVolume(40.f);
 
 
 }
@@ -1207,11 +1210,46 @@ void GameController::handlePowers() {
 		testPower->restart();
 		testPower->play();
 
+		firePower(mousePosView.x, mousePosView.y, 0);
+
 	}
 
 	testPower->update();
 	//testPower
 
+}
+
+void GameController::firePower(float posX, float posY, int powerID) {
+
+	float damage = 120.f;
+
+	std::cout << "im firing my lazer!\n";
+
+	explosionPowerSound.play();
+
+
+	std::lock_guard<std::mutex> unitLock(gameEngine->unitListMutex);
+
+	for (int i = 0; i < unitList.size(); i++) {
+		if (targetWithinRange(posX, posY, 100, unitList[i]) && !unitList[i]->isDead()) {
+			
+			unitList[i]->damage(damage);
+
+		}
+	}
+	
+
+}
+
+bool GameController::targetWithinRange(float posX, float posY, float range,  Unit *testSubject) {
+	float xdist = abs(posX - testSubject->posX);
+	float ydist = abs(posY - testSubject->posY);
+
+	//Target out of range
+	if ((xdist * xdist) + (ydist * ydist) > (range * range)) {
+		return false;
+	}
+	return true;
 }
 
 
