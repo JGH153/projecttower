@@ -120,6 +120,7 @@ private:
 	Tower* selectedTower;
 	SelectionGizmo* selectionGizmo;
 
+	void handleZoomingUpdating();
 	void updateGhostBuildingSprite(sf::Vector2f mousePosView);
 	void lerpZoom(float t); //Linear interpolation
 	float lerpTime;
@@ -136,7 +137,7 @@ private:
 	std::vector <VortexParticleSystem*> particleList;
 	
 
-	std::vector<RenderObject *> renderObjectsVector;
+	//std::vector<RenderObject *> renderObjectsVector;
 
 	
 	void doGameControllerStatup();
@@ -147,6 +148,9 @@ private:
 	bool multiplayerMode;
 	int playerID; // 0 = left/server, 1 = right/client
 
+	void handleParticleUpdates();
+
+	void handleUnitUpdates();
 	void spawnNewUnit(int ID, bool toOponent);
 	void sendSpawnUnitPacket(int unitID, bool toOponent);
 
@@ -162,7 +166,8 @@ private:
 	void deleteTower(int gridX, int gridY);
 	void sendDeleteTowerPacket(int gridX, int gridY);
 
-
+	void handleTowerUpdates();
+	void handleTowerUpgrading();
 	void upgradeTower(int newTowerID, int gridX, int gridY); // 1 = canon
 	void sendUpgradeTowerPacket(int towerID, int gridX, int gridY);
 

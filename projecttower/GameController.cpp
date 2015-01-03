@@ -14,7 +14,6 @@ GameController::GameController(Vortex * gameEngine, int controllerID) : SubContr
 	
 }
 
-
 void GameController::initController() {
 
 }
@@ -23,32 +22,6 @@ void GameController::loadAssets() {
 
 	//preloading sounds
 	gameEngine->preloadSound("Sound/sound1.wav");
-
-	//std::vector<IronmanUnit *> preloadUnitList;
-	//gameEngine->groundTileListMutex.lock();
-	//preloadUnitList.push_back(new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y));
-	//gameEngine->groundTileListMutex.unlock();
-
-	//VortexAnimation* explosionEffect = new VortexAnimation(0, 0, 93, 100, 14, gameEngine);
-	//explosionEffect->asembleSpritesheetAnimation("Graphics/explosion_sheet.png", 0, 0, 93, 100, 10, 4);
-
-
-	//
-	//VortexAnimation* snowballProjectileEffect = new VortexAnimation(0, 0, 64, 64, 14, gameEngine);
-	//snowballProjectileEffect->asembleSpritesheetAnimation("Graphics/Projectiles/manyeffects_sheet.png", 512, 0, 64, 64, 8, 6);
-
-	//VortexAnimation* snowballExplosionEffect = new VortexAnimation(0, 0, 100, 100, 14, gameEngine);
-	//snowballExplosionEffect->asembleSpritesheetAnimation("Graphics/iceexplosion_sheet.png", 0, 0, 100, 100, 5, 4);
-
-
-	//gameEngine->addRemovableObjectToList(explosionEffect);
-	//gameEngine->addRemovableObjectToList(snowballProjectileEffect);
-	//gameEngine->addRemovableObjectToList(snowballExplosionEffect);
-
-	//for (auto currentUnit : preloadUnitList) {
-	//	gameEngine->addRemovableObjectToList(currentUnit);
-	//}
-	//preloadUnitList.clear();
 
 
 	float forestTileSize = 50;
@@ -135,15 +108,6 @@ void GameController::loadAssets() {
 	//std::cout << mapGroundTile.size() << " " << mapGroundTile[0].size() << std::endl;
 
 
-
-	//loadAssets();
-
-	//	std::vector<std::vector<int>> navigationMap;
-	//	navigationMap = makeNavigationMapFromTileMap(mapGroundTile);
-	//	sf::Vector2i targetInMapCoord = worldCoordinateToMapTileCoordinate(playerUnitTargetPos);
-	//	gameEngine->pathFinder->breadthFirstDirectionMap = gameEngine->pathFinder->makeBreadthFirstDirectionMap(navigationMap, targetInMapCoord, DIR_WEST);
-
-
 	//set view size relative to org window size
 	viewRelativeSizeX = 1.0f;
 	viewRelativeSizeY = 1.0f;
@@ -181,17 +145,6 @@ void GameController::loadAssets() {
 	sideTextOponent->setStyle(sf::Text::Bold);
 
 
-
-	//gameSong = new VortexMusic(gameEngine, "Sound/unitedWeStand.wav");
-	//gameSong->setLoop(true);
-	//gameSong->setVolume(40.f);
-
-
-	//sideTextMe->setPosition((float)WINDOWSIZEX / 4 - sideTextMe->getLocalBounds().width / 2, 50);
-	//guiObjects.push_back(sideTextMe);
-
-
-
 	//preloading power assets
 	gameEngine->preloadTexture("Graphics/Powers/Bomb/explotionAnimation.png");
 	gameEngine->preloadSound("Sound/Powers/explosion.wav");
@@ -203,7 +156,6 @@ void GameController::loadAssets() {
 
 
 }
-
 
 void GameController::onStop() {
 
@@ -217,9 +169,6 @@ void GameController::onStart() {
 	gameEngine->playGameMusic();
 
 }
-
-
-
 
 sf::View GameController::getView() {
 	return gameView;
@@ -314,17 +263,17 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 	
 
-	gameEngine->renderObjectsListMutex.lock();
+	//gameEngine->renderObjectsListMutex.lock();
 
-	for (auto currentRenderVector : renderObjectsVector) {
+	//for (auto currentRenderVector : renderObjectsVector) {
 
-		auto tempVector = currentRenderVector->getRenderDrawable();
+	//	auto tempVector = currentRenderVector->getRenderDrawable();
 
-		renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
+	//	renderList.insert(renderList.end(), tempVector.begin(), tempVector.end());
 
-	}
+	//}
 
-	gameEngine->renderObjectsListMutex.unlock();
+	//gameEngine->renderObjectsListMutex.unlock();
 
 	gameEngine->towerListMutex.lock();
 
@@ -425,7 +374,6 @@ std::vector<std::vector<sf::Drawable *>> GameController::getDynamicRenderData() 
 
 GameController::~GameController(){
 }
-
 
 std::vector<SubController *> GameController::getChildControllers() {
 
@@ -584,6 +532,9 @@ void GameController::addPlayersSideTexts() {
 
 void GameController::readNetworkPackets() {
 
+	if (!gameEngine->networkHandler->connectedByTCP) {
+		return;
+	}
 	
 
 	if (gameEngine->networkHandler->newPacketsReady) {
@@ -903,14 +854,9 @@ bool GameController::unitOnMyPlayfield(int unitListIndex) {
 
 void GameController::update() {
 
-	//std::cout << "GAMECON UPDATE\n";
-
 	gameEngine->setMousePosView(gameView);
 	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
 	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
-
-
-	
 
 	if (!gameControllerFistRunDone) {
 
@@ -920,13 +866,34 @@ void GameController::update() {
 
 	}
 
-	if (gameEngine->networkHandler->connectedByTCP) {
-		readNetworkPackets();
-	}
-
-	effectsHandler->update();
+	readNetworkPackets();
 
 	handlePowers();
+	handleParticleUpdates();
+
+	handleZoomingUpdating();
+
+	// Upgrade tower
+	handleTowerUpgrading();
+
+	//update call to each active toower
+	handleTowerUpdates();
+
+	//any action related to spawning or deleting towers
+	handlePlayerTowerAction();
+
+	handleUnitUpdates();
+
+	for (auto currentController : childControllers) {
+		currentController->update();
+	}
+
+}
+
+void GameController::handleZoomingUpdating() {
+
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
 
 	if (zooming) {
 		lerpTime += 1.0f * ((float)gameEngine->deltaTime.asMilliseconds() / 200);
@@ -934,9 +901,196 @@ void GameController::update() {
 		updateGhostBuildingSprite(mousePosView);
 	}
 
-	// Upgrade tower
+	if (gameEngine->eventMouseWheelScrollUp) {
+		zooming = calculateZoom(false);
+	} else if (gameEngine->eventMouseWheelScrollDown) {
+		zooming = calculateZoom(true);
+	}
+
+
+	if (gameEngine->eventMousePressedRight) {
+		if (gameEngine->eventMouseMove) {
+			moveViewport();
+		}
+	}
+
+
+	previousMousePos = mousePosWindow;
+
+}
+
+
+void GameController::handleTowerUpdates() {
+
+	auto mousePosWindow = gameEngine->getMousePositionRelativeToWindow();
+	auto mousePosView = gameEngine->getMousePositionRelativeToSetView();
+
+	if (gameEngine->eventMouseMove || gameGuiController->building == true) {
+		updateGhostBuildingSprite(mousePosView);
+	}
+
+	gameEngine->towerListMutex.lock();
+	for (auto * current : towerList) {
+		current->update();
+	}
+
+	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
+
+	gameEngine->towerListMutex.unlock();
+
+}
+
+
+void GameController::handleParticleUpdates() {
+
+	effectsHandler->update();
+
+	gameEngine->particleListMutex.lock();
+	for (int i = 0; i < particleList.size(); i++) {
+		particleList[i]->update(gameEngine->deltaTime);
+		if (particleList[i]->stopEmitting == true) {
+			gameEngine->addRemovableObjectToList(particleList[i]);
+			particleList[i] = nullptr;
+			particleList.erase(particleList.begin() + i);
+		}
+	}
+	gameEngine->particleListMutex.unlock();
+
+}
+
+
+void GameController::handleUnitUpdates() {
+
+
+	////testing
+	//if (gameGuiController->currentLevel > 1) {
+	//	spawnDelayMS = 0;
+	//}
+
+	//Spawning uits at fixed rate, basted on lvl
+	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && gameGuiController->currentLevel != 0) {
+
+		//std::cout << "spawning at fixed rate\n";
+
+		spawnNewUnit(gameGuiController->currentLevel - 1, false);
+
+		////testng
+		//if (gameGuiController->currentLevel > 1) {
+		//	spawnNewUnit(gameGuiController->currentLevel - 2, false);
+		//}
+
+		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+			//send spawn on our side (on enemy game)
+			sendSpawnUnitPacket(gameGuiController->currentLevel - 1, false);
+
+		}
+
+		unitSpawnTimer.restart();
+
+
+	}
+
+	//spawning units puchased by user
+	while (!gameGuiController->unitsToSpawn.empty()) {
+
+		//std::cout << "spawning at userWill rate\n";
+
+
+
+		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+			int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
+
+			spawnNewUnit(unitToSpawnID, true);
+			gameGuiController->unitsToSpawn.pop_back();
+
+			//send spawn on ther side in their game
+			sendSpawnUnitPacket(unitToSpawnID, true);
+
+		} else {
+
+			int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
+
+			spawnNewUnit(unitToSpawnID, false);
+			gameGuiController->unitsToSpawn.pop_back();
+
+		}
+
+
+	}
+
+
+	if (groundTilesChanged) {
+		recalculateNavigationMaps();
+	}
+
+	gameEngine->unitListMutex.lock();
+
+	//update and remove dead units
+	for (int i = 0; i < unitList.size(); i++) {
+
+		if (towerRemoved) {
+			unitList[i]->towerRemoved = true;
+		}
+
+		//the update call to each unit
+		unitList[i]->update();
+
+		if (unitList[i]->isDead()) {
+
+			if (unitOnMyPlayfield(i)) {
+				gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() + unitList[i]->killReward);
+			}
+
+			gameEngine->addRemovableObjectToList(unitList[i]);
+			gameEngine->particleListMutex.lock();
+			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, unitList[i]->hitParticleColor, sf::Quads, 200, 30));
+			gameEngine->particleListMutex.unlock();
+			unitList[i] = nullptr;
+			unitList.erase(unitList.begin() + i);
+			i--;
+		}
+
+		else if (unitList[i]->reachedGoal) {
+			// Remove life
+			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, sf::Color(100, 100, 100, 255), sf::Quads, 200, 30));
+
+			if (unitOnMyPlayfield(i)) {
+				//std::cout << "Hos MEG\n";
+				gameGuiController->setPlayerLives(gameGuiController->numLives - 1);
+			} else {
+				//std::cout << "Hos DEG";
+			}
+
+			if (gameGuiController->numLives == 0) {
+				playerLost = true;
+			}
+
+
+			gameEngine->addRemovableObjectToList(unitList[i]);
+			unitList[i] = nullptr;
+			unitList.erase(unitList.begin() + i);
+			i--;
+		}
+	}
+	groundTilesChanged = false;
+	towerRemoved = false;
+
+	//sorting units so the unit with the lowest base y is rendered first
+	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
+
+	gameEngine->unitListMutex.unlock();
+
+
+}
+
+
+
+void GameController::handleTowerUpgrading() {
+
 	if (gameGuiController->showingTowerUpgrades && selectedTower != nullptr) {
-		
+
 		// Upgrade to cannon tower
 		if (gameGuiController->upgradeToCannon->isPressed && gameGuiController->upgradeToCannon->hovering && gameGuiController->buildTimer <= 0) {
 
@@ -971,10 +1125,9 @@ void GameController::update() {
 			}
 
 
-		}
+		}else if (gameGuiController->upgradeToFreeze->isPressed && gameGuiController->upgradeToFreeze->hovering && gameGuiController->buildTimer <= 0) {
+			// Upgrade to freeze tower
 
-		// Upgrade to freeze tower
-		else if (gameGuiController->upgradeToFreeze->isPressed && gameGuiController->upgradeToFreeze->hovering && gameGuiController->buildTimer <= 0) {
 
 			if (gameGuiController->playerResources >= 10) {
 				gameGuiController->setPlayerResources(gameGuiController->playerResources - 10);
@@ -1000,203 +1153,6 @@ void GameController::update() {
 
 		}
 	}
-
-	////testing
-	//if (gameGuiController->currentLevel > 1) {
-	//	spawnDelayMS = 0;
-	//}
-
-	//REMOVE FALSE TO ACTIVATE
-	if (unitSpawnTimer.getElapsedTime().asMilliseconds() >= spawnDelayMS && unitList.size() < 20000 && gameGuiController->currentLevel != 0) {
-
-		//std::cout << "spawning at fixed rate\n";
-
-		spawnNewUnit(gameGuiController->currentLevel - 1, false);
-
-		////testng
-		//if (gameGuiController->currentLevel > 1) {
-		//	spawnNewUnit(gameGuiController->currentLevel - 2, false);
-		//}
-
-		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
-
-			//send spawn on our side (on enemy game)
-			sendSpawnUnitPacket(gameGuiController->currentLevel - 1, false);
-
-		}
-
-		unitSpawnTimer.restart();
-
-
-	}
-
-
-	if (gameEngine->eventMouseMove || gameGuiController->building == true) {
-		updateGhostBuildingSprite(mousePosView);
-	}
-
-	if (gameEngine->eventMouseWheelScrollUp) {
-		zooming = calculateZoom(false);
-	}
-	else if (gameEngine->eventMouseWheelScrollDown) {
-		zooming = calculateZoom(true);
-	}
-
-	
-	if (gameEngine->eventMousePressedRight) {
-		if (gameEngine->eventMouseMove) {
-			moveViewport();
-		}
-	}
-	
-	if (gameEngine->eventMouseClickedLeft) {
-	//if (gameEngine->eventMousePressedLeft) {
-		handlePlayerTowerAction();
-	}
-	
-	gameEngine->renderObjectsListMutex.lock();
-	for (auto * current : renderObjectsVector) {
-
-		current->update();
-
-	}
-	gameEngine->renderObjectsListMutex.unlock();
-
-	if (groundTilesChanged){
-		recalculateNavigationMaps();
-	}
-
-	gameEngine->unitListMutex.lock();
-	for (int i = 0; i < unitList.size(); i++) {
-		if (towerRemoved) {
-			unitList[i]->towerRemoved = true;
-		}
-		unitList[i]->update();
-		if (unitList[i]->isDead()) {
-
-			if (unitOnMyPlayfield(i)) {
-				gameGuiController->setPlayerResources(gameGuiController->getPlayerResources() + unitList[i]->killReward);
-			}
-
-			gameEngine->addRemovableObjectToList(unitList[i]);
-			gameEngine->particleListMutex.lock();
-			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, unitList[i]->hitParticleColor, sf::Quads, 200, 30));
-			gameEngine->particleListMutex.unlock();
-			unitList[i] = nullptr;
-			unitList.erase(unitList.begin() + i);
-			i--;
-		}
-
-		else if (unitList[i]->reachedGoal) {
-			// Remove life
-			particleList.push_back(new VortexParticleSystem(35, unitList[i]->getPos().x + unitList[i]->getSize().x / 2, unitList[i]->getPos().y + unitList[i]->getSize().y / 2, sf::Color(100, 100, 100, 255), sf::Quads, 200, 30));
-
-			if (unitOnMyPlayfield(i)){
-				//std::cout << "Hos MEG\n";
-				gameGuiController->setPlayerLives(gameGuiController->numLives - 1);
-			} else {
-				//std::cout << "Hos DEG";
-			}
-
-			if (gameGuiController->numLives == 0 ) {
-				playerLost = true;
-			}
-
-
-			gameEngine->addRemovableObjectToList(unitList[i]);
-			unitList[i] = nullptr;
-			unitList.erase(unitList.begin() + i);
-			i--;
-		}
-	}
-	groundTilesChanged = false;
-	towerRemoved = false;
-
-	//sorting units so the unit with the lowest base y is rendered first
-	std::sort(unitList.begin(), unitList.end(), entitySortingStructDistanceDistance);
-
-	gameEngine->unitListMutex.unlock();
-
-
-	gameEngine->towerListMutex.lock();
-	for (auto * current : towerList) {
-		current->update();
-	}
-
-	std::sort(towerList.begin(), towerList.end(), entitySortingStructDistanceDistance);
-
-	gameEngine->towerListMutex.unlock();
-
-
-	gameEngine->particleListMutex.lock();
-	for (int i = 0; i < particleList.size(); i++) {
-		particleList[i]->update(gameEngine->deltaTime);
-		if (particleList[i]->stopEmitting == true) {
-			gameEngine->addRemovableObjectToList(particleList[i]);
-			particleList[i] = nullptr;
-			particleList.erase(particleList.begin() + i);
-		}
-	}
-	gameEngine->particleListMutex.unlock();
-
-
-	for (auto currentController : childControllers) {
-		currentController->update();
-	}
-
-	while (!gameGuiController->unitsToSpawn.empty()) {
-
-		//std::cout << "spawning at userWill rate\n";
-
-		
-
-		if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
-
-			int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
-
-			spawnNewUnit(unitToSpawnID, true);
-			gameGuiController->unitsToSpawn.pop_back();
-
-			//send spawn on ther side in their game
-			sendSpawnUnitPacket(unitToSpawnID, true);
-
-		} else {
-
-			int unitToSpawnID = gameGuiController->unitsToSpawn.back() - 1;
-
-			spawnNewUnit(unitToSpawnID, false);
-			gameGuiController->unitsToSpawn.pop_back();
-
-		}
-
-		//Unit* spawnedUnit;
-
-		//gameEngine->groundTileListMutex.lock();
-		//switch (gameGuiController->unitsToSpawn.back()) {
-		//case 1:
-		//	spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-		//	break;
-
-		//case 2:
-		//	spawnedUnit = new BahamutUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-		//	break;
-
-		//default:
-		//	spawnedUnit = new IronmanUnit(gameEngine, &mapGroundTile, playerUnitSpawnPos.x, playerUnitSpawnPos.y, playerUnitTargetPos.x, playerUnitTargetPos.y);
-		//	printf("Error spawning unit!!!!!\n");
-		//}
-		//gameEngine->groundTileListMutex.unlock();
-		//gameGuiController->unitsToSpawn.pop_back();
-
-		//gameEngine->unitListMutex.lock();
-		//unitList.push_back(spawnedUnit);
-		//gameEngine->unitListMutex.unlock();
-
-		
-	}
-
-	previousMousePos = mousePosWindow;
-
 
 }
 
@@ -1374,6 +1330,11 @@ void GameController::upgradeTower(int newTowerID, int gridX, int gridY) {
 
 
 void GameController::handlePlayerTowerAction() {
+
+	if (!gameEngine->eventMouseClickedLeft) {
+		return;
+	}
+
 	if (playerLost) {
 		return;
 	}
@@ -1388,19 +1349,25 @@ void GameController::handlePlayerTowerAction() {
 		return;
 	}
 
-	if (xpos < 0 || xpos > mapGroundTile.size() || ypos < 0 || ypos > mapGroundTile[0].size())
+	if (xpos < 0 || xpos >= mapGroundTile.size() || ypos < 0 || ypos >= mapGroundTile[0].size())
 		return;
 	
 
 	//Not building, not deleting, and clicked on tower
-	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
+	if (mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting && !gameGuiController->usingPower) {
+		
+		//trying to upgrade canon or freeze towr?
 		if (gameGuiController->showingTowerUpgrades && (gameGuiController->upgradeToCannon->hovering ||  gameGuiController->upgradeToFreeze->hovering)) {
+			
 			// Nomnomcookie
-		}
-		else {
+
+		}else {
+
 			for (int i = 0; i < towerList.size(); i++) {
+
 				sf::Vector2i towerGridPos(towerList[i]->posX / gridTileSize, towerList[i]->posY / gridTileSize);
 				if (towerGridPos.x == xpos && towerGridPos.y == ypos) {
+
 					if (selectedTower == towerList[i] && gameGuiController->showingTowerUpgrades) {
 						break;
 					}
@@ -1419,18 +1386,19 @@ void GameController::handlePlayerTowerAction() {
 						gameGuiController->showTowerUpgrades(mousePosWindow);
 					}
 					
-					
 					break;
+
 				}
 			}
+
 		}
 		
 		
 		
 
-	}
-	//Not building, not deleting, and didnt click on tower - clear selection
-	else if (mapGroundTile[xpos][ypos]->getTileTypeID() != TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
+	} else if (mapGroundTile[xpos][ypos]->getTileTypeID() != TileTypes::tower && !gameGuiController->building && !gameGuiController->deleting) {
+		//Not building, not deleting, and didnt click on tower - clear selection
+
 		// If upgrade tab is open
 		if (gameGuiController->showingTowerUpgrades) {
 			// If mouse is not over an upgrade button
@@ -1441,19 +1409,18 @@ void GameController::handlePlayerTowerAction() {
 					gameGuiController->hideTowerUpgrades();
 				}
 			}
-		}
-		else {
+		} else {
 			selectedTower = nullptr;
 			if (gameGuiController->showingTowerUpgrades) {
 				gameGuiController->showingTowerUpgrades = false;
 				gameGuiController->hideTowerUpgrades();
 			}
 		}
+
+
+	} else if (onMyMapSide(xpos, ypos) && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
+		//Building, and zone buildable
 		
-		
-	}
-	//Building, and zone buildable
-	else if (onMyMapSide(xpos, ypos) && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::grass && gameGuiController->building && !gameGuiController->mouseOverSomeButton(gameView) && !unitOnTile(xpos, ypos)) {
 		// Check if player has resources to build
 		if (gameGuiController->getPlayerResources() >= 10) {
 
@@ -1472,10 +1439,10 @@ void GameController::handlePlayerTowerAction() {
 			sendSpawnNewTowerPacket(0, xpos, ypos);
 		}
 		
-	}
-	//Clicked on tower and is deleting
-	else if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {
-		
+	}else if (gameGuiController->deleting && mapGroundTile[xpos][ypos]->getTileTypeID() == TileTypes::tower) {
+		//Clicked on tower and is deleting
+
+
 		for (int i = 0; i < towerList.size(); i++) {
 
 			sf::Vector2i mouseGridPos(mousePosView.x / gridTileSize, mousePosView.y / gridTileSize);
@@ -1492,8 +1459,7 @@ void GameController::handlePlayerTowerAction() {
 			
 		}
 
-	}
-	else {
+	}else {
 		// Play unable to do action beep sound
 	}
 }
