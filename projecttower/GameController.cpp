@@ -612,6 +612,20 @@ void GameController::readNetworkPackets() {
 
 
 
+			} else if (typeID == VortexNetwork::packetId_MainGameFirePower) {
+
+				sf::Int32 firePowerID;
+
+				float firePowerX;
+				float firePowerY;
+
+				packet >> firePowerID >> firePowerX >> firePowerY;
+
+				firePower(firePowerX, firePowerY, firePowerID, true);
+
+
+
+
 			}
 
 
@@ -820,6 +834,40 @@ void GameController::sendUpgradeTowerPacket(int towerID, int gridX, int gridY) {
 
 
 }
+
+
+void GameController::sendFirePowerPacket(float posX, float posY, int powerID) {
+
+
+	if (multiplayerMode && gameEngine->networkHandler->connectedByTCP) {
+
+		sf::Packet sendPacket;
+		sf::Int32 typeID = VortexNetwork::packetId_MainGameFirePower;
+		sf::Int32 firePowerID = powerID;
+		float firePowerX = posX;
+		float firePowerY = posY;
+
+		sendPacket << typeID << firePowerID << firePowerX << firePowerY;
+
+		gameEngine->networkHandler->sendTcpPacket(sendPacket);
+
+	}
+
+
+}
+
+void GameController::firePower(float posX, float posY, int powerID, bool toOponent) {
+
+
+	if (powerID == 0 || powerID != 0) { //change lather
+		ExplosionPower * newExpPower = new ExplosionPower(gameEngine, &unitList, posX, posY);
+		activePowers.push_back(newExpPower);
+	}
+
+
+
+}
+
 
 
 bool GameController::unitOnMyPlayfield(int unitListIndex) {
@@ -1168,6 +1216,9 @@ void GameController::handlePowers() {
 	if (gameGuiController->usingPower && !gameGuiController->overAnyGuiButtons() && gameEngine->eventMouseClickedLeft) {
 
 		firePower(mousePosView.x, mousePosView.y, 0);
+		if (multiplayerMode) {
+			sendFirePowerPacket(mousePosView.x, mousePosView.y, 0);
+		}
 
 	}
 
@@ -1196,17 +1247,9 @@ void GameController::handlePowers() {
 
 }
 
-void GameController::firePower(float posX, float posY, int powerID) {
 
 
-	if (powerID == 0 || powerID != 0) { //change lather
-		ExplosionPower * newExpPower = new ExplosionPower(gameEngine, &unitList, posX, posY);
-		activePowers.push_back(newExpPower);
-	}
 
-	
-
-}
 
 bool GameController::targetWithinRange(float posX, float posY, float range,  Unit *testSubject) {
 	float xdist = abs(posX - testSubject->posX);
