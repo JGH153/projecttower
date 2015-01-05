@@ -31,7 +31,7 @@ void MenuController::loadAssets() {
 
 	int centerX = gameEngine->getWindowSize().x / 2;
 	int centerY = gameEngine->getWindowSize().y / 2;
-	int buttonWidth = 180;
+	int buttonWidth = 300;
 	int buttonHeight = 60;
 
 

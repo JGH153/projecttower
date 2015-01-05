@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
 	std::cout << "Creating new vortex and Renderer" << std::endl;
 
 	Vortex * gameEngine = new Vortex();
-	Renderer * renderer = new Renderer(gameEngine, WINDOWSIZEX, WINDOWSIZEY, 60.f, "Glutenfree Celiac Bulwark", "Graphics/sfml.png", false);
+	Renderer * renderer = new Renderer(gameEngine, WINDOWSIZEX, WINDOWSIZEY, 60.f, "ProjectTower", "Graphics/cannonball.png", false);
 
 	std::cout << "Starting render thread" << std::endl;
 	//starting new thread caling renderer->renderMainLoop();
